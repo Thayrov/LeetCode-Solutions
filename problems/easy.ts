@@ -185,7 +185,7 @@ Given a string s of zeros and ones, return the maximum score after splitting the
 
 The score after splitting a string is the number of zeros in the left substring plus the number of ones in the right substring.
 
- 
+
 
 Example 1:
 
@@ -198,16 +198,20 @@ left = "01" and right = "1101", score = 1 + 3 = 4
 left = "011" and right = "101", score = 1 + 2 = 3 
 left = "0111" and right = "01", score = 1 + 1 = 2 
 left = "01110" and right = "1", score = 2 + 1 = 3
+
+
 Example 2:
 
 Input: s = "00111"
 Output: 5
 Explanation: When left = "00" and right = "111", we get the maximum score = 2 + 3 = 5
+
+
 Example 3:
 
 Input: s = "1111"
 Output: 3
- 
+
 
 Constraints:
 
@@ -215,5 +219,110 @@ Constraints:
 The string s consists of characters '0' and '1' only.
 
 
-</>Code:
+</> Typescript Code:
 */
+
+function maxScore(s: string): number {
+  let maxScore = 0; // Initialize maxScore to keep track of the highest score found
+  let onesCount = 0; // Initialize onesCount to count the number of '1's in the string
+  let zerosCount = 0; // Initialize zerosCount to count the number of '0's in the left substring
+
+  // Count the total number of '1's in the string since they will contribute to the score of every right substring
+  for (const char of s) {
+    if (char === '1') {
+      onesCount++;
+    }
+  }
+
+  // Iterate through the string until the second-to-last character
+  // The last character must be part of the right substring, so it's not included in the loop
+  for (let i = 0; i < s.length - 1; i++) {
+    if (s[i] === '0') {
+      zerosCount++; // If the current character is '0', increment zerosCount for the left substring
+    } else {
+      onesCount--; // If the current character is '1', decrement onesCount as it's now part of the left substring
+    }
+    // Calculate the score for the current split and update maxScore if this score is greater
+    maxScore = Math.max(maxScore, zerosCount + onesCount);
+  }
+
+  // Return the maximum score found after checking all possible splits
+  return maxScore;
+}
+
+/* 
+1496. Path Crossing
+
+Easy
+Topics
+Companies
+Hint
+
+Given a string path, where path[i] = 'N', 'S', 'E' or 'W', each representing moving one unit north, south, east, or west, respectively. You start at the origin (0, 0) on a 2D plane and walk on the path specified by path.
+
+Return true if the path crosses itself at any point, that is, if at any time you are on a location you have previously visited. Return false otherwise.
+
+
+Example 1:
+
+Input: path = "NES"
+Output: false 
+Explanation: Notice that the path doesn't cross any point more than once.
+
+
+Example 2:
+
+Input: path = "NESWW"
+Output: true
+Explanation: Notice that the path visits the origin twice.
+
+
+Constraints:
+
+1 <= path.length <= 104
+path[i] is either 'N', 'S', 'E', or 'W'.
+
+</> Typescript Code:
+*/
+
+function isPathCrossing(path: string): boolean {
+  // Initialize the starting point at the origin (0,0)
+  let x = 0;
+  let y = 0;
+
+  // A Set to keep track of all visited coordinates in the format "x,y"
+  let visited = new Set<string>();
+  visited.add(`${x},${y}`); // Add the starting point to the visited Set
+
+  // Loop through the path string to move the current position
+  for (let i = 0; i < path.length; i++) {
+    switch (path[i]) {
+      case 'N':
+        y++;
+        break; // Move north: increment y coordinate
+      case 'S':
+        y--;
+        break; // Move south: decrement y coordinate
+      case 'E':
+        x++;
+        break; // Move east: increment x coordinate
+      case 'W':
+        x--;
+        break; // Move west: decrement x coordinate
+    }
+
+    // Create a string representation of the current coordinate
+    const current = `${x},${y}`;
+
+    // Check if the current coordinate has already been visited
+    if (visited.has(current)) {
+      return true; // The path crosses itself, return true
+    }
+
+    // If not visited, add the current coordinate to the Set
+    visited.add(current);
+  }
+
+  // If no coordinates have been visited more than once, return false
+  return false;
+}
