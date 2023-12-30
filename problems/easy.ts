@@ -396,3 +396,64 @@ function minOperations(s: string): number {
   // This represents the minimum number of changes needed to make the string alternating
   return Math.min(count1, count2);
 }
+
+/* 
+1897. Redistribute Characters to Make All Strings Equal
+
+You are given an array of strings words (0-indexed).
+
+In one operation, pick two distinct indices i and j, where words[i] is a non-empty string, and move any character from words[i] to any position in words[j].
+
+Return true if you can make every string in words equal using any number of operations, and false otherwise.
+
+Example 1:
+
+Input: words = ["abc","aabc","bc"]
+Output: true
+Explanation: Move the first 'a' in words[1] to the front of words[2],
+to make words[1] = "abc" and words[2] = "abc".
+All the strings are now equal to "abc", so return true.
+
+Example 2:
+
+Input: words = ["ab","a"]
+Output: false
+Explanation: It is impossible to make all the strings equal using the operation.
+
+
+Constraints:
+
+1 <= words.length <= 100
+1 <= words[i].length <= 100
+words[i] consists of lowercase English letters.
+
+</> Typescript Code:
+*/
+
+function makeEqual(words: string[]): boolean {
+  // Create a map to store the frequency of each character across all words
+  const charCount = new Map<string, number>();
+
+  // Iterate over each word in the words array
+  for (const word of words) {
+    // Iterate over each character in the current word
+    for (const char of word) {
+      // Update the count for each character in the map
+      // If the character doesn't exist in the map, initialize its count to 0 and then add 1
+      charCount.set(char, (charCount.get(char) || 0) + 1);
+    }
+  }
+
+  // Iterate over each character in the map
+  for (const [char, count] of charCount) {
+    // Check if the count of the character is divisible by the number of words
+    // If not, return false, as we cannot evenly distribute this character across all words
+    if (count % words.length !== 0) {
+      return false;
+    }
+  }
+
+  // If all character counts are divisible by the number of words, return true
+  // This means we can redistribute the characters to make all strings equal
+  return true;
+}
