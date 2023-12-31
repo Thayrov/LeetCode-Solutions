@@ -457,3 +457,62 @@ function makeEqual(words: string[]): boolean {
   // This means we can redistribute the characters to make all strings equal
   return true;
 }
+
+/* 
+1624. Largest Substring Between Two Equal Characters
+
+Given a string s, return the length of the longest substring between two equal characters, excluding the two characters. If there is no such substring return -1.
+
+A substring is a contiguous sequence of characters within a string.
+
+Example 1:
+
+Input: s = "aa"
+Output: 0
+Explanation: The optimal substring here is an empty substring between the two 'a's.
+
+Example 2:
+
+Input: s = "abca"
+Output: 2
+Explanation: The optimal substring here is "bc".
+Example 3:
+
+Input: s = "cbzxy"
+Output: -1
+Explanation: There are no characters that appear twice in s.
+
+Constraints:
+
+1 <= s.length <= 300
+s contains only lowercase English letters.
+
+</> Typescript Code:
+ */
+
+function maxLengthBetweenEqualCharacters(s: string): number {
+  // Create a map to store the first occurrence index of each character
+  const firstOccurrence = new Map<string, number>();
+  // Initialize maxLength to -1, which is the default return value if no valid substring is found
+  let maxLength = -1;
+
+  // Iterate over each character in the string
+  for (let i = 0; i < s.length; i++) {
+    // Get the current character
+    const char = s[i];
+
+    // Check if the character has been seen before
+    if (firstOccurrence.has(char)) {
+      // Calculate the length of the substring between the two occurrences of the character
+      // Subtract 1 to exclude the characters themselves
+      // Update maxLength if this length is greater than the current maxLength
+      maxLength = Math.max(maxLength, i - firstOccurrence.get(char) - 1);
+    } else {
+      // If it's the first occurrence of the character, record its index in the map
+      firstOccurrence.set(char, i);
+    }
+  }
+
+  // Return the length of the longest substring between two equal characters, or -1 if not found
+  return maxLength;
+}
