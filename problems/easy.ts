@@ -506,7 +506,7 @@ function maxLengthBetweenEqualCharacters(s: string): number {
       // Calculate the length of the substring between the two occurrences of the character
       // Subtract 1 to exclude the characters themselves
       // Update maxLength if this length is greater than the current maxLength
-      maxLength = Math.max(maxLength, i - firstOccurrence.get(char) - 1);
+      maxLength = Math.max(maxLength, i - firstOccurrence.get(char)! - 1);
     } else {
       // If it's the first occurrence of the character, record its index in the map
       firstOccurrence.set(char, i);
