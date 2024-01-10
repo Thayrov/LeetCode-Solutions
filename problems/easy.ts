@@ -364,7 +364,7 @@ s[i] is either '0' or '1'.
 </> Typescript Code:
 */
 
-function minOperations(s: string): number {
+function minOperationsBT(s: string): number {
   // Initialize two counters to track mismatches with the two possible alternating patterns
   let count1 = 0; // Count mismatches for pattern '0101...'
   let count2 = 0; // Count mismatches for pattern '1010...'
