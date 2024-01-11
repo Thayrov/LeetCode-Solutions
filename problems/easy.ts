@@ -606,7 +606,7 @@ All Node.val are unique.
 */
 
 /* Definition for a binary tree node. */
-class TreeNode {
+/* class TreeNode {
   val: number;
   left: TreeNode | null;
   right: TreeNode | null;
@@ -615,7 +615,7 @@ class TreeNode {
     this.left = left === undefined ? null : left;
     this.right = right === undefined ? null : right;
   }
-}
+} */
 function rangeSumBST(root: TreeNode | null, low: number, high: number): number {
   if (!root) return 0; // Base case: if the node is null, return 0
 
