@@ -693,3 +693,52 @@ function dfs(node: TreeNode | null, leaves: number[]) {
   dfs(node.left, leaves); // Recur for left subtree
   dfs(node.right, leaves); // Recur for right subtree
 }
+
+/* 
+1704. Determine if String Halves Are Alike
+
+You are given a string s of even length. Split this string into two halves of equal lengths, and let a be the first half and b be the second half.
+
+Two strings are alike if they have the same number of vowels ('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'). Notice that s contains uppercase and lowercase letters.
+
+Return true if a and b are alike. Otherwise, return false.
+
+
+Example 1:
+
+Input: s = "book"
+Output: true
+Explanation: a = "bo" and b = "ok". a has 1 vowel and b has 1 vowel. Therefore, they are alike.
+
+
+Example 2:
+
+Input: s = "textbook"
+Output: false
+Explanation: a = "text" and b = "book". a has 1 vowel whereas b has 2. Therefore, they are not alike.
+Notice that the vowel o is counted twice.
+
+
+Constraints:
+
+2 <= s.length <= 1000
+s.length is even.
+s consists of uppercase and lowercase letters.
+
+</> Typescript Code:
+*/
+
+function halvesAreAlike(s: string): boolean {
+  // Helper function to check if a character is a vowel
+  const isVowel = (c: string) => 'aeiouAEIOU'.includes(c);
+
+  // Helper function to count the number of vowels in a string
+  const countVowels = (str: string) => [...str].filter(c => isVowel(c)).length;
+
+  // Calculate the length of each half
+  const half = s.length / 2;
+
+  // Compare the number of vowels in the first half to the second half
+  // Return true if they are the same, otherwise false
+  return countVowels(s.substring(0, half)) === countVowels(s.substring(half));
+}
