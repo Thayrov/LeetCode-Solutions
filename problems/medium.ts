@@ -756,3 +756,61 @@ function dfs2(node: TreeNode | null, minVal: number, maxVal: number): number {
   // Recursively call DFS for left and right children, and return the maximum difference
   return Math.max(dfs2(node.left, minVal, maxVal), dfs2(node.right, minVal, maxVal));
 }
+
+/* 
+1347. Minimum Number of Steps to Make Two Strings Anagram
+
+You are given two strings of the same length s and t. In one step you can choose any character of t and replace it with another character.
+
+Return the minimum number of steps to make t an anagram of s.
+
+An Anagram of a string is a string that contains the same characters with a different (or the same) ordering.
+
+
+Example 1:
+
+Input: s = "bab", t = "aba"
+Output: 1
+Explanation: Replace the first 'a' in t with b, t = "bba" which is anagram of s.
+
+
+Example 2:
+
+Input: s = "leetcode", t = "practice"
+Output: 5
+Explanation: Replace 'p', 'r', 'a', 'i' and 'c' from t with proper characters to make t anagram of s.
+
+
+Example 3:
+
+Input: s = "anagram", t = "mangaar"
+Output: 0
+Explanation: "anagram" and "mangaar" are anagrams. 
+
+
+Constraints:
+
+1 <= s.length <= 5 * 104
+s.length == t.length
+s and t consist of lowercase English letters only.
+
+</> Typescript Code:
+*/
+
+function minSteps(s: string, t: string): number {
+  // Array to hold the frequency count of characters (since we only have lowercase letters)
+  const charCount = new Array(26).fill(0);
+
+  // Count the frequency of each character in string s
+  for (const char of s) {
+    charCount[char.charCodeAt(0) - 'a'.charCodeAt(0)]++;
+  }
+
+  // Decrement the frequency based on characters in string t
+  for (const char of t) {
+    charCount[char.charCodeAt(0) - 'a'.charCodeAt(0)]--;
+  }
+
+  // Sum up the counts that are positive, which indicates the number of replacements needed
+  return charCount.filter(count => count > 0).reduce((sum, count) => sum + count, 0);
+}
