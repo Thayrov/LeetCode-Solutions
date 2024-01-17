@@ -742,3 +742,55 @@ function halvesAreAlike(s: string): boolean {
   // Return true if they are the same, otherwise false
   return countVowels(s.substring(0, half)) === countVowels(s.substring(half));
 }
+
+/* 
+1207. Unique Number of Occurrences
+
+Given an array of integers arr, return true if the number of occurrences of each value in the array is unique or false otherwise.
+
+
+Example 1:
+
+Input: arr = [1,2,2,1,1,3]
+Output: true
+Explanation: The value 1 has 3 occurrences, 2 has 2 and 3 has 1. No two values have the same number of occurrences.
+
+
+Example 2:
+
+Input: arr = [1,2]
+Output: false
+
+
+Example 3:
+
+Input: arr = [-3,0,1,-3,1,1,1,-3,10,0]
+Output: true
+
+
+Constraints:
+
+1 <= arr.length <= 1000
+-1000 <= arr[i] <= 1000
+
+</> Typescript Code:
+*/
+
+function uniqueOccurrences(arr: number[]): boolean {
+  // Initialize a map to store the frequency of each number in the array
+  const occurrenceMap = new Map();
+
+  // Iterate over the array
+  for (const num of arr) {
+    // Update the frequency of the current number
+    // If the number is not in the map, get(num) returns undefined, so we use 0 as the default value
+    occurrenceMap.set(num, (occurrenceMap.get(num) || 0) + 1);
+  }
+
+  // Create a set from the values of the map (i.e., frequencies of numbers)
+  // This will remove any duplicate frequencies
+  const occurrenceSet = new Set(occurrenceMap.values());
+
+  // If the size of the set and the map are the same, it means all frequencies were unique
+  return occurrenceSet.size === occurrenceMap.size;
+}
