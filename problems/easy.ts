@@ -794,3 +794,58 @@ function uniqueOccurrences(arr: number[]): boolean {
   // If the size of the set and the map are the same, it means all frequencies were unique
   return occurrenceSet.size === occurrenceMap.size;
 }
+
+/* 
+70. Climbing Stairs
+
+You are climbing a staircase. It takes n steps to reach the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+
+Example 1:
+
+Input: n = 2
+Output: 2
+Explanation: There are two ways to climb to the top.
+1. 1 step + 1 step
+2. 2 steps
+
+
+Example 2:
+
+Input: n = 3
+Output: 3
+Explanation: There are three ways to climb to the top.
+1. 1 step + 1 step + 1 step
+2. 1 step + 2 steps
+3. 2 steps + 1 step
+
+
+Constraints:
+
+1 <= n <= 45
+
+</> Typescript Code:
+*/
+
+function climbStairs(n: number): number {
+  // Base cases: if n is 1 or 2
+  if (n <= 2) return n;
+
+  // Initialize the first two steps
+  let first = 1,
+    second = 2;
+
+  // Starting from step 3, calculate the number of ways to climb to each step
+  for (let i = 3; i <= n; i++) {
+    // The current step's ways is the sum of the ways to the two previous steps
+    const current = first + second;
+    // Update the first and second for the next iteration
+    first = second;
+    second = current;
+  }
+
+  // Return the number of ways to climb to the nth step
+  return second;
+}
