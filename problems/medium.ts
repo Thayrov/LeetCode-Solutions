@@ -1107,3 +1107,69 @@ function minFallingPathSum(matrix: number[][]): number {
   // The answer is the minimum sum in the last row
   return Math.min(...matrix[n - 1]);
 }
+
+/* 
+907. Sum of Subarray Minimums
+
+Given an array of integers arr, find the sum of min(b), where b ranges over every (contiguous) subarray of arr. Since the answer may be large, return the answer modulo 109 + 7.
+
+
+Example 1:
+
+Input: arr = [3,1,2,4]
+Output: 17
+Explanation: 
+Subarrays are [3], [1], [2], [4], [3,1], [1,2], [2,4], [3,1,2], [1,2,4], [3,1,2,4]. 
+Minimums are 3, 1, 2, 4, 1, 1, 2, 1, 1, 1.
+Sum is 17.
+
+
+Example 2:
+
+Input: arr = [11,81,94,43,3]
+Output: 444
+
+
+Constraints:
+
+1 <= arr.length <= 3 * 104
+1 <= arr[i] <= 3 * 104
+
+</> Typescript Code:
+*/
+
+function sumSubarrayMins(arr: number[]): number {
+  const MOD = 1e9 + 7; // Modulo for large numbers
+  const n = arr.length; // Length of the array
+  const left = new Array(n).fill(0); // Distance to previous smaller element
+  const right = new Array(n).fill(0); // Distance to next smaller element
+  const stack: number[] = []; // Monotonic stack
+
+  // Calculate distances to the previous smaller element
+  for (let i = 0; i < n; i++) {
+    while (stack.length > 0 && arr[stack[stack.length - 1]] > arr[i]) {
+      stack.pop();
+    }
+    left[i] = stack.length === 0 ? i + 1 : i - stack[stack.length - 1];
+    stack.push(i);
+  }
+
+  stack.length = 0; // Clear the stack
+
+  // Calculate distances to the next smaller element
+  for (let i = n - 1; i >= 0; i--) {
+    while (stack.length > 0 && arr[stack[stack.length - 1]] >= arr[i]) {
+      stack.pop();
+    }
+    right[i] = stack.length === 0 ? n - i : stack[stack.length - 1] - i;
+    stack.push(i);
+  }
+
+  // Calculate the sum of minimums for all subarrays
+  let sum = 0;
+  for (let i = 0; i < n; i++) {
+    sum = (sum + arr[i] * left[i] * right[i]) % MOD;
+  }
+
+  return sum;
+}
