@@ -1228,3 +1228,72 @@ function rob(nums: number[]): number {
   // The last element of dp array contains the maximum amount that can be robbed
   return dp[nums.length - 1];
 }
+
+/* 
+1239. Maximum Length of a Concatenated String with Unique Characters
+
+You are given an array of strings arr. A string s is formed by the concatenation of a subsequence of arr that has unique characters.
+
+Return the maximum possible length of s.
+
+A subsequence is an array that can be derived from another array by deleting some or no elements without changing the order of the remaining elements.
+
+
+Example 1:
+
+Input: arr = ["un","iq","ue"]
+Output: 4
+Explanation: All the valid concatenations are:
+- ""
+- "un"
+- "iq"
+- "ue"
+- "uniq" ("un" + "iq")
+- "ique" ("iq" + "ue")
+Maximum length is 4.
+
+
+Example 2:
+
+Input: arr = ["cha","r","act","ers"]
+Output: 6
+Explanation: Possible longest valid concatenations are "chaers" ("cha" + "ers") and "acters" ("act" + "ers").
+
+
+Example 3:
+
+Input: arr = ["abcdefghijklmnopqrstuvwxyz"]
+Output: 26
+Explanation: The only string in arr has all 26 characters.
+
+
+Constraints:
+
+1 <= arr.length <= 16
+1 <= arr[i].length <= 26
+arr[i] contains only lowercase English letters.
+
+</> Typescript Code:
+*/
+
+function maxLength(arr: string[]): number {
+  let result = 0; // Variable to store the maximum length of unique characters
+
+  // Backtracking function to try all combinations
+  function backtrack(start: number, current: string) {
+    // If the current string has duplicate characters, stop and return
+    if (new Set(current).size !== current.length) return;
+
+    // Update the result if the current string's length is greater
+    result = Math.max(result, current.length);
+
+    // Try adding each string in the array to the current string
+    for (let i = start; i < arr.length; i++) {
+      backtrack(i + 1, current + arr[i]);
+    }
+  }
+
+  // Start backtracking from the first string
+  backtrack(0, '');
+  return result;
+}
