@@ -1297,3 +1297,79 @@ function maxLength(arr: string[]): number {
   backtrack(0, '');
   return result;
 }
+
+/* 
+1457. Pseudo-Palindromic Paths in a Binary Tree
+
+Given a binary tree where node values are digits from 1 to 9. A path in the binary tree is said to be pseudo-palindromic if at least one permutation of the node values in the path is a palindrome.
+
+Return the number of pseudo-palindromic paths going from the root node to leaf nodes.
+
+
+Example 1:
+
+Input: root = [2,3,1,3,1,null,1]
+Output: 2 
+Explanation: The figure above represents the given binary tree. There are three paths going from the root node to leaf nodes: the red path [2,3,3], the green path [2,1,1], and the path [2,3,1]. Among these paths only red path and green path are pseudo-palindromic paths since the red path [2,3,3] can be rearranged in [3,2,3] (palindrome) and the green path [2,1,1] can be rearranged in [1,2,1] (palindrome).
+
+
+Example 2:
+
+Input: root = [2,1,1,1,3,null,null,null,null,null,1]
+Output: 1 
+Explanation: The figure above represents the given binary tree. There are three paths going from the root node to leaf nodes: the green path [2,1,1], the path [2,1,3,1], and the path [2,1]. Among these paths only the green path is pseudo-palindromic since [2,1,1] can be rearranged in [1,2,1] (palindrome).
+
+
+Example 3:
+
+Input: root = [9]
+Output: 1
+
+
+Constraints:
+
+The number of nodes in the tree is in the range [1, 105].
+1 <= Node.val <= 9
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function pseudoPalindromicPaths(root: TreeNode | null): number {
+  let count = 0; // Initialize the count of pseudo-palindromic paths
+
+  // DFS function to traverse the tree
+  const dfs = (node: TreeNode | null, path: number) => {
+    if (!node) return; // Base case: if the node is null
+
+    // Toggle the bit corresponding to the node's value in the path
+    path ^= 1 << node.val;
+
+    // Check if the path is a leaf node
+    if (!node.left && !node.right) {
+      // Check if the path can be rearranged into a palindrome
+      if ((path & (path - 1)) === 0) count++;
+      return;
+    }
+
+    // Continue DFS traversal for left and right children
+    dfs(node.left, path);
+    dfs(node.right, path);
+  };
+
+  dfs(root, 0); // Start DFS from the root with an empty path
+  return count; // Return the count of pseudo-palindromic paths
+}
