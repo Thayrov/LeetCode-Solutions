@@ -1436,3 +1436,73 @@ function longestCommonSubsequence(text1: string, text2: string): number {
   // The value in dp[m][n] is the length of the longest common subsequence
   return dp[m][n];
 }
+
+/* 
+576. Out of Boundary Paths
+
+There is an m x n grid with a ball. The ball is initially at the position [startRow, startColumn]. You are allowed to move the ball to one of the four adjacent cells in the grid (possibly out of the grid crossing the grid boundary). You can apply at most maxMove moves to the ball.
+
+Given the five integers m, n, maxMove, startRow, startColumn, return the number of paths to move the ball out of the grid boundary. Since the answer can be very large, return it modulo 109 + 7.
+
+
+Example 1:
+Input: m = 2, n = 2, maxMove = 2, startRow = 0, startColumn = 0
+Output: 6
+
+
+Example 2:
+Input: m = 1, n = 3, maxMove = 3, startRow = 0, startColumn = 1
+Output: 12
+
+
+Constraints:
+
+1 <= m, n <= 50
+0 <= maxMove <= 50
+0 <= startRow < m
+0 <= startColumn < n
+
+</> Typescript Code:
+*/
+
+function findPaths(
+  m: number,
+  n: number,
+  maxMove: number,
+  startRow: number,
+  startColumn: number,
+): number {
+  const MOD = 1000000007; // Modulo to avoid overflow
+
+  // Initialize dp array with zeros
+  let dp = new Array(m).fill(0).map(() => new Array(n).fill(0));
+  dp[startRow][startColumn] = 1; // Starting cell
+
+  let count = 0; // Number of ways to move out of boundary
+
+  // Iterate for each move
+  for (let move = 1; move <= maxMove; move++) {
+    // Temporary array for the current move's calculations
+    const temp = new Array(m).fill(0).map(() => new Array(n).fill(0));
+    for (let i = 0; i < m; i++) {
+      for (let j = 0; j < n; j++) {
+        // Count paths exiting the boundary
+        if (i === 0) count = (count + dp[i][j]) % MOD;
+        if (i === m - 1) count = (count + dp[i][j]) % MOD;
+        if (j === 0) count = (count + dp[i][j]) % MOD;
+        if (j === n - 1) count = (count + dp[i][j]) % MOD;
+
+        // Calculate paths for next move based on adjacent cells
+        const up = i > 0 ? dp[i - 1][j] : 0;
+        const down = i < m - 1 ? dp[i + 1][j] : 0;
+        const left = j > 0 ? dp[i][j - 1] : 0;
+        const right = j < n - 1 ? dp[i][j + 1] : 0;
+
+        temp[i][j] = (up + down + left + right) % MOD;
+      }
+    }
+    dp = temp; // Update dp array for the next move
+  }
+
+  return count; // Return total count
+}
