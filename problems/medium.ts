@@ -1586,3 +1586,50 @@ function evalRPN(tokens: string[]): number {
   // Assuming valid RPN expression, the final result should be the only item in the stack
   return stack.pop() ?? 0; // Return the result or 0 if the stack is somehow empty
 }
+
+/* 
+739. Daily Temperatures
+
+Given an array of integers temperatures represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no future day for which this is possible, keep answer[i] == 0 instead.
+
+Example 1:
+Input: temperatures = [73,74,75,71,69,72,76,73]
+Output: [1,1,4,2,1,1,0,0]
+
+Example 2:
+Input: temperatures = [30,40,50,60]
+Output: [1,1,1,0]
+
+Example 3:
+Input: temperatures = [30,60,90]
+Output: [1,1,0]
+
+Constraints:
+1 <= temperatures.length <= 105
+30 <= temperatures[i] <= 100
+
+</> Typescript Code:
+*/
+
+function dailyTemperatures(temperatures: number[]): number[] {
+  // Initialize result array with zeros
+  const result = new Array(temperatures.length).fill(0);
+  // Stack to keep track of temperatures and their indices
+  const stack: [number, number][] = [];
+
+  // Iterate through each temperature
+  for (let i = 0; i < temperatures.length; i++) {
+    // Pop elements from the stack as long as the current temperature is higher
+    while (stack.length > 0 && temperatures[i] > stack[stack.length - 1][1]) {
+      // Get the index of the temperature from the stack
+      const [idx, _] = stack.pop()!;
+      // Update the result for that index with the difference in days
+      result[idx] = i - idx;
+    }
+    // Push the current temperature and its index onto the stack
+    stack.push([i, temperatures[i]]);
+  }
+
+  // Return the result array
+  return result;
+}
