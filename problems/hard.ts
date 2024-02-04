@@ -419,3 +419,82 @@ function numSubmatrixSumTarget(matrix: number[][], target: number): number {
 
   return count; // Return the total count of target submatrices
 }
+
+/* 
+76. Minimum Window Substring
+
+Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
+
+The testcases will be generated such that the answer is unique.
+
+Example 1:
+Input: s = "ADOBECODEBANC", t = "ABC"
+Output: "BANC"
+Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
+
+Example 2:
+Input: s = "a", t = "a"
+Output: "a"
+Explanation: The entire string s is the minimum window.
+
+Example 3:
+Input: s = "a", t = "aa"
+Output: ""
+Explanation: Both 'a's from t must be included in the window.
+Since the largest window of s only has one 'a', return empty string.
+
+Constraints:
+m == s.length
+n == t.length
+1 <= m, n <= 105
+s and t consist of uppercase and lowercase English letters.
+
+Follow up: Could you find an algorithm that runs in O(m + n) time?
+
+</> Typescript Code:
+*/
+
+function minWindow(s: string, t: string): string {
+  // Initialize the needed characters map, window map, and counters
+  let need = new Map(),
+    window = new Map(),
+    have = 0,
+    needCount = t.length;
+  // Populate the need map with characters from t
+  for (let c of t) need.set(c, (need.get(c) || 0) + 1);
+
+  // Initialize the result string and pointers for the sliding window
+  let result = '',
+    left = 0,
+    right = 0,
+    minLen = Infinity;
+
+  // Expand the window to the right
+  while (right < s.length) {
+    let r = s[right];
+    // If the character is needed, update the window map
+    if (need.has(r)) {
+      window.set(r, (window.get(r) || 0) + 1);
+      // If the window satisfies the need for character r, increase have
+      if (window.get(r) === need.get(r)) have++;
+    }
+
+    // Shrink the window from the left if all needed characters are included
+    while (have === need.size) {
+      // Update result if the current window is smaller than the minimum found so far
+      if (right - left + 1 < minLen) {
+        minLen = right - left + 1;
+        result = s.substring(left, right + 1);
+      }
+      // Move left pointer to shrink the window
+      let l = s[left];
+      if (need.has(l)) {
+        window.set(l, window.get(l) - 1);
+        if (window.get(l) < need.get(l)) have--;
+      }
+      left++;
+    }
+    right++;
+  }
+  return result;
+}
