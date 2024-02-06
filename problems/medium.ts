@@ -1771,3 +1771,47 @@ function maxSumAfterPartitioning(arr: number[], k: number): number {
   // the last element of dp gives the answer
   return dp[arr.length];
 }
+
+/* 
+49. Group Anagrams
+
+Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+Example 1:
+Input: strs = ["eat","tea","tan","ate","nat","bat"]
+Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+Example 2:
+Input: strs = [""]
+Output: [[""]]
+
+Example 3:
+Input: strs = ["a"]
+Output: [["a"]]
+
+Constraints:
+1 <= strs.length <= 104
+0 <= strs[i].length <= 100
+strs[i] consists of lowercase English letters.
+
+</> Typescript Code:
+*/
+
+// Define the function groupAnagrams which takes an array of strings and returns a 2D array of strings
+function groupAnagrams(strs: string[]): string[][] {
+  // Initialize a Map to store arrays of anagrams, keyed by sorted versions of the anagrams
+  const map = new Map<string, string[]>();
+  // Iterate through each string in the input array
+  for (const str of strs) {
+    // Sort the characters of the string to form the key for the anagrams
+    const sorted = str.split('').sort().join('');
+    // If the sorted version of the string is not already a key in the map, add it with an empty array
+    if (!map.has(sorted)) map.set(sorted, []);
+    // Add the original string to the array associated with the sorted key
+    map.get(sorted)?.push(str);
+  }
+  // Convert the map's values (arrays of anagrams) into a 2D array and return it
+  return Array.from(map.values());
+}
