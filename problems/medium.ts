@@ -1815,3 +1815,54 @@ function groupAnagrams(strs: string[]): string[][] {
   // Convert the map's values (arrays of anagrams) into a 2D array and return it
   return Array.from(map.values());
 }
+
+/* 
+451. Sort Characters By Frequency
+
+Given a string s, sort it in decreasing order based on the frequency of the characters. The frequency of a character is the number of times it appears in the string.
+
+Return the sorted string. If there are multiple answers, return any of them.
+
+Example 1:
+Input: s = "tree"
+Output: "eert"
+Explanation: 'e' appears twice while 'r' and 't' both appear once.
+So 'e' must appear before both 'r' and 't'. Therefore "eetr" is also a valid answer.
+
+Example 2:
+Input: s = "cccaaa"
+Output: "aaaccc"
+Explanation: Both 'c' and 'a' appear three times, so both "cccaaa" and "aaaccc" are valid answers.
+Note that "cacaca" is incorrect, as the same characters must be together.
+
+Example 3:
+Input: s = "Aabb"
+Output: "bbAa"
+Explanation: "bbaA" is also a valid answer, but "Aabb" is incorrect.
+Note that 'A' and 'a' are treated as two different characters.
+
+Constraints:
+1 <= s.length <= 5 * 105
+s consists of uppercase and lowercase English letters and digits.
+
+</> Typescript Code:
+*/
+
+// Define the function frequencySort which takes a string s and returns a string
+function frequencySort(s: string): string {
+  // Initialize a frequency map with character keys and number values to count occurrences
+  const freqMap: {[key: string]: number} = {};
+  // Loop over each character in the input string
+  for (const char of s) {
+    // Update the frequency map, incrementing the count for the current character
+    // If the character doesn't exist in the map, initialize it with 0 and then add 1
+    freqMap[char] = (freqMap[char] || 0) + 1;
+  }
+  // Convert the frequency map into an array of [character, frequency] pairs,
+  // sort them based on frequency in descending order,
+  // then map each pair to a string of the character repeated according to its frequency
+  return Object.entries(freqMap)
+    .sort((a, b) => b[1] - a[1]) // Sort based on frequency
+    .map(([char, freq]) => char.repeat(freq)) // Repeat each character by its frequency
+    .join(''); // Join all character strings into a single string
+}
