@@ -1866,3 +1866,44 @@ function frequencySort(s: string): string {
     .map(([char, freq]) => char.repeat(freq)) // Repeat each character by its frequency
     .join(''); // Join all character strings into a single string
 }
+
+/* 
+279. Perfect Squares
+
+Given an integer n, return the least number of perfect square numbers that sum to n.
+
+A perfect square is an integer that is the square of an integer; in other words, it is the product of some integer with itself. For example, 1, 4, 9, and 16 are perfect squares while 3 and 11 are not.
+
+Example 1:
+Input: n = 12
+Output: 3
+Explanation: 12 = 4 + 4 + 4.
+
+Example 2:
+Input: n = 13
+Output: 2
+Explanation: 13 = 4 + 9.
+
+Constraints:
+1 <= n <= 104
+
+</> Typescript Code:
+*/
+
+// Function to determine the least number of perfect square numbers that sum to n
+function numSquares(n: number): number {
+  // Initialize a dynamic programming array with Infinity, as we are looking for the minimum value
+  let dp = Array(n + 1).fill(Infinity);
+  // Base case: 0 can be represented by 0 numbers
+  dp[0] = 0;
+  // Loop through all numbers from 1 to n
+  for (let i = 1; i <= n; i++) {
+    // Try all square numbers less than or equal to i
+    for (let j = 1; j * j <= i; j++) {
+      // Update the dp array to the minimum number of squares required to represent i
+      dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
+    }
+  }
+  // Return the minimum number of squares that sum to n
+  return dp[n];
+}
