@@ -1907,3 +1907,64 @@ function numSquares(n: number): number {
   // Return the minimum number of squares that sum to n
   return dp[n];
 }
+
+/* 
+368. Largest Divisible Subset
+
+Given a set of distinct positive integers nums, return the largest subset answer such that every pair (answer[i], answer[j]) of elements in this subset satisfies:
+
+answer[i] % answer[j] == 0, or
+answer[j] % answer[i] == 0
+If there are multiple solutions, return any of them.
+
+Example 1:
+Input: nums = [1,2,3]
+Output: [1,2]
+Explanation: [1,3] is also accepted.
+
+Example 2:
+Input: nums = [1,2,4,8]
+Output: [1,2,4,8]
+
+Constraints:
+1 <= nums.length <= 1000
+1 <= nums[i] <= 2 * 109
+All the integers in nums are unique.
+
+</> Typescript Code:
+*/
+
+// Define the function to find the largest divisible subset
+function largestDivisibleSubset(nums: number[]): number[] {
+  // Sort the numbers in ascending order to ensure divisibility checks are linear
+  nums.sort((a, b) => a - b);
+  // Initialize a DP array to store the size of the largest subset ending with nums[i]
+  const dp = Array(nums.length).fill(1);
+  // Initialize a previous index array to reconstruct the subset
+  const prev = Array(nums.length).fill(-1);
+  // Keep track of the index with the maximum subset size
+  let maxIndex = 0;
+
+  // Loop through the numbers to fill dp and prev arrays
+  for (let i = 1; i < nums.length; i++) {
+    for (let j = 0; j < i; j++) {
+      // If nums[i] is divisible by nums[j] and it leads to a larger subset
+      if (nums[i] % nums[j] === 0 && dp[i] < dp[j] + 1) {
+        dp[i] = dp[j] + 1; // Update the size of the subset
+        prev[i] = j; // Record the previous index
+      }
+    }
+    // Update maxIndex if a larger subset is found
+    if (dp[maxIndex] < dp[i]) {
+      maxIndex = i;
+    }
+  }
+
+  // Reconstruct the subset from the prev array
+  const result: number[] = [];
+  for (let i = maxIndex; i !== -1; i = prev[i]) {
+    result.push(nums[i]);
+  }
+  // The subset is built in reverse, so return it after reversing
+  return result.reverse();
+}
