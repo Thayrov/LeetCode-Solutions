@@ -1968,3 +1968,58 @@ function largestDivisibleSubset(nums: number[]): number[] {
   // The subset is built in reverse, so return it after reversing
   return result.reverse();
 }
+
+/* 
+647. Palindromic Substrings
+
+Given a string s, return the number of palindromic substrings in it.
+
+A string is a palindrome when it reads the same backward as forward.
+
+A substring is a contiguous sequence of characters within the string.
+
+Example 1:
+Input: s = "abc"
+Output: 3
+Explanation: Three palindromic strings: "a", "b", "c".
+
+Example 2:
+Input: s = "aaa"
+Output: 6
+Explanation: Six palindromic strings: "a", "a", "a", "aa", "aa", "aaa".
+
+Constraints:
+1 <= s.length <= 1000
+s consists of lowercase English letters.
+
+</> Typescript Code:
+*/
+
+// Define the function to count palindromic substrings in a given string
+function countSubstrings(s: string): number {
+  let count = 0; // Initialize count of palindromic substrings
+
+  // Iterate over each character in the string as a potential center of palindromes
+  for (let i = 0; i < s.length; i++) {
+    // Count palindromes centered at one character (odd length palindromes)
+    count += countPalindromesAroundCenter(s, i, i);
+    // Count palindromes centered between two characters (even length palindromes)
+    count += countPalindromesAroundCenter(s, i, i + 1);
+  }
+
+  // Return the total count of palindromic substrings
+  return count;
+}
+
+// Helper function to count palindromes given a center
+function countPalindromesAroundCenter(s: string, left: number, right: number): number {
+  let count = 0; // Initialize count of palindromes for the current center
+  // Expand around the center as long as the substring is a palindrome
+  while (left >= 0 && right < s.length && s[left] === s[right]) {
+    count++; // Increment count for each palindrome found
+    left--; // Expand to the left
+    right++; // Expand to the right
+  }
+  // Return the count of palindromes for the current center
+  return count;
+}
