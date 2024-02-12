@@ -1059,3 +1059,47 @@ function firstUniqChar(s: string): number {
   // If no unique character found, return -1
   return -1;
 }
+
+/* 
+169. Majority Element
+
+Given an array nums of size n, return the majority element.
+
+The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+
+Example 1:
+Input: nums = [3,2,3]
+Output: 3
+
+Example 2:
+Input: nums = [2,2,1,1,1,2,2]
+Output: 2
+
+Constraints:
+n == nums.length
+1 <= n <= 5 * 104
+-109 <= nums[i] <= 109
+
+Follow-up: Could you solve the problem in linear time and in O(1) space?
+
+</> Typescript Code:
+*/
+
+// Function to find the majority element in the array
+function majorityElement(nums: number[]): number {
+  let count = 0; // Initialize count to keep track of the number of occurrences
+  let candidate: number | null = null; // Initialize candidate to null
+
+  // Iterate through each number in the array
+  for (let num of nums) {
+    // If count is 0, we select a new candidate
+    if (count === 0) {
+      candidate = num;
+    }
+    // If the current number is the same as the candidate, increment count, else decrement
+    count += num === candidate ? 1 : -1;
+  }
+
+  // Return the candidate as the majority element
+  return candidate!;
+}
