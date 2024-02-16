@@ -2146,3 +2146,45 @@ function largestPerimeter(nums: number[]): number {
   // If no valid polygon can be formed, return -1
   return -1;
 }
+
+/* 
+1481. Least Number of Unique Integers after K Removals
+
+Given an array of integers arr and an integer k. Find the least number of unique integers after removing exactly k elements.
+
+Example 1:
+Input: arr = [5,5,4], k = 1
+Output: 1
+Explanation: Remove the single 4, only 5 is left.
+
+Example 2:
+Input: arr = [4,3,1,1,3,3,2], k = 3
+Output: 2
+Explanation: Remove 4, 2 and either one of the two 1s or three 3s. 1 and 3 will be left.
+
+Constraints:
+1 <= arr.length <= 10^5
+1 <= arr[i] <= 10^9
+0 <= k <= arr.length
+
+</> Typescript Code:
+*/
+
+function findLeastNumOfUniqueInts(arr: number[], k: number): number {
+  // Create a map to count the frequency of each number in the array
+  const countMap = arr.reduce((acc, val) => acc.set(val, (acc.get(val) || 0) + 1), new Map());
+  // Convert the frequency map to an array of counts and sort it in ascending order
+  const sortedCounts = Array.from(countMap.values()).sort((a, b) => a - b);
+  let removed = 0; // Initialize the count of unique numbers removed
+  // Iterate through the sorted frequency counts
+  for (let count of sortedCounts) {
+    // If k is less than the current count, we cannot remove this number completely, so break the loop
+    if (k < count) break;
+    // Subtract the current count from k (number of elements to remove)
+    k -= count;
+    // Increment the count of unique numbers removed
+    removed++;
+  }
+  // Return the difference between the total unique numbers and the count of unique numbers removed
+  return countMap.size - removed;
+}
