@@ -2230,37 +2230,52 @@ Constraints:
 */
 
 function furthestBuilding(heights: number[], bricks: number, ladders: number): number {
-  let pq: number[] = [], // Priority queue (max heap) for ladders usage on highest jumps
-    sum = 0; // Sum of bricks used
+  // Inicializa un arreglo para almacenar las diferencias máximas de altura que pueden ser superadas con escaleras.
+  const maxDiffs: number[] = Array(ladders).fill(0);
 
-  // Iterate through each building to check the possibility to move to the next one
-  for (let i = 0; i < heights.length - 1; i++) {
-    let diff = heights[i + 1] - heights[i]; // Calculate height difference to the next building
+  // Define una función para encontrar el índice donde insertar una nueva diferencia de altura dentro del arreglo maxDiffs.
+  function findInfInd(target: number): number {
+    // Si el último elemento de maxDiffs es mayor o igual al objetivo, devuelve la longitud de maxDiffs.
+    if (maxDiffs[maxDiffs.length - 1] >= target) return maxDiffs.length;
 
-    // If we need to ascend
-    if (diff > 0) {
-      // If ladders can still be used for more jumps
-      if (pq.length < ladders) {
-        pq.push(diff); // Use a ladder for this jump
-        pq.sort((a, b) => b - a); // Sort to keep the largest jumps at the top
+    // Inicializa los índices de inicio y fin para la búsqueda binaria.
+    let start = 0;
+    let end = maxDiffs.length - 1;
+
+    // Ejecuta una búsqueda binaria para encontrar el índice de inserción.
+    while (start < end) {
+      const mid = (start + end) >> 1; // Calcula el punto medio con desplazamiento a la derecha para dividir entre 2.
+      if (target >= maxDiffs[mid]) {
+        // Si el objetivo es mayor o igual al elemento en el punto medio, ajusta el final.
+        end = mid;
       } else {
-        let minDiff = pq.length > 0 ? pq[pq.length - 1] : 0; // Get the smallest jump we used a ladder for
-        // If we have a ladder and this jump is bigger than the smallest we've used a ladder for
-        if (ladders > 0 && diff > minDiff) {
-          pq.pop(); // Remove the smallest ladder jump
-          pq.push(diff); // Use a ladder for this larger jump
-          pq.sort((a, b) => b - a); // Re-sort
-          sum += minDiff; // Add the smallest jump to bricks usage
-        } else {
-          sum += diff; // Use bricks for this jump
-        }
-        // If used more bricks than available, return the current building as the furthest reachable
-        if (sum > bricks) {
-          return i;
-        }
+        // Si el objetivo es menor, ajusta el inicio.
+        start = mid + 1;
       }
     }
+    return start; // Devuelve el índice de inserción encontrado.
   }
-  // If we can reach the last building, return its index
+
+  // Suma acumulativa de las diferencias de altura que necesitan ladrillos para ser superadas.
+  let diffSum = 0;
+
+  // Itera sobre el arreglo de alturas para calcular las diferencias de altura entre edificios consecutivos.
+  for (let i = 1; i < heights.length; i++) {
+    const diff = Math.max(0, heights[i] - heights[i - 1]); // Calcula la diferencia de altura (ignora las diferencias negativas).
+    const infInd = findInfInd(diff); // Encuentra el índice donde se debería insertar la diferencia actual en maxDiffs.
+
+    // Si el índice encontrado no es igual a la longitud de maxDiffs, inserta la diferencia y elimina el último elemento.
+    if (infInd !== maxDiffs.length) {
+      maxDiffs.splice(infInd, 0, diff); // Inserta la diferencia en el índice encontrado.
+      diffSum += maxDiffs.pop()!; // Elimina el último elemento de maxDiffs y lo suma a diffSum.
+    } else {
+      // Si la diferencia actual es menor o igual a todas en maxDiffs, simplemente suma la diferencia a diffSum.
+      diffSum += diff;
+    }
+    // Si la suma acumulativa de diferencias supera la cantidad de ladrillos disponibles, devuelve el índice del último edificio alcanzable.
+    if (diffSum > bricks) return i - 1;
+  }
+
+  // Si se pueden superar todas las diferencias con los ladrillos y escaleras disponibles, devuelve el índice del último edificio.
   return heights.length - 1;
 }
