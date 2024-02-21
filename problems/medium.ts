@@ -2279,3 +2279,41 @@ function furthestBuilding(heights: number[], bricks: number, ladders: number): n
   // Si se pueden superar todas las diferencias con los ladrillos y escaleras disponibles, devuelve el índice del último edificio.
   return heights.length - 1;
 }
+
+/* 
+201. Bitwise AND of Numbers Range
+
+Given two integers left and right that represent the range [left, right], return the bitwise AND of all numbers in this range, inclusive.
+
+Example 1:
+Input: left = 5, right = 7
+Output: 4
+
+Example 2:
+Input: left = 0, right = 0
+Output: 0
+
+Example 3:
+Input: left = 1, right = 2147483647
+Output: 0
+
+Constraints:
+0 <= left <= right <= 231 - 1
+
+</> Typescript Code:
+*/
+
+function rangeBitwiseAnd(left: number, right: number): number {
+  // Keep removing the least significant bit from 'right' until
+  // 'right' is less than or equal to 'left'. This is because
+  // if there is a bit difference within the range, the AND operation
+  // for that bit will result in 0. Thus, we can ignore all bits
+  // beyond the most significant common bit of 'left' and 'right'.
+  while (right > left) {
+    right &= right - 1; // Remove the least significant bit from 'right'.
+  }
+  // At this point, 'right' is either equal to 'left' or has become less than 'left'.
+  // The remaining bits in 'right' represent the common bits in the range.
+  // Performing AND with 'left' ensures we only get the bits common to all numbers in the range.
+  return left & right;
+}
