@@ -1229,3 +1229,57 @@ function isPowerOfTwo(n: number): boolean {
   // The bitwise AND operation of n and n-1 will thus be 0 for powers of two.
   return n > 0 && (n & (n - 1)) === 0;
 }
+
+/* 
+997. Find the Town Judge
+
+In a town, there are n people labeled from 1 to n. There is a rumor that one of these people is secretly the town judge.
+
+If the town judge exists, then:
+
+The town judge trusts nobody.
+Everybody (except for the town judge) trusts the town judge.
+There is exactly one person that satisfies properties 1 and 2.
+You are given an array trust where trust[i] = [ai, bi] representing that the person labeled ai trusts the person labeled bi. If a trust relationship does not exist in trust array, then such a trust relationship does not exist.
+
+Return the label of the town judge if the town judge exists and can be identified, or return -1 otherwise.
+
+Example 1:
+Input: n = 2, trust = [[1,2]]
+Output: 2
+
+Example 2:
+Input: n = 3, trust = [[1,3],[2,3]]
+Output: 3
+
+Example 3:
+Input: n = 3, trust = [[1,3],[2,3],[3,1]]
+Output: -1
+
+Constraints:
+1 <= n <= 1000
+0 <= trust.length <= 104
+trust[i].length == 2
+All the pairs of trust are unique.
+ai != bi
+1 <= ai, bi <= n
+*/
+
+function findJudge(n: number, trust: number[][]): number {
+  // Initialize an array to keep track of each person's trust count.
+  // trustCounts[i] represents the net trust for person i.
+  // Positive value means more people trust i, negative means i trusts others.
+  const trustCounts = new Array(n + 1).fill(0);
+
+  // Iterate through the trust relationships to update trustCounts.
+  // If person a trusts person b, decrement a's trust count and increment b's.
+  for (const [a, b] of trust) {
+    trustCounts[a]--;
+    trustCounts[b]++;
+  }
+
+  // Find the index (person) whose trust count is exactly n-1,
+  // which means everyone else trusts them, and they trust no one.
+  // We start from index 1 since there's no person labeled 0.
+  return trustCounts.findIndex((count, i) => count === n - 1 && i !== 0);
+}
