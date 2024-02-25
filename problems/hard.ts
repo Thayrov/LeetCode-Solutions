@@ -849,3 +849,108 @@ function findAllPeople(n: number, meetings: number[][], firstPerson: number): nu
   // Converts the knowSecret set into an array to return the list of people who know the secret.
   return [...knowSecret];
 }
+
+/* 
+2709. Greatest Common Divisor Traversal
+
+You are given a 0-indexed integer array nums, and you are allowed to traverse between its indices. You can traverse between index i and index j, i != j, if and only if gcd(nums[i], nums[j]) > 1, where gcd is the greatest common divisor.
+
+Your task is to determine if for every pair of indices i and j in nums, where i < j, there exists a sequence of traversals that can take us from i to j.
+
+Return true if it is possible to traverse between all such pairs of indices, or false otherwise.
+
+Example 1:
+Input: nums = [2,3,6]
+Output: true
+Explanation: In this example, there are 3 possible pairs of indices: (0, 1), (0, 2), and (1, 2).
+To go from index 0 to index 1, we can use the sequence of traversals 0 -> 2 -> 1, where we move from index 0 to index 2 because gcd(nums[0], nums[2]) = gcd(2, 6) = 2 > 1, and then move from index 2 to index 1 because gcd(nums[2], nums[1]) = gcd(6, 3) = 3 > 1.
+To go from index 0 to index 2, we can just go directly because gcd(nums[0], nums[2]) = gcd(2, 6) = 2 > 1. Likewise, to go from index 1 to index 2, we can just go directly because gcd(nums[1], nums[2]) = gcd(3, 6) = 3 > 1.
+
+Example 2:
+Input: nums = [3,9,5]
+Output: false
+Explanation: No sequence of traversals can take us from index 0 to index 2 in this example. So, we return false.
+
+Example 3:
+Input: nums = [4,3,12,8]
+Output: true
+Explanation: There are 6 possible pairs of indices to traverse between: (0, 1), (0, 2), (0, 3), (1, 2), (1, 3), and (2, 3). A valid sequence of traversals exists for each pair, so we return true.
+
+Constraints:
+1 <= nums.length <= 105
+1 <= nums[i] <= 105
+
+</> Typescript Code:
+*/
+
+function canTraverseAllPairs(nums: number[]): boolean {
+  // Calculate the maximum value in nums to limit the size of the sieve.
+  const maxVal = Math.max(...nums);
+  // Precompute the smallest prime factor for each number up to maxVal.
+  const spf = smallestPrimeFactor(maxVal);
+
+  // Initialize the parent array for union-find, setting each element to be its own parent.
+  const parent = Array.from({length: nums.length}, (_, i) => i);
+
+  // Find function for union-find to find the root parent of x.
+  function find(x) {
+    if (parent[x] === x) return x; // If x is its own parent, it is the root.
+    return (parent[x] = find(parent[x])); // Path compression by directly connecting x to its root.
+  }
+
+  // Union function for union-find to merge the sets containing x and y.
+  function union(x, y) {
+    const rootX = find(x); // Find root of x.
+    const rootY = find(y); // Find root of y.
+    if (rootX !== rootY) parent[rootX] = rootY; // If roots are different, make one the parent of the other.
+  }
+
+  // Map to associate each prime factor with indices of nums containing that factor.
+  const factorToIndices = new Map();
+  nums.forEach((num, idx) => {
+    let factors = getPrimeFactors(num, spf); // Get all prime factors of num.
+    factors.forEach(factor => {
+      if (!factorToIndices.has(factor)) factorToIndices.set(factor, []); // Initialize array if factor not seen before.
+      factorToIndices.get(factor).push(idx); // Associate idx with this factor.
+    });
+  });
+
+  // For each set of indices associated with a common prime factor, union them.
+  factorToIndices.forEach(indices => {
+    for (let i = 1; i < indices.length; i++) {
+      union(indices[0], indices[i]); // Union first index with all others sharing the factor.
+    }
+  });
+
+  // Check if all elements are in the same set as the first element.
+  const root = find(0); // Find root of the first element.
+  for (let i = 1; i < nums.length; i++) {
+    if (find(i) !== root) return false; // If any element has a different root, not all pairs are connected.
+  }
+
+  return true; // If all elements are connected to the first, return true.
+}
+
+// Function to compute the smallest prime factor of each number up to maxVal using the Sieve of Eratosthenes.
+function smallestPrimeFactor(maxVal) {
+  const spf = Array.from({length: maxVal + 1}, (_, i) => i); // Initialize SPF array.
+  for (let p = 2; p * p <= maxVal; p++) {
+    if (spf[p] === p) {
+      // If p is its own SPF, p is prime.
+      for (let i = p * p; i <= maxVal; i += p) {
+        if (spf[i] === i) spf[i] = p; // Mark SPF for multiples of p.
+      }
+    }
+  }
+  return spf;
+}
+
+// Function to extract all unique prime factors of num using the precomputed SPF array.
+function getPrimeFactors(num, spf) {
+  const factors = new Set();
+  while (num > 1) {
+    factors.add(spf[num]); // Add the SPF of num to the set.
+    num /= spf[num]; // Divide num by its SPF to continue factorization.
+  }
+  return factors;
+}
