@@ -2390,3 +2390,52 @@ function findCheapestPrice(
   // If the destination is still Infinity, it means it's unreachable within k stops.
   return prices[dst] === Infinity ? -1 : prices[dst];
 }
+
+/* 
+513. Find Bottom Left Tree Value
+
+Given the root of a binary tree, return the leftmost value in the last row of the tree.
+
+Example 1:
+Input: root = [2,1,3]
+Output: 1
+
+Example 2:
+Input: root = [1,2,3,4,null,5,6,null,null,7]
+Output: 7
+
+Constraints:
+The number of nodes in the tree is in the range [1, 104].
+-231 <= Node.val <= 231 - 1
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function findBottomLeftValue(root: TreeNode | null): number {
+  let queue = [root]; // Use a queue to perform level order traversal.
+  let current; // To keep track of the current node being processed.
+  while (queue.length) {
+    // While there are nodes to process,
+    current = queue.shift(); // remove the front of the queue.
+    // Right child is enqueued before the left child to ensure
+    // the leftmost node is the last processed of the last level.
+    if (current.right) queue.push(current.right); // Enqueue right child if it exists.
+    if (current.left) queue.push(current.left); // Enqueue left child if it exists.
+  }
+  // After the loop, current will point to the leftmost node of the last level.
+  return current.val; // Return the value of the leftmost node.
+}
