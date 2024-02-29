@@ -2439,3 +2439,91 @@ function findBottomLeftValue(root: TreeNode | null): number {
   // After the loop, current will point to the leftmost node of the last level.
   return current.val; // Return the value of the leftmost node.
 }
+
+/* 
+1609. Even Odd Tree
+
+A binary tree is named Even-Odd if it meets the following conditions:
+
+The root of the binary tree is at level index 0, its children are at level index 1, their children are at level index 2, etc.
+For every even-indexed level, all nodes at the level have odd integer values in strictly increasing order (from left to right).
+For every odd-indexed level, all nodes at the level have even integer values in strictly decreasing order (from left to right).
+Given the root of a binary tree, return true if the binary tree is Even-Odd, otherwise return false.
+
+Example 1:
+Input: root = [1,10,4,3,null,7,9,12,8,6,null,null,2]
+Output: true
+Explanation: The node values on each level are:
+Level 0: [1]
+Level 1: [10,4]
+Level 2: [3,7,9]
+Level 3: [12,8,6,2]
+Since levels 0 and 2 are all odd and increasing and levels 1 and 3 are all even and decreasing, the tree is Even-Odd.
+
+Example 2:
+Input: root = [5,4,2,3,3,7]
+Output: false
+Explanation: The node values on each level are:
+Level 0: [5]
+Level 1: [4,2]
+Level 2: [3,3,7]
+Node values in level 2 must be in strictly increasing order, so the tree is not Even-Odd.
+
+Example 3:
+Input: root = [5,9,1,3,5,7]
+Output: false
+Explanation: Node values in the level 1 should be even integers.
+
+Constraints:
+The number of nodes in the tree is in the range [1, 105].
+1 <= Node.val <= 106
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+// Function to determine if a binary tree is an Even-Odd tree
+function isEvenOddTree(root: TreeNode | null): boolean {
+  if (!root) return false; // If the tree is empty, it's not an Even-Odd tree
+  let level = 0; // Start at level 0
+  let queue: TreeNode[] = [root]; // Initialize a queue with the root node for level order traversal
+
+  // Perform level order traversal
+  while (queue.length > 0) {
+    const size = queue.length; // Number of nodes at the current level
+    // Initialize the previous value based on the level
+    let prevValue = level % 2 === 0 ? Number.MIN_SAFE_INTEGER : Number.MAX_SAFE_INTEGER;
+
+    // Process all nodes at the current level
+    for (let i = 0; i < size; ++i) {
+      const node = queue.shift(); // Get the next node from the queue
+      // Check the Even-Odd property based on the level
+      if (node && level % 2 === 0) {
+        // For even levels, values must be odd and strictly increasing
+        if (node.val % 2 === 0 || node.val <= prevValue) return false;
+      } else if (node) {
+        // For odd levels, values must be even and strictly decreasing
+        if (node.val % 2 !== 0 || node.val >= prevValue) return false;
+      }
+      if (node) prevValue = node.val; // Update the previous value for comparison
+      // Add child nodes to the queue for the next level
+      if (node && node.left) queue.push(node.left);
+      if (node && node.right) queue.push(node.right);
+    }
+    level++; // Move to the next level
+  }
+  return true; // If all levels meet the Even-Odd property, return true
+}
