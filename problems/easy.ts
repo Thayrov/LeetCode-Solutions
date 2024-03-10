@@ -1691,3 +1691,37 @@ function getCommon(nums1: number[], nums2: number[]): number {
   // If no common element is found by the end of either array, return -1
   return -1;
 }
+
+/* 
+349. Intersection of Two Arrays
+
+Given two integer arrays nums1 and nums2, return an array of their intersection. Each element in the result must be unique and you may return the result in any order.
+
+Example 1:
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2]
+
+Example 2:
+Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+Output: [9,4]
+Explanation: [4,9] is also accepted.
+
+Constraints:
+1 <= nums1.length, nums2.length <= 1000
+0 <= nums1[i], nums2[i] <= 1000
+
+</> Typescript Code:
+*/
+
+function intersection(nums1: number[], nums2: number[]): number[] {
+  // Convert nums1 to a Set to remove duplicates and retain only unique values.
+  const setNums1 = new Set(nums1);
+  // Filter setNums1 to include only those numbers that are also present in nums2.
+  // This effectively computes the intersection of nums1 and nums2.
+  const intersection = [...setNums1].filter(n => nums2.includes(n));
+  // Convert the intersection array back into a Set to ensure all values are unique.
+  const uniqueIntersection = new Set(intersection);
+  // Spread the uniqueIntersection Set into an array and return it.
+  // This array contains only unique elements present in both nums1 and nums2.
+  return [...uniqueIntersection];
+}
