@@ -2761,3 +2761,62 @@ function customSortString(order: string, s: string): string {
   // Return the sorted string that respects the order defined by the 'order' string
   return result;
 }
+
+/* 
+1171. Remove Zero Sum Consecutive Nodes from Linked List
+
+Given the head of a linked list, we repeatedly delete consecutive sequences of nodes that sum to 0 until there are no such sequences.
+
+After doing so, return the head of the final linked list.  You may return any such answer.
+
+(Note that in the examples below, all sequences are serializations of ListNode objects.)
+
+Example 1:
+Input: head = [1,2,-3,3,1]
+Output: [3,1]
+Note: The answer [1,2,1] would also be accepted.
+
+Example 2:
+Input: head = [1,2,3,-3,4]
+Output: [1,2,4]
+
+Example 3:
+Input: head = [1,2,3,-3,-2]
+Output: [1]
+
+Constraints:
+The given linked list will contain between 1 and 1000 nodes.
+Each node in the linked list has -1000 <= node.val <= 1000.
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function removeZeroSumSublists(head: ListNode | null): ListNode | null {
+  let dummy = new ListNode(0, head); // Create a dummy node to handle edge cases smoothly
+  let prefixSum = new Map(); // To store cumulative sum up to each node
+  let sum = 0;
+  for (let node: ListNode | null = dummy; node != null; node = node.next) {
+    // Calculate prefix sum for all nodes
+    sum += node.val;
+    prefixSum.set(sum, node); // Map current sum to the node
+  }
+  sum = 0;
+  for (let node: ListNode | null = dummy; node != null; node = node.next) {
+    // Reset sum to use it for removing nodes
+    sum += node.val;
+    node.next = prefixSum.get(sum)?.next; // Link current node to the next non-zero sum node
+  }
+  return dummy.next; // Return head of the modified list
+}
