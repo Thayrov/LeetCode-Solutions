@@ -1725,3 +1725,49 @@ function intersection(nums1: number[], nums2: number[]): number[] {
   // This array contains only unique elements present in both nums1 and nums2.
   return [...uniqueIntersection];
 }
+
+/* 
+2485. Find the Pivot Integer
+
+Given a positive integer n, find the pivot integer x such that:
+
+The sum of all elements between 1 and x inclusively equals the sum of all elements between x and n inclusively.
+Return the pivot integer x. If no such integer exists, return -1. It is guaranteed that there will be at most one pivot index for the given input.
+
+Example 1:
+Input: n = 8
+Output: 6
+Explanation: 6 is the pivot integer since: 1 + 2 + 3 + 4 + 5 + 6 = 6 + 7 + 8 = 21.
+
+Example 2:
+Input: n = 1
+Output: 1
+Explanation: 1 is the pivot integer since: 1 = 1.
+
+Example 3:
+Input: n = 4
+Output: -1
+Explanation: It can be proved that no such integer exist.
+
+Constraints:
+1 <= n <= 1000
+
+</> Typescript Code:
+ */
+
+// Defines a function to find the pivot integer within a given range
+function pivotInteger(n: number): number {
+  // Calculate the total sum of numbers from 1 to n using the formula for the sum of an arithmetic series
+  let totalSum = (n * (n + 1)) / 2;
+  // Initialize leftSum to keep track of the sum of numbers from 1 to x
+  let leftSum = 0;
+  // Iterate through each number from 1 to n to find the pivot
+  for (let x = 1; x <= n; x++) {
+    // Add the current number to the leftSum
+    leftSum += x;
+    // Check if the current number is the pivot: when the sum of numbers from 1 to x equals the sum of numbers from x to n
+    if (leftSum * 2 == totalSum + x) return x;
+  }
+  // Return -1 if no pivot integer is found
+  return -1;
+}
