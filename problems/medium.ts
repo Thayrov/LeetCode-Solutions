@@ -2820,3 +2820,45 @@ function removeZeroSumSublists(head: ListNode | null): ListNode | null {
   }
   return dummy.next; // Return head of the modified list
 }
+
+/* 
+930. Binary Subarrays With Sum
+
+Given a binary array nums and an integer goal, return the number of non-empty subarrays with a sum goal.
+
+A subarray is a contiguous part of the array.
+
+Example 1:
+Input: nums = [1,0,1,0,1], goal = 2
+Output: 4
+Explanation: The 4 subarrays are bolded and underlined below:
+[1,0,1,0,1]
+[1,0,1,0,1]
+[1,0,1,0,1]
+[1,0,1,0,1]
+
+Example 2:
+Input: nums = [0,0,0,0,0], goal = 0
+Output: 15
+
+Constraints:
+1 <= nums.length <= 3 * 104
+nums[i] is either 0 or 1.
+0 <= goal <= nums.length
+
+</> Typescript Code:
+*/
+
+function numSubarraysWithSum(nums: number[], goal: number): number {
+  let count = 0; // Initialize count of valid subarrays
+  let sum = 0; // Initialize current sum of elements
+  const map = new Map<number, number>(); // Create a map to store the frequency of sums
+  map.set(0, 1); // Base case: a sum of 0 has occurred once
+  for (let num of nums) {
+    // Iterate through each number in the array
+    sum += num; // Add current number to sum
+    count += map.get(sum - goal) || 0; // If (sum - goal) exists in map, add its frequency to count
+    map.set(sum, (map.get(sum) || 0) + 1); // Update the frequency of the current sum in the map
+  }
+  return count; // Return the total count of valid subarrays
+}
