@@ -2917,3 +2917,50 @@ function productExceptSelf(nums: number[]): number[] {
   // Return the answer array.
   return answer;
 }
+
+/* 
+525. Contiguous Array
+
+Given a binary array nums, return the maximum length of a contiguous subarray with an equal number of 0 and 1.
+
+Example 1:
+Input: nums = [0,1]
+Output: 2
+Explanation: [0, 1] is the longest contiguous subarray with an equal number of 0 and 1.
+
+Example 2:
+Input: nums = [0,1,0]
+Output: 2
+Explanation: [0, 1] (or [1, 0]) is a longest contiguous subarray with equal number of 0 and 1.
+
+Constraints:
+1 <= nums.length <= 105
+nums[i] is either 0 or 1.
+
+</> Typescript Code:
+*/
+
+// Define the function findMaxLength that takes an array of numbers as input and returns a number.
+function findMaxLength(nums: number[]): number {
+  // Initialize count to track the difference between the number of 0's and 1's encountered.
+  let count = 0;
+  // Initialize maxLength to keep track of the maximum length of a subarray with equal number of 0's and 1's.
+  let maxLength = 0;
+  // Initialize a map to store the first occurrence index of each count value with a base case of count 0 at index -1.
+  const countMap = new Map([[0, -1]]);
+
+  // Iterate through the nums array.
+  for (let i = 0; i < nums.length; i++) {
+    // Update the count: increment for 1, decrement for 0.
+    count += nums[i] === 1 ? 1 : -1;
+    // If the count already exists in the map, calculate the length of the current subarray and update maxLength if it's greater.
+    if (countMap.has(count)) {
+      maxLength = Math.max(maxLength, i - countMap.get(count)!);
+    } else {
+      // If the count does not exist in the map, add it with its corresponding index.
+      countMap.set(count, i);
+    }
+  }
+  // Return the maximum length of a contiguous subarray with equal number of 0's and 1's.
+  return maxLength;
+}
