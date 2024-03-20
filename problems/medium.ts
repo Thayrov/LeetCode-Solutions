@@ -3124,3 +3124,70 @@ function leastInterval(tasks: string[], n: number): number {
   // Return the total time taken, adding the idle slots if necessary, or just the length of tasks if no idling is needed
   return idleSlots > 0 ? idleSlots + tasks.length : tasks.length;
 }
+
+/* 
+1669. Merge In Between Linked Lists
+
+You are given two linked lists: list1 and list2 of sizes n and m respectively.
+
+Remove list1's nodes from the ath node to the bth node, and put list2 in their place.
+
+The blue edges and nodes in the following figure indicate the result:
+
+Build the result list and return its head.
+
+Example 1:
+Input: list1 = [10,1,13,6,9,5], a = 3, b = 4, list2 = [1000000,1000001,1000002]
+Output: [10,1,13,1000000,1000001,1000002,5]
+Explanation: We remove the nodes 3 and 4 and put the entire list2 in their place. The blue edges and nodes in the above figure indicate the result.
+
+Example 2:
+Input: list1 = [0,1,2,3,4,5,6], a = 2, b = 5, list2 = [1000000,1000001,1000002,1000003,1000004]
+Output: [0,1,1000000,1000001,1000002,1000003,1000004,6]
+Explanation: The blue edges and nodes in the above figure indicate the result.
+
+Constraints:
+3 <= list1.length <= 104
+1 <= a <= b < list1.length - 1
+1 <= list2.length <= 104
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function mergeInBetween(
+  list1: ListNode | null,
+  a: number,
+  b: number,
+  list2: ListNode | null,
+): ListNode | null {
+  // Create a dummy node to simplify edge case handling
+  let dummy = new ListNode(0, list1);
+  // Use prev to find the node just before 'a'
+  let prev = dummy;
+  for (let i = 0; i < a && prev.next !== null; i++) prev = prev.next;
+  // 'start' will be the node before where 'list2' should be merged
+  let start = prev;
+  // 'end' will be the node just after 'b', where the merge ends
+  let end: ListNode | null = start.next;
+  for (let i = a; i <= b && end !== null; i++) end = end.next; // Navigate to the node after 'b'
+  // Connect 'start' to the head of 'list2'
+  if (start !== null) start.next = list2;
+  // Navigate through 'list2' to find its end
+  while (list2 !== null && list2.next !== null) list2 = list2.next;
+  // Connect the end of 'list2' to 'end'
+  if (list2 !== null) list2.next = end;
+  // Return the modified list starting from the node after dummy
+  return dummy.next;
+}
