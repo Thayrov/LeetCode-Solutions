@@ -1821,3 +1821,72 @@ function reverseList(head: ListNode | null): ListNode | null {
   }
   return prev; // Return the new head of the reversed list
 }
+
+/* 
+234. Palindrome Linked List
+
+Given the head of a singly linked list, return true if it is a 
+palindrome or false otherwise.
+
+Example 1:
+Input: head = [1,2,2,1]
+Output: true
+
+Example 2:
+Input: head = [1,2]
+Output: false
+
+Constraints:
+The number of nodes in the list is in the range [1, 105].
+0 <= Node.val <= 9
+
+Follow up: Could you do it in O(n) time and O(1) space?
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+// Commented version explaining each line
+function isPalindrome(head: ListNode | null): boolean {
+  if (!head || !head.next) return true; // A single node or empty list is always a palindrome
+  let slow: ListNode | null = head,
+    fast: ListNode | null = head,
+    prev: ListNode | null,
+    temp: ListNode | null;
+  // Use two pointers to find the midpoint of the list
+  while (fast && fast.next) {
+    slow = slow!.next; // Move slow pointer one step
+    fast = fast.next.next; // Move fast pointer two steps
+  }
+  // Reverse the second half of the list
+  prev = slow; // Set prev to the midpoint
+  slow = slow!.next; // Move slow to the start of the second half
+  prev!.next = null; // Break the list into two parts
+  while (slow) {
+    temp = slow.next; // Temporary store the next node
+    slow.next = prev; // Reverse the link
+    prev = slow; // Move prev forward
+    slow = temp; // Move slow forward
+  }
+  // Compare the first and the second half
+  fast = head; // Reset fast to the start of the list
+  slow = prev; // Set slow to the start of the reversed second half
+  while (slow) {
+    // Traverse the second half
+    if (fast!.val !== slow.val) return false; // Compare values
+    fast = fast!.next; // Move forward in the first half
+    slow = slow.next; // Move forward in the second half
+  }
+  return true; // If all nodes matched, it's a palindrome
+}
