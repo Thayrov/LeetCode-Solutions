@@ -3313,3 +3313,50 @@ function findDuplicate(nums: number[]): number {
   // When the pointers meet, the meeting point is the duplicate number
   return slow;
 }
+
+/* 
+442. Find All Duplicates in an Array
+
+Given an integer array nums of length n where all the integers of nums are in the range [1, n] and each integer appears once or twice, return an array of all the integers that appears twice.
+
+You must write an algorithm that runs in O(n) time and uses only constant extra space.
+
+Example 1:
+Input: nums = [4,3,2,7,8,2,3,1]
+Output: [2,3]
+
+Example 2:
+Input: nums = [1,1,2]
+Output: [1]
+
+Example 3:
+Input: nums = [1]
+Output: []
+
+Constraints:
+n == nums.length
+1 <= n <= 105
+1 <= nums[i] <= n
+Each element in nums appears once or twice.
+
+</> Typescript Code:
+*/
+
+// Defines a function to find all duplicates in the given array
+function findDuplicates(nums: number[]): number[] {
+  // Initialize an empty array to store the duplicates
+  const output: number[] = [];
+  // Iterate over each element in the array
+  for (let i = 0; i < nums.length; i++) {
+    // Calculate the index based on the current element's value
+    // Use Math.abs to ensure the index is positive
+    const index = Math.abs(nums[i]) - 1;
+    // If the value at the calculated index is negative,
+    // it means we've seen this number before, so it's a duplicate
+    if (nums[index] < 0) output.push(Math.abs(nums[i]));
+    // Mark the value at the calculated index as seen by making it negative
+    nums[index] = -nums[index];
+  }
+  // Return the array containing all duplicates
+  return output;
+}
