@@ -3360,3 +3360,51 @@ function findDuplicates(nums: number[]): number[] {
   // Return the array containing all duplicates
   return output;
 }
+
+/* 
+713. Subarray Product Less Than K
+
+Given an array of integers nums and an integer k, return the number of contiguous subarrays where the product of all the elements in the subarray is strictly less than k.
+
+Example 1:
+Input: nums = [10,5,2,6], k = 100
+Output: 8
+Explanation: The 8 subarrays that have product less than 100 are:
+[10], [5], [2], [6], [10, 5], [5, 2], [2, 6], [5, 2, 6]
+Note that [10, 5, 2] is not included as the product of 100 is not strictly less than k.
+
+Example 2:
+Input: nums = [1,2,3], k = 0
+Output: 0
+
+Constraints:
+1 <= nums.length <= 3 * 10^4
+1 <= nums[i] <= 1000
+0 <= k <= 10^6
+
+</> Typescript Code:
+*/
+
+function numSubarrayProductLessThanK(nums: number[], k: number): number {
+  // Return 0 immediately if k is 1 or less because no product can be strictly less than k in such cases
+  if (k <= 1) return 0;
+  // Initialize the count of subarrays found
+  let count = 0;
+  // Initialize the product of elements in the current subarray
+  let product = 1;
+  // Initialize the left pointer for the sliding window
+  let left = 0;
+  // Iterate over the array with a right pointer to examine each subarray
+  for (let right = 0; right < nums.length; right++) {
+    // Multiply the current product by the element at the right pointer
+    product *= nums[right];
+    // If the product equals or exceeds k, shrink the window from the left until it's less than k again
+    while (product >= k) {
+      product /= nums[left++];
+    }
+    // Count the number of subarrays ending at right by adding the difference between right and left pointers plus one
+    count += right - left + 1;
+  }
+  // Return the total count of qualifying subarrays
+  return count;
+}
