@@ -3469,3 +3469,66 @@ function maxSubarrayLength(nums: number[], k: number): number {
   // Return the length of the longest good subarray
   return maxLength;
 }
+
+/* 
+2962. Count Subarrays Where Max Element Appears at Least K Times
+
+You are given an integer array nums and a positive integer k.
+
+Return the number of subarrays where the maximum element of nums appears at least k times in that subarray.
+
+A subarray is a contiguous sequence of elements within an array.
+
+Example 1:
+Input: nums = [1,3,2,3,3], k = 2
+Output: 6
+Explanation: The subarrays that contain the element 3 at least 2 times are: [1,3,2,3], [1,3,2,3,3], [3,2,3], [3,2,3,3], [2,3,3] and [3,3].
+
+Example 2:
+Input: nums = [1,4,2,1], k = 3
+Output: 0
+Explanation: No subarray contains the element 4 at least 3 times.
+
+Constraints:
+1 <= nums.length <= 10^5
+1 <= nums[i] <= 10^6
+1 <= k <= 10^5
+
+</> Typescript Code:
+*/
+
+function countSubarrays(nums: number[], k: number): number {
+  if (!nums?.length) return 0; // If the input array is empty, return 0 as there are no subarrays to count.
+
+  const maximumNum = Math.max(...nums); // Calculate the maximum element in the array, which is the focus of our subarray criteria.
+  let frequency = 0; // This variable tracks the frequency of the maximum element within the current sliding window.
+  let leftIndex = 0; // The left index of the sliding window.
+  let rightIndex = 0; // The right index of the sliding window, initially set to the start of the array.
+  let count = 0; // Accumulator for the count of valid subarrays.
+
+  // Iterate through the array with the right index of the sliding window.
+  while (rightIndex < nums.length) {
+    if (nums[rightIndex] === maximumNum) {
+      // If the current element is the maximum, increment its frequency counter.
+      frequency++;
+    }
+
+    // If the frequency of the maximum element in the window reaches or exceeds k, shrink the window from the left.
+    while (frequency >= k) {
+      if (nums[leftIndex] === maximumNum) {
+        // Before shrinking the window, decrement the frequency if the leftmost element is the maximum.
+        frequency--;
+      }
+
+      leftIndex++; // Shrink the window by moving the left index to the right.
+    }
+
+    // Add the number of valid subarrays ending at the current right index.
+    // This works because for any right index, the number of valid subarrays is the distance between the current right index and the left index.
+    // It effectively counts all subarrays that include nums[rightIndex] and have the maximum element appearing at least k times.
+    count += leftIndex;
+    rightIndex++; // Expand the window by moving the right index to the right.
+  }
+
+  return count; // Return the total count of valid subarrays.
+}
