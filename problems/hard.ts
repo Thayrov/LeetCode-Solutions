@@ -1006,3 +1006,66 @@ function firstMissingPositive(nums: number[]): number {
   // If all positives [1, n] are present, return n+1
   return n + 1;
 }
+
+/* 
+992. Subarrays with K Different Integers
+
+Given an integer array nums and an integer k, return the number of good subarrays of nums.
+
+A good array is an array where the number of different integers in that array is exactly k.
+
+For example, [1,2,3,1,2] has 3 different integers: 1, 2, and 3.
+A subarray is a contiguous part of an array.
+
+Example 1:
+Input: nums = [1,2,1,2,3], k = 2
+Output: 7
+Explanation: Subarrays formed with exactly 2 different integers: [1,2], [2,1], [1,2], [2,3], [1,2,1], [2,1,2], [1,2,1,2]
+
+Example 2:
+Input: nums = [1,2,1,3,4], k = 3
+Output: 3
+Explanation: Subarrays formed with exactly 3 different integers: [1,2,1,3], [2,1,3], [1,3,4].
+
+Constraints:
+1 <= nums.length <= 2 * 10^4
+1 <= nums[i], k <= nums.length
+
+</> Typescript Code:
+*/
+
+function subarraysWithKDistinct(nums: number[], k: number): number {
+  let window1 = new Map(), // Tracks counts of numbers in the current window considering up to K distinct elements
+    window2 = new Map(), // Tracks counts of numbers considering up to K-1 distinct elements
+    left1 = 0, // Left boundary for the first window
+    left2 = 0, // Left boundary for the second window
+    right = 0, // Right boundary for both windows
+    count = 0; // Counts the number of good subarrays
+
+  const add = (map, key) => map.set(key, (map.get(key) || 0) + 1); // Helper to add/update key counts in a window
+  const remove = (map, key) => {
+    // Helper to remove/update key counts in a window
+    if (map.get(key) === 1) map.delete(key); // If count is 1, remove key
+    else map.set(key, map.get(key) - 1); // Otherwise, decrement count
+  };
+
+  while (right < nums.length) {
+    // Iterate through the array
+    add(window1, nums[right]); // Add current element to the first window
+    add(window2, nums[right]); // Add current element to the second window
+
+    while (window1.size > k) {
+      // Ensure first window has exactly k distinct elements
+      remove(window1, nums[left1++]); // Remove elements from the left if we have more than k distinct
+    }
+    while (window2.size >= k) {
+      // Ensure second window has up to k-1 distinct elements
+      remove(window2, nums[left2++]); // Remove elements from the left if we have k or more distinct
+    }
+
+    count += left2 - left1; // Count subarrays between the two windows
+    right++; // Move to the next element
+  }
+
+  return count;
+}
