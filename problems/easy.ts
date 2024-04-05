@@ -2036,3 +2036,64 @@ function maxDepth(s: string): number {
   // Return the maximum depth encountered
   return maxDepth;
 }
+
+/* 
+1544. Make The String Great
+
+Given a string s of lower and upper case English letters.
+
+A good string is a string which doesn't have two adjacent characters s[i] and s[i + 1] where:
+
+0 <= i <= s.length - 2
+s[i] is a lower-case letter and s[i + 1] is the same letter but in upper-case or vice-versa.
+To make the string good, you can choose two adjacent characters that make the string bad and remove them. You can keep doing this until the string becomes good.
+
+Return the string after making it good. The answer is guaranteed to be unique under the given constraints.
+
+Notice that an empty string is also good.
+
+Example 1:
+Input: s = "leEeetcode"
+Output: "leetcode"
+Explanation: In the first step, either you choose i = 1 or i = 2, both will result "leEeetcode" to be reduced to "leetcode".
+
+Example 2:
+Input: s = "abBAcC"
+Output: ""
+Explanation: We have many possible scenarios, and all lead to the same answer. For example:
+"abBAcC" --> "aAcC" --> "cC" --> ""
+"abBAcC" --> "abBA" --> "aA" --> ""
+
+Example 3:
+Input: s = "s"
+Output: "s"
+
+Constraints:
+1 <= s.length <= 100
+s contains only lower and upper case English letters.
+
+</> Typescript Code:
+*/
+
+// Define the function makeGood to transform the input string into a "good" string by removing certain adjacent characters
+function makeGood(s: string): string {
+  // Use a stack to keep track of characters that are not yet part of a "bad" pair
+  let stack: string[] = [];
+  // Iterate over each character in the string
+  for (let char of s) {
+    // Check if the stack is not empty and the absolute difference in char codes between
+    // the current character and the last one in the stack is 32 (difference between upper and lower case)
+    if (
+      stack.length > 0 &&
+      Math.abs(char.charCodeAt(0) - stack[stack.length - 1].charCodeAt(0)) === 32
+    ) {
+      // If so, remove the last character from the stack as the pair is "bad"
+      stack.pop();
+    } else {
+      // Otherwise, add the current character to the stack
+      stack.push(char);
+    }
+  }
+  // Join the characters in the stack to form the final "good" string and return it
+  return stack.join('');
+}
