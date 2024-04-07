@@ -3649,3 +3649,54 @@ function minRemoveToMakeValid(s: string): string {
   // Join the array back into a string and return it
   return sArray.join('');
 }
+
+/* 
+678. Valid Parenthesis String
+
+Given a string s containing only three types of characters: '(', ')' and '*', return true if s is valid.
+
+The following rules define a valid string:
+
+Any left parenthesis '(' must have a corresponding right parenthesis ')'.
+Any right parenthesis ')' must have a corresponding left parenthesis '('.
+Left parenthesis '(' must go before the corresponding right parenthesis ')'.
+'*' could be treated as a single right parenthesis ')' or a single left parenthesis '(' or an empty string "".
+
+Example 1:
+Input: s = "()"
+Output: true
+
+Example 2:
+Input: s = "(*)"
+Output: true
+
+Example 3:
+Input: s = "(*))"
+Output: true
+
+Constraints:
+1 <= s.length <= 100
+s[i] is '(', ')' or '*'.
+
+</> Typescript Code:
+*/
+
+// This function checks if the input string s is a valid parenthesis string according to the given rules
+function checkValidString(s: string): boolean {
+  // low represents the lowest possible number of open parentheses, high represents the highest possible number
+  let low = 0,
+    high = 0;
+  // Iterate through each character in the string
+  for (const char of s) {
+    // If the character is '(', it could potentially increase the number of unmatched open parentheses
+    low += char === '(' ? 1 : -1;
+    // If the character is not ')', it could potentially act as '(' or be ignored, increasing the possibility of unmatched open parentheses
+    high += char !== ')' ? 1 : -1;
+    // If high becomes negative, it means there are too many ')' without matching '(' before it, thus the string is invalid
+    if (high < 0) break;
+    // Low cannot be negative; a negative low would mean we are considering more closing ')' than opening '(', which is invalid
+    low = Math.max(low, 0);
+  }
+  // If low is 0, it means we have a valid configuration where all '(' can be matched with ')' considering '*' placements
+  return low === 0;
+}
