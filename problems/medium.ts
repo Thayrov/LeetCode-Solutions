@@ -3767,3 +3767,60 @@ function deckRevealedIncreasing(deck: number[]): number[] {
   // Return the reordered deck, which reveals cards in increasing order.
   return result;
 }
+
+/* 
+402. Remove K Digits
+
+Given string num representing a non-negative integer num, and an integer k, return the smallest possible integer after removing k digits from num.
+
+
+Example 1:
+Input: num = "1432219", k = 3
+Output: "1219"
+Explanation: Remove the three digits 4, 3, and 2 to form the new number 1219 which is the smallest.
+
+Example 2:
+Input: num = "10200", k = 1
+Output: "200"
+Explanation: Remove the leading 1 and the number is 200. Note that the output must not contain leading zeroes.
+
+Example 3:
+Input: num = "10", k = 2
+Output: "0"
+Explanation: Remove all the digits from the number and it is left with nothing which is 0.
+
+Constraints:
+1 <= k <= num.length <= 10^5
+num consists of only digits.
+num does not have any leading zeros except for the zero itself.
+
+</> Typescript Code:
+*/
+
+function removeKdigits(num: string, k: number): string {
+  // Initialize a stack to keep track of digits
+  const stack: string[] = [];
+
+  // Iterate through each digit in the number
+  for (let digit of num) {
+    // While there are digits in the stack, we haven't removed k digits yet,
+    // and the last digit in the stack is greater than the current digit
+    while (stack.length && k && stack[stack.length - 1] > digit) {
+      // Pop the last digit off the stack to remove it
+      stack.pop();
+      // Decrement k as we've removed a digit
+      k--;
+    }
+    // Add the current digit to the stack
+    stack.push(digit);
+  }
+
+  // If we haven't removed k digits, remove the remaining digits from the end
+  while (k--) stack.pop();
+
+  // Remove leading zeros
+  while (stack.length && stack[0] === '0') stack.shift();
+
+  // If the stack is empty, return '0', otherwise join the stack to form the number
+  return stack.length ? stack.join('') : '0';
+}
