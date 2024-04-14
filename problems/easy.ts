@@ -2210,3 +2210,52 @@ function timeRequiredToBuy(tickets: number[], k: number): number {
   // Return the total time calculated
   return time;
 }
+
+/* 
+404. Sum of Left Leaves
+
+Given the root of a binary tree, return the sum of all left leaves.
+
+A leaf is a node with no children. A left leaf is a leaf that is the left child of another node.
+
+Example 1:
+Input: root = [3,9,20,null,null,15,7]
+Output: 24
+Explanation: There are two left leaves in the binary tree, with values 9 and 15 respectively.
+
+Example 2:
+Input: root = [1]
+Output: 0
+
+Constraints:
+The number of nodes in the tree is in the range [1, 1000].
+-1000 <= Node.val <= 1000
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+// Function to sum the values of all left leaves in a binary tree
+function sumOfLeftLeaves(root: TreeNode | null, isLeft: boolean = false): number {
+  // Base case: if the current node is null, return 0
+  if (!root) return 0;
+  // Check if the current node is a left leaf (a leaf and is the left child)
+  if (!root.left && !root.right && isLeft) return root.val;
+  // Recursive call on the left child (pass true as it is a left child) and
+  // on the right child (pass false as it is not a left child),
+  // then sum their results to get the total sum of left leaves
+  return sumOfLeftLeaves(root.left, true) + sumOfLeftLeaves(root.right, false);
+}

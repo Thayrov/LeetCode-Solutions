@@ -1100,7 +1100,7 @@ Constraints:
 </> Typescript Code:
 */
 
-function countSubarrays(nums: number[], minK: number, maxK: number): number {
+function countSubarraysHard(nums: number[], minK: number, maxK: number): number {
   let lastMin = -1, // Last index where minK was found
     lastMax = -1, // Last index where maxK was found
     lastInvalid = -1, // Last index where a value outside [minK, maxK] was found
