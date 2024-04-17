@@ -3962,3 +3962,69 @@ function addOneRow(root: TreeNode | null, val: number, depth: number): TreeNode 
   });
   return root; // Return the modified tree
 }
+
+/* 
+988. Smallest String Starting From Leaf
+
+You are given the root of a binary tree where each node has a value in the range [0, 25] representing the letters 'a' to 'z'.
+
+Return the lexicographically smallest string that starts at a leaf of this tree and ends at the root.
+
+As a reminder, any shorter prefix of a string is lexicographically smaller.
+
+For example, "ab" is lexicographically smaller than "aba".
+A leaf of a node is a node that has no children.
+
+Example 1:
+Input: root = [0,1,2,3,4,3,4]
+Output: "dba"
+
+Example 2:
+Input: root = [25,1,3,1,3,0,2]
+Output: "adz"
+
+Example 3:
+Input: root = [2,2,1,null,1,0,null,0]
+Output: "abc"
+
+Constraints:
+The number of nodes in the tree is in the range [1, 8500].
+0 <= Node.val <= 25
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function smallestFromLeaf(root: TreeNode | null): string {
+  if (!root) return ''; // Handle the case when the tree is empty.
+  let smallest = '{'; // Initialize the smallest string with a character that's lexicographically greater than 'z'.
+
+  function dfs(node: TreeNode, path: string): void {
+    // Depth-first search to traverse the tree.
+    if (!node) return; // Base case: if the node is null, return.
+    const currentChar = String.fromCharCode(97 + node.val); // Convert node value to corresponding character.
+    if (!node.left && !node.right) {
+      // If the node is a leaf, check if the constructed string is the smallest.
+      const candidate = currentChar + path;
+      if (candidate < smallest) smallest = candidate; // Update the smallest string if a smaller one is found.
+    }
+    dfs(node.left!, currentChar + path); // Recursively search the left subtree.
+    dfs(node.right!, currentChar + path); // Recursively search the right subtree.
+  }
+
+  dfs(root, ''); // Start DFS from the root.
+  return smallest; // Return the lexicographically smallest string.
+}
