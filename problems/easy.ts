@@ -2314,3 +2314,67 @@ function islandPerimeter(grid: number[][]): number {
   // Return the calculated perimeter
   return perimeter;
 }
+
+/* 
+1971. Find if Path Exists in Graph
+
+There is a bi-directional graph with n vertices, where each vertex is labeled from 0 to n - 1 (inclusive). The edges in the graph are represented as a 2D integer array edges, where each edges[i] = [ui, vi] denotes a bi-directional edge between vertex ui and vertex vi. Every vertex pair is connected by at most one edge, and no vertex has an edge to itself.
+
+You want to determine if there is a valid path that exists from vertex source to vertex destination.
+
+Given edges and the integers n, source, and destination, return true if there is a valid path from source to destination, or false otherwise.
+
+Example 1:
+Input: n = 3, edges = [[0,1],[1,2],[2,0]], source = 0, destination = 2
+Output: true
+Explanation: There are two paths from vertex 0 to vertex 2:
+- 0 → 1 → 2
+- 0 → 2
+
+Example 2:
+Input: n = 6, edges = [[0,1],[0,2],[3,5],[5,4],[4,3]], source = 0, destination = 5
+Output: false
+Explanation: There is no path from vertex 0 to vertex 5.
+
+Constraints:
+1 <= n <= 2 * 105
+0 <= edges.length <= 2 * 105
+edges[i].length == 2
+0 <= ui, vi <= n - 1
+ui != vi
+0 <= source, destination <= n - 1
+There are no duplicate edges.
+There are no self edges.
+
+</> Typescript Code:
+*/
+
+// Function to determine if there is a valid path in a graph
+function validPath(n: number, edges: number[][], source: number, destination: number): boolean {
+  // Initialize an adjacency list to represent the graph
+  const adjList = new Map();
+  // Populate the adjacency list with edges
+  for (let [u, v] of edges) {
+    if (!adjList.has(u)) adjList.set(u, []); // If vertex u is not in the list, add it
+    if (!adjList.has(v)) adjList.set(v, []); // If vertex v is not in the list, add it
+    adjList.get(u).push(v); // Add v to the list of u's neighbors
+    adjList.get(v).push(u); // Since the graph is bidirectional, add u to the list of v's neighbors
+  }
+  // Set to keep track of visited vertices to prevent cycles
+  const visited = new Set();
+  // Stack for DFS traversal, starting from the source vertex
+  const stack = [source];
+  // Perform DFS until the stack is empty
+  while (stack.length) {
+    const node = stack.pop(); // Take the last vertex from the stack
+    if (node === destination) return true; // If the current vertex is the destination, a path exists
+    if (visited.has(node)) continue; // If the vertex has been visited, skip it
+    visited.add(node); // Mark the current vertex as visited
+    // Add all unvisited neighbors of the current vertex to the stack
+    for (let neighbor of adjList.get(node) || []) {
+      stack.push(neighbor);
+    }
+  }
+  // If the function hasn't returned true at this point, no path exists
+  return false;
+}
