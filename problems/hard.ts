@@ -1227,3 +1227,60 @@ function maximalRectangle(matrix: string[][]): number {
   }
   return maxArea;
 }
+
+/* 
+1289. Minimum Falling Path Sum II
+
+Given an n x n integer matrix grid, return the minimum sum of a falling path with non-zero shifts.
+
+A falling path with non-zero shifts is a choice of exactly one element from each row of grid such that no two elements chosen in adjacent rows are in the same column.
+
+Example 1:
+Input: grid = [[1,2,3],[4,5,6],[7,8,9]]
+Output: 13
+Explanation: 
+The possible falling paths are:
+[1,5,9], [1,5,7], [1,6,7], [1,6,8],
+[2,4,8], [2,4,9], [2,6,7], [2,6,8],
+[3,4,8], [3,4,9], [3,5,7], [3,5,9]
+The falling path with the smallest sum is [1,5,7], so the answer is 13.
+
+Example 2:
+Input: grid = [[7]]
+Output: 7
+
+Constraints:
+n == grid.length == grid[i].length
+1 <= n <= 200
+-99 <= grid[i][j] <= 99
+
+</> Typescript Code:
+*/
+
+// Function to compute the minimum falling path sum in a grid with the non-zero shift constraint
+function minFallingPathSum(grid: number[][]): number {
+  let n = grid.length;
+  // Handle the trivial case where the grid is 1x1
+  if (n === 1) return grid[0][0];
+  // Initialize an array to store the minimum sums of falling paths ending in each column of the first row
+  let prev = [...grid[0]];
+  // Process each row starting from the second
+  for (let i = 1; i < n; i++) {
+    // Create a new array to store the minimum sums for the current row
+    let curr = new Array(n).fill(Infinity);
+    // Iterate over each column in the current row
+    for (let j = 0; j < n; j++) {
+      // Iterate over each column in the previous row to ensure the non-zero shift condition
+      for (let k = 0; k < n; k++) {
+        if (j !== k) {
+          // Ensure the previous column isn't the same as the current
+          curr[k] = Math.min(curr[k], prev[j] + grid[i][k]); // Update the min path sum ending at column k
+        }
+      }
+    }
+    // Update prev to the current row's results
+    prev = curr;
+  }
+  // Return the minimum value from the last row's computed sums
+  return Math.min(...prev);
+}
