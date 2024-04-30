@@ -513,7 +513,7 @@ Constraints:
 */
 
 // tslint:disable-next-line: max-line-length
-function minOperations(nums: number[]): number {
+function minOperationsAlt(nums: number[]): number {
   const freq = new Map<number, number>(); // Create a map to store frequencies of each number
 
   // Count frequencies of each number in nums
@@ -4401,4 +4401,73 @@ function minOperations(nums: number[], k: number): number {
     .filter(x => x === '1').length; // Filter out all '1's and count them.
   // The count of '1's represents the minimum number of bit flips needed
   // because each '1' in the binary representation indicates a bit that must be flipped.
+}
+
+/* 
+1915. Number of Wonderful Substrings
+
+A wonderful string is a string where at most one letter appears an odd number of times.
+
+For example, "ccjjc" and "abab" are wonderful, but "ab" is not.
+Given a string word that consists of the first ten lowercase English letters ('a' through 'j'), return the number of wonderful non-empty substrings in word. If the same substring appears multiple times in word, then count each occurrence separately.
+
+A substring is a contiguous sequence of characters in a string.
+
+Example 1:
+Input: word = "aba"
+Output: 4
+Explanation: The four wonderful substrings are underlined below:
+- "aba" -> "a"
+- "aba" -> "b"
+- "aba" -> "a"
+- "aba" -> "aba"
+
+Example 2:
+Input: word = "aabb"
+Output: 9
+Explanation: The nine wonderful substrings are underlined below:
+- "aabb" -> "a"
+- "aabb" -> "aa"
+- "aabb" -> "aab"
+- "aabb" -> "aabb"
+- "aabb" -> "a"
+- "aabb" -> "abb"
+- "aabb" -> "b"
+- "aabb" -> "bb"
+- "aabb" -> "b"
+
+Example 3:
+Input: word = "he"
+Output: 2
+Explanation: The two wonderful substrings are underlined below:
+- "he" -> "h"
+- "he" -> "e"
+
+Constraints:
+1 <= word.length <= 105
+word consists of lowercase English letters from 'a' to 'j'.
+
+</> Typescript Code:
+*/
+
+function wonderfulSubstrings(word: string): number {
+  let count = 0; // Initialize the count of wonderful substrings
+  let freq = new Array(1024).fill(0); // Frequency array to track occurrence of each bitmask
+  let mask = 0; // Current bitmask representing the parity of character counts
+  freq[0] = 1; // Initialize with the empty substring
+
+  for (let char of word) {
+    // Update the bitmask for the current character, flipping the bit corresponding to the character
+    mask ^= 1 << (char.charCodeAt(0) - 'a'.charCodeAt(0));
+    // Add the number of times this mask has been seen, as it represents a valid wonderful substring ending at current character
+    count += freq[mask];
+    // Check for substrings that have exactly one character with an odd count
+    for (let i = 0; i < 10; i++) {
+      // Check masks that differ by exactly one bit (one character with an odd count)
+      count += freq[mask ^ (1 << i)];
+    }
+    // Increment the frequency of this mask
+    freq[mask]++;
+  }
+  return count; // Return the total count of wonderful substrings
 }
