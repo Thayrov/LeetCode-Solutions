@@ -4645,3 +4645,85 @@ function deleteNode(node: ListNode | null): void {
   // Point the current node's link to the next next node, effectively deleting the next node
   node.next = node.next.next;
 }
+
+/* 
+2487. Remove Nodes From Linked List
+
+You are given the head of a linked list.
+
+Remove every node which has a node with a greater value anywhere to the right side of it.
+
+Return the head of the modified linked list.
+
+Example 1:
+Input: head = [5,2,13,3,8]
+Output: [13,8]
+Explanation: The nodes that should be removed are 5, 2 and 3.
+- Node 13 is to the right of node 5.
+- Node 13 is to the right of node 2.
+- Node 8 is to the right of node 3.
+
+Example 2:
+Input: head = [1,1,1,1]
+Output: [1,1,1,1]
+Explanation: Every node has value 1, so no nodes are removed.
+
+Constraints:
+The number of the nodes in the given list is in the range [1, 10^5].
+1 <= Node.val <= 10^5
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function removeNodes(head: ListNode | null): ListNode | null {
+  if (!head || !head.next) return head; // If the list is empty or has only one node, return it.
+
+  // Reverse the linked list to start evaluation from the end
+  let prev: ListNode | null = null;
+  let current: ListNode | null = head;
+  while (current) {
+    let next = current.next;
+    current.next = prev; // Reverse the current node's pointer
+    prev = current; // Move prev and current forward
+    current = next;
+  }
+
+  // Start filtering nodes from the reversed list
+  let newHead = prev; // This will be the new head of the reversed list
+  let max = prev && prev.val; // Initialize max with the value of the new head
+  let node = prev;
+  while (node && node.next) {
+    if (max && node.next.val >= max) {
+      // If the next node should be kept
+      max = node.next.val; // Update max
+      node = node.next; // Move to the next node
+    } else {
+      // If the next node should be removed
+      node.next = node.next.next; // Remove the next node
+    }
+  }
+
+  // Reverse the list again to restore original order
+  prev = null;
+  current = newHead;
+  while (current) {
+    let next = current.next;
+    current.next = prev; // Reverse the current node's pointer
+    prev = current; // Move prev and current forward
+    current = next;
+  }
+
+  return prev; // Return the head of the modified list
+}
