@@ -4727,3 +4727,71 @@ function removeNodes(head: ListNode | null): ListNode | null {
 
   return prev; // Return the head of the modified list
 }
+
+/* 
+2816. Double a Number Represented as a Linked List
+
+You are given the head of a non-empty linked list representing a non-negative integer without leading zeroes.
+
+Return the head of the linked list after doubling it.
+
+Example 1:
+Input: head = [1,8,9]
+Output: [3,7,8]
+Explanation: The figure above corresponds to the given linked list which represents the number 189. Hence, the returned linked list represents the number 189 * 2 = 378.
+
+Example 2:
+Input: head = [9,9,9]
+Output: [1,9,9,8]
+Explanation: The figure above corresponds to the given linked list which represents the number 999. Hence, the returned linked list reprersents the number 999 * 2 = 1998. 
+
+Constraints:
+The number of nodes in the list is in the range [1, 10^4]
+0 <= Node.val <= 9
+The input is generated such that the list represents a number that does not have leading zeros, except the number 0 itself.
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function doubleIt(head: ListNode | null): ListNode | null {
+  // Return null if the linked list is empty
+  if (!head) return null;
+
+  // Initialize an empty string to accumulate the digits of the number
+  let num = '';
+  let curr: ListNode | null = head;
+
+  // Traverse the linked list and build the number as a string
+  while (curr) {
+    num += curr.val;
+    curr = curr.next;
+  }
+
+  // Convert the string to a bigint, double it, and convert back to string
+  let doubled = BigInt(num) * BigInt(2);
+
+  // Create a dummy node to simplify the list construction
+  let result = new ListNode(0);
+  let node = result;
+
+  // Create new nodes for each digit of the doubled number and append to the list
+  for (let char of doubled.toString()) {
+    node.next = new ListNode(Number(char));
+    node = node.next;
+  }
+
+  // Return the head of the new list, skipping the dummy node
+  return result.next;
+}
