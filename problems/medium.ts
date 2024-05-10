@@ -4891,6 +4891,11 @@ Follow up: Can you solve the problem with better than O(n2) complexity?
 </> Typescript Code:
 */
 
+/* 
+  npm install @datastructures-js/priority-queue 
+  import { MinPriorityQueue } from '@datastructures-js/priority-queue';
+*/
+
 function kthSmallestPrimeFraction(arr: number[], k: number): number[] {
   // Priority queue to store the fractions, sorting by the value of the fraction
   const minHeap = new MinPriorityQueue({
