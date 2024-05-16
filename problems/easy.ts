@@ -2632,3 +2632,76 @@ function largestLocal(grid: number[][]): number[][] {
 
   return result; // Return the resulting matrix
 }
+
+/* 
+2331. Evaluate Boolean Binary Tree
+
+You are given the root of a full binary tree with the following properties:
+
+Leaf nodes have either the value 0 or 1, where 0 represents False and 1 represents True.
+Non-leaf nodes have either the value 2 or 3, where 2 represents the boolean OR and 3 represents the boolean AND.
+The evaluation of a node is as follows:
+
+If the node is a leaf node, the evaluation is the value of the node, i.e. True or False.
+Otherwise, evaluate the node's two children and apply the boolean operation of its value with the children's evaluations.
+Return the boolean result of evaluating the root node.
+
+A full binary tree is a binary tree where each node has either 0 or 2 children.
+
+A leaf node is a node that has zero children.
+
+Example 1:
+Input: root = [2,1,3,null,null,0,1]
+Output: true
+Explanation: The above diagram illustrates the evaluation process.
+The AND node evaluates to False AND True = False.
+The OR node evaluates to True OR False = True.
+The root node evaluates to True, so we return true.
+
+Example 2:
+Input: root = [0]
+Output: false
+Explanation: The root node is a leaf node and it evaluates to false, so we return false.
+
+Constraints:
+The number of nodes in the tree is in the range [1, 1000].
+0 <= Node.val <= 3
+Every node has either 0 or 2 children.
+Leaf nodes have a value of 0 or 1.
+Non-leaf nodes have a value of 2 or 3.
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function evaluateTree(root: TreeNode | null): boolean {
+  // Base case: if the root is null, return false
+  if (root === null) return false;
+  // If the node's value is 0, it represents False
+  if (root.val === 0) return false;
+  // If the node's value is 1, it represents True
+  if (root.val === 1) return true;
+  // Recursively evaluate the left child
+  const left = evaluateTree(root.left);
+  // Recursively evaluate the right child
+  const right = evaluateTree(root.right);
+  // If the node's value is 2, it represents the boolean OR operation
+  if (root.val === 2) return left || right;
+  // If the node's value is 3, it represents the boolean AND operation
+  if (root.val === 3) return left && right;
+  // Default return value (should not reach here if the input is valid)
+  return false;
+}
