@@ -5211,3 +5211,73 @@ function removeLeafNodes(root: TreeNode | null, target: number): TreeNode | null
   // Return the modified root
   return root;
 }
+
+/* 
+979. Distribute Coins in Binary Tree
+
+You are given the root of a binary tree with n nodes where each node in the tree has node.val coins. There are n coins in total throughout the whole tree.
+
+In one move, we may choose two adjacent nodes and move one coin from one node to another. A move may be from parent to child, or from child to parent.
+
+Return the minimum number of moves required to make every node have exactly one coin.
+
+Example 1:
+Input: root = [3,0,0]
+Output: 2
+Explanation: From the root of the tree, we move one coin to its left child, and one coin to its right child.
+
+Example 2:
+Input: root = [0,3,0]
+Output: 3
+Explanation: From the left child of the root, we move two coins to the root [taking two moves]. Then, we move one coin from the root of the tree to the right child.
+
+Constraints:
+The number of nodes in the tree is n.
+1 <= n <= 100
+0 <= Node.val <= n
+The sum of all Node.val is n.
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function distributeCoins(root: TreeNode | null): number {
+  // Initialize the number of moves to 0
+  let moves = 0;
+
+  // Helper function to perform post-order traversal
+  function postOrder(node: TreeNode | null): number {
+    // Base case: if the node is null, return 0
+    if (node === null) return 0;
+
+    // Recursively compute the balance of coins in the left subtree
+    const left = postOrder(node.left);
+    // Recursively compute the balance of coins in the right subtree
+    const right = postOrder(node.right);
+
+    // The number of moves needed is the sum of absolute balances of left and right subtrees
+    moves += Math.abs(left) + Math.abs(right);
+
+    // Return the net balance of coins: current node's coins + left subtree balance + right subtree balance - 1 (for the node itself)
+    return node.val + left + right - 1;
+  }
+
+  // Start the post-order traversal from the root
+  postOrder(root);
+
+  // Return the total number of moves
+  return moves;
+}
