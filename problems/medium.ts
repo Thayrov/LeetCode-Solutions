@@ -5281,3 +5281,59 @@ function distributeCoins(root: TreeNode | null): number {
   // Return the total number of moves
   return moves;
 }
+
+/* 
+78. Subsets
+
+Given an integer array nums of unique elements, return all possible 
+subsets (the power set).
+
+The solution set must not contain duplicate subsets. Return the solution in any order.
+
+Example 1:
+Input: nums = [1,2,3]
+Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+
+Example 2:
+Input: nums = [0]
+Output: [[],[0]]
+
+Constraints:
+1 <= nums.length <= 10
+-10 <= nums[i] <= 10
+All the numbers of nums are unique.
+
+</> Typescript Code:
+*/
+
+function subsets(nums: number[]): number[][] {
+  // Initialize the result array to store all subsets
+  const result: number[][] = [];
+
+  // Helper function for Depth-First Search (DFS)
+  function dfs(index: number, current: number[]): void {
+    // Base case: if index equals the length of nums, add the current subset to the result
+    if (index === nums.length) {
+      result.push([...current]);
+      return;
+    }
+
+    // Recur without including the current element
+    dfs(index + 1, current);
+
+    // Include the current element in the subset
+    current.push(nums[index]);
+
+    // Recur with including the current element
+    dfs(index + 1, current);
+
+    // Backtrack to remove the current element
+    current.pop();
+  }
+
+  // Initialize the DFS with starting index 0 and empty current subset
+  dfs(0, []);
+
+  // Return the result containing all subsets
+  return result;
+}
