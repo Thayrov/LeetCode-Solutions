@@ -5337,3 +5337,70 @@ function subsets(nums: number[]): number[][] {
   // Return the result containing all subsets
   return result;
 }
+
+/* 
+131. Palindrome Partitioning
+
+Given a string s, partition s such that every substring of the partition is a palindrome. 
+Return all possible palindrome partitioning of s.
+
+Example 1:
+Input: s = "aab"
+Output: [["a","a","b"],["aa","b"]]
+
+Example 2:
+Input: s = "a"
+Output: [["a"]]
+
+Constraints:
+1 <= s.length <= 16
+s contains only lowercase English letters.
+
+</> Typescript Code:
+*/
+
+function partition(s: string): string[][] {
+  // Initialize the result array to store all possible palindrome partitions
+  const result: string[][] = [];
+
+  // Helper function to check if a substring is a palindrome
+  function isPalindrome(sub: string): boolean {
+      let left = 0;
+      let right = sub.length - 1;
+      // Check characters from both ends towards the center
+      while (left < right) {
+          if (sub[left] !== sub[right]) return false;
+          left++;
+          right--;
+      }
+      return true;
+  }
+
+  // Helper function for Depth-First Search (DFS)
+  function dfs(start: number, current: string[]): void {
+      // Base case: if the starting index reaches the end of the string, add the current partition to the result
+      if (start === s.length) {
+          result.push([...current]);
+          return;
+      }
+
+      // Iterate over possible end indices to create substrings
+      for (let end = start + 1; end <= s.length; end++) {
+          const substring = s.slice(start, end);
+          // If the substring is a palindrome, add it to the current partition
+          if (isPalindrome(substring)) {
+              current.push(substring);
+              // Recur with the next starting index
+              dfs(end, current);
+              // Backtrack to remove the last added substring
+              current.pop();
+          }
+      }
+  }
+
+  // Initialize DFS with starting index 0 and empty current partition
+  dfs(0, []);
+
+  // Return the result containing all possible palindrome partitions
+  return result;
+}
