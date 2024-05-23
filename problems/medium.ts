@@ -5365,37 +5365,37 @@ function partition(s: string): string[][] {
 
   // Helper function to check if a substring is a palindrome
   function isPalindrome(sub: string): boolean {
-      let left = 0;
-      let right = sub.length - 1;
-      // Check characters from both ends towards the center
-      while (left < right) {
-          if (sub[left] !== sub[right]) return false;
-          left++;
-          right--;
-      }
-      return true;
+    let left = 0;
+    let right = sub.length - 1;
+    // Check characters from both ends towards the center
+    while (left < right) {
+      if (sub[left] !== sub[right]) return false;
+      left++;
+      right--;
+    }
+    return true;
   }
 
   // Helper function for Depth-First Search (DFS)
   function dfs(start: number, current: string[]): void {
-      // Base case: if the starting index reaches the end of the string, add the current partition to the result
-      if (start === s.length) {
-          result.push([...current]);
-          return;
-      }
+    // Base case: if the starting index reaches the end of the string, add the current partition to the result
+    if (start === s.length) {
+      result.push([...current]);
+      return;
+    }
 
-      // Iterate over possible end indices to create substrings
-      for (let end = start + 1; end <= s.length; end++) {
-          const substring = s.slice(start, end);
-          // If the substring is a palindrome, add it to the current partition
-          if (isPalindrome(substring)) {
-              current.push(substring);
-              // Recur with the next starting index
-              dfs(end, current);
-              // Backtrack to remove the last added substring
-              current.pop();
-          }
+    // Iterate over possible end indices to create substrings
+    for (let end = start + 1; end <= s.length; end++) {
+      const substring = s.slice(start, end);
+      // If the substring is a palindrome, add it to the current partition
+      if (isPalindrome(substring)) {
+        current.push(substring);
+        // Recur with the next starting index
+        dfs(end, current);
+        // Backtrack to remove the last added substring
+        current.pop();
       }
+    }
   }
 
   // Initialize DFS with starting index 0 and empty current partition
@@ -5403,4 +5403,71 @@ function partition(s: string): string[][] {
 
   // Return the result containing all possible palindrome partitions
   return result;
+}
+
+/* 
+2597. The Number of Beautiful Subsets
+
+You are given an array nums of positive integers and a positive integer k.
+
+A subset of nums is beautiful if it does not contain two integers with an absolute difference equal to k.
+
+Return the number of non-empty beautiful subsets of the array nums.
+
+A subset of nums is an array that can be obtained by deleting some (possibly none) elements from nums. Two subsets are different if and only if the chosen indices to delete are different.
+
+Example 1:
+Input: nums = [2,4,6], k = 2
+Output: 4
+Explanation: The beautiful subsets of the array nums are: [2], [4], [6], [2, 6].
+It can be proved that there are only 4 beautiful subsets in the array [2,4,6].
+
+Example 2:
+Input: nums = [1], k = 1
+Output: 1
+Explanation: The beautiful subset of the array nums is [1].
+It can be proved that there is only 1 beautiful subset in the array [1].
+
+Constraints:
+1 <= nums.length <= 20
+1 <= nums[i], k <= 1000
+
+</> Typescript Code:
+*/
+
+function beautifulSubsets(nums: number[], k: number): number {
+  // Initialize the count of beautiful subsets
+  let count = 0;
+
+  // Array to hold the current subset
+  const subset: number[] = [];
+
+  // Helper function for Depth-First Search (DFS)
+  function dfs(index: number) {
+    // If we have considered all elements
+    if (index === nums.length) {
+      // If the subset is non-empty, increment the count
+      if (subset.length > 0) count++;
+      return;
+    }
+
+    // Recursive call without including the current element
+    dfs(index + 1);
+
+    // Check if adding the current element maintains the beautiful subset property
+    if (subset.every(num => Math.abs(num - nums[index]) !== k)) {
+      // Include the current element in the subset
+      subset.push(nums[index]);
+      // Recursive call including the current element
+      dfs(index + 1);
+      // Backtrack to remove the last added element
+      subset.pop();
+    }
+  }
+
+  // Start DFS with the first element
+  dfs(0);
+
+  // Return the total count of beautiful subsets
+  return count;
 }
