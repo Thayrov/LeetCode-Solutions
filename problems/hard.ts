@@ -1650,3 +1650,72 @@ function maxScoreWords(words: string[], letters: string[], score: number[]): num
   // Start the DFS with the first word, initial score of 0, and available letter counts
   return dfs(0, 0, letterCount);
 }
+
+/* 
+140. Word Break II
+
+Given a string s and a dictionary of strings wordDict, add spaces in s to construct a sentence where each word is a valid dictionary word. Return all such possible sentences in any order.
+
+Note that the same word in the dictionary may be reused multiple times in the segmentation.
+
+Example 1:
+Input: s = "catsanddog", wordDict = ["cat","cats","and","sand","dog"]
+Output: ["cats and dog","cat sand dog"]
+
+Example 2:
+Input: s = "pineapplepenapple", wordDict = ["apple","pen","applepen","pine","pineapple"]
+Output: ["pine apple pen apple","pineapple pen apple","pine applepen apple"]
+Explanation: Note that you are allowed to reuse a dictionary word.
+
+Example 3:
+Input: s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+Output: []
+
+Constraints:
+1 <= s.length <= 20
+1 <= wordDict.length <= 1000
+1 <= wordDict[i].length <= 10
+s and wordDict[i] consist of only lowercase English letters.
+All the strings of wordDict are unique.
+Input is generated in a way that the length of the answer doesn't exceed 10^5.
+
+</> Typescript Code:
+*/
+
+function wordBreak(s: string, wordDict: string[]): string[] {
+  // Convert wordDict to a set for faster lookup
+  const wordSet = new Set(wordDict);
+  // Memoization map to store intermediate results using number as key
+  const memo = new Map<number, string[]>();
+
+  // Helper function for backtracking
+  function backtrack(start: number): string[] {
+    // If start index reaches the end of the string, return an empty string
+    if (start === s.length) return [''];
+    // If result for this start index is already computed, return it
+    if (memo.has(start)) return memo.get(start)!;
+
+    // Array to store sentences formed from the current start index
+    const results: string[] = [];
+
+    // Iterate over all possible end indices
+    for (let end = start + 1; end <= s.length; end++) {
+      const word = s.slice(start, end);
+      // If the substring is a valid word, proceed to find sentences from the end index
+      if (wordSet.has(word)) {
+        const subResults = backtrack(end);
+        // Concatenate the current word with results from the end index
+        for (const sub of subResults) {
+          results.push(word + (sub ? ' ' + sub : ''));
+        }
+      }
+    }
+
+    // Memoize the results for the current start index
+    memo.set(start, results);
+    return results;
+  }
+
+  // Start backtracking from the beginning of the string
+  return backtrack(0);
+}
