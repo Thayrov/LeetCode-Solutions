@@ -5471,3 +5471,62 @@ function beautifulSubsets(nums: number[], k: number): number {
   // Return the total count of beautiful subsets
   return count;
 }
+
+/* 
+1208. Get Equal Substrings Within Budget
+
+You are given two strings s and t of the same length and an integer maxCost.
+
+You want to change s to t. Changing the ith character of s to ith character of t costs |s[i] - t[i]| (i.e., the absolute difference between the ASCII values of the characters).
+
+Return the maximum length of a substring of s that can be changed to be the same as the corresponding substring of t with a cost less than or equal to maxCost. If there is no substring from s that can be changed to its corresponding substring from t, return 0.
+
+Example 1:
+Input: s = "abcd", t = "bcdf", maxCost = 3
+Output: 3
+Explanation: "abc" of s can change to "bcd".
+That costs 3, so the maximum length is 3.
+
+Example 2:
+Input: s = "abcd", t = "cdef", maxCost = 3
+Output: 1
+Explanation: Each character in s costs 2 to change to character in t,  so the maximum length is 1.
+
+Example 3:
+Input: s = "abcd", t = "acde", maxCost = 0
+Output: 1
+Explanation: You cannot make any change, so the maximum length is 1.
+
+Constraints:
+1 <= s.length <= 10^5
+t.length == s.length
+0 <= maxCost <= 10^6
+s and t consist of only lowercase English letters.
+
+</> Typescript Code:
+*/
+
+function equalSubstring(s: string, t: string, maxCost: number): number {
+  // Initialize variables for the maximum length of the substring, current cost, and the starting index of the sliding window
+  let maxLength = 0,
+    currentCost = 0,
+    start = 0;
+
+  // Iterate over each character in the string 's' using the ending index of the sliding window
+  for (let end = 0; end < s.length; end++) {
+    // Calculate the cost of changing the current character in 's' to the corresponding character in 't'
+    currentCost += Math.abs(s.charCodeAt(end) - t.charCodeAt(end));
+
+    // If the current cost exceeds the allowed maximum cost, move the start index to the right to reduce the cost
+    while (currentCost > maxCost) {
+      currentCost -= Math.abs(s.charCodeAt(start) - t.charCodeAt(start));
+      start++;
+    }
+
+    // Update the maximum length of the substring that can be changed within the allowed cost
+    maxLength = Math.max(maxLength, end - start + 1);
+  }
+
+  // Return the maximum length of the valid substring
+  return maxLength;
+}
