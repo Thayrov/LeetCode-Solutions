@@ -5567,6 +5567,8 @@ Constraints:
 1 <= s.length <= 500
 s consists of characters '0' or '1'
 s[0] == '1'
+
+</> Typescript Code:
 */
 
 function numSteps(s: string): number {
@@ -5590,4 +5592,62 @@ function numSteps(s: string): number {
 
   // If there is a carry left, add one more step
   return steps + carry;
+}
+
+/* 
+1442. Count Triplets That Can Form Two Arrays of Equal XOR
+
+Given an array of integers arr.
+
+We want to select three indices i, j and k where (0 <= i < j <= k < arr.length).
+
+Let's define a and b as follows:
+
+a = arr[i] ^ arr[i + 1] ^ ... ^ arr[j - 1]
+b = arr[j] ^ arr[j + 1] ^ ... ^ arr[k]
+Note that ^ denotes the bitwise-xor operation.
+
+Return the number of triplets (i, j and k) Where a == b.
+
+Example 1:
+Input: arr = [2,3,1,6,7]
+Output: 4
+Explanation: The triplets are (0,1,2), (0,2,2), (2,3,4) and (2,4,4)
+
+Example 2:
+Input: arr = [1,1,1,1,1]
+Output: 10
+
+Constraints:
+1 <= arr.length <= 300
+1 <= arr[i] <= 10^8
+
+</> Typescript Code:
+*/
+
+function countTriplets(arr: number[]): number {
+  // Initialize the count of triplets
+  let count = 0;
+  const n = arr.length;
+
+  // Iterate over each possible starting index i
+  for (let i = 0; i < n; i++) {
+    // Initialize xor to 0 for the subarray starting at i
+    let xor = 0;
+
+    // Iterate over each possible ending index j
+    for (let j = i; j < n; j++) {
+      // Calculate the xor from index i to j
+      xor ^= arr[j];
+
+      // If xor is 0 and j is greater than i, then we found a valid triplet
+      if (xor === 0 && j > i) {
+        // Number of valid triplets is (j - i) since we can choose any k between i and j
+        count += j - i;
+      }
+    }
+  }
+
+  // Return the total count of triplets
+  return count;
 }
