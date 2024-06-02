@@ -2864,3 +2864,44 @@ function scoreOfString(s: string): number {
   // Return the total score
   return score;
 }
+
+/* 
+344. Reverse String
+
+Write a function that reverses a string. The input string is given as an array of characters s.
+
+You must do this by modifying the input array in-place with O(1) extra memory.
+
+Example 1:
+Input: s = ["h","e","l","l","o"]
+Output: ["o","l","l","e","h"]
+
+Example 2:
+Input: s = ["H","a","n","n","a","h"]
+Output: ["h","a","n","n","a","H"]
+
+Constraints:
+1 <= s.length <= 105
+s[i] is a printable ascii character.
+
+</> Typescript Code:
+*/
+
+/**
+  Do not return anything, modify s in-place instead.
+ */
+function reverseString(s: string[]): void {
+  // Initialize two pointers, one at the start of the array and one at the end
+  let left = 0;
+  let right = s.length - 1;
+
+  // Loop until the two pointers meet in the middle
+  while (left < right) {
+    // Swap the elements at the left and right pointers
+    [s[left], s[right]] = [s[right], s[left]];
+    // Move the left pointer towards the center
+    left++;
+    // Move the right pointer towards the center
+    right--;
+  }
+}
