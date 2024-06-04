@@ -2905,3 +2905,55 @@ function reverseString(s: string[]): void {
     right--;
   }
 }
+
+/* 
+409. Longest Palindrome
+
+Given a string s which consists of lowercase or uppercase letters, return the length of the longest 
+palindrome that can be built with those letters.
+
+Letters are case sensitive, for example, "Aa" is not considered a palindrome.
+
+Example 1:
+Input: s = "abccccdd"
+Output: 7
+Explanation: One longest palindrome that can be built is "dccaccd", whose length is 7.
+
+Example 2:
+Input: s = "a"
+Output: 1
+Explanation: The longest palindrome that can be built is "a", whose length is 1.
+
+Constraints:
+1 <= s.length <= 2000
+s consists of lowercase and/or uppercase English letters only.
+
+</> Typescript Code:
+*/
+
+function longestPalindrome(s: string): number {
+  // Initialize a map to count occurrences of each character
+  const charCount = new Map<string, number>();
+  // Count each character in the string
+  for (const char of s) {
+    charCount.set(char, (charCount.get(char) || 0) + 1);
+  }
+
+  let length = 0; // Variable to store the length of the longest palindrome
+  let hasOdd = false; // Flag to check if there is any character with an odd count
+
+  // Iterate through the character counts
+  for (const count of charCount.values()) {
+    if (count % 2 === 0) {
+      // If the count is even, it can fully contribute to the palindrome length
+      length += count;
+    } else {
+      // If the count is odd, use the even part and leave one character out
+      length += count - 1;
+      hasOdd = true;
+    }
+  }
+
+  // If there was any character with an odd count, we can place one odd character in the center
+  return hasOdd ? length + 1 : length;
+}
