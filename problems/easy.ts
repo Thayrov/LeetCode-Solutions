@@ -2957,3 +2957,57 @@ function longestPalindrome(s: string): number {
   // If there was any character with an odd count, we can place one odd character in the center
   return hasOdd ? length + 1 : length;
 }
+
+/* 
+1002. Find Common Characters
+
+Given a string array words, return an array of all characters that show up in all strings within the words (including duplicates). You may return the answer in any order.
+
+Example 1:
+Input: words = ["bella","label","roller"]
+Output: ["e","l","l"]
+
+Example 2:
+Input: words = ["cool","lock","cook"]
+Output: ["c","o"]
+
+Constraints:
+1 <= words.length <= 100
+1 <= words[i].length <= 100
+words[i] consists of lowercase English letters.
+
+</> Typescript Code:
+*/
+
+function commonChars(words: string[]): string[] {
+  // Initialize an array to keep track of the minimum frequency of each character in all words
+  const minFreq = new Array(26).fill(Infinity);
+
+  // Iterate over each word in the words array
+  for (const word of words) {
+    // Initialize a frequency array for the current word
+    const freq = new Array(26).fill(0);
+    // Count the frequency of each character in the current word
+    for (const char of word) {
+      freq[char.charCodeAt(0) - 97]++;
+    }
+    // Update the minimum frequency array with the current word's frequencies
+    for (let i = 0; i < 26; i++) {
+      minFreq[i] = Math.min(minFreq[i], freq[i]);
+    }
+  }
+
+  // Initialize the result array to store common characters
+  const result: string[] = [];
+  // Iterate over the minimum frequency array
+  for (let i = 0; i < 26; i++) {
+    // Add the character to the result array the number of times it appears in all words
+    while (minFreq[i] > 0) {
+      result.push(String.fromCharCode(i + 97));
+      minFreq[i]--;
+    }
+  }
+
+  // Return the result array containing common characters
+  return result;
+}
