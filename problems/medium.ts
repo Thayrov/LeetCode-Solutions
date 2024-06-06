@@ -5760,3 +5760,59 @@ function appendCharacters(s: string, t: string): number {
   // The number of characters needed to be appended to s is the remaining length of t
   return t.length - i;
 }
+
+/* 
+846. Hand of Straights
+
+Alice has some number of cards and she wants to rearrange the cards into groups so that each group is of size groupSize, and consists of groupSize consecutive cards.
+Given an integer array hand where hand[i] is the value written on the ith card and an integer groupSize, return true if she can rearrange the cards, or false otherwise.
+
+Example 1:
+Input: hand = [1,2,3,6,2,3,4,7,8], groupSize = 3
+Output: true
+Explanation: Alice's hand can be rearranged as [1,2,3],[2,3,4],[6,7,8]
+
+Example 2:
+Input: hand = [1,2,3,4,5], groupSize = 4
+Output: false
+Explanation: Alice's hand can not be rearranged into groups of 4.
+
+Constraints:
+1 <= hand.length <= 10^4
+0 <= hand[i] <= 10^9
+1 <= groupSize <= hand.length
+
+</> Typescript Code:
+*/
+
+function isNStraightHand(hand: number[], groupSize: number): boolean {
+  // Check if the hand can be evenly divided into groups of groupSize
+  if (hand.length % groupSize !== 0) return false;
+
+  // Create a map to count the occurrences of each card
+  const countMap = new Map<number, number>();
+  for (const card of hand) {
+    countMap.set(card, (countMap.get(card) || 0) + 1);
+  }
+
+  // Sort the hand to facilitate grouping of consecutive cards
+  const sortedHand = hand.slice().sort((a, b) => a - b);
+  for (const card of sortedHand) {
+    // If the current card is still available in the map
+    if (countMap.get(card)! > 0) {
+      // Attempt to create a group of consecutive cards starting from the current card
+      for (let i = 0; i < groupSize; i++) {
+        const currentCard = card + i;
+        // Check if the current card is available and has enough count
+        if (countMap.get(currentCard) === undefined || countMap.get(currentCard)! <= 0) {
+          return false; // Return false if we can't form a valid group
+        }
+        // Decrease the count of the current card in the map
+        countMap.set(currentCard, countMap.get(currentCard)! - 1);
+      }
+    }
+  }
+
+  // Return true if all cards can be grouped as required
+  return true;
+}
