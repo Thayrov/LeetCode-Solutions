@@ -6103,3 +6103,36 @@ function minIncrementForUnique(nums: number[]): number {
   // Return the total number of moves
   return moves;
 }
+
+/* 
+633. Sum of Square Numbers
+
+Given a non-negative integer c, decide whether there're two integers a and b such that a2 + b2 = c.
+
+Example 1:
+Input: c = 5
+Output: true
+Explanation: 1 * 1 + 2 * 2 = 5
+
+Example 2:
+Input: c = 3
+Output: false
+
+Constraints:
+0 <= c <= 2^31 - 1
+
+*/
+
+function judgeSquareSum(c: number): boolean {
+  // Iterate through possible values of 'a' starting from 0
+  for (let a = 0; a * a <= c; a++) {
+    // Calculate 'b' such that a^2 + b^2 = c
+    const b = Math.sqrt(c - a * a);
+    // Check if 'b' is an integer
+    if (b === Math.floor(b)) {
+      return true; // If 'b' is an integer, return true
+    }
+  }
+  // If no such pair (a, b) is found, return false
+  return false;
+}
