@@ -6121,6 +6121,7 @@ Output: false
 Constraints:
 0 <= c <= 2^31 - 1
 
+</> Typescript Code:
 */
 
 function judgeSquareSum(c: number): boolean {
@@ -6135,4 +6136,60 @@ function judgeSquareSum(c: number): boolean {
   }
   // If no such pair (a, b) is found, return false
   return false;
+}
+
+/* 
+826. Most Profit Assigning Work
+
+You have n jobs and m workers. You are given three arrays: difficulty, profit, and worker where: difficulty[i] and profit[i] are the difficulty and the profit of the ith job, and
+worker[j] is the ability of jth worker (i.e., the jth worker can only complete a job with difficulty at most worker[j]).
+Every worker can be assigned at most one job, but one job can be completed multiple times.
+
+For example, if three workers attempt the same job that pays $1, then the total profit will be $3. If a worker cannot complete any job, their profit is $0.
+Return the maximum profit we can achieve after assigning the workers to the jobs.
+
+Example 1:
+Input: difficulty = [2,4,6,8,10], profit = [10,20,30,40,50], worker = [4,5,6,7]
+Output: 100
+Explanation: Workers are assigned jobs of difficulty [4,4,6,6] and they get a profit of [20,20,30,30] separately.
+
+Example 2:
+Input: difficulty = [85,47,57], profit = [24,66,99], worker = [40,25,25]
+Output: 0
+
+Constraints:
+n == difficulty.length
+n == profit.length
+m == worker.length
+1 <= n, m <= 10^4
+1 <= difficulty[i], profit[i], worker[i] <= 105
+
+</> Typescript Code:
+*/
+
+function maxProfitAssignment(difficulty: number[], profit: number[], worker: number[]): number {
+  // Combine difficulty and profit into a single array of jobs
+  const jobs = difficulty.map((d, i) => [d, profit[i]]);
+  // Sort the jobs based on difficulty in ascending order
+  jobs.sort((a, b) => a[0] - b[0]);
+  // Sort the workers based on their ability in ascending order
+  worker.sort((a, b) => a - b);
+
+  let maxProfit = 0; // Initialize the total maximum profit to 0
+  let best = 0; // Initialize the best profit that can be achieved so far
+  let i = 0; // Initialize the index to traverse the jobs
+
+  // Iterate through each worker based on their ability
+  for (const ability of worker) {
+    // Update the best profit for the current worker's ability
+    while (i < jobs.length && ability >= jobs[i][0]) {
+      best = Math.max(best, jobs[i][1]);
+      i++;
+    }
+    // Add the best profit to the total maximum profit
+    maxProfit += best;
+  }
+
+  // Return the total maximum profit after assigning all workers
+  return maxProfit;
 }
