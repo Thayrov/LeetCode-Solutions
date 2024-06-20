@@ -6280,3 +6280,73 @@ function minDays(bloomDay: number[], m: number, k: number): number {
 
   return left; // The minimum number of days required
 }
+
+/* 
+1552. Magnetic Force Between Two Balls
+
+In the universe Earth C-137, Rick discovered a special form of magnetic force between two balls if they are put in his new invented basket. Rick has n empty baskets, the ith basket is at position[i], Morty has m balls and needs to distribute the balls into the baskets such that the minimum magnetic force between any two balls is maximum.
+
+Rick stated that magnetic force between two different balls at positions x and y is |x - y|.
+
+Given the integer array position and the integer m. Return the required force.
+
+Example 1:
+Input: position = [1,2,3,4,7], m = 3
+Output: 3
+Explanation: Distributing the 3 balls into baskets 1, 4 and 7 will make the magnetic force between ball pairs [3, 3, 6]. The minimum magnetic force is 3. We cannot achieve a larger minimum magnetic force than 3.
+
+Example 2:
+Input: position = [5,4,3,2,1,1000000000], m = 2
+Output: 999999999
+Explanation: We can use baskets 1 and 1000000000.
+
+Constraints:
+n == position.length
+2 <= n <= 10^5
+1 <= position[i] <= 10^9
+All integers in position are distinct.
+2 <= m <= position.length
+
+</> Typescript Code:
+*/
+
+function maxDistance(position: number[], m: number): number {
+  // Sort the basket positions in ascending order
+  position.sort((a, b) => a - b);
+
+  // Helper function to check if we can place 'm' balls with at least 'minDist' distance apart
+  const canPlaceBalls = (minDist: number): boolean => {
+    let count = 1; // Place the first ball in the first basket
+    let lastPos = position[0]; // Track the position of the last placed ball
+
+    // Iterate through the remaining basket positions
+    for (let i = 1; i < position.length; i++) {
+      // If the current basket position is at least 'minDist' away from the last placed ball
+      if (position[i] - lastPos >= minDist) {
+        count++; // Place a ball in the current basket
+        lastPos = position[i]; // Update the position of the last placed ball
+        if (count === m) return true; // If we've placed all 'm' balls, return true
+      }
+    }
+    return false; // Return false if we cannot place all 'm' balls with the given minimum distance
+  };
+
+  // Initialize the binary search range
+  let left = 1; // Minimum possible distance
+  let right = position[position.length - 1] - position[0]; // Maximum possible distance
+  let result = 0;
+
+  // Perform binary search to find the maximum minimum distance
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2); // Calculate the midpoint of the current range
+    if (canPlaceBalls(mid)) {
+      // Check if we can place balls with at least 'mid' distance apart
+      result = mid; // Update the result with the current midpoint
+      left = mid + 1; // Move to the right half to find a larger minimum distance
+    } else {
+      right = mid - 1; // Move to the left half to find a smaller minimum distance
+    }
+  }
+
+  return result; // Return the maximum minimum distance found
+}
