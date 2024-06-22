@@ -6412,3 +6412,50 @@ function maxSatisfied(customers: number[], grumpy: number[], minutes: number): n
   // Return the sum of always satisfied customers and the best additional satisfied customers
   return totalSatisfied + maxAdditionalSatisfied;
 }
+
+/* 
+1248. Count Number of Nice Subarrays
+
+Given an array of integers nums and an integer k. A continuous subarray is called nice if there are k odd numbers on it.
+
+Return the number of nice sub-arrays.
+
+Example 1:
+Input: nums = [1,1,2,1,1], k = 3
+Output: 2
+Explanation: The only sub-arrays with 3 odd numbers are [1,1,2,1] and [1,2,1,1].
+
+Example 2:
+Input: nums = [2,4,6], k = 1
+Output: 0
+Explanation: There are no odd numbers in the array.
+
+Example 3:
+Input: nums = [2,2,2,1,2,2,1,2,2,2], k = 2
+Output: 16
+
+Constraints:
+1 <= nums.length <= 50000
+1 <= nums[i] <= 10^5
+1 <= k <= nums.length
+
+</> Typescript Code:
+*/
+
+function numberOfSubarrays(nums: number[], k: number): number {
+  let count = 0; // Initialize the count of nice subarrays
+  let prefixCounts = new Map<number, number>(); // Map to store counts of odd numbers encountered
+  prefixCounts.set(0, 1); // Base case to handle subarrays starting from the beginning
+  let oddCount = 0; // Counter for the number of odd numbers
+
+  for (let num of nums) {
+    // Iterate through each number in the array
+    if (num % 2 !== 0) oddCount++; // Increment oddCount if the number is odd
+    if (prefixCounts.has(oddCount - k))
+      // Check if there is a prefix with (oddCount - k) odds
+      count += prefixCounts.get(oddCount - k) ?? 0; // Add the number of such prefixes to the count
+    prefixCounts.set(oddCount, (prefixCounts.get(oddCount) || 0) + 1); // Update the map with the current oddCount
+  }
+
+  return count; // Return the total count of nice subarrays
+}
