@@ -6459,3 +6459,76 @@ function numberOfSubarrays(nums: number[], k: number): number {
 
   return count; // Return the total count of nice subarrays
 }
+
+/* 
+1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+
+Given an array of integers nums and an integer limit, return the size of the longest non-empty subarray such that the absolute difference between any two elements of this subarray is less than or equal to limit.
+
+Example 1:
+Input: nums = [8,2,4,7], limit = 4
+Output: 2 
+Explanation: All subarrays are: 
+[8] with maximum absolute diff |8-8| = 0 <= 4.
+[8,2] with maximum absolute diff |8-2| = 6 > 4. 
+[8,2,4] with maximum absolute diff |8-2| = 6 > 4.
+[8,2,4,7] with maximum absolute diff |8-2| = 6 > 4.
+[2] with maximum absolute diff |2-2| = 0 <= 4.
+[2,4] with maximum absolute diff |2-4| = 2 <= 4.
+[2,4,7] with maximum absolute diff |2-7| = 5 > 4.
+[4] with maximum absolute diff |4-4| = 0 <= 4.
+[4,7] with maximum absolute diff |4-7| = 3 <= 4.
+[7] with maximum absolute diff |7-7| = 0 <= 4. 
+Therefore, the size of the longest subarray is 2.
+
+Example 2:
+Input: nums = [10,1,2,4,7,2], limit = 5
+Output: 4 
+Explanation: The subarray [2,4,7,2] is the longest since the maximum absolute diff is |2-7| = 5 <= 5.
+
+Example 3:
+Input: nums = [4,2,2,2,4,4,2,2], limit = 0
+Output: 3
+
+Constraints:
+1 <= nums.length <= 10^5
+1 <= nums[i] <= 10^9
+0 <= limit <= 10^9
+
+</> Typescript Code:
+*/
+
+function longestSubarray(nums: number[], limit: number): number {
+  let maxDeque: number[] = []; // Deque to store indices of the current window's max values
+  let minDeque: number[] = []; // Deque to store indices of the current window's min values
+  let left = 0; // Left pointer for the sliding window
+  let result = 0; // Variable to keep track of the longest subarray length
+
+  for (let right = 0; right < nums.length; right++) {
+    // Iterate through the array with the right pointer
+    // Maintain the maxDeque to always have the maximum element at the front
+    while (maxDeque.length && nums[maxDeque[maxDeque.length - 1]] <= nums[right]) {
+      maxDeque.pop();
+    }
+    // Maintain the minDeque to always have the minimum element at the front
+    while (minDeque.length && nums[minDeque[minDeque.length - 1]] >= nums[right]) {
+      minDeque.pop();
+    }
+
+    maxDeque.push(right); // Add the current element's index to the maxDeque
+    minDeque.push(right); // Add the current element's index to the minDeque
+
+    // If the current window's absolute difference exceeds the limit, shrink the window from the left
+    while (nums[maxDeque[0]] - nums[minDeque[0]] > limit) {
+      left++; // Move the left pointer to the right
+      // Remove indices from the deques if they are out of the current window
+      if (maxDeque[0] < left) maxDeque.shift();
+      if (minDeque[0] < left) minDeque.shift();
+    }
+
+    // Update the result with the maximum window size found
+    result = Math.max(result, right - left + 1);
+  }
+
+  return result; // Return the length of the longest subarray
+}
