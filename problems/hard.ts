@@ -1985,3 +1985,117 @@ function minKBitFlips(nums: number[], k: number): number {
 
   return result; // Return the minimum number of flips required
 }
+
+/* 
+1579. Remove Max Number of Edges to Keep Graph Fully Traversable
+
+Alice and Bob have an undirected graph of n nodes and three types of edges:
+
+Type 1: Can be traversed by Alice only.
+Type 2: Can be traversed by Bob only.
+Type 3: Can be traversed by both Alice and Bob.
+Given an array edges where edges[i] = [typei, ui, vi] represents a bidirectional edge of type typei between nodes ui and vi, find the maximum number of edges you can remove so that after removing the edges, the graph can still be fully traversed by both Alice and Bob. The graph is fully traversed by Alice and Bob if starting from any node, they can reach all other nodes.
+
+Return the maximum number of edges you can remove, or return -1 if Alice and Bob cannot fully traverse the graph.
+
+Example 1:
+Input: n = 4, edges = [[3,1,2],[3,2,3],[1,1,3],[1,2,4],[1,1,2],[2,3,4]]
+Output: 2
+Explanation: If we remove the 2 edges [1,1,2] and [1,1,3]. The graph will still be fully traversable by Alice and Bob. Removing any additional edge will not make it so. So the maximum number of edges we can remove is 2.
+
+Example 2:
+Input: n = 4, edges = [[3,1,2],[3,2,3],[1,1,4],[2,1,4]]
+Output: 0
+Explanation: Notice that removing any edge will not make the graph fully traversable by Alice and Bob.
+
+Example 3:
+Input: n = 4, edges = [[3,2,3],[1,1,2],[2,3,4]]
+Output: -1
+Explanation: In the current graph, Alice cannot reach node 4 from the other nodes. Likewise, Bob cannot reach 1. Therefore it's impossible to make the graph fully traversable.
+
+Constraints:
+1 <= n <= 10^5
+1 <= edges.length <= min(105, 3 * n * (n - 1) / 2)
+edges[i].length == 3
+1 <= typei <= 3
+1 <= ui < vi <= n
+All tuples (typei, ui, vi) are distinct.
+
+</> Typescript Code:
+*/
+
+function maxNumEdgesToRemove(n: number, edges: number[][]): number {
+  class UnionFind {
+    parent: number[];
+    rank: number[];
+
+    constructor(size: number) {
+      this.parent = Array.from({length: size}, (_, i) => i); // Initialize parent array
+      this.rank = new Array(size).fill(0); // Initialize rank array
+    }
+
+    find(x: number): number {
+      if (this.parent[x] !== x) {
+        this.parent[x] = this.find(this.parent[x]); // Path compression
+      }
+      return this.parent[x];
+    }
+
+    union(x: number, y: number): boolean {
+      const rootX = this.find(x);
+      const rootY = this.find(y);
+
+      if (rootX === rootY) return false; // They are already connected
+
+      if (this.rank[rootX] > this.rank[rootY]) {
+        this.parent[rootY] = rootX; // Attach smaller tree under root of larger tree
+      } else if (this.rank[rootX] < this.rank[rootY]) {
+        this.parent[rootX] = rootY;
+      } else {
+        this.parent[rootY] = rootX; // If ranks are equal, make one root and increase its rank
+        this.rank[rootX]++;
+      }
+      return true;
+    }
+
+    isConnected(x: number, y: number): boolean {
+      return this.find(x) === this.find(y); // Check if two nodes are connected
+    }
+  }
+
+  const aliceUF = new UnionFind(n + 1); // UnionFind for Alice
+  const bobUF = new UnionFind(n + 1); // UnionFind for Bob
+  let usedEdges = 0; // Count of edges used
+
+  // Process type 3 edges first
+  for (const [type, u, v] of edges) {
+    if (type === 3) {
+      if (aliceUF.union(u, v)) {
+        bobUF.union(u, v); // Union in both Alice's and Bob's graph
+        usedEdges++;
+      }
+    }
+  }
+
+  // Process type 1 and 2 edges
+  for (const [type, u, v] of edges) {
+    if (type === 1) {
+      if (aliceUF.union(u, v)) {
+        usedEdges++; // Union in Alice's graph
+      }
+    } else if (type === 2) {
+      if (bobUF.union(u, v)) {
+        usedEdges++; // Union in Bob's graph
+      }
+    }
+  }
+
+  // Check if both Alice's and Bob's graphs are fully traversable
+  for (let i = 1; i <= n; i++) {
+    if (!aliceUF.isConnected(1, i) || !bobUF.isConnected(1, i)) {
+      return -1; // If not, return -1
+    }
+  }
+
+  return edges.length - usedEdges; // Return the maximum number of edges that can be removed
+}
