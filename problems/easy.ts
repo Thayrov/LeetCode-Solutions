@@ -3262,3 +3262,58 @@ function threeConsecutiveOdds(arr: number[]): boolean {
   }
   return false; // Return false if no three consecutive odd numbers are found
 }
+
+/* 
+350. Intersection of Two Arrays II
+
+Given two integer arrays nums1 and nums2, return an array of their intersection. Each element in the result must appear as many times as it shows in both arrays and you may return the result in any order.
+
+Example 1:
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2,2]
+
+Example 2:
+Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+Output: [4,9]
+Explanation: [9,4] is also accepted.
+
+Constraints:
+1 <= nums1.length, nums2.length <= 1000
+0 <= nums1[i], nums2[i] <= 1000
+
+Follow up:
+What if the given array is already sorted? How would you optimize your algorithm?
+What if nums1's size is small compared to nums2's size? Which algorithm is better?
+What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
+
+</> Typescript Code:
+*/
+
+function intersect(nums1: number[], nums2: number[]): number[] {
+  // Create a map to count occurrences of each number in nums1
+  const countMap = new Map<number, number>();
+  // Initialize an array to store the intersection result
+  const result: number[] = [];
+
+  // Populate the map with counts of each number in nums1
+  for (const num of nums1) {
+    // Get the current count of num or set it to 0 if it doesn't exist, then increment by 1
+    countMap.set(num, (countMap.get(num) || 0) + 1);
+  }
+
+  // Iterate through nums2 to find common elements
+  for (const num of nums2) {
+    // Get the count of the current number from the map
+    const count = countMap.get(num);
+    // If the number is in the map and its count is greater than 0
+    if (count && count > 0) {
+      // Add the number to the result array
+      result.push(num);
+      // Decrement the count of the number in the map
+      countMap.set(num, count - 1);
+    }
+  }
+
+  // Return the result array containing the intersection of nums1 and nums2
+  return result;
+}
