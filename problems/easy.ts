@@ -3410,3 +3410,70 @@ function numWaterBottles(numBottles: number, numExchange: number): number {
   // Return the total number of bottles we can drink
   return totalBottles;
 }
+
+/* 
+1598. Crawler Log Folder
+
+The Leetcode file system keeps a log each time some user performs a change folder operation.
+
+The operations are described below:
+
+"../" : Move to the parent folder of the current folder. (If you are already in the main folder, remain in the same folder).
+"./" : Remain in the same folder.
+"x/" : Move to the child folder named x (This folder is guaranteed to always exist).
+You are given a list of strings logs where logs[i] is the operation performed by the user at the ith step.
+
+The file system starts in the main folder, then the operations in logs are performed.
+
+Return the minimum number of operations needed to go back to the main folder after the change folder operations.
+
+Example 1:
+Input: logs = ["d1/","d2/","../","d21/","./"]
+Output: 2
+Explanation: Use this change folder operation "../" 2 times and go back to the main folder.
+
+Example 2:
+Input: logs = ["d1/","d2/","./","d3/","../","d31/"]
+Output: 3
+
+Example 3:
+Input: logs = ["d1/","../","../","../"]
+Output: 0
+
+
+Constraints:
+1 <= logs.length <= 10^3
+2 <= logs[i].length <= 10
+logs[i] contains lowercase English letters, digits, '.', and '/'.
+logs[i] follows the format described in the statement.
+Folder names consist of lowercase English letters and digits.
+
+</> Typescript Code:
+*/
+
+function minOperations(logs: string[]): number {
+  // Initialize depth to keep track of current folder level
+  let depth = 0;
+
+  // Iterate through each log entry
+  for (const log of logs) {
+    // If the log entry is to move to the parent folder
+    if (log === '../') {
+      // Decrease depth if we are not already at the root level
+      if (depth > 0) depth--;
+    }
+    // If the log entry is to remain in the same folder
+    else if (log === './') {
+      // Do nothing
+      continue;
+    }
+    // If the log entry is to move to a child folder
+    else {
+      // Increase depth to indicate moving into a subfolder
+      depth++;
+    }
+  }
+
+  // Return the number of operations needed to return to the main folder
+  return depth;
+}
