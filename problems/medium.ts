@@ -7456,3 +7456,71 @@ function getDirections(root: TreeNode | null, startValue: number, destValue: num
   // Construct the result: 'U' for going up from startValue to the common ancestor, and then follow the path to destValue
   return 'U'.repeat(startPath.length - i) + destPath.slice(i).join('');
 }
+
+/* 
+1110. Delete Nodes And Return Forest
+
+Given the root of a binary tree, each node in the tree has a distinct value.
+
+After deleting all nodes with a value in to_delete, we are left with a forest (a disjoint union of trees).
+
+Return the roots of the trees in the remaining forest. You may return the result in any order.
+
+Example 1:
+Input: root = [1,2,3,4,5,6,7], to_delete = [3,5]
+Output: [[1,2,null,4],[6],[7]]
+
+Example 2:
+Input: root = [1,2,4,null,3], to_delete = [3]
+Output: [[1,2,4]]
+
+Constraints:
+The number of nodes in the given tree is at most 1000.
+Each node has a distinct value between 1 and 1000.
+to_delete.length <= 1000
+to_delete contains distinct values between 1 and 1000.
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function delNodes(root: TreeNode | null, to_delete: number[]): Array<TreeNode | null> {
+  // Convert the list of nodes to delete into a set for O(1) look-up times.
+  const toDeleteSet = new Set(to_delete);
+  // Initialize the result array to store the roots of the remaining trees.
+  const result: Array<TreeNode | null> = [];
+
+  // Helper function to traverse the tree.
+  function traverse(node: TreeNode | null, isRoot: boolean): TreeNode | null {
+    // Base case: if the node is null, return null.
+    if (!node) return null;
+    // Determine if the current node should be deleted.
+    const shouldDelete = toDeleteSet.has(node.val);
+    // If the node is a root and should not be deleted, add it to the result.
+    if (isRoot && !shouldDelete) result.push(node);
+    // Recursively traverse the left subtree. If the current node is deleted, the child nodes are new roots.
+    node.left = traverse(node.left, shouldDelete);
+    // Recursively traverse the right subtree. If the current node is deleted, the child nodes are new roots.
+    node.right = traverse(node.right, shouldDelete);
+    // Return null if the current node should be deleted; otherwise, return the current node.
+    return shouldDelete ? null : node;
+  }
+
+  // Start the traversal from the root, considering it as a potential root of a new tree.
+  traverse(root, true);
+  // Return the roots of the remaining trees.
+  return result;
+}
