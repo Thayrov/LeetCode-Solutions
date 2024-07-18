@@ -7524,3 +7524,83 @@ function delNodes(root: TreeNode | null, to_delete: number[]): Array<TreeNode | 
   // Return the roots of the remaining trees.
   return result;
 }
+
+/* 
+1530. Number of Good Leaf Nodes Pairs
+
+You are given the root of a binary tree and an integer distance. A pair of two different leaf nodes of a binary tree is said to be good if the length of the shortest path between them is less than or equal to distance.
+
+Return the number of good leaf node pairs in the tree.
+
+Example 1:
+Input: root = [1,2,3,null,4], distance = 3
+Output: 1
+Explanation: The leaf nodes of the tree are 3 and 4 and the length of the shortest path between them is 3. This is the only good pair.
+
+Example 2:
+Input: root = [1,2,3,4,5,6,7], distance = 3
+Output: 2
+Explanation: The good pairs are [4,5] and [6,7] with shortest path = 2. The pair [4,6] is not good because the length of ther shortest path between them is 4.
+
+Example 3:
+Input: root = [7,1,4,6,null,5,3,null,null,null,null,null,2], distance = 3
+Output: 1
+Explanation: The only good pair is [2,5].
+
+Constraints:
+The number of nodes in the tree is in the range [1, 210].
+1 <= Node.val <= 100
+1 <= distance <= 10
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function countPairs(root: TreeNode | null, distance: number): number {
+  let count = 0; // Initialize the count of good pairs to 0
+
+  // Depth-first search (DFS) function that returns an array of distances to leaf nodes
+  function dfs(node: TreeNode | null): number[] {
+    if (!node) return []; // Return empty array for null nodes
+    if (!node.left && !node.right) return [1]; // Return [1] for leaf nodes (distance from leaf to itself is 1)
+
+    const leftDistances = dfs(node.left); // Get distances from the left subtree
+    const rightDistances = dfs(node.right); // Get distances from the right subtree
+
+    // Check pairs from left and right subtrees
+    for (let l of leftDistances) {
+      for (let r of rightDistances) {
+        if (l + r <= distance) {
+          count++; // Increment count if the sum of distances is within the given distance
+        }
+      }
+    }
+
+    const distances: number[] = [];
+    // Collect updated distances from left subtree
+    for (let l of leftDistances) {
+      if (l + 1 < distance) distances.push(l + 1); // Increment distances by 1 and check if within the limit
+    }
+    // Collect updated distances from right subtree
+    for (let r of rightDistances) {
+      if (r + 1 < distance) distances.push(r + 1); // Increment distances by 1 and check if within the limit
+    }
+    return distances; // Return the updated distances
+  }
+
+  dfs(root); // Start DFS from the root
+  return count; // Return the final count of good pairs
+}
