@@ -3477,3 +3477,65 @@ function minOperations(logs: string[]): number {
   // Return the number of operations needed to return to the main folder
   return depth;
 }
+
+/* 
+1380. Lucky Numbers in a Matrix
+
+Given an m x n matrix of distinct numbers, return all lucky numbers in the matrix in any order.
+
+A lucky number is an element of the matrix such that it is the minimum element in its row and maximum in its column.
+
+Example 1:
+Input: matrix = [[3,7,8],[9,11,13],[15,16,17]]
+Output: [15]
+Explanation: 15 is the only lucky number since it is the minimum in its row and the maximum in its column.
+
+Example 2:
+Input: matrix = [[1,10,4,2],[9,3,8,7],[15,16,17,12]]
+Output: [12]
+Explanation: 12 is the only lucky number since it is the minimum in its row and the maximum in its column.
+
+Example 3:
+Input: matrix = [[7,8],[1,2]]
+Output: [7]
+Explanation: 7 is the only lucky number since it is the minimum in its row and the maximum in its column.
+
+Constraints:
+m == mat.length
+n == mat[i].length
+1 <= n, m <= 50
+1 <= matrix[i][j] <= 10^5.
+All elements in the matrix are distinct.
+
+</> Typescript Code:
+*/
+
+function luckyNumbers(matrix: number[][]): number[] {
+  // Find the minimum value in each row
+  const minRowValues = matrix.map(row => Math.min(...row));
+
+  // Initialize an array to store the maximum values in each column
+  const maxColValues = Array(matrix[0].length).fill(Number.MIN_SAFE_INTEGER);
+
+  // Traverse each column to find the maximum value in each column
+  for (let col = 0; col < matrix[0].length; col++) {
+    for (let row = 0; row < matrix.length; row++) {
+      maxColValues[col] = Math.max(maxColValues[col], matrix[row][col]);
+    }
+  }
+
+  // Array to store the lucky numbers
+  const luckyNumbers: number[] = [];
+
+  // Traverse the matrix to find elements that are both minimum in their row and maximum in their column
+  for (let row = 0; row < matrix.length; row++) {
+    for (let col = 0; col < matrix[0].length; col++) {
+      if (matrix[row][col] === minRowValues[row] && matrix[row][col] === maxColValues[col]) {
+        luckyNumbers.push(matrix[row][col]);
+      }
+    }
+  }
+
+  // Return the array of lucky numbers
+  return luckyNumbers;
+}
