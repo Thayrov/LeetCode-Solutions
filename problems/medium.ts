@@ -7673,3 +7673,86 @@ function mapNumber(num: number, mapping: number[]): number {
 
   return parseInt(mappedStr); // Convert mapped string back to integer and return
 }
+
+/* 912. Sort an Array
+
+Given an array of integers nums, sort the array in ascending order and return it.
+
+You must solve the problem without using any built-in functions in O(nlog(n)) time complexity and with the smallest space complexity possible.
+
+Example 1:
+Input: nums = [5,2,3,1]
+Output: [1,2,3,5]
+Explanation: After sorting the array, the positions of some numbers are not changed (for example, 2 and 3), while the positions of other numbers are changed (for example, 1 and 5).
+
+Example 2:
+Input: nums = [5,1,1,2,0,0]
+Output: [0,0,1,1,2,5]
+Explanation: Note that the values of nums are not necessairly unique.
+
+Constraints:
+1 <= nums.length <= 5 * 10^4
+-5 * 104 <= nums[i] <= 5 * 10^4
+
+</> Typescript Code:
+*/
+
+function sortArray(nums: number[]): number[] {
+  // Base case: If the array has 0 or 1 element, it's already sorted
+  if (nums.length <= 1) {
+    return nums;
+  }
+
+  // Helper function to perform merge sort
+  const mergeSort = (arr: number[]): number[] => {
+    // Base case: if the array has 1 or no elements, it's already sorted
+    if (arr.length <= 1) {
+      return arr;
+    }
+
+    // Find the middle index
+    const mid = Math.floor(arr.length / 2);
+    // Split the array into left and right halves
+    const left = arr.slice(0, mid);
+    const right = arr.slice(mid);
+
+    // Recursively sort both halves and merge them
+    return merge(mergeSort(left), mergeSort(right));
+  };
+
+  // Helper function to merge two sorted arrays
+  const merge = (left: number[], right: number[]): number[] => {
+    const sortedArray: number[] = [];
+    let i = 0;
+    let j = 0;
+
+    // Merge elements from left and right arrays in sorted order
+    while (i < left.length && j < right.length) {
+      if (left[i] < right[j]) {
+        sortedArray.push(left[i]);
+        i++;
+      } else {
+        sortedArray.push(right[j]);
+        j++;
+      }
+    }
+
+    // If there are remaining elements in the left array, add them
+    while (i < left.length) {
+      sortedArray.push(left[i]);
+      i++;
+    }
+
+    // If there are remaining elements in the right array, add them
+    while (j < right.length) {
+      sortedArray.push(right[j]);
+      j++;
+    }
+
+    // Return the merged sorted array
+    return sortedArray;
+  };
+
+  // Initial call to merge sort to start the sorting process
+  return mergeSort(nums);
+}
