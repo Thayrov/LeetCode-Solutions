@@ -3741,3 +3741,65 @@ function countSeniors(details: string[]): number {
     return age > 60 ? count + 1 : count;
   }, 0); // Initial count is 0
 }
+
+/* 
+1460. Make Two Arrays Equal by Reversing Subarrays
+
+You are given two integer arrays of equal length target and arr. In one step, you can select any non-empty subarray of arr and reverse it. You are allowed to make any number of steps.
+
+Return true if you can make arr equal to target or false otherwise.
+
+Example 1:
+Input: target = [1,2,3,4], arr = [2,4,1,3]
+Output: true
+Explanation: You can follow the next steps to convert arr to target:
+1- Reverse subarray [2,4,1], arr becomes [1,4,2,3]
+2- Reverse subarray [4,2], arr becomes [1,2,4,3]
+3- Reverse subarray [4,3], arr becomes [1,2,3,4]
+There are multiple ways to convert arr to target, this is not the only way to do so.
+
+Example 2:
+Input: target = [7], arr = [7]
+Output: true
+Explanation: arr is equal to target without any reverses.
+
+Example 3:
+Input: target = [3,7,9], arr = [3,7,11]
+Output: false
+Explanation: arr does not have value 9 and it can never be converted to target.
+
+Constraints:
+target.length == arr.length
+1 <= target.length <= 1000
+1 <= target[i] <= 1000
+1 <= arr[i] <= 1000
+
+</> Typescript Code:
+*/
+
+function canBeEqual(target: number[], arr: number[]): boolean {
+  // Check if the lengths of the arrays are different
+  if (target.length !== arr.length) return false;
+
+  // Create maps to count occurrences of each number in target and arr
+  const targetCount = new Map<number, number>();
+  const arrCount = new Map<number, number>();
+
+  // Count occurrences of each number in target array
+  for (const num of target) {
+    targetCount.set(num, (targetCount.get(num) || 0) + 1);
+  }
+
+  // Count occurrences of each number in arr array
+  for (const num of arr) {
+    arrCount.set(num, (arrCount.get(num) || 0) + 1);
+  }
+
+  // Compare counts of each number in target and arr
+  for (const [key, value] of targetCount) {
+    if (arrCount.get(key) !== value) return false;
+  }
+
+  // If all counts match, the arrays can be made equal
+  return true;
+}
