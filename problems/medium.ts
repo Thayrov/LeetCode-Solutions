@@ -8257,3 +8257,88 @@ function rangeSum(nums: number[], n: number, left: number, right: number): numbe
 
   return result; // Return the final result
 }
+
+/* 
+3016. Minimum Number of Pushes to Type Word II
+
+You are given a string word containing lowercase English letters.
+
+Telephone keypads have keys mapped with distinct collections of lowercase English letters, which can be used to form words by pushing them. For example, the key 2 is mapped with ["a","b","c"], we need to push the key one time to type "a", two times to type "b", and three times to type "c" .
+
+It is allowed to remap the keys numbered 2 to 9 to distinct collections of letters. The keys can be remapped to any amount of letters, but each letter must be mapped to exactly one key. You need to find the minimum number of times the keys will be pushed to type the string word.
+
+Return the minimum number of pushes needed to type word after remapping the keys.
+
+An example mapping of letters to keys on a telephone keypad is given below. Note that 1, *, #, and 0 do not map to any letters.
+
+Example 1:
+Input: word = "abcde"
+Output: 5
+Explanation: The remapped keypad given in the image provides the minimum cost.
+"a" -> one push on key 2
+"b" -> one push on key 3
+"c" -> one push on key 4
+"d" -> one push on key 5
+"e" -> one push on key 6
+Total cost is 1 + 1 + 1 + 1 + 1 = 5.
+It can be shown that no other mapping can provide a lower cost.
+
+Example 2:
+Input: word = "xyzxyzxyzxyz"
+Output: 12
+Explanation: The remapped keypad given in the image provides the minimum cost.
+"x" -> one push on key 2
+"y" -> one push on key 3
+"z" -> one push on key 4
+Total cost is 1 * 4 + 1 * 4 + 1 * 4 = 12
+It can be shown that no other mapping can provide a lower cost.
+Note that the key 9 is not mapped to any letter: it is not necessary to map letters to every key, but to map all the letters.
+
+Example 3:
+Input: word = "aabbccddeeffgghhiiiiii"
+Output: 24
+Explanation: The remapped keypad given in the image provides the minimum cost.
+"a" -> one push on key 2
+"b" -> one push on key 3
+"c" -> one push on key 4
+"d" -> one push on key 5
+"e" -> one push on key 6
+"f" -> one push on key 7
+"g" -> one push on key 8
+"h" -> two pushes on key 9
+"i" -> one push on key 9
+Total cost is 1 * 2 + 1 * 2 + 1 * 2 + 1 * 2 + 1 * 2 + 1 * 2 + 1 * 2 + 2 * 2 + 6 * 1 = 24.
+It can be shown that no other mapping can provide a lower cost.
+
+Constraints:
+1 <= word.length <= 10^5
+word consists of lowercase English letters.
+
+</> Typescript Code:
+*/
+
+function minimumPushes(word: string): number {
+  // Calculate the frequencies of each letter in the word
+  const frequencies: number[] = new Array(26).fill(0); // Frequency array for letters 'a' to 'z'
+  const offset = 'a'.charCodeAt(0); // Character code offset for 'a'
+  for (let i = 0; i < word.length; ++i) {
+    const index = word.charCodeAt(i) - offset; // Calculate index for the letter
+    frequencies[index]++; // Increment frequency count for the letter
+  }
+
+  // Sort the frequencies in descending order
+  frequencies.sort((a, b) => b - a);
+
+  // Initialize variables to track key mappings and total pushes
+  const numKeyMappings: number[] = new Array(9).fill(0); // There are 9 keys (2 to 9)
+  let minPushes = 0; // Total pushes required
+  for (let i = 0; i < frequencies.length; ++i) {
+    const frequency = frequencies[i];
+    if (frequency === 0) break; // Break if no more characters to account for
+
+    // Map the current letter frequency to a key, counting pushes
+    const keyPosition = Math.floor(i / 9); // Determine which key this letter will map to
+    minPushes += (keyPosition + 1) * frequency; // Accumulate pushes (1 push for first key, 2 for second, etc.)
+  }
+  return minPushes; // Return the total pushes required
+}
