@@ -2517,3 +2517,90 @@ function secondMinimum(n: number, edges: number[][], time: number, change: numbe
 
   return distances[n][1]; // Return the second minimum distance to the last node
 }
+
+/* 
+273. Integer to English Words
+
+Convert a non-negative integer num to its English words representation.
+
+Example 1:
+Input: num = 123
+Output: "One Hundred Twenty Three"
+
+Example 2:
+Input: num = 12345
+Output: "Twelve Thousand Three Hundred Forty Five"
+
+Example 3:
+Input: num = 1234567
+Output: "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+
+Constraints:
+0 <= num <= 23^1 - 1
+
+</> Typescript Code:
+*/
+
+function numberToWords(num: number): string {
+  if (num === 0) return 'Zero'; // If number is 0, return "Zero" immediately
+
+  // Arrays to store word representations of numbers
+  const belowTwenty = [
+    '',
+    'One',
+    'Two',
+    'Three',
+    'Four',
+    'Five',
+    'Six',
+    'Seven',
+    'Eight',
+    'Nine',
+    'Ten',
+    'Eleven',
+    'Twelve',
+    'Thirteen',
+    'Fourteen',
+    'Fifteen',
+    'Sixteen',
+    'Seventeen',
+    'Eighteen',
+    'Nineteen',
+  ];
+  const tens = [
+    '',
+    '',
+    'Twenty',
+    'Thirty',
+    'Forty',
+    'Fifty',
+    'Sixty',
+    'Seventy',
+    'Eighty',
+    'Ninety',
+  ];
+  const thousands = ['', 'Thousand', 'Million', 'Billion'];
+
+  // Helper function to convert number less than 1000 to words
+  const helper = (n: number): string => {
+    if (n === 0) return ''; // Base case for recursion: if n is 0, return an empty string
+    else if (n < 20)
+      return belowTwenty[n] + ' '; // If n is less than 20, get the word from belowTwenty array
+    else if (n < 100)
+      return tens[Math.floor(n / 10)] + ' ' + helper(n % 10); // For numbers between 20 and 99
+    else return belowTwenty[Math.floor(n / 100)] + ' Hundred ' + helper(n % 100); // For numbers between 100 and 999
+  };
+
+  let result = ''; // Initialize result string
+
+  // Process the number in chunks of 1000
+  for (let i = 0; num > 0; i++) {
+    if (num % 1000 !== 0) {
+      // Only process if the current chunk is not zero
+      result = helper(num % 1000) + thousands[i] + ' ' + result; // Convert chunk to words and add to result
+    }
+    num = Math.floor(num / 1000); // Move to the next chunk
+  }
+
+  return result.trim(); // Return the trimmed result string
+}
