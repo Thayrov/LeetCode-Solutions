@@ -8342,3 +8342,82 @@ function minimumPushes(word: string): number {
   }
   return minPushes; // Return the total pushes required
 }
+
+/* 
+885. Spiral Matrix III
+
+You start at the cell (rStart, cStart) of an rows x cols grid facing east. The northwest corner is at the first row and column in the grid, and the southeast corner is at the last row and column.
+
+You will walk in a clockwise spiral shape to visit every position in this grid. Whenever you move outside the grid's boundary, we continue our walk outside the grid (but may return to the grid boundary later.). Eventually, we reach all rows * cols spaces of the grid.
+
+Return an array of coordinates representing the positions of the grid in the order you visited them.
+
+Example 1:
+Input: rows = 1, cols = 4, rStart = 0, cStart = 0
+Output: [[0,0],[0,1],[0,2],[0,3]]
+
+Example 2:
+Input: rows = 5, cols = 6, rStart = 1, cStart = 4
+Output: [[1,4],[1,5],[2,5],[2,4],[2,3],[1,3],[0,3],[0,4],[0,5],[3,5],[3,4],[3,3],[3,2],[2,2],[1,2],[0,2],[4,5],[4,4],[4,3],[4,2],[4,1],[3,1],[2,1],[1,1],[0,1],[4,0],[3,0],[2,0],[1,0],[0,0]]
+
+Constraints:
+1 <= rows, cols <= 100
+0 <= rStart < rows
+0 <= cStart < cols
+
+</> Typescript Code:
+*/
+
+function spiralMatrixIII(rows: number, cols: number, rStart: number, cStart: number): number[][] {
+  // Initialize the result array to store the coordinates in the spiral order
+  const result: number[][] = [];
+
+  // Calculate the total number of cells to visit
+  const totalCells = rows * cols;
+
+  // Define the directions for movement: right, down, left, up
+  const directions = [
+    [0, 1],
+    [1, 0],
+    [0, -1],
+    [-1, 0],
+  ];
+
+  // Initialize the number of steps to take in the current direction
+  let steps = 1;
+
+  // Initialize the index to keep track of the current direction
+  let directionIndex = 0;
+
+  // Start at the given starting position
+  let currentRow = rStart;
+  let currentCol = cStart;
+
+  // Add the starting position to the result
+  result.push([currentRow, currentCol]);
+
+  // Continue until all cells are visited
+  while (result.length < totalCells) {
+    // Perform two iterations for each steps count
+    for (let i = 0; i < 2; i++) {
+      // Move in the current direction for the current number of steps
+      for (let j = 0; j < steps; j++) {
+        currentRow += directions[directionIndex][0];
+        currentCol += directions[directionIndex][1];
+
+        // Check if the current position is within the grid bounds
+        if (currentRow >= 0 && currentRow < rows && currentCol >= 0 && currentCol < cols) {
+          // Add the current position to the result
+          result.push([currentRow, currentCol]);
+        }
+      }
+      // Change direction to the next in the sequence
+      directionIndex = (directionIndex + 1) % 4;
+    }
+    // Increase the number of steps for the next set of movements
+    steps++;
+  }
+
+  // Return the result array with the coordinates in spiral order
+  return result;
+}
