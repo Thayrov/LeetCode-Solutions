@@ -2604,3 +2604,106 @@ function numberToWords(num: number): string {
 
   return result.trim(); // Return the trimmed result string
 }
+
+/* 
+1568. Minimum Number of Days to Disconnect Island
+
+You are given an m x n binary grid grid where 1 represents land and 0 represents water. An island is a maximal 4-directionally (horizontal or vertical) connected group of 1's.
+
+The grid is said to be connected if we have exactly one island, otherwise is said disconnected.
+
+In one day, we are allowed to change any single land cell (1) into a water cell (0).
+
+Return the minimum number of days to disconnect the grid.
+
+Example 1:
+Input: grid = [[0,1,1,0],[0,1,1,0],[0,0,0,0]]
+Output: 2
+Explanation: We need at least 2 days to get a disconnected grid.
+Change land grid[1][1] and grid[0][2] to water and get 2 disconnected island.
+
+Example 2:
+Input: grid = [[1,1]]
+Output: 2
+Explanation: Grid of full water is also disconnected ([[1,1]] -> [[0,0]]), 0 islands.
+
+Constraints:
+m == grid.length
+n == grid[i].length
+1 <= m, n <= 30
+grid[i][j] is either 0 or 1.
+
+</> Typescript Code:
+*/
+
+function minDays(grid: number[][]): number {
+  const rows = grid.length; // Get the number of rows in the grid
+  const cols = grid[0].length; // Get the number of columns in the grid
+
+  // Function to check if the grid is connected (i.e., forms a single island)
+  const isConnected = (g: number[][]): boolean => {
+    let visited = new Array(rows).fill(0).map(() => new Array(cols).fill(false)); // Create a visited matrix
+    let foundIsland = false; // Flag to track if an island has been found
+
+    // Depth-first search (DFS) to explore the connected components (island)
+    const dfs = (i: number, j: number): void => {
+      if (i < 0 || i >= rows || j < 0 || j >= cols || g[i][j] === 0 || visited[i][j]) return; // Boundary and visited checks
+      visited[i][j] = true; // Mark the cell as visited
+      dfs(i + 1, j); // Explore downward
+      dfs(i - 1, j); // Explore upward
+      dfs(i, j + 1); // Explore rightward
+      dfs(i, j - 1); // Explore leftward
+    };
+
+    // Iterate through the grid to find and explore the first island
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        if (g[i][j] === 1 && !visited[i][j]) {
+          if (foundIsland) return false; // If another island is found, return false (not connected)
+          dfs(i, j); // Start DFS to explore the island
+          foundIsland = true; // Mark that an island has been found
+        }
+      }
+    }
+
+    // Check if there are any unvisited land cells left, which would indicate the grid is not fully connected
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        if (g[i][j] === 1 && !visited[i][j]) return false; // Unvisited land found, grid is not connected
+      }
+    }
+
+    return true; // Grid is fully connected (forms a single island)
+  };
+
+  // Count the number of land cells in the grid
+  let landCount = 0;
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if (grid[i][j] === 1) landCount++;
+    }
+  }
+
+  // If there are no land cells, the grid is already disconnected, so return 0
+  if (landCount === 0) return 0;
+
+  // If there is only one land cell, changing it to water disconnects the grid, so return 1
+  if (landCount === 1) return 1;
+
+  // If the grid is already disconnected, return 0
+  if (!isConnected(grid)) return 0;
+
+  // Try changing each land cell to water and check if the grid becomes disconnected
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if (grid[i][j] === 1) {
+        grid[i][j] = 0; // Temporarily change the cell to water
+        if (!isConnected(grid)) return 1; // If the grid is now disconnected, return 1
+        grid[i][j] = 1; // Restore the cell back to land if not disconnected
+      }
+    }
+  }
+
+  // If the grid can't be disconnected by changing one cell, return 2
+  return 2;
+}
