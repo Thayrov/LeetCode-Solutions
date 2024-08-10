@@ -8490,3 +8490,90 @@ function numMagicSquaresInside(grid: number[][]): number {
   }
   return count; // Return the total count of magic squares found
 }
+
+/* 
+959. Regions Cut By Slashes
+
+An n x n grid is composed of 1 x 1 squares where each 1 x 1 square consists of a '/', '\', or blank space ' '. These characters divide the square into contiguous regions.
+
+Given the grid grid represented as a string array, return the number of regions.
+
+Note that backslash characters are escaped, so a '\' is represented as '\\'.
+
+Example 1:
+Input: grid = [" /","/ "]
+Output: 2
+
+Example 2:
+Input: grid = [" /","  "]
+Output: 1
+
+Example 3:
+Input: grid = ["/\\","\\/"]
+Output: 5
+Explanation: Recall that because \ characters are escaped, "\\/" refers to \/, and "/\\" refers to /\.
+
+Constraints:
+n == grid.length == grid[i].length
+1 <= n <= 30
+grid[i][j] is either '/', '\', or ' '.
+
+</> Typescript Code:
+*/
+
+function regionsBySlashes(grid: string[]): number {
+  const n = grid.length; // Determine the size of the grid.
+  const parent = new Array(4 * n * n).fill(0).map((_, i) => i); // Initialize the Union-Find structure for 4 regions per cell.
+
+  // Function to find the root of a component with path compression.
+  const find = (x: number): number => {
+    if (parent[x] !== x) {
+      // If x is not its own parent, recursively find the root.
+      parent[x] = find(parent[x]); // Path compression for optimization.
+    }
+    return parent[x]; // Return the root.
+  };
+
+  // Function to unify two components.
+  const union = (x: number, y: number) => {
+    const rootX = find(x); // Find the root of x.
+    const rootY = find(y); // Find the root of y.
+    if (rootX !== rootY) {
+      // If they are not already unified,
+      parent[rootY] = rootX; // unify them by setting one root to the other.
+    }
+  };
+
+  // Traverse each cell in the grid.
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      const root = 4 * (i * n + j); // Calculate the index of the top-left part of the current cell in the Union-Find structure.
+      const char = grid[i][j]; // Get the character in the current cell.
+
+      // Union parts within the same cell based on the character.
+      if (char === '/') {
+        union(root + 0, root + 3); // Connect top to left.
+        union(root + 1, root + 2); // Connect right to bottom.
+      } else if (char === '\\') {
+        union(root + 0, root + 1); // Connect top to right.
+        union(root + 2, root + 3); // Connect bottom to left.
+      } else {
+        union(root + 0, root + 1); // Connect top to right.
+        union(root + 1, root + 2); // Connect right to bottom.
+        union(root + 2, root + 3); // Connect bottom to left.
+      }
+
+      // Union parts between adjacent cells.
+      if (i > 0) union(root + 0, root - 4 * n + 2); // Connect top of current cell to bottom of the cell above.
+      if (j > 0) union(root + 3, root - 4 + 1); // Connect left of current cell to right of the cell on the left.
+    }
+  }
+
+  let regions = 0; // Initialize the region counter.
+  for (let i = 0; i < 4 * n * n; i++) {
+    // Traverse all components in the Union-Find structure.
+    if (find(i) === i) regions++; // Count the number of unique regions.
+  }
+
+  return regions; // Return the total number of regions.
+}
