@@ -3864,3 +3864,74 @@ function kthDistinct(arr: string[], k: number): string {
   // Return the k-th distinct string or an empty string if there aren't enough
   return distinctStrings[k - 1] || '';
 }
+
+/* 
+703. Kth Largest Element in a Stream
+
+Design a class to find the kth largest element in a stream. Note that it is the kth largest element in the sorted order, not the kth distinct element.
+
+Implement KthLargest class:
+
+KthLargest(int k, int[] nums) Initializes the object with the integer k and the stream of integers nums.
+int add(int val) Appends the integer val to the stream and returns the element representing the kth largest element in the stream.
+
+Example 1:
+Input
+["KthLargest", "add", "add", "add", "add", "add"]
+[[3, [4, 5, 8, 2]], [3], [5], [10], [9], [4]]
+Output
+[null, 4, 5, 5, 8, 8]
+Explanation
+KthLargest kthLargest = new KthLargest(3, [4, 5, 8, 2]);
+kthLargest.add(3);   // return 4
+kthLargest.add(5);   // return 5
+kthLargest.add(10);  // return 5
+kthLargest.add(9);   // return 8
+kthLargest.add(4);   // return 8
+
+Constraints:
+1 <= k <= 10^4
+0 <= nums.length <= 10^4
+-104 <= nums[i] <= 10^4
+-104 <= val <= 10^4
+At most 104 calls will be made to add.
+It is guaranteed that there will be at least k elements in the array when you search for the kth element.
+
+</> Typescript Code:
+*/
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * var obj = new KthLargest(k, nums)
+ * var param_1 = obj.add(val)
+ */
+
+class KthLargest {
+  private minHeap: number[]; // This array will function as a min-heap to track the k largest elements
+  private k: number; // Store the value of k to know which kth largest element to return
+
+  constructor(k: number, nums: number[]) {
+    this.k = k;
+    this.minHeap = [];
+
+    // Build a min-heap with at most k elements from the nums array
+    for (let num of nums) {
+      this.add(num); // Add each number to the heap using the add method
+    }
+  }
+
+  add(val: number): number {
+    // If the heap has fewer than k elements, simply add the new value
+    if (this.minHeap.length < this.k) {
+      this.minHeap.push(val);
+      this.minHeap.sort((a, b) => a - b); // Sort the array to maintain the min-heap property
+    }
+    // If the new value is greater than the smallest value in the heap, replace it
+    else if (val > this.minHeap[0]) {
+      this.minHeap[0] = val;
+      this.minHeap.sort((a, b) => a - b); // Sort again to maintain the heap property
+    }
+    // Return the smallest value in the heap, which is the kth largest element
+    return this.minHeap[0];
+  }
+}
