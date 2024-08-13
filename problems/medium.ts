@@ -8577,3 +8577,71 @@ function regionsBySlashes(grid: string[]): number {
 
   return regions; // Return the total number of regions.
 }
+
+/* 
+40. Combination Sum II
+
+Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
+
+Each number in candidates may only be used once in the combination.
+
+Note: The solution set must not contain duplicate combinations.
+
+Example 1:
+Input: candidates = [10,1,2,7,6,1,5], target = 8
+Output: 
+[
+[1,1,6],
+[1,2,5],
+[1,7],
+[2,6]
+]
+
+Example 2:
+Input: candidates = [2,5,2,1,2], target = 5
+Output: 
+[
+[1,2,2],
+[5]
+]
+
+Constraints:
+1 <= candidates.length <= 100
+1 <= candidates[i] <= 50
+1 <= target <= 30
+
+</> Typescript Code:
+*/
+
+function combinationSum2(candidates: number[], target: number): number[][] {
+  // Sort the candidates array to help with skipping duplicates and early termination
+  candidates.sort((a, b) => a - b);
+  // Initialize the results array to store the valid combinations
+  const results: number[][] = [];
+
+  // Define the backtrack function to explore combinations
+  const backtrack = (start: number, target: number, path: number[]) => {
+    // If the target is 0, we found a valid combination, add it to the results
+    if (target === 0) {
+      results.push([...path]);
+      return;
+    }
+    // Loop through the candidates starting from the 'start' index
+    for (let i = start; i < candidates.length; i++) {
+      // Skip duplicates by checking if the current candidate is the same as the previous one
+      if (i > start && candidates[i] === candidates[i - 1]) continue;
+      // If the current candidate exceeds the target, break the loop (early termination)
+      if (candidates[i] > target) break;
+      // Add the current candidate to the path and backtrack with the reduced target
+      path.push(candidates[i]);
+      backtrack(i + 1, target - candidates[i], path);
+      // Remove the last candidate from the path to explore other combinations
+      path.pop();
+    }
+  };
+
+  // Start backtracking with the initial parameters
+  backtrack(0, target, []);
+  // Return the list of valid combinations
+  return results;
+}
