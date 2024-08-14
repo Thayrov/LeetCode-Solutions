@@ -2707,3 +2707,75 @@ function minDays(grid: number[][]): number {
   // If the grid can't be disconnected by changing one cell, return 2
   return 2;
 }
+
+/* 
+719. Find K-th Smallest Pair Distance
+
+The distance of a pair of integers a and b is defined as the absolute difference between a and b.
+
+Given an integer array nums and an integer k, return the kth smallest distance among all the pairs nums[i] and nums[j] where 0 <= i < j < nums.length.
+
+Example 1:
+Input: nums = [1,3,1], k = 1
+Output: 0
+Explanation: Here are all the pairs:
+(1,3) -> 2
+(1,1) -> 0
+(3,1) -> 2
+Then the 1st smallest distance pair is (1,1), and its distance is 0.
+
+Example 2:
+Input: nums = [1,1,1], k = 2
+Output: 0
+
+Example 3:
+Input: nums = [1,6,1], k = 3
+Output: 5
+
+Constraints:
+n == nums.length
+2 <= n <= 10^4
+0 <= nums[i] <= 10^6
+1 <= k <= n * (n - 1) / 2
+
+</> Typescript Code:
+*/
+
+function smallestDistancePair(nums: number[], k: number): number {
+  // Step 1: Sort the array
+  nums.sort((a, b) => a - b);
+
+  const n = nums.length;
+  // Step 2: Initialize binary search bounds
+  let left = 0,
+    right = nums[n - 1] - nums[0];
+
+  // Step 3: Perform binary search on the distance
+  while (left < right) {
+    // Midpoint distance to test
+    const mid = Math.floor((left + right) / 2);
+    let count = 0;
+    let start = 0;
+
+    // Count the number of pairs with distance <= mid
+    for (let end = 0; end < n; end++) {
+      // Move the start pointer to maintain the distance constraint
+      while (nums[end] - nums[start] > mid) {
+        start++;
+      }
+      // All pairs between start and end are valid for this distance
+      count += end - start;
+    }
+
+    // If there are at least k pairs with distance <= mid, adjust right bound
+    if (count >= k) {
+      right = mid;
+    } else {
+      // Otherwise, increase the minimum distance
+      left = mid + 1;
+    }
+  }
+
+  // The smallest distance such that there are at least k pairs with distance <= this value
+  return left;
+}
