@@ -8645,3 +8645,59 @@ function combinationSum2(candidates: number[], target: number): number[][] {
   // Return the list of valid combinations
   return results;
 }
+
+/* 
+624. Maximum Distance in Arrays
+
+You are given m arrays, where each array is sorted in ascending order.
+
+You can pick up two integers from two different arrays (each array picks one) and calculate the distance. We define the distance between two integers a and b to be their absolute difference |a - b|.
+
+Return the maximum distance.
+
+Example 1:
+Input: arrays = [[1,2,3],[4,5],[1,2,3]]
+Output: 4
+Explanation: One way to reach the maximum distance 4 is to pick 1 in the first or third array and pick 5 in the second array.
+
+Example 2:
+Input: arrays = [[1],[1]]
+Output: 0
+
+Constraints:
+m == arrays.length
+2 <= m <= 10^5
+1 <= arrays[i].length <= 500
+-10^4 <= arrays[i][j] <= 10^4
+arrays[i] is sorted in ascending order.
+There will be at most 105 integers in all the arrays.
+
+</> Typescript Code:
+*/
+
+function maxDistance(arrays: number[][]): number {
+  // Initialize min and max with the first array's values
+  let min = arrays[0][0];
+  let max = arrays[0][arrays[0].length - 1];
+
+  // Initialize the result to track the maximum distance found
+  let result = 0;
+
+  // Iterate through each subsequent array
+  for (let i = 1; i < arrays.length; i++) {
+    // Get the current array's minimum and maximum values
+    const currentMin = arrays[i][0];
+    const currentMax = arrays[i][arrays[i].length - 1];
+
+    // Update result with the maximum distance found
+    result = Math.max(result, Math.abs(currentMax - min));
+    result = Math.max(result, Math.abs(currentMin - max));
+
+    // Update min and max for the next iteration
+    min = Math.min(min, currentMin);
+    max = Math.max(max, currentMax);
+  }
+
+  // Return the maximum distance found
+  return result;
+}
