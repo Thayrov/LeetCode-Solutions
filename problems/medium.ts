@@ -8786,3 +8786,53 @@ function maxPoints(points: number[][]): number {
   // The final result is the maximum value in the last row
   return Math.max(...previousRow);
 }
+
+/* 
+264. Ugly Number II
+
+An ugly number is a positive integer whose prime factors are limited to 2, 3, and 5.
+
+Given an integer n, return the nth ugly number.
+
+Example 1:
+Input: n = 10
+Output: 12
+Explanation: [1, 2, 3, 4, 5, 6, 8, 9, 10, 12] is the sequence of the first 10 ugly numbers.
+
+Example 2:
+Input: n = 1
+Output: 1
+Explanation: 1 has no prime factors, therefore all of its prime factors are limited to 2, 3, and 5.
+
+Constraints:
+1 <= n <= 1690
+
+</> Typescript Code:
+*/
+
+function nthUglyNumber(n: number): number {
+  // Initialize the list with the first ugly number, which is 1
+  const uglyNumbers: number[] = [1];
+
+  // Initialize indices for the multiples of 2, 3, and 5
+  let i2 = 0,
+    i3 = 0,
+    i5 = 0;
+
+  // Iterate until we find the nth ugly number
+  while (uglyNumbers.length < n) {
+    // Calculate the next potential ugly number from the smallest multiple of 2, 3, or 5
+    const nextUgly = Math.min(uglyNumbers[i2] * 2, uglyNumbers[i3] * 3, uglyNumbers[i5] * 5);
+
+    // Add the next ugly number to the list
+    uglyNumbers.push(nextUgly);
+
+    // Increment the index corresponding to the factor that produced the next ugly number
+    if (nextUgly === uglyNumbers[i2] * 2) i2++;
+    if (nextUgly === uglyNumbers[i3] * 3) i3++;
+    if (nextUgly === uglyNumbers[i5] * 5) i5++;
+  }
+
+  // Return the nth ugly number
+  return uglyNumbers[n - 1];
+}
