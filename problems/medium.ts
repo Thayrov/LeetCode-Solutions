@@ -8886,3 +8886,77 @@ function minSteps(n: number): number {
   // Return the total number of operations needed.
   return steps;
 }
+
+/* 
+1140. Stone Game II
+
+Alice and Bob continue their games with piles of stones.  There are a number of piles arranged in a row, and each pile has a positive integer number of stones piles[i].  The objective of the game is to end with the most stones. 
+
+Alice and Bob take turns, with Alice starting first.  Initially, M = 1.
+
+On each player's turn, that player can take all the stones in the first X remaining piles, where 1 <= X <= 2M.  Then, we set M = max(M, X).
+
+The game continues until all the stones have been taken.
+
+Assuming Alice and Bob play optimally, return the maximum number of stones Alice can get.
+
+Example 1:
+Input: piles = [2,7,9,4,4]
+Output: 10
+Explanation:  If Alice takes one pile at the beginning, Bob takes two piles, then Alice takes 2 piles again. Alice can get 2 + 4 + 4 = 10 piles in total. If Alice takes two piles at the beginning, then Bob can take all three piles left. In this case, Alice get 2 + 7 = 9 piles in total. So we return 10 since it's larger. 
+
+Example 2:
+Input: piles = [1,2,3,4,5,100]
+Output: 104
+
+Constraints:
+1 <= piles.length <= 100
+1 <= piles[i] <= 10^4
+
+</> Typescript Code:
+*/
+
+function stoneGameII(piles: number[]): number {
+  // Number of piles
+  const n = piles.length;
+
+  // DP table initialized with 0, where dp[i][m] represents the maximum stones Alice can get
+  // if starting from index i with M value m
+  const dp = Array.from({length: n + 1}, () => Array(n + 1).fill(0));
+
+  // Suffix sum array to quickly calculate the total remaining stones from index i to the end
+  const suffixSum = piles.slice();
+
+  // Compute suffix sums in reverse order
+  for (let i = n - 2; i >= 0; i--) {
+    suffixSum[i] += suffixSum[i + 1];
+  }
+
+  // Recursive function with memoization to solve the problem
+  function dfs(i: number, m: number): number {
+    // Base case: no more piles to take
+    if (i >= n) return 0;
+
+    // If all remaining piles can be taken, return their sum
+    if (2 * m >= n - i) return suffixSum[i];
+
+    // Return already computed result to avoid recomputation
+    if (dp[i][m] > 0) return dp[i][m];
+
+    // Minimize the opponent's stones to maximize Alice's stones
+    let minOpponentStones = Infinity;
+
+    // Try all valid x values (1 <= x <= 2 * m)
+    for (let x = 1; x <= 2 * m; x++) {
+      // Calculate the stones opponent can get in the worst case
+      minOpponentStones = Math.min(minOpponentStones, dfs(i + x, Math.max(m, x)));
+    }
+
+    // Maximize Alice's stones by subtracting opponent's minimum possible stones from total
+    dp[i][m] = suffixSum[i] - minOpponentStones;
+    return dp[i][m];
+  }
+
+  // Start the game from index 0 with M = 1
+  return dfs(0, 1);
+}
