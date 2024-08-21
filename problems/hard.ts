@@ -2779,3 +2779,57 @@ function smallestDistancePair(nums: number[], k: number): number {
   // The smallest distance such that there are at least k pairs with distance <= this value
   return left;
 }
+
+/* 
+664. Strange Printer
+
+There is a strange printer with the following two special properties:
+
+The printer can only print a sequence of the same character each time.
+At each turn, the printer can print new characters starting from and ending at any place and will cover the original existing characters.
+Given a string s, return the minimum number of turns the printer needed to print it.
+
+Example 1:
+Input: s = "aaabbb"
+Output: 2
+Explanation: Print "aaa" first and then print "bbb".
+
+Example 2:
+Input: s = "aba"
+Output: 2
+Explanation: Print "aaa" first and then print "b" from the second place of the string, which will cover the existing character 'a'.
+
+Constraints:
+1 <= s.length <= 100
+s consists of lowercase English letters.
+
+</> Typescript Code:
+*/
+
+function strangePrinter(s: string): number {
+  const n = s.length; // Length of the input string
+  const dp = Array.from({length: n}, () => Array(n).fill(0)); // DP table initialization
+
+  // Iterate over different lengths of substrings
+  for (let len = 1; len <= n; len++) {
+    // Iterate over all possible substrings of length `len`
+    for (let i = 0; i <= n - len; i++) {
+      const j = i + len - 1; // End index of the current substring
+      if (i === j) {
+        // If the substring is of length 1, it takes one turn to print
+        dp[i][j] = 1;
+      } else {
+        // Initialize with the value if we print the substring `s[i]` to `s[j-1]` and then `s[j]`
+        dp[i][j] = dp[i][j - 1] + 1;
+        // Check all partitions to find the optimal solution
+        for (let k = i; k < j; k++) {
+          if (s[k] === s[j]) {
+            // Minimize the number of turns by considering overlap
+            dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k + 1][j] - 1);
+          }
+        }
+      }
+    }
+  }
+  return dp[0][n - 1]; // Return the result for the whole string
+}
