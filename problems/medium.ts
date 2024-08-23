@@ -8960,3 +8960,83 @@ function stoneGameII(piles: number[]): number {
   // Start the game from index 0 with M = 1
   return dfs(0, 1);
 }
+
+/* 
+592. Fraction Addition and Subtraction
+
+Given a string expression representing an expression of fraction addition and subtraction, return the calculation result in string format.
+
+The final result should be an irreducible fraction. If your final result is an integer, change it to the format of a fraction that has a denominator 1. So in this case, 2 should be converted to 2/1.
+
+Example 1:
+Input: expression = "-1/2+1/2"
+Output: "0/1"
+
+Example 2:
+Input: expression = "-1/2+1/2+1/3"
+Output: "1/3"
+
+Example 3:
+Input: expression = "1/3-1/2"
+Output: "-1/6"
+
+Constraints:
+The input string only contains '0' to '9', '/', '+' and '-'. So does the output.
+Each fraction (input and output) has the format ±numerator/denominator. If the first input fraction or the output is positive, then '+' will be omitted.
+The input only contains valid irreducible fractions, where the numerator and denominator of each fraction will always be in the range [1, 10]. If the denominator is 1, it means this fraction is actually an integer in a fraction format defined above.
+The number of given fractions will be in the range [1, 10].
+The numerator and denominator of the final result are guaranteed to be valid and in the range of 32-bit int.
+
+</> Typescript Code:
+*/
+
+function fractionAddition(expression: string): string {
+  // Helper function to compute the Greatest Common Divisor (GCD)
+  const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
+
+  // Initialize the numerator to 0 and the denominator to 1 for the final fraction
+  let numerator = 0,
+    denominator = 1,
+    i = 0;
+
+  // Iterate through the expression string
+  while (i < expression.length) {
+    let sign = 1;
+
+    // Check for a sign at the current position (either '+' or '-')
+    if (expression[i] === '+' || expression[i] === '-') {
+      // Adjust the sign based on the current character
+      sign = expression[i] === '-' ? -1 : 1;
+      i++;
+    }
+
+    // Initialize numerator and denominator for the current fraction
+    let num = 0,
+      denom = 0;
+
+    // Parse the numerator part of the fraction
+    while (i < expression.length && expression[i] !== '/') {
+      num = num * 10 + Number(expression[i]);
+      i++;
+    }
+    i++; // Skip the '/' character
+
+    // Parse the denominator part of the fraction
+    while (i < expression.length && expression[i] >= '0' && expression[i] <= '9') {
+      denom = denom * 10 + Number(expression[i]);
+      i++;
+    }
+
+    // Update the global numerator and denominator using the current fraction
+    numerator = numerator * denom + sign * num * denominator;
+    denominator *= denom;
+
+    // Simplify the fraction by dividing by the GCD
+    const divisor = gcd(Math.abs(numerator), denominator);
+    numerator /= divisor;
+    denominator /= divisor;
+  }
+
+  // Return the result as a string in the format "numerator/denominator"
+  return `${numerator}/${denominator}`;
+}
