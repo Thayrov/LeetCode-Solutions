@@ -2833,3 +2833,140 @@ function strangePrinter(s: string): number {
   }
   return dp[0][n - 1]; // Return the result for the whole string
 }
+
+/* 
+564. Find the Closest Palindrome
+
+Given a string n representing an integer, return the closest integer (not including itself), which is a palindrome. If there is a tie, return the smaller one.
+
+The closest is defined as the absolute difference minimized between two integers.
+
+Example 1:
+Input: n = "123"
+Output: "121"
+
+Example 2:
+Input: n = "1"
+Output: "0"
+Explanation: 0 and 2 are the closest palindromes but we return the smallest which is 0.
+
+Constraints:
+1 <= n.length <= 18
+n consists of only digits.
+n does not have leading zeros.
+n is representing an integer in the range [1, 1018 - 1]
+
+
+</> Typescript Code:
+*/
+
+function nearestPalindromic(n: string): string {
+  // Handle special cases directly for "10" and "11"
+  if (n === '10' || n === '11') {
+    return '9';
+  }
+
+  let number = 0;
+  let ten = 1;
+  const dp: number[] = [];
+  dp[0] = ten;
+
+  // Initialize the dp array with powers of 10 up to 10^17
+  for (let i = 1; i < 18; i++) {
+    dp[i] = dp[i - 1] * 10;
+  }
+
+  // Convert the first digit of the number to an integer
+  number = Number(n[0] || 0) - 0;
+
+  // If the input is a single-digit number, return the previous number
+  if (n.length === 1) {
+    number--;
+    return number.toString();
+  }
+
+  // Convert the entire string number to an integer
+  for (let i = 1; i < n.length; i++) {
+    number = number * 10 + (Number(n[i] || 0) - 0);
+  }
+
+  // Check if the number is a power of 10 or one less than a power of 10
+  for (let i = 0; i < 19; i++) {
+    if (dp[i] === number) {
+      return (number - 1).toString(); // Return number - 1 if it's a power of 10
+    }
+    if (dp[i] === number + 1) {
+      return (dp[i] + 1).toString(); // Return number + 1 if it's one less than a power of 10
+    }
+  }
+
+  let copyNumber = number;
+  const mid = Math.floor(n.length / 2);
+
+  // Generate a smaller palindrome candidate by decrementing the first half of the number
+  copyNumber = Math.floor(number / dp[mid]);
+  copyNumber -= 1;
+  let takeOffMid = '';
+  let firstHalf = copyNumber.toString();
+  if (n.length % 2 && firstHalf.length > mid) {
+    takeOffMid = firstHalf[firstHalf.length - 1];
+    firstHalf = firstHalf.slice(0, firstHalf.length - 1);
+  }
+  let reversedHalf = firstHalf.split('').reverse().join('');
+  let less = firstHalf + takeOffMid + reversedHalf;
+
+  // Generate a larger palindrome candidate by incrementing the first half of the number
+  copyNumber = Math.floor(number / dp[mid]);
+  copyNumber += 1;
+  if (copyNumber === 0) {
+    return '9';
+  }
+  takeOffMid = '';
+  firstHalf = copyNumber.toString();
+  if (n.length % 2) {
+    takeOffMid = firstHalf[firstHalf.length - 1];
+    firstHalf = firstHalf.slice(0, firstHalf.length - 1);
+  }
+  reversedHalf = firstHalf.split('').reverse().join('');
+  let more = firstHalf + takeOffMid + reversedHalf;
+
+  // Compare the smaller and larger candidates to find the closest palindrome
+  let possibleAns = '';
+  if (Number(more) - number < number - Number(less)) {
+    possibleAns = more;
+  } else {
+    possibleAns = less;
+  }
+
+  // If the original number is not a palindrome, generate a mirrored palindrome candidate
+  if (!isPalindrome(n)) {
+    let j = n.length - 1;
+    for (let i = 0; i < mid; i++) {
+      n = n.slice(0, j) + n[i] + n.slice(j + 1);
+      j--;
+    }
+    const thirdParty = Number(n);
+    if (Math.abs(Number(possibleAns) - number) > Math.abs(number - thirdParty)) {
+      possibleAns = n;
+    } else if (Math.abs(Number(possibleAns) - number) === Math.abs(number - thirdParty)) {
+      if (thirdParty <= Number(possibleAns)) {
+        possibleAns = n;
+      }
+    }
+  }
+
+  // Return the closest palindrome
+  return possibleAns;
+}
+
+// Helper function to check if a string is a palindrome
+function isPalindrome(n: string): boolean {
+  let j = n.length - 1;
+  for (let i = 0; i < Math.floor(n.length / 2); i++) {
+    if (n[i] !== n[j]) {
+      return false;
+    }
+    j--;
+  }
+  return true;
+}
