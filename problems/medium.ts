@@ -9040,3 +9040,154 @@ function fractionAddition(expression: string): string {
   // Return the result as a string in the format "numerator/denominator"
   return `${numerator}/${denominator}`;
 }
+
+/* 
+1514. Path with Maximum Probability
+
+You are given an undirected weighted graph of n nodes (0-indexed), represented by an edge list where edges[i] = [a, b] is an undirected edge connecting the nodes a and b with a probability of success of traversing that edge succProb[i].
+
+Given two nodes start and end, find the path with the maximum probability of success to go from start to end and return its success probability.
+
+If there is no path from start to end, return 0. Your answer will be accepted if it differs from the correct answer by at most 1e-5.
+
+Example 1:
+Input: n = 3, edges = [[0,1],[1,2],[0,2]], succProb = [0.5,0.5,0.2], start = 0, end = 2
+Output: 0.25000
+Explanation: There are two paths from start to end, one having a probability of success = 0.2 and the other has 0.5 * 0.5 = 0.25.
+
+Example 2:
+Input: n = 3, edges = [[0,1],[1,2],[0,2]], succProb = [0.5,0.5,0.3], start = 0, end = 2
+Output: 0.30000
+
+Example 3:
+Input: n = 3, edges = [[0,1]], succProb = [0.5], start = 0, end = 2
+Output: 0.00000
+Explanation: There is no path between 0 and 2.
+
+Constraints:
+2 <= n <= 10^4
+0 <= start, end < n
+start != end
+0 <= a, b < n
+a != b
+0 <= succProb.length == edges.length <= 2*10^4
+0 <= succProb[i] <= 1
+There is at most one edge between every two nodes.
+
+</> Typescript Code:
+*/
+
+class MaxHeap {
+  heap: [number, number][];
+
+  constructor() {
+    this.heap = [];
+  }
+
+  // Insert a node into the heap and adjust its position to maintain the heap property.
+  insert(node: [number, number]) {
+    this.heap.push(node);
+    this.bubbleUp();
+  }
+
+  // Extract the maximum element from the heap (the root) and adjust the heap.
+  extractMax(): [number, number] | undefined {
+    if (this.heap.length === 1) return this.heap.pop();
+    const max = this.heap[0];
+    this.heap[0] = this.heap.pop()!;
+    this.bubbleDown();
+    return max;
+  }
+
+  // Move the last inserted node up to maintain the max-heap property.
+  bubbleUp() {
+    let index = this.heap.length - 1;
+    while (index > 0) {
+      let parentIndex = Math.floor((index - 1) / 2);
+      if (this.heap[index][0] <= this.heap[parentIndex][0]) break;
+      [this.heap[index], this.heap[parentIndex]] = [this.heap[parentIndex], this.heap[index]];
+      index = parentIndex;
+    }
+  }
+
+  // Move the root node down to maintain the max-heap property after extraction.
+  bubbleDown() {
+    let index = 0;
+    const length = this.heap.length;
+    while (true) {
+      let leftChildIndex = 2 * index + 1;
+      let rightChildIndex = 2 * index + 2;
+      let swapIndex: number | null = null;
+
+      if (leftChildIndex < length) {
+        if (this.heap[leftChildIndex][0] > this.heap[index][0]) {
+          swapIndex = leftChildIndex;
+        }
+      }
+
+      if (rightChildIndex < length) {
+        if (
+          (swapIndex === null && this.heap[rightChildIndex][0] > this.heap[index][0]) ||
+          (swapIndex !== null && this.heap[rightChildIndex][0] > this.heap[leftChildIndex][0])
+        ) {
+          swapIndex = rightChildIndex;
+        }
+      }
+
+      if (swapIndex === null) break;
+      [this.heap[index], this.heap[swapIndex]] = [this.heap[swapIndex], this.heap[index]];
+      index = swapIndex;
+    }
+  }
+
+  // Return the size of the heap.
+  size() {
+    return this.heap.length;
+  }
+}
+
+// Function to calculate the maximum probability path using Dijkstra's algorithm and a max-heap.
+function maxProbability(
+  n: number,
+  edges: number[][],
+  succProb: number[],
+  start_node: number,
+  end_node: number,
+): number {
+  // Build the graph as an adjacency list.
+  const graph: Map<number, [number, number][]> = new Map();
+  for (let i = 0; i < edges.length; i++) {
+    const [a, b] = edges[i];
+    if (!graph.has(a)) graph.set(a, []);
+    if (!graph.has(b)) graph.set(b, []);
+    graph.get(a)!.push([b, succProb[i]]);
+    graph.get(b)!.push([a, succProb[i]]);
+  }
+
+  // Array to store the maximum probability of reaching each node.
+  const probabilities: number[] = Array(n).fill(0);
+  probabilities[start_node] = 1;
+
+  // Priority queue (max-heap) to manage the traversal of nodes by their probability.
+  const maxHeap = new MaxHeap();
+  maxHeap.insert([1, start_node]);
+
+  while (maxHeap.size()) {
+    // Extract the node with the highest probability.
+    const [current_prob, current_node] = maxHeap.extractMax()!;
+    if (current_node === end_node) return current_prob;
+
+    // Traverse all neighbors of the current node.
+    for (const [neighbor, prob] of graph.get(current_node) || []) {
+      const new_prob = current_prob * prob;
+      // If a higher probability path is found, update and insert into the heap.
+      if (new_prob > probabilities[neighbor]) {
+        probabilities[neighbor] = new_prob;
+        maxHeap.insert([new_prob, neighbor]);
+      }
+    }
+  }
+
+  // If no path is found, return 0.
+  return 0;
+}
