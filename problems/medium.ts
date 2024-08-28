@@ -9191,3 +9191,63 @@ function maxProbability(
   // If no path is found, return 0.
   return 0;
 }
+
+/* 
+1905. Count Sub Islands
+
+You are given two m x n binary matrices grid1 and grid2 containing only 0's (representing water) and 1's (representing land). An island is a group of 1's connected 4-directionally (horizontal or vertical). Any cells outside of the grid are considered water cells.
+
+An island in grid2 is considered a sub-island if there is an island in grid1 that contains all the cells that make up this island in grid2.
+
+Return the number of islands in grid2 that are considered sub-islands.
+
+Example 1:
+Input: grid1 = [[1,1,1,0,0],[0,1,1,1,1],[0,0,0,0,0],[1,0,0,0,0],[1,1,0,1,1]], grid2 = [[1,1,1,0,0],[0,0,1,1,1],[0,1,0,0,0],[1,0,1,1,0],[0,1,0,1,0]]
+Output: 3
+Explanation: In the picture above, the grid on the left is grid1 and the grid on the right is grid2.
+The 1s colored red in grid2 are those considered to be part of a sub-island. There are three sub-islands.
+
+Example 2:
+Input: grid1 = [[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]], grid2 = [[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]
+Output: 2 
+Explanation: In the picture above, the grid on the left is grid1 and the grid on the right is grid2.
+The 1s colored red in grid2 are those considered to be part of a sub-island. There are two sub-islands.
+
+Constraints:
+m == grid1.length == grid2.length
+n == grid1[i].length == grid2[i].length
+1 <= m, n <= 500
+grid1[i][j] and grid2[i][j] are either 0 or 1.
+
+</> Typescript Code:
+*/
+
+function countSubIslands(grid1: number[][], grid2: number[][]): number {
+  const m = grid1.length,
+    n = grid1[0].length; // Dimensions of the grids
+  let count = 0; // Counter for sub-islands
+
+  // Depth-First Search function to check if all parts of the island in grid2 are in grid1
+  const dfs = (i: number, j: number): boolean => {
+    if (i < 0 || j < 0 || i >= m || j >= n || grid2[i][j] === 0) return true; // Out of bounds or water
+    if (grid1[i][j] === 0) return false; // If grid1 doesn't have land, it's not a sub-island
+    grid2[i][j] = 0; // Mark the current cell as visited in grid2
+    const up = dfs(i - 1, j); // Check up
+    const down = dfs(i + 1, j); // Check down
+    const left = dfs(i, j - 1); // Check left
+    const right = dfs(i, j + 1); // Check right
+    return up && down && left && right; // Return true if all parts are valid sub-islands
+  };
+
+  // Iterate through all cells in the grid
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (grid2[i][j] === 1 && dfs(i, j)) {
+        // If part of an island is found in grid2 and it's a sub-island
+        count++; // Increment the sub-island counter
+      }
+    }
+  }
+
+  return count; // Return the total number of sub-islands
+}
