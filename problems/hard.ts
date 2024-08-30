@@ -2970,3 +2970,140 @@ function isPalindrome(n: string): boolean {
   }
   return true;
 }
+
+/* 
+2699. Modify Graph Edge Weights
+
+You are given an undirected weighted connected graph containing n nodes labeled from 0 to n - 1, and an integer array edges where edges[i] = [ai, bi, wi] indicates that there is an edge between nodes ai and bi with weight wi.
+
+Some edges have a weight of -1 (wi = -1), while others have a positive weight (wi > 0).
+
+Your task is to modify all edges with a weight of -1 by assigning them positive integer values in the range [1, 2 * 109] so that the shortest distance between the nodes source and destination becomes equal to an integer target. If there are multiple modifications that make the shortest distance between source and destination equal to target, any of them will be considered correct.
+
+Return an array containing all edges (even unmodified ones) in any order if it is possible to make the shortest distance from source to destination equal to target, or an empty array if it's impossible.
+
+Note: You are not allowed to modify the weights of edges with initial positive weights.
+
+Example 1:
+Input: n = 5, edges = [[4,1,-1],[2,0,-1],[0,3,-1],[4,3,-1]], source = 0, destination = 1, target = 5
+Output: [[4,1,1],[2,0,1],[0,3,3],[4,3,1]]
+Explanation: The graph above shows a possible modification to the edges, making the distance from 0 to 1 equal to 5.
+
+Example 2:
+Input: n = 3, edges = [[0,1,-1],[0,2,5]], source = 0, destination = 2, target = 6
+Output: []
+Explanation: The graph above contains the initial edges. It is not possible to make the distance from 0 to 2 equal to 6 by modifying the edge with weight -1. So, an empty array is returned.
+
+Example 3:
+Input: n = 4, edges = [[1,0,4],[1,2,3],[2,3,5],[0,3,-1]], source = 0, destination = 2, target = 6
+Output: [[1,0,4],[1,2,3],[2,3,5],[0,3,1]]
+Explanation: The graph above shows a modified graph having the shortest distance from 0 to 2 as 6.
+
+Constraints:
+1 <= n <= 100
+1 <= edges.length <= n * (n - 1) / 2
+edges[i].length == 3
+0 <= ai, bi < n
+wi = -1 or 1 <= wi <= 10^7
+ai != bi
+0 <= source, destination < n
+source != destination
+1 <= target <= 10^9
+The graph is connected, and there are no self-loops or repeated edges
+
+</> Typescript Code:
+*/
+
+function modifiedGraphEdges(
+  n: number,
+  edges: number[][],
+  source: number,
+  destination: number,
+  target: number,
+): number[][] {
+  // PriorityQueue class for Dijkstra's algorithm, maintaining a sorted queue of elements by priority
+  class PriorityQueue<T> {
+    private elements: {element: T; priority: number}[] = [];
+
+    enqueue(element: T, priority: number): void {
+      this.elements.push({element, priority});
+      this.elements.sort((a, b) => a.priority - b.priority); // Ensure the queue is sorted by priority
+    }
+
+    dequeue(): {element: T; priority: number} | undefined {
+      return this.elements.shift(); // Remove and return the element with the highest priority (smallest value)
+    }
+
+    isEmpty(): boolean {
+      return this.elements.length === 0; // Check if the queue is empty
+    }
+  }
+
+  // Create an adjacency list representation of the graph
+  const adjacencyList: [number, number][][] = Array.from({length: n}, () => []);
+  for (let i = 0; i < edges.length; i++) {
+    const [nodeA, nodeB] = edges[i];
+    adjacencyList[nodeA].push([nodeB, i]); // Add edges to the adjacency list for both nodes
+    adjacencyList[nodeB].push([nodeA, i]);
+  }
+
+  // Distance array, each node has two distances: one for the first run and another for the second run of Dijkstra
+  const distances: number[][] = Array.from({length: n}, () => [Infinity, Infinity]);
+  distances[source] = [0, 0]; // Set the distance from the source to itself as 0
+
+  // Run Dijkstra's algorithm for the first time
+  runDijkstra(adjacencyList, edges, distances, source, 0, 0);
+  const difference = target - distances[destination][0]; // Calculate the difference needed to reach the target distance
+  if (difference < 0) return []; // If the difference is negative, return an empty array (impossible case)
+
+  // Run Dijkstra's algorithm a second time to adjust the weights and reach the exact target
+  runDijkstra(adjacencyList, edges, distances, source, difference, 1);
+  if (distances[destination][1] < target) return []; // If after the second run the target is not met, return an empty array
+
+  // Set any remaining -1 edge weights to 1, ensuring all edges have positive weights
+  for (const edge of edges) {
+    if (edge[2] === -1) edge[2] = 1;
+  }
+  return edges; // Return the modified edges
+
+  // Helper function to run Dijkstra's algorithm
+  function runDijkstra(
+    adjacencyList: [number, number][][],
+    edges: number[][],
+    distances: number[][],
+    source: number,
+    difference: number,
+    run: number,
+  ): void {
+    const pq = new PriorityQueue<number>();
+    pq.enqueue(source, 0);
+    distances[source][run] = 0;
+
+    while (!pq.isEmpty()) {
+      const current = pq.dequeue();
+      if (!current) break;
+      const currentNode = current.element;
+      const currentDistance = current.priority;
+
+      if (currentDistance > distances[currentNode][run]) continue;
+
+      for (const [nextNode, edgeIndex] of adjacencyList[currentNode]) {
+        let weight = edges[edgeIndex][2];
+        if (weight === -1) weight = 1; // Initially consider -1 as weight 1
+
+        if (run === 1 && edges[edgeIndex][2] === -1) {
+          const newWeight = difference + distances[nextNode][0] - distances[currentNode][1];
+          if (newWeight > weight) {
+            edges[edgeIndex][2] = weight = newWeight; // Adjust weight to help reach the target distance
+          }
+        }
+
+        // Update the distance if a shorter path is found
+        if (distances[nextNode][run] > distances[currentNode][run] + weight) {
+          distances[nextNode][run] = distances[currentNode][run] + weight;
+          pq.enqueue(nextNode, distances[nextNode][run]);
+        }
+      }
+    }
+  }
+}
