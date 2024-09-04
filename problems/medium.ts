@@ -9423,7 +9423,6 @@ function chalkReplacer(chalk: number[], k: number): number {
   return -1;
 }
 
-
 /* 
 874. Walking Robot Simulation
 
@@ -9485,9 +9484,15 @@ The answer is guaranteed to be less than 2^31.
 
 function robotSim(commands: number[], obstacles: number[][]): number {
   // Define movement vectors for the four possible directions: North, East, South, West.
-  const directionVectors = [[0, 1], [1, 0], [0, -1], [-1, 0]]; // [x, y] increments
+  const directionVectors = [
+    [0, 1],
+    [1, 0],
+    [0, -1],
+    [-1, 0],
+  ]; // [x, y] increments
   let direction = 0; // Start facing North (0 index in directionVectors)
-  let x = 0, y = 0; // Initial position of the robot
+  let x = 0,
+    y = 0; // Initial position of the robot
   let maxDistance = 0; // Track the maximum squared distance from origin
 
   // Convert obstacles to a set for O(1) lookup time
@@ -9495,12 +9500,28 @@ function robotSim(commands: number[], obstacles: number[][]): number {
 
   // Iterate over each command
   for (const command of commands) {
-      if (command === -2) { 
-          // Turn left: decrement direction index (counterclockwise)
-          direction = (direction + 3) % 4;
-      } else if (command === -1) {
-          // Turn right: increment direction index (clockwise)
-          direction = (direction + 1) % 4;
-      } else {
-          // Move forward k units in the current direction
-          const [dx
+    if (command === -2) {
+      // Turn left: decrement direction index (counterclockwise)
+      direction = (direction + 3) % 4;
+    } else if (command === -1) {
+      // Turn right: increment direction index (clockwise)
+      direction = (direction + 1) % 4;
+    } else {
+      // Move forward k units in the current direction
+      const [dx, dy] = directionVectors[direction];
+      for (let i = 0; i < command; i++) {
+        const newX = x + dx,
+          newY = y + dy;
+        // Check if next position is an obstacle
+        if (obstacleSet.has(`${newX},${newY}`)) break;
+        // Update the position
+        x = newX;
+        y = newY;
+        // Update maxDistance if current distance is larger
+        maxDistance = Math.max(maxDistance, x * x + y * y);
+      }
+    }
+  }
+
+  return maxDistance; // Return the maximum squared distance found
+}
