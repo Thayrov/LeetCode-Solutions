@@ -9664,3 +9664,83 @@ function modifiedList(nums: number[], head: ListNode | null): ListNode | null {
   // Return the new head, which is the next of the dummy node
   return dummy.next;
 }
+
+/* 
+1367. Linked List in Binary Tree
+
+Given a binary tree root and a linked list with head as the first node. 
+
+Return True if all the elements in the linked list starting from the head correspond to some downward path connected in the binary tree otherwise return False.
+
+In this context downward path means a path that starts at some node and goes downwards.
+
+Example 1:
+Input: head = [4,2,8], root = [1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]
+Output: true
+Explanation: Nodes in blue form a subpath in the binary Tree.  
+
+Example 2:
+Input: head = [1,4,2,6], root = [1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]
+Output: true
+
+Example 3:
+Input: head = [1,4,2,6,8], root = [1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]
+Output: false
+Explanation: There is no path in the binary tree that contains all the elements of the linked list from head.
+
+Constraints:
+The number of nodes in the tree will be in the range [1, 2500].
+The number of nodes in the list will be in the range [1, 100].
+1 <= Node.val <= 100 for each node in the linked list and binary tree.
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function isSubPath(head: ListNode | null, root: TreeNode | null): boolean {
+  // Base case: If the root is null, no path can exist, return false
+  if (!root) return false;
+
+  // Check if the current root node can start a matching path using the dfs helper
+  if (dfs(root, head)) return true;
+
+  // Recursively check the left and right subtrees to see if the linked list starts there
+  return isSubPath(head, root.left) || isSubPath(head, root.right);
+}
+
+// Helper function to check if a path starting from the current tree node matches the linked list
+function dfs(root: TreeNode | null, head: ListNode | null): boolean {
+  // Base case: If we've reached the end of the linked list, the path matches, return true
+  if (!head) return true;
+
+  // If the tree node is null or values don't match, return false
+  if (!root || root.val !== head.val) return false;
+
+  // Recursively check both left and right children for continuing the matching path
+  return dfs(root.left, head.next) || dfs(root.right, head.next);
+}
