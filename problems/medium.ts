@@ -9831,3 +9831,106 @@ function splitListToParts(head: ListNode | null, k: number): Array<ListNode | nu
 
   return result; // Return the array of parts
 }
+
+/* 
+2326. Spiral Matrix IV
+
+You are given two integers m and n, which represent the dimensions of a matrix.
+
+You are also given the head of a linked list of integers.
+
+Generate an m x n matrix that contains the integers in the linked list presented in spiral order (clockwise), starting from the top-left of the matrix. If there are remaining empty spaces, fill them with -1.
+
+Return the generated matrix.
+
+Example 1:
+Input: m = 3, n = 5, head = [3,0,2,6,8,1,7,9,4,2,5,5,0]
+Output: [[3,0,2,6,8],[5,0,-1,-1,1],[5,2,4,9,7]]
+Explanation: The diagram above shows how the values are printed in the matrix.
+Note that the remaining spaces in the matrix are filled with -1.
+
+Example 2:
+Input: m = 1, n = 4, head = [0,1,2]
+Output: [[0,1,2,-1]]
+Explanation: The diagram above shows how the values are printed from left to right in the matrix.
+The last space in the matrix is set to -1.
+
+Constraints:
+1 <= m, n <= 10^5
+1 <= m * n <= 10^5
+The number of nodes in the list is in the range [1, m * n].
+0 <= Node.val <= 1000
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function spiralMatrix(m: number, n: number, head: ListNode | null): number[][] {
+  // Initialize result matrix with -1
+  const result: number[][] = Array.from({length: m}, () => Array(n).fill(-1));
+
+  // Define boundaries
+  let left = 0,
+    right = n - 1,
+    top = 0,
+    bottom = m - 1;
+  let current = head; // Pointer to traverse the linked list
+
+  // Continue until boundaries meet
+  while (left <= right && top <= bottom) {
+    // Traverse from left to right along the top boundary
+    for (let i = left; i <= right; i++) {
+      if (current) {
+        result[top][i] = current.val;
+        current = current.next;
+      }
+    }
+    top++; // Move the top boundary downwards
+
+    // Traverse from top to bottom along the right boundary
+    for (let i = top; i <= bottom; i++) {
+      if (current) {
+        result[i][right] = current.val;
+        current = current.next;
+      }
+    }
+    right--; // Move the right boundary to the left
+
+    // Traverse from right to left along the bottom boundary
+    if (top <= bottom) {
+      // Check if there is a row left
+      for (let i = right; i >= left; i--) {
+        if (current) {
+          result[bottom][i] = current.val;
+          current = current.next;
+        }
+      }
+      bottom--; // Move the bottom boundary upwards
+    }
+
+    // Traverse from bottom to top along the left boundary
+    if (left <= right) {
+      // Check if there is a column left
+      for (let i = bottom; i >= top; i--) {
+        if (current) {
+          result[i][left] = current.val;
+          current = current.next;
+        }
+      }
+      left++; // Move the left boundary to the right
+    }
+  }
+
+  return result;
+}
