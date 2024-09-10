@@ -9934,3 +9934,76 @@ function spiralMatrix(m: number, n: number, head: ListNode | null): number[][] {
 
   return result;
 }
+
+/* 
+2807. Insert Greatest Common Divisors in Linked List
+
+Given the head of a linked list head, in which each node contains an integer value.
+
+Between every pair of adjacent nodes, insert a new node with a value equal to the greatest common divisor of them.
+
+Return the linked list after insertion.
+
+The greatest common divisor of two numbers is the largest positive integer that evenly divides both numbers.
+
+Example 1:
+Input: head = [18,6,10,3]
+Output: [18,6,6,2,10,1,3]
+Explanation: The 1st diagram denotes the initial linked list and the 2nd diagram denotes the linked list after inserting the new nodes (nodes in blue are the inserted nodes).
+- We insert the greatest common divisor of 18 and 6 = 6 between the 1st and the 2nd nodes.
+- We insert the greatest common divisor of 6 and 10 = 2 between the 2nd and the 3rd nodes.
+- We insert the greatest common divisor of 10 and 3 = 1 between the 3rd and the 4th nodes.
+There are no more adjacent nodes, so we return the linked list.
+
+Example 2:
+Input: head = [7]
+Output: [7]
+Explanation: The 1st diagram denotes the initial linked list and the 2nd diagram denotes the linked list after inserting the new nodes.
+There are no pairs of adjacent nodes, so we return the initial linked list.
+
+Constraints:
+The number of nodes in the list is in the range [1, 5000].
+1 <= Node.val <= 1000
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+// Helper function to calculate the GCD of two numbers using the Euclidean algorithm
+function gcd(a: number, b: number): number {
+  while (b !== 0) {
+    // Continue until b becomes 0
+    const temp = b; // Store the current value of b
+    b = a % b; // Update b to be the remainder of a divided by b
+    a = temp; // Update a to the previous value of b
+  }
+  return a; // Return the GCD
+}
+
+// Main function to insert GCD nodes in the linked list
+function insertGreatestCommonDivisors(head: ListNode | null): ListNode | null {
+  if (!head || !head.next) return head; // If the list is empty or has only one node, return it as is
+
+  let current: ListNode | null = head; // Initialize the current node to the head of the list
+
+  while (current && current.next) {
+    // Iterate through the list as long as there are at least two nodes left
+    const gcdValue = gcd(current.val, current.next.val); // Compute the GCD of the current and next node values
+    const newNode = new ListNode(gcdValue, current.next); // Create a new node with the GCD value
+    current.next = newNode; // Insert the new node between current and next nodes
+    current = newNode.next; // Move to the next node in the list
+  }
+
+  return head; // Return the modified list
+}
