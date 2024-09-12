@@ -4329,3 +4329,47 @@ function minBitFlips(start: number, goal: number): number {
       .split('1').length - 1 // Split by '1' to get an array where each segment represents consecutive '0's
   ); // Length of array - 1 gives the count of '1's which are the flips needed
 }
+
+/* 
+1684. Count the Number of Consistent Strings
+
+You are given a string allowed consisting of distinct characters and an array of strings words. A string is consistent if all characters in the string appear in the string allowed.
+
+Return the number of consistent strings in the array words.
+
+Example 1:
+Input: allowed = "ab", words = ["ad","bd","aaab","baa","badab"]
+Output: 2
+Explanation: Strings "aaab" and "baa" are consistent since they only contain characters 'a' and 'b'.
+
+Example 2:
+Input: allowed = "abc", words = ["a","b","c","ab","ac","bc","abc"]
+Output: 7
+Explanation: All strings are consistent.
+
+Example 3:
+Input: allowed = "cad", words = ["cc","acd","b","ba","bac","bad","ac","d"]
+Output: 4
+Explanation: Strings "cc", "acd", "ac", and "d" are consistent.
+
+Constraints:
+1 <= words.length <= 10^4
+1 <= allowed.length <= 26
+1 <= words[i].length <= 10
+The characters in allowed are distinct.
+words[i] and allowed contain only lowercase English letters.
+
+</> Typescript Code:
+*/
+
+function countConsistentStrings(allowed: string, words: string[]): number {
+  // Create a Set from the allowed string for O(1) lookups
+  const allowedSet = new Set(allowed);
+
+  // Filter the words array to include only those strings that are consistent
+  // A word is consistent if all its characters are in the allowed set
+  return words.filter(word =>
+    // Convert the word to an array of characters and check if all are in the allowed set
+    Array.from(word).every(char => allowedSet.has(char)),
+  ).length; // Return the count of consistent strings
+}
