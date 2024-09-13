@@ -10007,3 +10007,60 @@ function insertGreatestCommonDivisors(head: ListNode | null): ListNode | null {
 
   return head; // Return the modified list
 }
+
+/* 
+1310. XOR Queries of a Subarray
+
+You are given an array arr of positive integers. You are also given the array queries where queries[i] = [lefti, righti].
+
+For each query i compute the XOR of elements from lefti to righti (that is, arr[lefti] XOR arr[lefti + 1] XOR ... XOR arr[righti] ).
+
+Return an array answer where answer[i] is the answer to the ith query.
+
+Example 1:
+Input: arr = [1,3,4,8], queries = [[0,1],[1,2],[0,3],[3,3]]
+Output: [2,7,14,8] 
+Explanation: 
+The binary representation of the elements in the array are:
+1 = 0001 
+3 = 0011 
+4 = 0100 
+8 = 1000 
+The XOR values for queries are:
+[0,1] = 1 xor 3 = 2 
+[1,2] = 3 xor 4 = 7 
+[0,3] = 1 xor 3 xor 4 xor 8 = 14 
+[3,3] = 8
+
+Example 2:
+Input: arr = [4,8,2,10], queries = [[2,3],[1,3],[0,0],[0,3]]
+Output: [8,0,4,4]
+
+Constraints:
+1 <= arr.length, queries.length <= 3 * 10^4
+1 <= arr[i] <= 10^9
+queries[i].length == 2
+0 <= lefti <= righti < arr.length
+
+</> Typescript Code:
+*/
+
+function xorQueries(arr: number[], queries: number[][]): number[] {
+  // Create an array to store the prefix XOR values with an extra element for convenience
+  const prefixXOR = new Array(arr.length + 1).fill(0);
+
+  // Compute prefix XORs
+  for (let i = 0; i < arr.length; i++) {
+    // Update the prefixXOR array where each element at index i+1 stores
+    // the XOR of all elements from the start up to index i
+    prefixXOR[i + 1] = prefixXOR[i] ^ arr[i];
+  }
+
+  // For each query, compute the XOR of the subarray from left to right
+  return queries.map(
+    ([left, right]) =>
+      // The XOR of subarray from left to right can be computed by
+      // XORing prefixXOR[right + 1] (up to right) with prefixXOR[left] (up to left-1)
+      prefixXOR[right + 1] ^ prefixXOR[left],
+  );
+}
