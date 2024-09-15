@@ -10127,3 +10127,75 @@ function longestSubarray(nums: number[]): number {
   // Step 4: Return the longest subarray length where all elements equal the maximum value.
   return longest;
 }
+
+/* 
+1371. Find the Longest Substring Containing Vowels in Even Counts
+
+Given the string s, return the size of the longest substring containing each vowel an even number of times. That is, 'a', 'e', 'i', 'o', and 'u' must appear an even number of times.
+
+Example 1:
+Input: s = "eleetminicoworoep"
+Output: 13
+Explanation: The longest substring is "leetminicowor" which contains two each of the vowels: e, i and o and zero of the vowels: a and u.
+
+Example 2:
+Input: s = "leetcodeisgreat"
+Output: 5
+Explanation: The longest substring is "leetc" which contains two e's.
+
+Example 3:
+Input: s = "bcbcbc"
+Output: 6
+Explanation: In this case, the given string "bcbcbc" is the longest because all vowels: a, e, i, o and u appear zero times.
+
+Constraints:
+1 <= s.length <= 5 x 10^5
+s contains only lowercase English letters.
+
+</> Typescript Code:
+*/
+
+function findTheLongestSubstring(s: string): number {
+  // Define a string containing all vowels for easy lookup.
+  const vowels = 'aeiou';
+
+  // A map to track the first occurrence of each mask state.
+  // The mask represents the parity (even/odd count) of vowels.
+  const maskMap = new Map<number, number>();
+
+  // Variable to keep track of the current state of the vowel counts.
+  // Each bit in 'mask' represents one of the vowels; the bit is 1 if
+  // the vowel has been seen an odd number of times, 0 if even.
+  let mask = 0;
+
+  // Variable to store the maximum length of the substring that meets the condition.
+  let maxLength = 0;
+
+  // Initialize the maskMap with mask 0 at position -1 to handle cases where
+  // the valid substring starts from index 0.
+  maskMap.set(0, -1);
+
+  // Iterate over the string characters.
+  for (let i = 0; i < s.length; i++) {
+    // Check if the current character is a vowel.
+    const charIndex = vowels.indexOf(s[i]);
+
+    // If it is a vowel, toggle the corresponding bit in the mask.
+    if (charIndex !== -1) {
+      mask ^= 1 << charIndex;
+    }
+
+    // If the current mask has been seen before, calculate the length
+    // of the substring between the first occurrence of this mask and now.
+    if (maskMap.has(mask)) {
+      maxLength = Math.max(maxLength, i - maskMap.get(mask)!);
+    }
+    // If the mask has not been seen, store the current index.
+    else {
+      maskMap.set(mask, i);
+    }
+  }
+
+  // Return the maximum length of the valid substring.
+  return maxLength;
+}
