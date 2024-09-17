@@ -4373,3 +4373,50 @@ function countConsistentStrings(allowed: string, words: string[]): number {
     Array.from(word).every(char => allowedSet.has(char)),
   ).length; // Return the count of consistent strings
 }
+
+/* 
+884. Uncommon Words from Two Sentences
+
+A sentence is a string of single-space separated words where each word consists only of lowercase letters.
+
+A word is uncommon if it appears exactly once in one of the sentences, and does not appear in the other sentence.
+
+Given two sentences s1 and s2, return a list of all the uncommon words. You may return the answer in any order.
+
+Example 1:
+Input: s1 = "this apple is sweet", s2 = "this apple is sour"
+Output: ["sweet","sour"]
+Explanation:
+The word "sweet" appears only in s1, while the word "sour" appears only in s2.
+
+Example 2:
+Input: s1 = "apple apple", s2 = "banana"
+Output: ["banana"]
+
+
+Constraints:
+1 <= s1.length, s2.length <= 200
+s1 and s2 consist of lowercase English letters and spaces.
+s1 and s2 do not have leading or trailing spaces.
+All the words in s1 and s2 are separated by a single space
+
+</> Typescript Code:
+*/
+
+function uncommonFromSentences(s1: string, s2: string): string[] {
+  // Create a frequency map to count occurrences of each word
+  const count: Record<string, number> = {};
+
+  // Split s1 into words and count occurrences
+  for (const word of s1.split(' ')) {
+    count[word] = (count[word] || 0) + 1; // If word not in map, initialize to 0 and add 1
+  }
+
+  // Split s2 into words and count occurrences
+  for (const word of s2.split(' ')) {
+    count[word] = (count[word] || 0) + 1; // Same as above for s2
+  }
+
+  // Filter and return words that appear exactly once in the combined sentences
+  return Object.keys(count).filter(word => count[word] === 1);
+}
