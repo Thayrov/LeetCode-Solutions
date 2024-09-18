@@ -10243,3 +10243,40 @@ function findMinDifference(timePoints: string[]): number {
 
   return minDiff; // Return the smallest time difference found
 }
+
+/* 
+179. Largest Number
+
+Given a list of non-negative integers nums, arrange them such that they form the largest number and return it.
+
+Since the result may be very large, so you need to return a string instead of an integer.
+
+Example 1:
+Input: nums = [10,2]
+Output: "210"
+
+Example 2:
+Input: nums = [3,30,34,5,9]
+Output: "9534330"
+
+Constraints:
+1 <= nums.length <= 100
+0 <= nums[i] <= 10^9
+
+</> Typescript Code:
+*/
+
+function largestNumber(nums: number[]): string {
+  // Convert each number to a string for custom comparison
+  const strNums = nums.map(String); // Create an array of string representations of nums
+
+  // Sort the string array based on which combination forms a larger number
+  strNums.sort((a, b) => (b + a).localeCompare(a + b));
+  // Compare concatenated strings in both possible orders to determine the larger one
+
+  // If the largest number after sorting is "0", return "0" (handles cases with leading zeros)
+  if (strNums[0] === '0') return '0';
+
+  // Concatenate sorted string numbers into the final result
+  return strNums.join(''); // Join the sorted array into a single string
+}
