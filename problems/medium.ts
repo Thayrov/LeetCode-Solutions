@@ -10280,3 +10280,99 @@ function largestNumber(nums: number[]): string {
   // Concatenate sorted string numbers into the final result
   return strNums.join(''); // Join the sorted array into a single string
 }
+
+/* 
+241. Different Ways to Add Parentheses
+
+Given a string expression of numbers and operators, return all possible results from computing all the different possible ways to group numbers and operators. You may return the answer in any order.
+
+The test cases are generated such that the output values fit in a 32-bit integer and the number of different results does not exceed 104.
+
+Example 1:
+Input: expression = "2-1-1"
+Output: [0,2]
+Explanation:
+((2-1)-1) = 0 
+(2-(1-1)) = 2
+
+Example 2:
+Input: expression = "2*3-4*5"
+Output: [-34,-14,-10,-10,10]
+Explanation:
+(2*(3-(4*5))) = -34 
+((2*3)-(4*5)) = -14 
+((2*(3-4))*5) = -10 
+(2*((3-4)*5)) = -10 
+(((2*3)-4)*5) = 10
+
+Constraints:
+1 <= expression.length <= 20
+expression consists of digits and the operator '+', '-', and '*'.
+All the integer values in the input expression are in the range [0, 99].
+
+</> Typescript Code:
+*/
+
+function diffWaysToCompute(expression: string): number[] {
+  // Initialize a memoization map to cache results for sub-expressions
+  const memo = new Map<string, number[]>();
+
+  // Tokenize the expression into numbers and operators
+  const tokens: (number | string)[] = [];
+  let num = '';
+  for (let c of expression) {
+    if (c === '+' || c === '-' || c === '*') {
+      tokens.push(parseInt(num)); // Add the parsed number to tokens
+      tokens.push(c); // Add the operator to tokens
+      num = ''; // Reset the number string
+    } else {
+      num += c; // Build the number string
+    }
+  }
+  tokens.push(parseInt(num)); // Add the last number to tokens
+
+  // Recursive function to compute results for tokens from start to end indices
+  function compute(start: number, end: number): number[] {
+    // Create a unique key for memoization
+    const key = `${start},${end}`;
+
+    // Return cached result if available
+    if (memo.has(key)) return memo.get(key)!;
+
+    // Base case: only one number in this sub-expression
+    if (start === end) {
+      return [tokens[start] as number];
+    }
+
+    // Initialize an array to store results
+    const results: number[] = [];
+
+    // Iterate over operators in the current sub-expression
+    for (let i = start + 1; i < end; i += 2) {
+      const op = tokens[i] as string;
+
+      // Recursively compute all possible results from left and right sub-expressions
+      const left = compute(start, i - 1);
+      const right = compute(i + 1, end);
+
+      // Compute all combinations of left and right results with the current operator
+      for (let l of left) {
+        for (let r of right) {
+          let val = 0;
+          if (op === '+') val = l + r;
+          else if (op === '-') val = l - r;
+          else if (op === '*') val = l * r;
+          results.push(val);
+        }
+      }
+    }
+
+    // Cache the computed results
+    memo.set(key, results);
+
+    return results;
+  }
+
+  // Compute and return all possible results for the entire expression
+  return compute(0, tokens.length - 1);
+}
