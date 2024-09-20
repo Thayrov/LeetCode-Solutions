@@ -3107,3 +3107,57 @@ function modifiedGraphEdges(
     }
   }
 }
+
+/* 
+214. Shortest Palindrome
+
+You are given a string s. You can convert s to a 
+palindrome by adding characters in front of it.
+
+Return the shortest palindrome you can find by performing this transformation.
+
+Example 1:
+Input: s = "aacecaaa"
+Output: "aaacecaaa"
+
+Example 2:
+Input: s = "abcd"
+Output: "dcbabcd"
+
+Constraints:
+0 <= s.length <= 5 * 10^4
+s consists of lowercase English letters only.
+
+</> Typescript Code:
+*/
+
+function shortestPalindrome(s: string): string {
+  // Step 1: Reverse the input string
+  const rev = s.split('').reverse().join(''); // reverse string
+
+  // Step 2: Combine the original and reversed strings, separated by a unique character
+  const combined = s + '#' + rev; // combine original and reversed strings with '#' to avoid overlap confusion
+
+  // Step 3: Create a table to store the length of the longest proper prefix which is also a suffix
+  const table = new Array(combined.length).fill(0); // initialize prefix table for KMP algorithm
+
+  // Step 4: Fill the KMP table to identify palindrome length
+  for (let i = 1; i < combined.length; i++) {
+    let j = table[i - 1]; // Start with the value from the previous position
+    // Try to match characters in the prefix and suffix
+    while (j > 0 && combined[i] !== combined[j]) {
+      j = table[j - 1]; // Roll back to the previous match point
+    }
+    if (combined[i] === combined[j]) {
+      j++; // If characters match, increment the match length
+    }
+    table[i] = j; // Store the result in the KMP table
+  }
+
+  // Step 5: Calculate how many characters we need to add in front
+  const maxPalindromeLength = table[table.length - 1]; // longest palindrome that starts at the beginning
+  const toAdd = rev.slice(0, s.length - maxPalindromeLength); // extract the portion to add in front
+
+  // Step 6: Return the shortest palindrome by adding necessary characters in front
+  return toAdd + s; // concatenate the necessary characters with the original string
+}
