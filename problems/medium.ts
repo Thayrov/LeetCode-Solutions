@@ -10432,3 +10432,57 @@ function lexicalOrder(n: number): number[] {
   // Return the final lexicographically ordered array
   return result;
 }
+
+/* 
+2707. Extra Characters in a String
+
+You are given a 0-indexed string s and a dictionary of words dictionary. You have to break s into one or more non-overlapping substrings such that each substring is present in dictionary. There may be some extra characters in s which are not present in any of the substrings.
+
+Return the minimum number of extra characters left over if you break up s optimally.
+
+Example 1:
+Input: s = "leetscode", dictionary = ["leet","code","leetcode"]
+Output: 1
+Explanation: We can break s in two substrings: "leet" from index 0 to 3 and "code" from index 5 to 8. There is only 1 unused character (at index 4), so we return 1.
+
+Example 2:
+Input: s = "sayhelloworld", dictionary = ["hello","world"]
+Output: 3
+Explanation: We can break s in two substrings: "hello" from index 3 to 7 and "world" from index 8 to 12. The characters at indices 0, 1, 2 are not used in any substring and thus are considered as extra characters. Hence, we return 3.
+
+Constraints:
+1 <= s.length <= 50
+1 <= dictionary.length <= 50
+1 <= dictionary[i].length <= 50
+dictionary[i] and s consists of only lowercase English letters
+dictionary contains distinct words
+
+</> Typescript Code:
+*/
+
+function minExtraChar(s: string, dictionary: string[]): number {
+  // Create a set from the dictionary for O(1) lookups
+  const dictSet = new Set(dictionary);
+
+  // Initialize a dp array where dp[i] stores the minimum extra characters for the substring s[0...i-1]
+  const dp = new Array(s.length + 1).fill(0);
+
+  // Iterate through each position in the string s
+  for (let i = 1; i <= s.length; i++) {
+    // Initially assume the minimum extra characters at dp[i] is dp[i-1] + 1 (i.e., one more character is unused)
+    dp[i] = dp[i - 1] + 1;
+
+    // Check each word in the dictionary
+    for (let word of dictionary) {
+      const len = word.length; // Get the length of the word
+      // If the current position i can accommodate the word and the substring matches the word
+      if (i >= len && dictSet.has(s.slice(i - len, i))) {
+        // Update dp[i] to be the minimum of its current value and dp[i - len] (which assumes we can use the word)
+        dp[i] = Math.min(dp[i], dp[i - len]);
+      }
+    }
+  }
+
+  // Return the minimum extra characters for the entire string
+  return dp[s.length];
+}
