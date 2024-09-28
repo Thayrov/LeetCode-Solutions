@@ -10694,3 +10694,133 @@ class MyCalendarTwo {
     return true;
   }
 }
+
+/* 
+641. Design Circular Deque
+
+Design your implementation of the circular double-ended queue (deque).
+
+Implement the MyCircularDeque class:
+MyCircularDeque(int k) Initializes the deque with a maximum size of k.
+boolean insertFront() Adds an item at the front of Deque. Returns true if the operation is successful, or false otherwise.
+boolean insertLast() Adds an item at the rear of Deque. Returns true if the operation is successful, or false otherwise.
+boolean deleteFront() Deletes an item from the front of Deque. Returns true if the operation is successful, or false otherwise.
+boolean deleteLast() Deletes an item from the rear of Deque. Returns true if the operation is successful, or false otherwise.
+int getFront() Returns the front item from the Deque. Returns -1 if the deque is empty.
+int getRear() Returns the last item from Deque. Returns -1 if the deque is empty.
+boolean isEmpty() Returns true if the deque is empty, or false otherwise.
+boolean isFull() Returns true if the deque is full, or false otherwise.
+
+Example 1:
+Input
+["MyCircularDeque", "insertLast", "insertLast", "insertFront", "insertFront", "getRear", "isFull", "deleteLast", "insertFront", "getFront"]
+[[3], [1], [2], [3], [4], [], [], [], [4], []]
+Output
+[null, true, true, true, false, 2, true, true, true, 4]
+Explanation
+MyCircularDeque myCircularDeque = new MyCircularDeque(3);
+myCircularDeque.insertLast(1);  // return True
+myCircularDeque.insertLast(2);  // return True
+myCircularDeque.insertFront(3); // return True
+myCircularDeque.insertFront(4); // return False, the queue is full.
+myCircularDeque.getRear();      // return 2
+myCircularDeque.isFull();       // return True
+myCircularDeque.deleteLast();   // return True
+myCircularDeque.insertFront(4); // return True
+myCircularDeque.getFront();     // return 4
+
+Constraints:
+1 <= k <= 1000
+0 <= value <= 1000
+At most 2000 calls will be made to insertFront, insertLast, deleteFront, deleteLast, getFront, getRear, isEmpty, isFull.
+
+</> Typescript Code:
+*/
+
+/**
+ * Your MyCircularDeque object will be instantiated and called as such:
+ * var obj = new MyCircularDeque(k)
+ * var param_1 = obj.insertFront(value)
+ * var param_2 = obj.insertLast(value)
+ * var param_3 = obj.deleteFront()
+ * var param_4 = obj.deleteLast()
+ * var param_5 = obj.getFront()
+ * var param_6 = obj.getRear()
+ * var param_7 = obj.isEmpty()
+ * var param_8 = obj.isFull()
+ */
+
+class MyCircularDeque {
+  private deque: number[]; // Array to store elements in deque
+  private maxSize: number; // Maximum size allowed for deque
+
+  // Constructor initializes the deque with a max size 'k'
+  constructor(k: number) {
+    this.deque = []; // Initialize deque as an empty array
+    this.maxSize = k; // Set the max size to the input value 'k'
+  }
+
+  // Inserts an item at the front of the deque
+  insertFront(value: number): boolean {
+    // If deque is full, return false
+    if (this.isFull()) return false;
+    // Add the item to the front of the deque
+    this.deque.unshift(value);
+    // Return true to indicate successful insertion
+    return true;
+  }
+
+  // Inserts an item at the rear of the deque
+  insertLast(value: number): boolean {
+    // If deque is full, return false
+    if (this.isFull()) return false;
+    // Add the item to the rear of the deque
+    this.deque.push(value);
+    // Return true to indicate successful insertion
+    return true;
+  }
+
+  // Deletes an item from the front of the deque
+  deleteFront(): boolean {
+    // If deque is empty, return false
+    if (this.isEmpty()) return false;
+    // Remove the item from the front of the deque
+    this.deque.shift();
+    // Return true to indicate successful deletion
+    return true;
+  }
+
+  // Deletes an item from the rear of the deque
+  deleteLast(): boolean {
+    // If deque is empty, return false
+    if (this.isEmpty()) return false;
+    // Remove the item from the rear of the deque
+    this.deque.pop();
+    // Return true to indicate successful deletion
+    return true;
+  }
+
+  // Returns the front item from the deque
+  getFront(): number {
+    // Return -1 if deque is empty, otherwise return the front item
+    return this.isEmpty() ? -1 : this.deque[0];
+  }
+
+  // Returns the last item from the deque
+  getRear(): number {
+    // Return -1 if deque is empty, otherwise return the rear item
+    return this.isEmpty() ? -1 : this.deque[this.deque.length - 1];
+  }
+
+  // Returns true if the deque is empty
+  isEmpty(): boolean {
+    // Check if the deque has no elements
+    return this.deque.length === 0;
+  }
+
+  // Returns true if the deque is full
+  isFull(): boolean {
+    // Check if the deque has reached its maximum size
+    return this.deque.length === this.maxSize;
+  }
+}
