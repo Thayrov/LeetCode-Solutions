@@ -3329,3 +3329,172 @@ function sumPrefixScores(words: string[]): number[] {
 
   return scores; // Return the final scores array
 }
+
+/* 
+432. All O`one Data Structure
+
+Design a data structure to store the strings' count with the ability to return the strings with minimum and maximum counts.
+
+Implement the AllOne class:
+
+AllOne() Initializes the object of the data structure.
+inc(String key) Increments the count of the string key by 1. If key does not exist in the data structure, insert it with count 1.
+dec(String key) Decrements the count of the string key by 1. If the count of key is 0 after the decrement, remove it from the data structure. It is guaranteed that key exists in the data structure before the decrement.
+getMaxKey() Returns one of the keys with the maximal count. If no element exists, return an empty string "".
+getMinKey() Returns one of the keys with the minimum count. If no element exists, return an empty string "".
+Note that each function must run in O(1) average time complexity.
+
+Example 1:
+Input
+["AllOne", "inc", "inc", "getMaxKey", "getMinKey", "inc", "getMaxKey", "getMinKey"]
+[[], ["hello"], ["hello"], [], [], ["leet"], [], []]
+Output
+[null, null, null, "hello", "hello", null, "hello", "leet"]
+Explanation
+AllOne allOne = new AllOne();
+allOne.inc("hello");
+allOne.inc("hello");
+allOne.getMaxKey(); // return "hello"
+allOne.getMinKey(); // return "hello"
+allOne.inc("leet");
+allOne.getMaxKey(); // return "hello"
+allOne.getMinKey(); // return "leet"
+
+Constraints:
+1 <= key.length <= 10
+key consists of lowercase English letters.
+It is guaranteed that for each call to dec, key is existing in the data structure.
+At most 5 * 10^4 calls will be made to inc, dec, getMaxKey, and getMinKey.
+
+</> Typescript Code:
+*/
+
+/**
+ * Your AllOne object will be instantiated and called as such:
+ * var obj = new AllOne()
+ * obj.inc(key)
+ * obj.dec(key)
+ * var param_3 = obj.getMaxKey()
+ * var param_4 = obj.getMinKey()
+ */
+
+class Node {
+  count: number; // The count value this node represents
+  keys: Set<string>; // Set of keys with this count
+  prev: Node | null; // Pointer to the previous node in the linked list
+  next: Node | null; // Pointer to the next node in the linked list
+
+  constructor(count: number) {
+    this.count = count; // Initialize the count
+    this.keys = new Set(); // Initialize the set of keys
+    this.prev = null; // Previous node pointer starts as null
+    this.next = null; // Next node pointer starts as null
+  }
+}
+
+class AllOne {
+  private head: Node; // Sentinel head node (dummy node with count 0)
+  private tail: Node; // Sentinel tail node (dummy node with count 0)
+  private keyCount: Map<string, number>; // Maps each key to its current count
+  private countNode: Map<number, Node>; // Maps each count to its corresponding node
+
+  constructor() {
+    this.head = new Node(0); // Initialize head node
+    this.tail = new Node(0); // Initialize tail node
+    this.head.next = this.tail; // Link head to tail
+    this.tail.prev = this.head; // Link tail back to head
+    this.keyCount = new Map(); // Initialize the key to count map
+    this.countNode = new Map(); // Initialize the count to node map
+  }
+
+  inc(key: string): void {
+    const currentCount = this.keyCount.get(key) || 0; // Get current count or 0 if key doesn't exist
+    const newCount = currentCount + 1; // Increment count
+    this.keyCount.set(key, newCount); // Update the key's count
+
+    // Determine the node corresponding to the current count
+    let currentNode = currentCount === 0 ? this.head : this.countNode.get(currentCount)!;
+    // Check if a node for the new count already exists
+    let newNode = this.countNode.get(newCount);
+
+    if (!newNode) {
+      newNode = new Node(newCount); // Create a new node for the new count
+      this.countNode.set(newCount, newNode); // Map the new count to the new node
+      this.insertAfter(currentNode, newNode); // Insert the new node after the current node
+    }
+
+    newNode.keys.add(key); // Add the key to the new node's key set
+
+    if (currentCount !== 0) {
+      currentNode.keys.delete(key); // Remove the key from the current node's key set
+      if (currentNode.keys.size === 0) {
+        // If no keys left in the current node
+        this.removeNode(currentNode); // Remove the current node from the linked list
+        this.countNode.delete(currentCount); // Remove the count from the count-node map
+      }
+    }
+  }
+
+  dec(key: string): void {
+    const currentCount = this.keyCount.get(key)!; // Get the current count of the key
+    const newCount = currentCount - 1; // Decrement the count
+
+    if (newCount === 0) {
+      this.keyCount.delete(key); // If count reaches zero, remove the key from keyCount map
+    } else {
+      this.keyCount.set(key, newCount); // Update the key's count
+    }
+
+    const currentNode = this.countNode.get(currentCount)!; // Get the node corresponding to the current count
+    currentNode.keys.delete(key); // Remove the key from the current node's key set
+
+    let newNode: Node | undefined;
+    if (newCount > 0) {
+      newNode = this.countNode.get(newCount); // Check if a node for the new count exists
+      if (!newNode) {
+        newNode = new Node(newCount); // Create a new node for the new count
+        this.countNode.set(newCount, newNode); // Map the new count to the new node
+        this.insertBefore(currentNode, newNode); // Insert the new node before the current node
+      }
+      newNode.keys.add(key); // Add the key to the new node's key set
+    }
+
+    if (currentNode.keys.size === 0) {
+      // If no keys left in the current node
+      this.removeNode(currentNode); // Remove the current node from the linked list
+      this.countNode.delete(currentCount); // Remove the count from the count-node map
+    }
+  }
+
+  getMaxKey(): string {
+    if (this.tail.prev === this.head) return ''; // If no keys exist, return empty string
+    return this.tail.prev!.keys.values().next().value; // Return any key from the max count node
+  }
+
+  getMinKey(): string {
+    if (this.head.next === this.tail) return ''; // If no keys exist, return empty string
+    return this.head.next!.keys.values().next().value; // Return any key from the min count node
+  }
+
+  // Inserts newNode after node in the linked list
+  private insertAfter(node: Node, newNode: Node): void {
+    newNode.prev = node; // Set newNode's previous to node
+    newNode.next = node.next; // Set newNode's next to node's next
+    node.next!.prev = newNode; // Update node's next node's previous to newNode
+    node.next = newNode; // Link node to newNode
+  }
+
+  // Inserts newNode before node in the linked list
+  private insertBefore(node: Node, newNode: Node): void {
+    newNode.next = node; // Set newNode's next to node
+    newNode.prev = node.prev; // Set newNode's previous to node's previous
+    node.prev!.next = newNode; // Update node's previous node's next to newNode
+    node.prev = newNode; // Link node back to newNode
+  }
+
+  // Removes node from the linked list
+  private removeNode(node: Node): void {
+    node.prev!.next = node.next; // Bypass node by linking previous node to next node
+    node.next!.prev = node.prev; // Link next node back to previous node
+  }
+}
