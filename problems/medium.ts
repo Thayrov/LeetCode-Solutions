@@ -10906,3 +10906,62 @@ class CustomStack {
     if (limit > 0) this.increments[limit - 1] += val; // Increment the bottom `limit` elements
   }
 }
+
+/* 
+1497. Check If Array Pairs Are Divisible by k
+
+Given an array of integers arr of even length n and an integer k.
+
+We want to divide the array into exactly n / 2 pairs such that the sum of each pair is divisible by k.
+
+Return true If you can find a way to do that or false otherwise.
+
+Example 1:
+Input: arr = [1,2,3,4,5,10,6,7,8,9], k = 5
+Output: true
+Explanation: Pairs are (1,9),(2,8),(3,7),(4,6) and (5,10).
+
+Example 2:
+Input: arr = [1,2,3,4,5,6], k = 7
+Output: true
+Explanation: Pairs are (1,6),(2,5) and(3,4).
+
+Example 3:
+Input: arr = [1,2,3,4,5,6], k = 10
+Output: false
+Explanation: You can try all possible pairs to see that there is no way to divide arr into 3 pairs each with sum divisible by 10.
+
+Constraints:
+arr.length == n
+1 <= n <= 10^5
+n is even.
+-10^9 <= arr[i] <= 10^9
+1 <= k <= 10^5
+
+</> Typescript Code:
+*/
+
+function canArrange(arr: number[], k: number): boolean {
+  // Create an array to count occurrences of each remainder when divided by k
+  const remainderCount = new Array(k).fill(0);
+
+  // Iterate through each number in the input array
+  for (const num of arr) {
+    // Calculate the normalized remainder (non-negative)
+    const remainder = ((num % k) + k) % k;
+    // Increment the count for this remainder
+    remainderCount[remainder]++;
+  }
+
+  // If the count of numbers that have a remainder of 0 is odd, we cannot form pairs
+  if (remainderCount[0] % 2 !== 0) return false;
+
+  // Check if for each remainder i, the count of i matches the count of (k - i)
+  for (let i = 1; i <= k / 2; i++) {
+    // If counts do not match, we cannot form valid pairs
+    if (remainderCount[i] !== remainderCount[k - i]) return false;
+  }
+
+  // All conditions satisfied, we can form pairs
+  return true;
+}
