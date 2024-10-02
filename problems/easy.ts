@@ -4420,3 +4420,56 @@ function uncommonFromSentences(s1: string, s2: string): string[] {
   // Filter and return words that appear exactly once in the combined sentences
   return Object.keys(count).filter(word => count[word] === 1);
 }
+
+/* 
+1331. Rank Transform of an Array
+
+Given an array of integers arr, replace each element with its rank.
+
+The rank represents how large the element is. The rank has the following rules:
+
+Rank is an integer starting from 1.
+The larger the element, the larger the rank. If two elements are equal, their rank must be the same.
+Rank should be as small as possible.
+
+Example 1:
+Input: arr = [40,10,20,30]
+Output: [4,1,2,3]
+Explanation: 40 is the largest element. 10 is the smallest. 20 is the second smallest. 30 is the third smallest.
+
+Example 2:
+Input: arr = [100,100,100]
+Output: [1,1,1]
+Explanation: Same elements share the same rank.
+
+Example 3:
+Input: arr = [37,12,28,9,100,56,80,5,12]
+Output: [5,3,4,2,8,6,7,1,3]
+
+Constraints:
+0 <= arr.length <= 10^5
+-10^9 <= arr[i] <= 10^9
+
+</> Typescript Code:
+*/
+
+function arrayRankTransform(arr: number[]): number[] {
+  // If the array is empty, return an empty array immediately.
+  if (arr.length === 0) return [];
+
+  // Step 1: Create a sorted array of unique elements from `arr`.
+  // We use `Set` to remove duplicates, then sort the array in ascending order.
+  const sortedUnique = [...new Set(arr)].sort((a, b) => a - b);
+
+  // Step 2: Create a map to store the rank for each unique element.
+  // The map will store the element as the key and its rank (1-based index) as the value.
+  const rankMap = new Map<number, number>();
+
+  // Step 3: Populate the rank map by iterating over the sorted unique array.
+  // Each unique value gets assigned a rank based on its position in the sorted array.
+  sortedUnique.forEach((val, index) => rankMap.set(val, index + 1));
+
+  // Step 4: Transform the original array by replacing each value with its corresponding rank.
+  // We use the rank map to find the rank for each value in the original array.
+  return arr.map(val => rankMap.get(val)!);
+}
