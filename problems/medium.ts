@@ -11103,3 +11103,76 @@ function dividePlayers(skill: number[]): number {
   // Return the sum of all chemistry values of valid teams
   return chemistrySum;
 }
+
+/* 
+567. Permutation in String
+
+Given two strings s1 and s2, return true if s2 contains a 
+permutation of s1, or false otherwise.
+
+In other words, return true if one of s1's permutations is the substring of s2.
+
+Example 1:
+Input: s1 = "ab", s2 = "eidbaooo"
+Output: true
+Explanation: s2 contains one permutation of s1 ("ba").
+
+Example 2:
+Input: s1 = "ab", s2 = "eidboaoo"
+Output: false
+
+Constraints:
+1 <= s1.length, s2.length <= 10^4
+s1 and s2 consist of lowercase English letters.
+
+*/
+
+function checkInclusion(s1: string, s2: string): boolean {
+  // Edge case: if s1 is longer than s2, there can be no valid permutation
+  if (s1.length > s2.length) return false;
+
+  // Arrays to store the frequency of each character (26 letters in the alphabet)
+  const s1Count = new Array(26).fill(0);
+  const s2Count = new Array(26).fill(0);
+
+  // Populate frequency counts for the first 's1.length' characters in both strings
+  for (let i = 0; i < s1.length; i++) {
+    s1Count[s1.charCodeAt(i) - 97]++; // count chars in s1
+    s2Count[s2.charCodeAt(i) - 97]++; // count first window of chars in s2
+  }
+
+  // Variable to track how many characters have matching frequencies between s1 and current window of s2
+  let matches = 0;
+  for (let i = 0; i < 26; i++) {
+    if (s1Count[i] === s2Count[i]) matches++; // count initial matches
+  }
+
+  // Sliding window starts after the first 's1.length' characters in s2
+  for (let i = s1.length; i < s2.length; i++) {
+    // If all 26 character frequencies match, we have found a valid permutation
+    if (matches === 26) return true;
+
+    // Add new character to the window (right end)
+    const indexNew = s2.charCodeAt(i) - 97; // get index for new char
+    s2Count[indexNew]++;
+    // Update match count based on the new char
+    if (s2Count[indexNew] === s1Count[indexNew]) {
+      matches++; // if new char matches s1's count
+    } else if (s2Count[indexNew] === s1Count[indexNew] + 1) {
+      matches--; // if new char frequency exceeds s1's count
+    }
+
+    // Remove old character from the window (left end)
+    const indexOld = s2.charCodeAt(i - s1.length) - 97; // get index for old char
+    s2Count[indexOld]--;
+    // Update match count based on the removed char
+    if (s2Count[indexOld] === s1Count[indexOld]) {
+      matches++; // if old char count returns to match s1
+    } else if (s2Count[indexOld] === s1Count[indexOld] - 1) {
+      matches--; // if old char count drops below s1's
+    }
+  }
+
+  // Final check after the loop completes
+  return matches === 26;
+}
