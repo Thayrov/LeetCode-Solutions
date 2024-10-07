@@ -4473,3 +4473,59 @@ function arrayRankTransform(arr: number[]): number[] {
   // We use the rank map to find the rank for each value in the original array.
   return arr.map(val => rankMap.get(val)!);
 }
+
+/* 
+2696. Minimum String Length After Removing Substrings
+
+You are given a string s consisting only of uppercase English letters.
+
+You can apply some operations to this string where, in one operation, you can remove any occurrence of one of the substrings "AB" or "CD" from s.
+
+Return the minimum possible length of the resulting string that you can obtain.
+
+Note that the string concatenates after removing the substring and could produce new "AB" or "CD" substrings.
+
+Example 1:
+Input: s = "ABFCACDB"
+Output: 2
+Explanation: We can do the following operations:
+- Remove the substring "ABFCACDB", so s = "FCACDB".
+- Remove the substring "FCACDB", so s = "FCAB".
+- Remove the substring "FCAB", so s = "FC".
+So the resulting length of the string is 2.
+It can be shown that it is the minimum length that we can obtain.
+
+Example 2:
+Input: s = "ACBBD"
+Output: 5
+Explanation: We cannot do any operations on the string so the length remains the same.
+
+Constraints:
+1 <= s.length <= 100
+s consists only of uppercase English letters.
+
+
+</> Typescript Code:
+*/
+
+function minLength(s: string): number {
+  // Initialize a stack to keep track of the characters in the string
+  const stack: string[] = [];
+
+  // Iterate through each character in the string
+  for (const char of s) {
+    // Get the last character in the stack (if any)
+    const last = stack[stack.length - 1];
+
+    // If the current character forms a valid "AB" or "CD" with the last character, pop the stack
+    if ((last === 'A' && char === 'B') || (last === 'C' && char === 'D')) {
+      stack.pop(); // Remove the last character since the pair is removed
+    } else {
+      // If no valid pair is found, push the current character onto the stack
+      stack.push(char);
+    }
+  }
+
+  // The final length of the string is the size of the stack after all removals
+  return stack.length;
+}
