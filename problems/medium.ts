@@ -11354,3 +11354,55 @@ function minAddToMakeValid(s: string): number {
   // The result is the sum of unclosed '(' and unmatched ')'
   return open + close;
 }
+
+/* 
+962. Maximum Width Ramp
+
+A ramp in an integer array nums is a pair (i, j) for which i < j and nums[i] <= nums[j]. The width of such a ramp is j - i.
+
+Given an integer array nums, return the maximum width of a ramp in nums. If there is no ramp in nums, return 0.
+
+Example 1:
+Input: nums = [6,0,8,2,1,5]
+Output: 4
+Explanation: The maximum width ramp is achieved at (i, j) = (1, 5): nums[1] = 0 and nums[5] = 5.
+
+Example 2:
+Input: nums = [9,8,1,0,1,9,4,0,4,1]
+Output: 7
+Explanation: The maximum width ramp is achieved at (i, j) = (2, 9): nums[2] = 1 and nums[9] = 1.
+
+Constraints:
+2 <= nums.length <= 5 * 10^4
+0 <= nums[i] <= 5 * 10^4
+
+</> Typescript Code:
+*/
+
+function maxWidthRamp(nums: number[]): number {
+  const n = nums.length; // Store the length of the input array
+  const stack: number[] = []; // Stack to store indices of decreasing values
+
+  // First pass to build the stack
+  for (let i = 0; i < n; i++) {
+    // If the stack is empty or the last element in the stack is greater than nums[i]
+    // we push the index because we're looking for potential starting points of a ramp
+    if (stack.length === 0 || nums[stack[stack.length - 1]] > nums[i]) {
+      stack.push(i); // Push the index into the stack
+    }
+  }
+
+  let maxRamp = 0; // Variable to store the maximum width of a ramp
+
+  // Second pass: Iterate from the end to find the maximum ramp
+  for (let j = n - 1; j >= 0; j--) {
+    // Check the top of the stack to see if a valid ramp can be made with nums[j]
+    // Keep popping from the stack as long as nums[j] is larger than or equal to nums[stack top]
+    while (stack.length > 0 && nums[stack[stack.length - 1]] <= nums[j]) {
+      // Calculate the ramp width as j - stack.pop()
+      maxRamp = Math.max(maxRamp, j - stack.pop()!);
+    }
+  }
+
+  return maxRamp; // Return the maximum width ramp found
+}
