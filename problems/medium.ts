@@ -11406,3 +11406,134 @@ function maxWidthRamp(nums: number[]): number {
 
   return maxRamp; // Return the maximum width ramp found
 }
+
+/* 
+1942. The Number of the Smallest Unoccupied Chair
+
+There is a party where n friends numbered from 0 to n - 1 are attending. There is an infinite number of chairs in this party that are numbered from 0 to infinity. When a friend arrives at the party, they sit on the unoccupied chair with the smallest number.
+
+For example, if chairs 0, 1, and 5 are occupied when a friend comes, they will sit on chair number 2.
+When a friend leaves the party, their chair becomes unoccupied at the moment they leave. If another friend arrives at that same moment, they can sit in that chair.
+
+You are given a 0-indexed 2D integer array times where times[i] = [arrivali, leavingi], indicating the arrival and leaving times of the ith friend respectively, and an integer targetFriend. All arrival times are distinct.
+
+Return the chair number that the friend numbered targetFriend will sit on.
+
+Example 1:
+Input: times = [[1,4],[2,3],[4,6]], targetFriend = 1
+Output: 1
+Explanation: 
+- Friend 0 arrives at time 1 and sits on chair 0.
+- Friend 1 arrives at time 2 and sits on chair 1.
+- Friend 1 leaves at time 3 and chair 1 becomes empty.
+- Friend 0 leaves at time 4 and chair 0 becomes empty.
+- Friend 2 arrives at time 4 and sits on chair 0.
+Since friend 1 sat on chair 1, we return 1.
+
+Example 2:
+Input: times = [[3,10],[1,5],[2,6]], targetFriend = 0
+Output: 2
+Explanation: 
+- Friend 1 arrives at time 1 and sits on chair 0.
+- Friend 2 arrives at time 2 and sits on chair 1.
+- Friend 0 arrives at time 3 and sits on chair 2.
+- Friend 1 leaves at time 5 and chair 0 becomes empty.
+- Friend 2 leaves at time 6 and chair 1 becomes empty.
+- Friend 0 leaves at time 10 and chair 2 becomes empty.
+Since friend 0 sat on chair 2, we return 2.
+
+Constraints:
+n == times.length
+2 <= n <= 10^4
+times[i].length == 2
+1 <= arrivali < leavingi <= 105
+0 <= targetFriend <= n - 1
+Each arrivali time is distinct.
+
+</> Typescript Code:
+*/
+
+function smallestChair(times: number[][], targetFriend: number): number {
+  const n = times.length; // Number of friends
+  const events: [number, number, number][] = []; // Events array
+
+  // Create arrival and leaving events
+  for (let i = 0; i < n; i++) {
+    events.push([times[i][0], 1, i]); // Arrival event: time, type=1, friend index
+    events.push([times[i][1], 0, i]); // Leaving event: time, type=0, friend index
+  }
+
+  // Sort events by time, then by type (leaving before arrival)
+  events.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+
+  const availableChairs = new MinHeap(); // Min-heap for available chairs
+  let nextChair = 0; // Next chair number to assign if no chairs are available
+  const friendToChair = new Array(n); // Map friend index to chair number
+
+  // Process each event in order
+  for (let i = 0; i < events.length; i++) {
+    const [_, type, friend] = events[i];
+    if (type === 0) {
+      // Leaving event: add chair back to available chairs
+      availableChairs.insert(friendToChair[friend]);
+    } else {
+      // Arrival event: assign a chair
+      const chair = availableChairs.size > 0 ? availableChairs.extractMin() : nextChair++;
+      friendToChair[friend] = chair; // Map friend to chair
+      if (friend === targetFriend) return chair; // Return if target friend
+    }
+  }
+  return -1; // Should not reach here
+}
+
+// Min-heap implementation
+class MinHeap {
+  heap: number[] = [];
+
+  // Get size of the heap
+  get size() {
+    return this.heap.length;
+  }
+
+  // Insert value into heap
+  insert(val: number) {
+    const heap = this.heap;
+    heap.push(val); // Add value to the end
+    let i = heap.length - 1; // Start from the last index
+
+    // Bubble up the value to maintain heap property
+    while (i > 0) {
+      const parent = (i - 1) >> 1; // Parent index
+      if (heap[parent] <= heap[i]) break; // Correct position found
+      [heap[i], heap[parent]] = [heap[parent], heap[i]]; // Swap with parent
+      i = parent; // Move to parent's index
+    }
+  }
+
+  // Extract minimum value from heap
+  extractMin(): number {
+    const heap = this.heap;
+    const min = heap[0]; // Minimum is at root
+    const last = heap.pop(); // Remove last element
+
+    if (heap.length > 0) {
+      heap[0] = last!; // Move last element to root
+      let i = 0;
+
+      // Bubble down to maintain heap property
+      while (true) {
+        let left = (i << 1) + 1; // Left child index
+        let right = left + 1; // Right child index
+        let smallest = i;
+
+        if (left < heap.length && heap[left] < heap[smallest]) smallest = left;
+        if (right < heap.length && heap[right] < heap[smallest]) smallest = right;
+        if (smallest === i) break; // Heap property restored
+
+        [heap[i], heap[smallest]] = [heap[smallest], heap[i]]; // Swap with smallest child
+        i = smallest; // Move to smallest child's index
+      }
+    }
+    return min; // Return minimum value
+  }
+}
