@@ -3498,3 +3498,121 @@ class AllOne {
     node.next!.prev = node.prev; // Link next node back to previous node
   }
 }
+
+/* 
+632. Smallest Range Covering Elements from K Lists
+
+You have k lists of sorted integers in non-decreasing order. Find the smallest range that includes at least one number from each of the k lists.
+
+We define the range [a, b] is smaller than range [c, d] if b - a < d - c or a < c if b - a == d - c.
+
+Example 1:
+Input: nums = [[4,10,15,24,26],[0,9,12,20],[5,18,22,30]]
+Output: [20,24]
+Explanation: 
+List 1: [4, 10, 15, 24,26], 24 is in range [20,24].
+List 2: [0, 9, 12, 20], 20 is in range [20,24].
+List 3: [5, 18, 22, 30], 22 is in range [20,24].
+
+Example 2:
+Input: nums = [[1,2,3],[1,2,3],[1,2,3]]
+Output: [1,1]
+
+Constraints:
+nums.length == k
+1 <= k <= 3500
+1 <= nums[i].length <= 50
+-10^5 <= nums[i][j] <= 10^5
+nums[i] is sorted in non-decreasing order.
+
+</> Typescript Code:
+*/
+
+function smallestRange(nums: number[][]): number[] {
+  const k = nums.length; // Get the number of lists
+  const pointers = new Array(k).fill(0); // Initialize pointers for each list to 0
+  let minRange = [-100000, 100000]; // Initialize the minimum range to maximum possible
+  const heap = new MinHeap(); // Create a min-heap to keep track of the minimum elements
+  let max = -100000; // Initialize the current maximum value
+
+  // Initialize the heap with the first element from each list
+  for (let i = 0; i < k; i++) {
+    const val = nums[i][0]; // Get the first element of the ith list
+    heap.insert({value: val, row: i}); // Insert the element along with its list index into the heap
+    if (val > max) max = val; // Update the current maximum if necessary
+  }
+
+  // Loop until one of the lists is exhausted
+  while (true) {
+    const {value: minValue, row} = heap.extractMin(); // Extract the minimum element from the heap
+    // Check if the current range is smaller than the previously recorded minimum range
+    if (
+      max - minValue < minRange[1] - minRange[0] || // If current range is smaller
+      (max - minValue === minRange[1] - minRange[0] && minValue < minRange[0]) // Or ranges are equal but current start is smaller
+    ) {
+      minRange = [minValue, max]; // Update the minimum range
+    }
+    pointers[row]++; // Move to the next element in the list from which the minValue was extracted
+    if (pointers[row] === nums[row].length) break; // If we've reached the end of a list, break the loop
+    const nextVal = nums[row][pointers[row]]; // Get the next element from the same list
+    heap.insert({value: nextVal, row}); // Insert the next element into the heap
+    if (nextVal > max) max = nextVal; // Update the current maximum if necessary
+  }
+
+  return minRange; // Return the smallest range found
+}
+
+class MinHeap {
+  heap: {value: number; row: number}[]; // Array to store the heap elements
+
+  constructor() {
+    this.heap = []; // Initialize the heap as an empty array
+  }
+
+  insert(node: {value: number; row: number}) {
+    this.heap.push(node); // Add the new node to the end of the heap
+    this.bubbleUp(); // Restore the heap property by moving the new node up
+  }
+
+  extractMin(): {value: number; row: number} {
+    if (this.heap.length === 1) return this.heap.pop()!; // If only one element, remove and return it
+    const min = this.heap[0]; // The root of the heap is the minimum element
+    this.heap[0] = this.heap.pop()!; // Replace the root with the last element
+    this.bubbleDown(); // Restore the heap property by moving the new root down
+    return min; // Return the minimum element
+  }
+
+  bubbleUp() {
+    let index = this.heap.length - 1; // Start from the last element inserted
+    while (index > 0) {
+      let parent = (index - 1) >> 1; // Calculate the parent index
+      if (this.heap[parent].value <= this.heap[index].value) break; // If parent is smaller or equal, heap is valid
+      [this.heap[parent], this.heap[index]] = [this.heap[index], this.heap[parent]]; // Swap with parent
+      index = parent; // Move up to the parent index
+    }
+  }
+
+  bubbleDown() {
+    let index = 0; // Start from the root element
+    const length = this.heap.length; // Get the length of the heap
+    while (true) {
+      let left = (index << 1) + 1; // Left child index
+      let right = left + 1; // Right child index
+      let smallest = index; // Assume the smallest is at the current index
+
+      // If left child exists and is smaller, update smallest
+      if (left < length && this.heap[left].value < this.heap[smallest].value) {
+        smallest = left;
+      }
+
+      // If right child exists and is smaller, update smallest
+      if (right < length && this.heap[right].value < this.heap[smallest].value) {
+        smallest = right;
+      }
+
+      if (smallest === index) break; // If the smallest is the current node, the heap is valid
+      [this.heap[index], this.heap[smallest]] = [this.heap[smallest], this.heap[index]]; // Swap with the smallest child
+      index = smallest; // Move down to the smallest child index
+    }
+  }
+}
