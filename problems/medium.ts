@@ -11599,3 +11599,127 @@ function minGroups(intervals: number[][]): number {
   // Return the maximum number of overlaps found
   return maxOverlap;
 }
+
+/* 
+2530. Maximal Score After Applying K Operations
+
+You are given a 0-indexed integer array nums and an integer k. You have a starting score of 0.
+
+In one operation:
+
+choose an index i such that 0 <= i < nums.length,
+increase your score by nums[i], and
+replace nums[i] with ceil(nums[i] / 3).
+Return the maximum possible score you can attain after applying exactly k operations.
+
+The ceiling function ceil(val) is the least integer greater than or equal to val.
+
+Example 1:
+Input: nums = [10,10,10,10,10], k = 5
+Output: 50
+Explanation: Apply the operation to each array element exactly once. The final score is 10 + 10 + 10 + 10 + 10 = 50.
+
+Example 2:
+Input: nums = [1,10,3,3,3], k = 3
+Output: 17
+Explanation: You can do the following operations:
+Operation 1: Select i = 1, so nums becomes [1,4,3,3,3]. Your score increases by 10.
+Operation 2: Select i = 1, so nums becomes [1,2,3,3,3]. Your score increases by 4.
+Operation 3: Select i = 2, so nums becomes [1,1,1,3,3]. Your score increases by 3.
+The final score is 10 + 4 + 3 = 17.
+
+Constraints:
+1 <= nums.length, k <= 10^5
+1 <= nums[i] <= 10^9
+
+</> Typescript Code:
+*/
+
+function maxKelements(nums: number[], k: number): number {
+  // Define a MaxHeap class to manage the elements efficiently
+  class MaxHeap {
+    heap: number[];
+
+    constructor(data: number[]) {
+      this.heap = [];
+      // Build the heap by inserting all elements
+      for (let num of data) {
+        this.insert(num);
+      }
+    }
+
+    // Insert a new value into the heap
+    insert(value: number) {
+      this.heap.push(value);
+      this.bubbleUp(this.heap.length - 1);
+    }
+
+    // Move the newly added element up to maintain heap property
+    bubbleUp(index: number) {
+      while (index > 0) {
+        let parent = Math.floor((index - 1) / 2);
+        // If parent is greater or equal, the heap property is satisfied
+        if (this.heap[parent] >= this.heap[index]) break;
+        // Swap parent and child
+        [this.heap[parent], this.heap[index]] = [this.heap[index], this.heap[parent]];
+        index = parent; // Move up to the parent's index
+      }
+    }
+
+    // Extract the maximum element from the heap
+    extractMax(): number {
+      const max = this.heap[0]; // The root of the heap is the maximum element
+      const end = this.heap.pop(); // Remove the last element
+      if (this.heap.length > 0 && end !== undefined) {
+        this.heap[0] = end; // Move the last element to the root
+        this.sinkDown(0); // Restore the heap property by sinking down the new root
+      }
+      return max; // Return the maximum value
+    }
+
+    // Move the element at index down to maintain heap property
+    sinkDown(index: number) {
+      const length = this.heap.length;
+      const element = this.heap[index];
+      while (true) {
+        let left = 2 * index + 1; // Left child index
+        let right = 2 * index + 2; // Right child index
+        let swap: number | null = null;
+
+        // Check if left child exists and is greater than the current element
+        if (left < length && this.heap[left] > element) {
+          swap = left;
+        }
+        // Check if right child exists and is greater than both the current element and left child
+        if (right < length && this.heap[right] > (swap === null ? element : this.heap[left])) {
+          swap = right;
+        }
+        // If no swap needed, the heap property is satisfied
+        if (swap === null) break;
+        // Swap the current element with the larger child
+        [this.heap[index], this.heap[swap]] = [this.heap[swap], this.heap[index]];
+        index = swap; // Move down to the child's index
+      }
+    }
+
+    // Check if the heap is empty
+    isEmpty(): boolean {
+      return this.heap.length === 0;
+    }
+  }
+
+  // Initialize the max heap with the given numbers
+  let maxHeap = new MaxHeap(nums);
+  let score = 0; // Initialize the total score
+
+  // Perform k operations
+  for (let i = 0; i < k; i++) {
+    let maxVal = maxHeap.extractMax(); // Get the maximum value
+    score += maxVal; // Increase the score by the maximum value
+
+    // Compute the new value as ceil(maxVal / 3)
+    let newVal = Math.floor((maxVal + 2) / 3);
+    maxHeap.insert(newVal); // Insert the new value back into the heap
+  }
+  return score; // Return the maximum possible score after k operations
+}
