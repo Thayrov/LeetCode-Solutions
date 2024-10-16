@@ -11785,3 +11785,69 @@ function minimumSteps(s: string): number {
   // Return the total minimum steps needed to group all black balls on the right
   return minSteps;
 }
+
+/* 
+1405. Longest Happy String
+
+A string s is called happy if it satisfies the following conditions:
+
+s only contains the letters 'a', 'b', and 'c'.
+s does not contain any of "aaa", "bbb", or "ccc" as a substring.
+s contains at most a occurrences of the letter 'a'.
+s contains at most b occurrences of the letter 'b'.
+s contains at most c occurrences of the letter 'c'.
+Given three integers a, b, and c, return the longest possible happy string. If there are multiple longest happy strings, return any of them. If there is no such string, return the empty string "".
+
+A substring is a contiguous sequence of characters within a string.
+
+Example 1:
+Input: a = 1, b = 1, c = 7
+Output: "ccaccbcc"
+Explanation: "ccbccacc" would also be a correct answer.
+
+Example 2:
+Input: a = 7, b = 1, c = 0
+Output: "aabaa"
+Explanation: It is the only correct answer in this case.
+
+Constraints:
+0 <= a, b, c <= 100
+a + b + c > 0
+
+</> Typescript Code:
+*/
+
+function longestDiverseString(a: number, b: number, c: number): string {
+  let result = ''; // Initialize the result string
+  let counts = [
+    // Create an array to hold counts and corresponding characters
+    {char: 'a', count: a},
+    {char: 'b', count: b},
+    {char: 'c', count: c},
+  ];
+  while (true) {
+    // Loop until we cannot add any more characters
+    counts.sort((x, y) => y.count - x.count); // Sort counts in descending order
+    let hasNext = false; // Flag to check if a character was added in this iteration
+    for (let i = 0; i < 3; i++) {
+      // Iterate over the counts
+      if (counts[i].count <= 0) {
+        // Skip if count is zero
+        continue;
+      }
+      let len = result.length; // Get current length of result
+      if (len >= 2 && result[len - 1] === counts[i].char && result[len - 2] === counts[i].char) {
+        continue; // Avoid adding a character that would make three in a row
+      }
+      result += counts[i].char; // Append the character to result
+      counts[i].count--; // Decrement the count
+      hasNext = true; // Set flag to true
+      break; // Break to re-sort and start over
+    }
+    if (!hasNext) {
+      // If no character was added, break the loop
+      break;
+    }
+  }
+  return result; // Return the constructed happy string
+}
