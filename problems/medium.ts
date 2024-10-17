@@ -11851,3 +11851,50 @@ function longestDiverseString(a: number, b: number, c: number): string {
   }
   return result; // Return the constructed happy string
 }
+
+/* 
+670. Maximum Swap
+
+You are given an integer num. You can swap two digits at most once to get the maximum valued number.
+
+Return the maximum valued number you can get.
+
+Example 1:
+Input: num = 2736
+Output: 7236
+Explanation: Swap the number 2 and the number 7.
+
+Example 2:
+Input: num = 9973
+Output: 9973
+Explanation: No swap.
+
+Constraints:
+0 <= num <= 10^8
+
+</> Typescript Code:
+*/
+
+function maximumSwap(num: number): number {
+  // Convert the number into an array of its digits
+  const digits = num.toString().split('').map(Number);
+  // Create an array to keep track of the last occurrence of each digit
+  const last = new Array(10).fill(-1);
+  // Populate the last occurrence array
+  for (let i = 0; i < digits.length; i++) last[digits[i]] = i;
+  // Iterate over each digit in the number
+  for (let i = 0; i < digits.length; i++) {
+    // Check for a larger digit to swap with, starting from 9 down to current digit + 1
+    for (let d = 9; d > digits[i]; d--) {
+      // If a larger digit exists and is positioned after the current digit
+      if (last[d] > i) {
+        // Swap the current digit with the larger digit found
+        [digits[i], digits[last[d]]] = [digits[last[d]], digits[i]];
+        // Return the new number formed after the swap
+        return parseInt(digits.join(''));
+      }
+    }
+  }
+  // Return the original number if no swap can make it larger
+  return num;
+}
