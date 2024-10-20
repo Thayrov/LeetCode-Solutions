@@ -6557,7 +6557,7 @@ The number of nodes in the tree is in the range [1, 100].
 0 <= Node.val <= 100
 All the values in the tree are unique.
 
-Note: This question is the same as 538: https://leetcode.com/problems/convert-bst-to-greater-tree/
+Note: This question is the same as 538: https://leetcode.com,/problems/convert-bst-to-greater-tree/
 
 </> Typescript Code:
 */
