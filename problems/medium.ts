@@ -12026,3 +12026,56 @@ function findKthBit(n: number, k: number): string {
   // Return the inverted mirrored bit
   return mirroredBit;
 }
+
+/* 
+1593. Split a String Into the Max Number of Unique Substrings
+
+Given a string s, return the maximum number of unique substrings that the given string can be split into.
+
+You can split string s into any list of non-empty substrings, where the concatenation of the substrings forms the original string. However, you must split the substrings such that all of them are unique.
+
+A substring is a contiguous sequence of characters within a string.
+
+Example 1:
+Input: s = "ababccc"
+Output: 5
+Explanation: One way to split maximally is ['a', 'b', 'ab', 'c', 'cc']. Splitting like ['a', 'b', 'a', 'b', 'c', 'cc'] is not valid as you have 'a' and 'b' multiple times.
+
+Example 2:
+Input: s = "aba"
+Output: 2
+Explanation: One way to split maximally is ['a', 'ba'].
+
+Example 3:
+Input: s = "aa"
+Output: 1
+Explanation: It is impossible to split the string any further.
+
+Constraints:
+1 <= s.length <= 16
+s contains only lower case English letters.
+
+</> Typescript Code:
+*/
+
+function maxUniqueSplit(s: string): number {
+  let maxCount = 0; // Initialize the maximum count of unique substrings
+  function backtrack(startIndex: number, used: Set<string>): void {
+      // Prune branches where the maximum possible substrings can't exceed current maxCount
+      if (used.size + s.length - startIndex <= maxCount) return;
+      if (startIndex === s.length) { // If we've reached the end of the string
+          maxCount = Math.max(maxCount, used.size); // Update maxCount if current used size is larger
+          return;
+      }
+      for (let i = startIndex + 1; i <= s.length; i++) { // Iterate over possible end indices
+          const substr = s.substring(startIndex, i); // Extract substring from startIndex to i
+          if (!used.has(substr)) { // Check if the substring is unique
+              used.add(substr); // Add substring to the set of used substrings
+              backtrack(i, used); // Recurse with the new start index
+              used.delete(substr); // Backtrack: remove substring from the set
+          }
+      }
+  }
+  backtrack(0, new Set()); // Start backtracking from index 0 with an empty set
+  return maxCount; // Return the maximum count of unique substrings found
+}
