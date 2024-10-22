@@ -12079,3 +12079,123 @@ function maxUniqueSplit(s: string): number {
   backtrack(0, new Set()); // Start backtracking from index 0 with an empty set
   return maxCount; // Return the maximum count of unique substrings found
 }
+
+
+/* 
+2583. Kth Largest Sum in a Binary Tree
+
+You are given the root of a binary tree and a positive integer k.
+
+The level sum in the tree is the sum of the values of the nodes that are on the same level.
+
+Return the kth largest level sum in the tree (not necessarily distinct). If there are fewer than k levels in the tree, return -1.
+
+Note that two nodes are on the same level if they have the same distance from the root.
+
+Example 1:
+Input: root = [5,8,9,2,1,3,7,4,6], k = 2
+Output: 13
+Explanation: The level sums are the following:
+- Level 1: 5.
+- Level 2: 8 + 9 = 17.
+- Level 3: 2 + 1 + 3 + 7 = 13.
+- Level 4: 4 + 6 = 10.
+The 2nd largest level sum is 13.
+
+Example 2:
+Input: root = [1,2,null,3], k = 1
+Output: 3
+Explanation: The largest level sum is 3.
+
+Constraints:
+The number of nodes in the tree is n.
+2 <= n <= 10^5
+1 <= Node.val <= 10^6
+1 <= k <= n
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function kthLargestLevelSum(root: TreeNode | null, k: number): number {
+  // If the tree is empty, return -1
+  if (!root) return -1;
+
+  // Array to store the sum of each level
+  const sums: number[] = [];
+  // Initialize queue for BFS with the root node
+  let queue: TreeNode[] = [root];
+
+  // Perform BFS traversal to compute level sums
+  while (queue.length > 0) {
+      // Next level's queue
+      const nextQueue: TreeNode[] = [];
+      // Sum of the current level
+      let levelSum = 0;
+      // Iterate over nodes in the current level
+      for (const node of queue) {
+          // Add current node's value to level sum
+          levelSum += node.val;
+          // Add left child to nextQueue if it exists
+          if (node.left) nextQueue.push(node.left);
+          // Add right child to nextQueue if it exists
+          if (node.right) nextQueue.push(node.right);
+      }
+      // Append the level sum to sums array
+      sums.push(levelSum);
+      // Move to the next level
+      queue = nextQueue;
+  }
+
+  // If there are fewer levels than k, return -1
+  if (sums.length < k) return -1;
+
+  // Quickselect algorithm to find the kth largest level sum
+  function quickSelect(nums: number[], k: number): number {
+      const n = nums.length;
+      // Adjust k to find (n - k)th smallest element
+      k = n - k;
+      // Recursive function to perform quickselect
+      function select(left: number, right: number): number {
+          const pivot = nums[right];
+          let p = left;
+          // Partition the array
+          for (let i = left; i < right; i++) {
+              if (nums[i] <= pivot) {
+                  [nums[i], nums[p]] = [nums[p], nums[i]];
+                  p++;
+              }
+          }
+          // Place pivot in its correct position
+          [nums[p], nums[right]] = [nums[right], nums[p]];
+          // If pivot is at the kth position, return it
+          if (p === k) {
+              return nums[p];
+          } else if (p < k) {
+              // Recurse on the right partition
+              return select(p + 1, right);
+          } else {
+              // Recurse on the left partition
+              return select(left, p - 1);
+          }
+      }
+      // Start quickselect on the full array
+      return select(0, n - 1);
+  }
+
+  // Return the kth largest level sum
+  return quickSelect(sums, k);
+}
