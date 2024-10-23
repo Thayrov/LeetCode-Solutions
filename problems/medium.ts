@@ -11942,7 +11942,7 @@ function countMaxOrSubsets(nums: number[]): number {
   // Initialize the maximum possible OR value
   let max_or = 0;
   for (let num of nums) {
-      max_or |= num; // Compute the bitwise OR of all elements
+    max_or |= num; // Compute the bitwise OR of all elements
   }
 
   // Initialize a map to store counts of subsets resulting in a particular OR value
@@ -11951,20 +11951,19 @@ function countMaxOrSubsets(nums: number[]): number {
 
   // Iterate over each number in the input array
   for (let num of nums) {
-      let new_dp = new Map(dp); // Create a copy of the current dp map
-      // For each existing OR value in dp
-      for (let [or_val, count] of dp.entries()) {
-          let new_or = or_val | num; // Compute new OR value by including num
-          // Update the count for the new OR value
-          new_dp.set(new_or, (new_dp.get(new_or) || 0) + count);
-      }
-      dp = new_dp; // Update dp with new_dp for the next iteration
+    let new_dp = new Map(dp); // Create a copy of the current dp map
+    // For each existing OR value in dp
+    for (let [or_val, count] of dp.entries()) {
+      let new_or = or_val | num; // Compute new OR value by including num
+      // Update the count for the new OR value
+      new_dp.set(new_or, (new_dp.get(new_or) || 0) + count);
+    }
+    dp = new_dp; // Update dp with new_dp for the next iteration
   }
 
   // Return the count of subsets that result in the maximum OR value
   return dp.get(max_or) || 0;
 }
-
 
 /* 
 1545. Find Kth Bit in Nth Binary String
@@ -12061,25 +12060,27 @@ s contains only lower case English letters.
 function maxUniqueSplit(s: string): number {
   let maxCount = 0; // Initialize the maximum count of unique substrings
   function backtrack(startIndex: number, used: Set<string>): void {
-      // Prune branches where the maximum possible substrings can't exceed current maxCount
-      if (used.size + s.length - startIndex <= maxCount) return;
-      if (startIndex === s.length) { // If we've reached the end of the string
-          maxCount = Math.max(maxCount, used.size); // Update maxCount if current used size is larger
-          return;
+    // Prune branches where the maximum possible substrings can't exceed current maxCount
+    if (used.size + s.length - startIndex <= maxCount) return;
+    if (startIndex === s.length) {
+      // If we've reached the end of the string
+      maxCount = Math.max(maxCount, used.size); // Update maxCount if current used size is larger
+      return;
+    }
+    for (let i = startIndex + 1; i <= s.length; i++) {
+      // Iterate over possible end indices
+      const substr = s.substring(startIndex, i); // Extract substring from startIndex to i
+      if (!used.has(substr)) {
+        // Check if the substring is unique
+        used.add(substr); // Add substring to the set of used substrings
+        backtrack(i, used); // Recurse with the new start index
+        used.delete(substr); // Backtrack: remove substring from the set
       }
-      for (let i = startIndex + 1; i <= s.length; i++) { // Iterate over possible end indices
-          const substr = s.substring(startIndex, i); // Extract substring from startIndex to i
-          if (!used.has(substr)) { // Check if the substring is unique
-              used.add(substr); // Add substring to the set of used substrings
-              backtrack(i, used); // Recurse with the new start index
-              used.delete(substr); // Backtrack: remove substring from the set
-          }
-      }
+    }
   }
   backtrack(0, new Set()); // Start backtracking from index 0 with an empty set
   return maxCount; // Return the maximum count of unique substrings found
 }
-
 
 /* 
 2583. Kth Largest Sum in a Binary Tree
@@ -12141,23 +12142,23 @@ function kthLargestLevelSum(root: TreeNode | null, k: number): number {
 
   // Perform BFS traversal to compute level sums
   while (queue.length > 0) {
-      // Next level's queue
-      const nextQueue: TreeNode[] = [];
-      // Sum of the current level
-      let levelSum = 0;
-      // Iterate over nodes in the current level
-      for (const node of queue) {
-          // Add current node's value to level sum
-          levelSum += node.val;
-          // Add left child to nextQueue if it exists
-          if (node.left) nextQueue.push(node.left);
-          // Add right child to nextQueue if it exists
-          if (node.right) nextQueue.push(node.right);
-      }
-      // Append the level sum to sums array
-      sums.push(levelSum);
-      // Move to the next level
-      queue = nextQueue;
+    // Next level's queue
+    const nextQueue: TreeNode[] = [];
+    // Sum of the current level
+    let levelSum = 0;
+    // Iterate over nodes in the current level
+    for (const node of queue) {
+      // Add current node's value to level sum
+      levelSum += node.val;
+      // Add left child to nextQueue if it exists
+      if (node.left) nextQueue.push(node.left);
+      // Add right child to nextQueue if it exists
+      if (node.right) nextQueue.push(node.right);
+    }
+    // Append the level sum to sums array
+    sums.push(levelSum);
+    // Move to the next level
+    queue = nextQueue;
   }
 
   // If there are fewer levels than k, return -1
@@ -12165,37 +12166,131 @@ function kthLargestLevelSum(root: TreeNode | null, k: number): number {
 
   // Quickselect algorithm to find the kth largest level sum
   function quickSelect(nums: number[], k: number): number {
-      const n = nums.length;
-      // Adjust k to find (n - k)th smallest element
-      k = n - k;
-      // Recursive function to perform quickselect
-      function select(left: number, right: number): number {
-          const pivot = nums[right];
-          let p = left;
-          // Partition the array
-          for (let i = left; i < right; i++) {
-              if (nums[i] <= pivot) {
-                  [nums[i], nums[p]] = [nums[p], nums[i]];
-                  p++;
-              }
-          }
-          // Place pivot in its correct position
-          [nums[p], nums[right]] = [nums[right], nums[p]];
-          // If pivot is at the kth position, return it
-          if (p === k) {
-              return nums[p];
-          } else if (p < k) {
-              // Recurse on the right partition
-              return select(p + 1, right);
-          } else {
-              // Recurse on the left partition
-              return select(left, p - 1);
-          }
+    const n = nums.length;
+    // Adjust k to find (n - k)th smallest element
+    k = n - k;
+    // Recursive function to perform quickselect
+    function select(left: number, right: number): number {
+      const pivot = nums[right];
+      let p = left;
+      // Partition the array
+      for (let i = left; i < right; i++) {
+        if (nums[i] <= pivot) {
+          [nums[i], nums[p]] = [nums[p], nums[i]];
+          p++;
+        }
       }
-      // Start quickselect on the full array
-      return select(0, n - 1);
+      // Place pivot in its correct position
+      [nums[p], nums[right]] = [nums[right], nums[p]];
+      // If pivot is at the kth position, return it
+      if (p === k) {
+        return nums[p];
+      } else if (p < k) {
+        // Recurse on the right partition
+        return select(p + 1, right);
+      } else {
+        // Recurse on the left partition
+        return select(left, p - 1);
+      }
+    }
+    // Start quickselect on the full array
+    return select(0, n - 1);
   }
 
   // Return the kth largest level sum
   return quickSelect(sums, k);
+}
+
+/* 
+2641. Cousins in Binary Tree II
+
+Given the root of a binary tree, replace the value of each node in the tree with the sum of all its cousins' values.
+
+Two nodes of a binary tree are cousins if they have the same depth with different parents.
+
+Return the root of the modified tree.
+
+Note that the depth of a node is the number of edges in the path from the root node to it.
+
+Example 1:
+Input: root = [5,4,9,1,10,null,7]
+Output: [0,0,0,7,7,null,11]
+Explanation: The diagram above shows the initial binary tree and the binary tree after changing the value of each node.
+- Node with value 5 does not have any cousins so its sum is 0.
+- Node with value 4 does not have any cousins so its sum is 0.
+- Node with value 9 does not have any cousins so its sum is 0.
+- Node with value 1 has a cousin with value 7 so its sum is 7.
+- Node with value 10 has a cousin with value 7 so its sum is 7.
+- Node with value 7 has cousins with values 1 and 10 so its sum is 11.
+
+Example 2:
+Input: root = [3,1,2]
+Output: [0,0,0]
+Explanation: The diagram above shows the initial binary tree and the binary tree after changing the value of each node.
+- Node with value 3 does not have any cousins so its sum is 0.
+- Node with value 1 does not have any cousins so its sum is 0.
+- Node with value 2 does not have any cousins so its sum is 0.
+
+Constraints:
+The number of nodes in the tree is in the range [1, 10^5].
+1 <= Node.val <= 10^4
+
+</> Typescript Code:
+*/
+
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function replaceValueInTree(root: TreeNode | null): TreeNode | null {
+  if (!root) return null; // If the tree is empty, return null
+
+  const nodeToParent = new Map<TreeNode, TreeNode | null>(); // Map to store each node's parent
+  const queue: TreeNode[] = [root]; // Initialize queue for BFS traversal
+  nodeToParent.set(root, null); // Root node has no parent
+
+  while (queue.length > 0) {
+    const levelSize = queue.length; // Number of nodes at the current level
+    let totalSum = 0; // Sum of all node values at the current level
+    const parentToChildrenSum = new Map<TreeNode | null, number>(); // Map to store sum of children values for each parent
+    const nodesAtLevel: TreeNode[] = []; // List to keep track of nodes at current level
+
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift()!; // Dequeue the next node
+      nodesAtLevel.push(node); // Add node to current level list
+      const parent = nodeToParent.get(node); // Retrieve node's parent
+
+      totalSum += node.val; // Add node's value to total sum
+      // Update the sum of values for the parent
+      parentToChildrenSum.set(parent, (parentToChildrenSum.get(parent) || 0) + node.val);
+
+      if (node.left) {
+        nodeToParent.set(node.left, node); // Map left child to its parent
+        queue.push(node.left); // Enqueue left child
+      }
+      if (node.right) {
+        nodeToParent.set(node.right, node); // Map right child to its parent
+        queue.push(node.right); // Enqueue right child
+      }
+    }
+
+    // Update each node's value to the sum of its cousins' values
+    for (const node of nodesAtLevel) {
+      const parent = nodeToParent.get(node); // Get node's parent
+      const sumOfSiblings = parentToChildrenSum.get(parent)!; // Sum of sibling nodes (including itself)
+      node.val = totalSum - sumOfSiblings; // Set node's value to total sum minus siblings' sum
+    }
+  }
+
+  return root; // Return the modified tree
 }
