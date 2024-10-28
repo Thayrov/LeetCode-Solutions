@@ -12469,3 +12469,66 @@ function countSquares(matrix: number[][]): number {
   }
   return result; // Return total number of squares
 }
+
+/* 
+2501. Longest Square Streak in an Array
+
+You are given an integer array nums. A subsequence of nums is called a square streak if:
+
+The length of the subsequence is at least 2, and
+after sorting the subsequence, each element (except the first element) is the square of the previous number.
+Return the length of the longest square streak in nums, or return -1 if there is no square streak.
+
+A subsequence is an array that can be derived from another array by deleting some or no elements without changing the order of the remaining elements.
+
+Example 1:
+Input: nums = [4,3,6,16,8,2]
+Output: 3
+Explanation: Choose the subsequence [4,16,2]. After sorting it, it becomes [2,4,16].
+- 4 = 2 * 2.
+- 16 = 4 * 4.
+Therefore, [4,16,2] is a square streak.
+It can be shown that every subsequence of length 4 is not a square streak.
+
+Example 2:
+Input: nums = [2,3,5,6,7]
+Output: -1
+Explanation: There is no square streak in nums so return -1.
+
+Constraints:
+2 <= nums.length <= 10^5
+2 <= nums[i] <= 10^5
+
+</> Typescript Code:
+*/
+
+function longestSquareStreak(nums: number[]): number {
+  // Create a set for constant-time number lookup
+  const numsSet = new Set(nums);
+  // Sort the array to process numbers in ascending order
+  nums.sort((a, b) => a - b);
+  // Initialize a map to store the longest streak ending with a number
+  const dp = new Map<number, number>();
+  // Variable to keep track of the maximum streak length
+  let maxLength = -1;
+
+  // Iterate over each number in the sorted array
+  for (const x of nums) {
+    // Get the current streak length for x or initialize it to 1
+    const currLength = dp.get(x) ?? 1;
+    // Calculate the square of the current number
+    const squared = x * x;
+    // Check if the squared number exists in the array
+    if (numsSet.has(squared)) {
+      // Calculate the new streak length
+      const newLength = currLength + 1;
+      // Update the streak length for the squared number if it's longer
+      dp.set(squared, Math.max(dp.get(squared) ?? 1, newLength));
+      // Update the maximum streak length found so far
+      maxLength = Math.max(maxLength, dp.get(squared)!);
+    }
+  }
+
+  // Return the maximum streak length if it's at least 2, else return -1
+  return maxLength >= 2 ? maxLength : -1;
+}
