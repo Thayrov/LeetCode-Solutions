@@ -12532,3 +12532,83 @@ function longestSquareStreak(nums: number[]): number {
   // Return the maximum streak length if it's at least 2, else return -1
   return maxLength >= 2 ? maxLength : -1;
 }
+
+/* 
+2684. Maximum Number of Moves in a Grid
+
+You are given a 0-indexed m x n matrix grid consisting of positive integers.
+
+You can start at any cell in the first column of the matrix, and traverse the grid in the following way:
+
+From a cell (row, col), you can move to any of the cells: (row - 1, col + 1), (row, col + 1) and (row + 1, col + 1) such that the value of the cell you move to, should be strictly bigger than the value of the current cell.
+Return the maximum number of moves that you can perform.
+
+Example 1:
+Input: grid = [[2,4,3,5],[5,4,9,3],[3,4,2,11],[10,9,13,15]]
+Output: 3
+Explanation: We can start at the cell (0, 0) and make the following moves:
+- (0, 0) -> (0, 1).
+- (0, 1) -> (1, 2).
+- (1, 2) -> (2, 3).
+It can be shown that it is the maximum number of moves that can be made.
+
+Example 2:
+Input: grid = [[3,2,4],[2,1,9],[1,1,7]]
+Output: 0
+Explanation: Starting from any cell in the first column we cannot perform any moves.
+
+Constraints:
+m == grid.length
+n == grid[i].length
+2 <= m, n <= 1000
+4 <= m * n <= 10^5
+1 <= grid[i][j] <= 10^6
+
+</> Typescript Code:
+*/
+
+function maxMoves(grid: number[][]): number {
+  // Get the number of rows and columns in the grid
+  const m = grid.length;
+  const n = grid[0].length;
+
+  // Initialize a DP array with dimensions m x n, filled with -1
+  const dp = Array.from({ length: m }, () => new Array(n).fill(-1));
+
+  // Set the initial moves for the first column to 0
+  for (let row = 0; row < m; row++) {
+      dp[row][0] = 0;
+  }
+
+  // Variable to keep track of the maximum number of moves
+  let maxMoves = 0;
+
+  // Iterate over each column starting from the second one
+  for (let col = 1; col < n; col++) {
+      // Iterate over each row in the current column
+      for (let row = 0; row < m; row++) {
+          // Check all possible previous rows (-1, 0, +1)
+          for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
+              const prevRow = row + deltaRow;
+
+              // Validate the previous row and check the increasing condition
+              if (
+                  prevRow >= 0 &&
+                  prevRow < m &&
+                  dp[prevRow][col - 1] !== -1 &&
+                  grid[prevRow][col - 1] < grid[row][col]
+              ) {
+                  // Update the DP value for the current cell
+                  dp[row][col] = Math.max(dp[row][col], dp[prevRow][col - 1] + 1);
+
+                  // Update the maximum number of moves if necessary
+                  maxMoves = Math.max(maxMoves, dp[row][col]);
+              }
+          }
+      }
+  }
+
+  // Return the maximum number of moves found
+  return maxMoves;
+}
+  
