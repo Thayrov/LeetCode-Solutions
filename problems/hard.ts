@@ -3723,6 +3723,7 @@ m == queries.length
 1 <= queries[i] <= n
 queries[i] != root.val
 
+</> Typescript Code:
 */
 
 /**
@@ -3789,4 +3790,79 @@ function treeQueries(root: TreeNode | null, queries: number[]): number[] {
       res.push(newHeight); // Append result for this query.
   }
   return res; // Return all answers.
+}
+
+/* 
+1671. Minimum Number of Removals to Make Mountain Array
+
+You may recall that an array arr is a mountain array if and only if:
+
+arr.length >= 3
+There exists some index i (0-indexed) with 0 < i < arr.length - 1 such that:
+arr[0] < arr[1] < ... < arr[i - 1] < arr[i]
+arr[i] > arr[i + 1] > ... > arr[arr.length - 1]
+Given an integer array nums​​​, return the minimum number of elements to remove to make nums​​​ a mountain array.
+
+Example 1:
+Input: nums = [1,3,1]
+Output: 0
+Explanation: The array itself is a mountain array so we do not need to remove any elements.
+
+Example 2:
+Input: nums = [2,1,1,5,6,2,3,1]
+Output: 3
+Explanation: One solution is to remove the elements at indices 0, 1, and 5, making the array nums = [1,5,6,3,1].
+
+Constraints:
+3 <= nums.length <= 1000
+1 <= nums[i] <= 10^9
+It is guaranteed that you can make a mountain array out of nums.
+
+</> Typescript Code:
+*/
+
+function minimumMountainRemovals(nums: number[]): number {
+  // Get the length of the input array
+  const n = nums.length;
+
+  // Initialize dp arrays for LIS ending at each index and LDS starting at each index
+  const dp1 = new Array(n).fill(1); // dp1[i] = length of LIS ending at i
+  const dp2 = new Array(n).fill(1); // dp2[i] = length of LDS starting at i
+
+  // Compute LIS for each index
+  for (let i = 0; i < n; i++) {
+      // Compare nums[i] with all previous elements
+      for (let j = 0; j < i; j++) {
+          // If nums[j] < nums[i], update dp1[i]
+          if (nums[j] < nums[i]) {
+              dp1[i] = Math.max(dp1[i], dp1[j] + 1);
+          }
+      }
+  }
+
+  // Compute LDS for each index
+  for (let i = n -1; i >=0; i--) {
+      // Compare nums[i] with all next elements
+      for (let j = n -1; j > i; j--) {
+          // If nums[j] < nums[i], update dp2[i]
+          if (nums[j] < nums[i]) {
+              dp2[i] = Math.max(dp2[i], dp2[j] +1);
+          }
+      }
+  }
+
+  // Initialize variable to track the maximum length of bitonic subsequence
+  let maxLength = 0;
+
+  // Iterate through each index to find the maximum bitonic subsequence length
+  for (let i = 0; i < n; i++) {
+      // Only consider peaks that are not at the ends
+      if (dp1[i] > 1 && dp2[i] > 1) {
+          // Update maxLength if a longer bitonic subsequence is found
+          maxLength = Math.max(maxLength, dp1[i] + dp2[i] -1);
+      }
+  }
+
+  // The minimum number of removals is total length minus maximum bitonic subsequence length
+  return n - maxLength;
 }
