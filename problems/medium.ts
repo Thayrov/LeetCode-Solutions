@@ -12573,11 +12573,11 @@ function maxMoves(grid: number[][]): number {
   const n = grid[0].length;
 
   // Initialize a DP array with dimensions m x n, filled with -1
-  const dp = Array.from({ length: m }, () => new Array(n).fill(-1));
+  const dp = Array.from({length: m}, () => new Array(n).fill(-1));
 
   // Set the initial moves for the first column to 0
   for (let row = 0; row < m; row++) {
-      dp[row][0] = 0;
+    dp[row][0] = 0;
   }
 
   // Variable to keep track of the maximum number of moves
@@ -12585,30 +12585,88 @@ function maxMoves(grid: number[][]): number {
 
   // Iterate over each column starting from the second one
   for (let col = 1; col < n; col++) {
-      // Iterate over each row in the current column
-      for (let row = 0; row < m; row++) {
-          // Check all possible previous rows (-1, 0, +1)
-          for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
-              const prevRow = row + deltaRow;
+    // Iterate over each row in the current column
+    for (let row = 0; row < m; row++) {
+      // Check all possible previous rows (-1, 0, +1)
+      for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
+        const prevRow = row + deltaRow;
 
-              // Validate the previous row and check the increasing condition
-              if (
-                  prevRow >= 0 &&
-                  prevRow < m &&
-                  dp[prevRow][col - 1] !== -1 &&
-                  grid[prevRow][col - 1] < grid[row][col]
-              ) {
-                  // Update the DP value for the current cell
-                  dp[row][col] = Math.max(dp[row][col], dp[prevRow][col - 1] + 1);
+        // Validate the previous row and check the increasing condition
+        if (
+          prevRow >= 0 &&
+          prevRow < m &&
+          dp[prevRow][col - 1] !== -1 &&
+          grid[prevRow][col - 1] < grid[row][col]
+        ) {
+          // Update the DP value for the current cell
+          dp[row][col] = Math.max(dp[row][col], dp[prevRow][col - 1] + 1);
 
-                  // Update the maximum number of moves if necessary
-                  maxMoves = Math.max(maxMoves, dp[row][col]);
-              }
-          }
+          // Update the maximum number of moves if necessary
+          maxMoves = Math.max(maxMoves, dp[row][col]);
+        }
       }
+    }
   }
 
   // Return the maximum number of moves found
   return maxMoves;
 }
-  
+
+/* 
+1957. Delete Characters to Make Fancy String
+
+A fancy string is a string where no three consecutive characters are equal.
+
+Given a string s, delete the minimum possible number of characters from s to make it fancy.
+
+Return the final string after the deletion. It can be shown that the answer will always be unique.
+
+Example 1:
+Input: s = "leeetcode"
+Output: "leetcode"
+Explanation:
+Remove an 'e' from the first group of 'e's to create "leetcode".
+No three consecutive characters are equal, so return "leetcode".
+
+Example 2:
+Input: s = "aaabaaaa"
+Output: "aabaa"
+Explanation:
+Remove an 'a' from the first group of 'a's to create "aabaaaa".
+Remove two 'a's from the second group of 'a's to create "aabaa".
+No three consecutive characters are equal, so return "aabaa".
+
+Example 3:
+Input: s = "aab"
+Output: "aab"
+Explanation: No three consecutive characters are equal, so return "aab".
+
+Constraints:
+1 <= s.length <= 10^5
+s consists only of lowercase English letters.
+</> Typescript Code:
+*/
+
+function makeFancyString(s: string): string {
+  const res: string[] = []; // Initialize an array to store the resulting characters
+  let count = 0; // Initialize count of consecutive identical characters
+  let prev = ''; // Initialize previous character tracker
+
+  for (let i = 0; i < s.length; i++) {
+    // Iterate over each character in the string
+    const c = s[i]; // Current character
+    if (c === prev) {
+      // If current character is the same as previous
+      count++; // Increment the count
+    } else {
+      prev = c; // Update the previous character
+      count = 1; // Reset count
+    }
+    if (count < 3) {
+      // If count is less than 3
+      res.push(c); // Append character to result
+    }
+    // Else, skip the character to prevent three consecutive identical characters
+  }
+  return res.join(''); // Join the result array into a string and return
+}
