@@ -13028,3 +13028,63 @@ function minEnd(n: number, x: number): number {
   // Convert the result back to a Number and return it
   return Number(result);
 }
+
+/* 
+3097. Shortest Subarray With OR at Least K II
+
+You are given an array nums of non-negative integers and an integer k.
+
+An array is called special if the bitwise OR of all of its elements is at least k.
+
+Return the length of the shortest special non-empty 
+subarray of nums, or return -1 if no special subarray exists.
+
+
+Example 1:
+Input: nums = [1,2,3], k = 2
+Output: 1
+Explanation:
+The subarray [3] has OR value of 3. Hence, we return 1.
+
+Example 2:
+Input: nums = [2,1,8], k = 10
+Output: 3
+Explanation:
+The subarray [2,1,8] has OR value of 11. Hence, we return 3.
+
+Example 3:
+Input: nums = [1,2], k = 0
+Output: 1
+Explanation:
+The subarray [1] has OR value of 1. Hence, we return 1.
+
+Constraints:
+1 <= nums.length <= 2 * 10^5
+0 <= nums[i] <= 10^9
+0 <= k <= 10^9
+
+</> Typescript Code:
+*/
+
+function minimumSubarrayLength(nums: number[], k: number): number {
+  let res = Infinity; // Initialize the minimum length to Infinity
+  let prev = new Map<number, number>(); // Map to store OR values and their minimum lengths
+  for (let i = 0; i < nums.length; i++) {
+    let curr = new Map<number, number>(); // Map for current index
+    curr.set(nums[i], 1); // Start a new subarray with nums[i]
+    for (let [orVal, length] of prev) {
+      let newOr = orVal | nums[i]; // Calculate new OR value
+      let newLen = length + 1; // Increment length by 1
+      if (!curr.has(newOr) || curr.get(newOr)! > newLen) {
+        curr.set(newOr, newLen); // Update curr map with shorter length
+      }
+    }
+    for (let [orVal, length] of curr) {
+      if (orVal >= k) {
+        res = Math.min(res, length); // Update result if OR value meets or exceeds k
+      }
+    }
+    prev = curr; // Set prev to curr for next iteration
+  }
+  return res === Infinity ? -1 : res; // Return -1 if no valid subarray found
+}
