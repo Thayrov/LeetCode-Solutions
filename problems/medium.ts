@@ -13088,3 +13088,80 @@ function minimumSubarrayLength(nums: number[], k: number): number {
   }
   return res === Infinity ? -1 : res; // Return -1 if no valid subarray found
 }
+
+/* 
+2601. Prime Subtraction Operation
+
+You are given a 0-indexed integer array nums of length n.
+
+You can perform the following operation as many times as you want:
+
+Pick an index i that you haven’t picked before, and pick a prime p strictly less than nums[i], then subtract p from nums[i].
+Return true if you can make nums a strictly increasing array using the above operation and false otherwise.
+
+A strictly increasing array is an array whose each element is strictly greater than its preceding element.
+
+Example 1:
+Input: nums = [4,9,6,10]
+Output: true
+Explanation: In the first operation: Pick i = 0 and p = 3, and then subtract 3 from nums[0], so that nums becomes [1,9,6,10].
+In the second operation: i = 1, p = 7, subtract 7 from nums[1], so nums becomes equal to [1,2,6,10].
+After the second operation, nums is sorted in strictly increasing order, so the answer is true.
+
+Example 2:
+Input: nums = [6,8,11,12]
+Output: true
+Explanation: Initially nums is sorted in strictly increasing order, so we don't need to make any operations.
+
+Example 3:
+Input: nums = [5,8,3]
+Output: false
+Explanation: It can be proven that there is no way to perform operations to make nums sorted in strictly increasing order, so the answer is false.
+
+Constraints:
+1 <= nums.length <= 1000
+1 <= nums[i] <= 1000
+nums.length == n
+
+</> Typescript Code:
+*/
+
+function primeSubOperation(nums: number[]): boolean {
+  const MAX = 1000; // Maximum possible value in nums
+  const isPrime = new Array(MAX + 1).fill(true); // Initialize array to mark prime numbers
+  isPrime[0] = isPrime[1] = false; // 0 and 1 are not prime
+
+  // Sieve of Eratosthenes to find all primes up to MAX
+  for (let i = 2; i * i <= MAX; i++) {
+    if (isPrime[i]) {
+      for (let j = i * i; j <= MAX; j += i) {
+        isPrime[j] = false; // Mark multiples of prime as non-prime
+      }
+    }
+  }
+
+  let prev = 0; // Variable to keep track of previous number in the array
+  for (let i = 0; i < nums.length; i++) {
+    let adjusted = false; // Flag to indicate if current number was adjusted
+    // Try to adjust nums[i] to the smallest possible value greater than prev
+    for (let target = prev + 1; target < nums[i]; target++) {
+      let p = nums[i] - target; // Calculate potential prime to subtract
+      if (p >= 2 && isPrime[p]) {
+        // Check if p is a valid prime
+        nums[i] = target; // Adjust nums[i] by subtracting p
+        adjusted = true; // Mark as adjusted
+        break; // Exit loop since adjustment is done
+      }
+    }
+    if (!adjusted) {
+      if (nums[i] > prev) {
+        prev = nums[i]; // Update prev if current number is greater
+      } else {
+        return false; // Cannot make array strictly increasing
+      }
+    } else {
+      prev = nums[i]; // Update prev with adjusted value
+    }
+  }
+  return true; // Successfully made the array strictly increasing
+}
