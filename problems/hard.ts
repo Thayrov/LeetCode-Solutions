@@ -3958,3 +3958,53 @@ function minimumTotalDistance(robot: number[], factory: number[][]): number {
 
   return dp[n][m]; // Return the minimal total distance for all robots and factories
 }
+
+/* 
+862. Shortest Subarray with Sum at Least K
+
+Given an integer array nums and an integer k, return the length of the shortest non-empty subarray of nums with a sum of at least k. If there is no such subarray, return -1.
+
+A subarray is a contiguous part of an array.
+
+Example 1:
+Input: nums = [1], k = 1
+Output: 1
+
+Example 2:
+Input: nums = [1,2], k = 4
+Output: -1
+
+Example 3:
+Input: nums = [2,-1,2], k = 3
+Output: 3
+
+Constraints:
+1 <= nums.length <= 10^5
+-105 <= nums[i] <= 10^5
+1 <= k <= 10^9
+
+</> Typescript Code:
+*/
+
+function shortestSubarray(nums: number[], k: number): number {
+  const n = nums.length;
+  // Create a prefix sum array to store cumulative sums
+  const prefixSum = new Array(n + 1).fill(0);
+  for (let i = 0; i < n; i++) {
+      prefixSum[i + 1] = prefixSum[i] + nums[i];
+  }
+  let result = n + 1; // Initialize result to a large value
+  const deque: number[] = []; // Deque to store indices of prefix sums
+  for (let i = 0; i <= n; i++) {
+      // Check if the current prefix sum minus the smallest prefix sum in deque is at least k
+      while (deque.length > 0 && prefixSum[i] - prefixSum[deque[0]] >= k) {
+          result = Math.min(result, i - deque.shift()!); // Update result with the shortest length
+      }
+      // Maintain deque in increasing order of prefix sums
+      while (deque.length > 0 && prefixSum[i] <= prefixSum[deque[deque.length - 1]]) {
+          deque.pop();
+      }
+      deque.push(i); // Add current index to deque
+  }
+  return result <= n ? result : -1; // Return result if found, otherwise -1
+}
