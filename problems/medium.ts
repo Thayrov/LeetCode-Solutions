@@ -13700,3 +13700,58 @@ function countUnguarded(m: number, n: number, guards: number[][], walls: number[
   // Return the number of unguarded and unoccupied cells
   return m * n - blocked.size - guarded.size;
 }
+
+/* 
+1072. Flip Columns For Maximum Number of Equal Rows
+
+You are given an m x n binary matrix matrix.
+
+You can choose any number of columns in the matrix and flip every cell in that column (i.e., Change the value of the cell from 0 to 1 or vice versa).
+
+Return the maximum number of rows that have all values equal after some number of flips.
+
+Example 1:
+Input: matrix = [[0,1],[1,1]]
+Output: 1
+Explanation: After flipping no values, 1 row has all values equal.
+
+Example 2:
+Input: matrix = [[0,1],[1,0]]
+Output: 2
+Explanation: After flipping values in the first column, both rows have equal values.
+
+Example 3:
+Input: matrix = [[0,0,0],[0,0,1],[1,1,0]]
+Output: 2
+Explanation: After flipping values in the first two columns, the last two rows have equal values.
+
+Constraints:
+m == matrix.length
+n == matrix[i].length
+1 <= m, n <= 300
+matrix[i][j] is either 0 or 1.
+
+</> Typescript Code:
+*/
+
+function maxEqualRowsAfterFlips(matrix: number[][]): number {
+  // Create a map to count the frequency of each pattern
+  const patternCount = new Map<string, number>();
+  // Initialize the maximum number of rows
+  let maxRows = 0;
+  // Iterate over each row in the matrix
+  for (const row of matrix) {
+    // Generate a pattern by XORing each value with the first value
+    const pattern = row.map(v => v ^ row[0]).join(',');
+    // Get the current count of this pattern and increment it
+    const count = (patternCount.get(pattern) || 0) + 1;
+    // Update the pattern count in the map
+    patternCount.set(pattern, count);
+    // Update the maximum number of rows if necessary
+    if (count > maxRows) {
+      maxRows = count;
+    }
+  }
+  // Return the maximum number of equal rows after flips
+  return maxRows;
+}
