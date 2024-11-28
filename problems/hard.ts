@@ -4099,3 +4099,158 @@ function slidingPuzzle(board: number[][]): number {
   // If we exhaust the queue without finding the target, return -1
   return -1;
 }
+
+/* 
+2290. Minimum Obstacle Removal to Reach Corner
+
+You are given a 0-indexed 2D integer array grid of size m x n. Each cell has one of two values:
+
+0 represents an empty cell,
+1 represents an obstacle that may be removed.
+You can move up, down, left, or right from and to an empty cell.
+
+Return the minimum number of obstacles to remove so you can move from the upper left corner (0, 0) to the lower right corner (m - 1, n - 1).
+
+Example 1:
+Input: grid = [[0,1,1],[1,1,0],[1,1,0]]
+Output: 2
+Explanation: We can remove the obstacles at (0, 1) and (0, 2) to create a path from (0, 0) to (2, 2).
+It can be shown that we need to remove at least 2 obstacles, so we return 2.
+Note that there may be other ways to remove 2 obstacles to create a path.
+
+Example 2:
+Input: grid = [[0,1,0,0,0],[0,1,0,1,0],[0,0,0,1,0]]
+Output: 0
+Explanation: We can move from (0, 0) to (2, 4) without removing any obstacles, so we return 0.
+
+Constraints:
+m == grid.length
+n == grid[i].length
+1 <= m, n <= 10^5
+2 <= m * n <= 10^5
+grid[i][j] is either 0 or 1.
+grid[0][0] == grid[m - 1][n - 1] == 0
+
+</> Typescript Code:
+*/
+
+function minimumObstacles(grid: number[][]): number {
+  // Get the number of rows and columns
+  const m = grid.length;
+  const n = grid[0].length;
+  // Initialize a distance matrix with Infinity
+  const dist = Array.from({ length: m }, () => Array(n).fill(Infinity));
+  // Starting point has a distance of 0
+  dist[0][0] = 0;
+
+  // Directions for movement: right, down, left, up
+  const dirs = [[0,1],[1,0],[-1,0],[0,-1]];
+
+  // Initialize a min-heap priority queue
+  const heap = new MinHeap<[number, number, number]>((a, b) => a[0] - b[0]);
+  // Insert the starting position with cost 0
+  heap.insert([0, 0, 0]);
+
+  while (!heap.isEmpty()) {
+      // Extract the position with the minimum cost
+      const [cost, x, y] = heap.extract();
+      // If we have already found a better path, skip
+      if (dist[x][y] < cost) continue;
+
+      // Explore all adjacent positions
+      for (const [dx, dy] of dirs) {
+          const nx = x + dx;
+          const ny = y + dy;
+          // Check boundaries
+          if (nx >=0 && nx < m && ny >=0 && ny < n) {
+              // Calculate new cost
+              const ncost = cost + grid[nx][ny];
+              // If a shorter path is found
+              if (dist[nx][ny] > ncost) {
+                  dist[nx][ny] = ncost; // Update distance
+                  heap.insert([ncost, nx, ny]); // Add to the heap
+              }
+          }
+      }
+  }
+  // Return the minimum number of obstacles to remove
+  return dist[m - 1][n - 1];
+}
+
+// Min-heap implementation
+class MinHeap<T> {
+  private heap: T[];
+  private comparator: (a: T, b: T) => number;
+
+  constructor(comparator: (a: T, b: T) => number) {
+      this.heap = [];
+      this.comparator = comparator;
+  }
+
+  insert(value: T) {
+      this.heap.push(value); // Add value to the heap
+      this.bubbleUp(); // Restore heap property upwards
+  }
+
+  extract(): T {
+      const top = this.heap[0]; // Get the smallest value
+      const end = this.heap.pop()!; // Remove the last element
+      if (this.heap.length > 0) {
+          this.heap[0] = end; // Move the last element to the top
+          this.bubbleDown(); // Restore heap property downwards
+      }
+      return top; // Return the smallest value
+  }
+
+  isEmpty(): boolean {
+      return this.heap.length === 0; // Check if the heap is empty
+  }
+
+  private bubbleUp() {
+      let index = this.heap.length - 1;
+      const element = this.heap[index];
+      // While element is not at the root and smaller than its parent
+      while (index > 0) {
+          const parentIndex = Math.floor((index -1) / 2);
+          const parent = this.heap[parentIndex];
+          if (this.comparator(element, parent) >= 0) break; // Correct position
+          this.heap[index] = parent; // Swap with parent
+          this.heap[parentIndex] = element;
+          index = parentIndex; // Move up to parent's index
+      }
+  }
+
+  private bubbleDown() {
+      let index = 0;
+      const length = this.heap.length;
+      const element = this.heap[0];
+      while (true) {
+          let leftChildIndex = 2*index + 1;
+          let rightChildIndex = 2*index + 2;
+          let leftChild: T, rightChild: T;
+          let swapIndex = -1;
+
+          // Check left child
+          if (leftChildIndex < length) {
+              leftChild = this.heap[leftChildIndex];
+              if (this.comparator(leftChild, element) < 0) {
+                  swapIndex = leftChildIndex;
+              }
+          }
+          // Check right child
+          if (rightChildIndex < length) {
+              rightChild = this.heap[rightChildIndex];
+              if ((swapIndex === -1 && this.comparator(rightChild, element) < 0) ||
+                  (swapIndex !== -1 && this.comparator(rightChild, leftChild!) < 0)) {
+                  swapIndex = rightChildIndex;
+              }
+          }
+          // If no swap needed, break
+          if (swapIndex === -1) break;
+          // Swap with the smaller child
+          this.heap[index] = this.heap[swapIndex];
+          this.heap[swapIndex] = element;
+          index = swapIndex; // Move down to child's index
+      }
+  }
+}
