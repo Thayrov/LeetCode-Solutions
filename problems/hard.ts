@@ -4413,3 +4413,108 @@ class MinHeap {
       }
   }
 };
+
+/* 
+2097. Valid Arrangement of Pairs
+
+You are given a 0-indexed 2D integer array pairs where pairs[i] = [starti, endi]. An arrangement of pairs is valid if for every index i where 1 <= i < pairs.length, we have endi-1 == starti.
+
+Return any valid arrangement of pairs.
+
+Note: The inputs will be generated such that there exists a valid arrangement of pairs.
+
+Example 1:
+Input: pairs = [[5,1],[4,5],[11,9],[9,4]]
+Output: [[11,9],[9,4],[4,5],[5,1]]
+Explanation:
+This is a valid arrangement since endi-1 always equals starti.
+end0 = 9 == 9 = start1 
+end1 = 4 == 4 = start2
+end2 = 5 == 5 = start3
+
+Example 2:
+Input: pairs = [[1,3],[3,2],[2,1]]
+Output: [[1,3],[3,2],[2,1]]
+Explanation:
+This is a valid arrangement since endi-1 always equals starti.
+end0 = 3 == 3 = start1
+end1 = 2 == 2 = start2
+The arrangements [[2,1],[1,3],[3,2]] and [[3,2],[2,1],[1,3]] are also valid.
+
+Example 3:
+Input: pairs = [[1,2],[1,3],[2,1]]
+Output: [[1,2],[2,1],[1,3]]
+Explanation:
+This is a valid arrangement since endi-1 always equals starti.
+end0 = 2 == 2 = start1
+end1 = 1 == 1 = start2
+
+Constraints:
+1 <= pairs.length <= 10^5
+pairs[i].length == 2
+0 <= starti, endi <= 10^9
+starti != endi
+No two pairs are exactly the same.
+There exists a valid arrangement of pairs.
+
+</> Typescript Code:
+*/
+
+function validArrangement(pairs: number[][]): number[][] {
+  // Map to store adjacency list
+  const adj: Map<number, number[]> = new Map();
+  // Maps to store out-degree and in-degree
+  const outDegree: Map<number, number> = new Map();
+  const inDegree: Map<number, number> = new Map();
+
+  // Build graph and degree counts
+  for (const [u, v] of pairs) {
+      // Initialize adjacency list for u
+      if (!adj.has(u)) adj.set(u, []);
+      // Add edge from u to v
+      adj.get(u)!.push(v);
+      // Increment out-degree of u
+      outDegree.set(u, (outDegree.get(u) || 0) + 1);
+      // Increment in-degree of v
+      inDegree.set(v, (inDegree.get(v) || 0) + 1);
+  }
+
+  // Find starting node for Eulerian trail
+  let startNode = pairs[0][0];
+  for (const node of adj.keys()) {
+      const out = outDegree.get(node) || 0;
+      const inn = inDegree.get(node) || 0;
+      // Node with extra out-degree
+      if (out > inn) {
+          startNode = node;
+          break;
+      }
+  }
+
+  // Result array for valid arrangement
+  const res: number[][] = [];
+  // Stack for traversal
+  const stack: number[] = [startNode];
+
+  // Hierholzer's algorithm
+  while (stack.length) {
+      const u = stack[stack.length - 1];
+      // If u has outgoing edges
+      if (adj.has(u) && adj.get(u)!.length > 0) {
+          // Get next node v
+          const v = adj.get(u)!.pop()!;
+          // Continue traversal
+          stack.push(v);
+      } else {
+          // Backtrack
+          stack.pop();
+          if (stack.length) {
+              // Add edge to result
+              res.push([stack[stack.length - 1], u]);
+          }
+      }
+  }
+
+  // Reverse to get correct order
+  return res.reverse();
+}
