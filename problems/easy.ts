@@ -4693,3 +4693,50 @@ function decrypt(code: number[], k: number): number[] {
   }
   return result; // Return the decrypted code
 }
+
+/* 
+1346. Check If N and Its Double Exist
+
+Given an array arr of integers, check if there exist two indices i and j such that :
+
+i != j
+0 <= i, j < arr.length
+arr[i] == 2 * arr[j]
+
+Example 1:
+Input: arr = [10,2,5,3]
+Output: true
+Explanation: For i = 0 and j = 2, arr[i] == 10 == 2 * 5 == 2 * arr[j]
+
+Example 2:
+Input: arr = [3,1,7,11]
+Output: false
+Explanation: There is no i and j that satisfy the conditions.
+
+Constraints:
+2 <= arr.length <= 500
+-10^3 <= arr[i] <= 10^3
+
+</> Typescript Code:
+*/
+
+function checkIfExist(arr: number[]): boolean {
+  const numSet = new Set<number>(); // Initialize a set to store numbers
+  let zeroCount = 0; // Initialize counter for zeros
+  for (const num of arr) {
+    // Loop through each number in the array
+    if (num === 0) {
+      // If the number is zero
+      zeroCount++; // Increment zero counter
+      if (zeroCount === 2) {
+        // If there are at least two zeros
+        return true; // Return true since 0 * 2 == 0
+      }
+    } else if (numSet.has(num * 2) || (num % 2 === 0 && numSet.has(num / 2))) {
+      // Check if double or half of the number exists in the set
+      return true; // Return true if condition is met
+    }
+    numSet.add(num); // Add the number to the set
+  }
+  return false; // Return false if no valid pair is found
+}
