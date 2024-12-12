@@ -4799,3 +4799,120 @@ function isPrefixOfWord(sentence: string, searchWord: string): number {
   }
   return -1; // Return -1 if no prefix match is found
 }
+
+/* 
+2558. Take Gifts From the Richest Pile
+
+You are given an integer array gifts denoting the number of gifts in various piles. Every second, you do the following:
+
+Choose the pile with the maximum number of gifts.
+If there is more than one pile with the maximum number of gifts, choose any.
+Leave behind the floor of the square root of the number of gifts in the pile. Take the rest of the gifts.
+Return the number of gifts remaining after k seconds.
+
+Example 1:
+Input: gifts = [25,64,9,4,100], k = 4
+Output: 29
+Explanation: 
+The gifts are taken in the following way:
+- In the first second, the last pile is chosen and 10 gifts are left behind.
+- Then the second pile is chosen and 8 gifts are left behind.
+- After that the first pile is chosen and 5 gifts are left behind.
+- Finally, the last pile is chosen again and 3 gifts are left behind.
+The final remaining gifts are [5,8,9,4,3], so the total number of gifts remaining is 29.
+
+Example 2:
+Input: gifts = [1,1,1,1], k = 4
+Output: 4
+Explanation: 
+In this case, regardless which pile you choose, you have to leave behind 1 gift in each pile. 
+That is, you can't take any pile with you. 
+So, the total gifts remaining are 4.
+
+Constraints:
+1 <= gifts.length <= 10^3
+1 <= gifts[i] <= 10^9
+1 <= k <= 10^3
+
+</> Typescript Code:
+*/
+
+function pickGifts(gifts: number[], k: number): number {
+  // Initialize a max heap with the gifts array
+  const maxHeap = new MaxHeap(gifts);
+  // Perform k iterations
+  for (let i = 0; i < k; i++) {
+    // Extract the maximum gift pile
+    let maxGift = maxHeap.extractMax();
+    // Calculate the remaining gifts after taking
+    let remain = Math.floor(Math.sqrt(maxGift));
+    // Insert the remaining gifts back into the heap
+    maxHeap.insert(remain);
+  }
+  // Sum all remaining gift piles
+  return maxHeap.heap.reduce((acc, val) => acc + val, 0);
+}
+
+class MaxHeap {
+  heap: number[];
+  constructor(arr: number[]) {
+    // Initialize the heap array
+    this.heap = [];
+    // Insert all elements into the heap
+    for (let num of arr) {
+      this.insert(num);
+    }
+  }
+  insert(val: number) {
+    // Add the new value to the end of the heap
+    this.heap.push(val);
+    let curr = this.heap.length - 1;
+    // Bubble up the new value to maintain max heap property
+    while (curr > 0) {
+      let parent = Math.floor((curr - 1) / 2);
+      if (this.heap[parent] < this.heap[curr]) {
+        // Swap if parent is smaller than current
+        [this.heap[parent], this.heap[curr]] = [this.heap[curr], this.heap[parent]];
+        curr = parent; // Move up to the parent index
+      } else {
+        break; // Heap property satisfied
+      }
+    }
+  }
+  extractMax(): number {
+    if (this.heap.length === 0) return 0;
+    // The maximum value is at the root of the heap
+    const max = this.heap[0];
+    // Remove the last element
+    const end = this.heap.pop();
+    if (this.heap.length > 0 && end !== undefined) {
+      // Move the last element to the root
+      this.heap[0] = end;
+      // Sink down to maintain heap property
+      this.sinkDown(0);
+    }
+    return max;
+  }
+  sinkDown(idx: number) {
+    let largest = idx;
+    while (true) {
+      let left = 2 * idx + 1;
+      let right = 2 * idx + 2;
+      // Check if left child is larger
+      if (left < this.heap.length && this.heap[left] > this.heap[largest]) {
+        largest = left;
+      }
+      // Check if right child is larger
+      if (right < this.heap.length && this.heap[right] > this.heap[largest]) {
+        largest = right;
+      }
+      // If largest is not parent, swap and continue
+      if (largest !== idx) {
+        [this.heap[idx], this.heap[largest]] = [this.heap[largest], this.heap[idx]];
+        idx = largest;
+      } else {
+        break; // Heap property satisfied
+      }
+    }
+  }
+}
