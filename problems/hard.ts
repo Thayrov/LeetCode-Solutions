@@ -4600,3 +4600,110 @@ function maxKDivisibleComponents(n: number, edges: number[][], values: number[],
   // Return the count of k-divisible components
   return count;
 };
+
+/* 
+2940. Find Building Where Alice and Bob Can Meet
+
+You are given a 0-indexed array heights of positive integers, where heights[i] represents the height of the ith building.
+
+If a person is in building i, they can move to any other building j if and only if i < j and heights[i] < heights[j].
+
+You are also given another array queries where queries[i] = [ai, bi]. On the ith query, Alice is in building ai while Bob is in building bi.
+
+Return an array ans where ans[i] is the index of the leftmost building where Alice and Bob can meet on the ith query. If Alice and Bob cannot move to a common building on query i, set ans[i] to -1.
+
+Example 1:
+Input: heights = [6,4,8,5,2,7], queries = [[0,1],[0,3],[2,4],[3,4],[2,2]]
+Output: [2,5,-1,5,2]
+Explanation: In the first query, Alice and Bob can move to building 2 since heights[0] < heights[2] and heights[1] < heights[2]. 
+In the second query, Alice and Bob can move to building 5 since heights[0] < heights[5] and heights[3] < heights[5]. 
+In the third query, Alice cannot meet Bob since Alice cannot move to any other building.
+In the fourth query, Alice and Bob can move to building 5 since heights[3] < heights[5] and heights[4] < heights[5].
+In the fifth query, Alice and Bob are already in the same building.  
+For ans[i] != -1, It can be shown that ans[i] is the leftmost building where Alice and Bob can meet.
+For ans[i] == -1, It can be shown that there is no building where Alice and Bob can meet.
+
+Example 2:
+Input: heights = [5,3,8,2,6,1,4,6], queries = [[0,7],[3,5],[5,2],[3,0],[1,6]]
+Output: [7,6,-1,4,6]
+Explanation: In the first query, Alice can directly move to Bob's building since heights[0] < heights[7].
+In the second query, Alice and Bob can move to building 6 since heights[3] < heights[6] and heights[5] < heights[6].
+In the third query, Alice cannot meet Bob since Bob cannot move to any other building.
+In the fourth query, Alice and Bob can move to building 4 since heights[3] < heights[4] and heights[0] < heights[4].
+In the fifth query, Alice can directly move to Bob's building since heights[1] < heights[6].
+For ans[i] != -1, It can be shown that ans[i] is the leftmost building where Alice and Bob can meet.
+For ans[i] == -1, It can be shown that there is no building where Alice and Bob can meet.
+
+Constraints:
+1 <= heights.length <= 5 * 10^4
+1 <= heights[i] <= 10^9
+1 <= queries.length <= 5 * 10^4
+queries[i] = [ai, bi]
+0 <= ai, bi <= heights.length - 1
+
+</> Typescript Code:
+*/
+
+function leftmostBuildingQueries(heights: number[], queries: number[][]): number[] {
+  // Create an output array "ans" with the same length as queries, initialized to -1
+  const ans = new Array(queries.length).fill(-1);
+
+  // "remain" holds, for each building index, a list of query objects waiting
+  // for that building to become reachable if the height condition is met
+  const remain = new Array(heights.length).fill(1).map(() => new Array());
+
+  // Iterate over each query to prepare them based on conditions
+  for (let i = 0; i < queries.length; i++) {
+      // Extract Alice and Bob's building
+      const [q1, q2] = queries[i];
+
+      // Ensure left is the smaller index and right is the larger index
+      const left = q1 < q2 ? q1 : q2;
+      const right = q1 < q2 ? q2 : q1;
+      
+      // If both indices are the same, the answer is that index
+      if (left === right) {
+          ans[i] = right;
+          continue;
+      }
+      
+      // Get the heights of the left and right buildings
+      const heightLeft = heights[left];
+      const heightRight = heights[right];
+      
+      // If the left building's height is strictly less, Bob is already reachable
+      if (heightLeft < heightRight) {
+          ans[i] = right;
+          continue;
+      }
+
+      // Otherwise, we push a query object into the "remain" list for building "right"
+      remain[right].push({
+          height: Math.max(heightLeft, heightRight),
+          queryIndex: i 
+      });
+  }
+
+  // Create a min priority queue where items are sorted by "height"
+  // This helps determine the next building that can be reached based on height
+  const minPQ = new MinPriorityQueue({
+      priority: (item) => item.height
+  });
+
+  // Traverse buildings in ascending order of index
+  for (let j = 0; j < heights.length; j++) {
+      // While the queue's front has a smaller height than the current building,
+      // this building "j" is the first one tall enough to meet the query
+      while (!minPQ.isEmpty() && minPQ.front().element.height < heights[j]) {
+          ans[minPQ.dequeue().element.queryIndex] = j;
+      }
+
+      // Enqueue all queries that have building "j" as the designated place to check
+      for (const r of remain[j]) {
+          minPQ.enqueue(r);
+      }
+  }
+  
+  // Return the array of answers after processing all queries
+  return ans;
+};
