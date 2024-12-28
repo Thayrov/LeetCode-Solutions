@@ -4804,3 +4804,64 @@ function minimumDiameterAfterMerge(edges1: number[][], edges2: number[][]): numb
   // Combine results to get minimum possible new diameter
   return Math.max(d1, d2, ((d1 + 1) >> 1) + ((d2 + 1) >> 1) + 1);
 }
+
+/* 
+689. Maximum Sum of 3 Non-Overlapping Subarrays
+
+Given an integer array nums and an integer k, find three non-overlapping subarrays of length k with maximum sum and return them.
+
+Return the result as a list of indices representing the starting position of each interval (0-indexed). If there are multiple answers, return the lexicographically smallest one.
+
+Example 1:
+Input: nums = [1,2,1,2,6,7,5,1], k = 2
+Output: [0,3,5]
+Explanation: Subarrays [1, 2], [2, 6], [7, 5] correspond to the starting indices [0, 3, 5].
+We could have also taken [2, 1], but an answer of [1, 3, 5] would be lexicographically larger.
+
+Example 2:
+Input: nums = [1,2,1,2,1,2,1,2,1], k = 2
+Output: [0,2,4]
+
+Constraints:
+1 <= nums.length <= 2 * 10^4
+1 <= nums[i] < 2^16
+1 <= k <= floor(nums.length / 3)
+
+</> Typescript Code:
+*/
+
+function maxSumOfThreeSubarrays(nums: number[], k: number): number[] {
+  // Calculate array length and create prefix sums array
+  const n = nums.length, prefix = new Array(n + 1).fill(0);
+  // Build prefix sums for fast range-sum calculation
+  for (let i = 0; i < n; i++) prefix[i + 1] = prefix[i] + nums[i];
+  // Helper function to get sum of subarray starting at index i with length k
+  const subSum = (i: number) => prefix[i + k] - prefix[i];
+  // Arrays to keep track of best left and right subarray indices
+  const bestLeft = new Array(n).fill(0), bestRight = new Array(n).fill(n - k);
+  // Track max subarray sum for left intervals
+  let mx = subSum(0), pos = 0;
+  for (let i = 1; i <= n - k; i++) {
+      const s = subSum(i);
+      if (s > mx) { mx = s; pos = i; }
+      bestLeft[i] = pos;
+  }
+  // Track max subarray sum for right intervals
+  mx = subSum(n - k); pos = n - k;
+  for (let i = n - k; i >= 0; i--) {
+      const s = subSum(i);
+      if (s >= mx) { mx = s; pos = i; }
+      bestRight[i] = pos;
+  }
+  // Try placing the middle subarray at each valid position
+  let res = [0, 0, 0], maxTotal = 0;
+  for (let j = k; j <= n - 2 * k; j++) {
+      const i = bestLeft[j - k], l = bestRight[j + k];
+      const total = subSum(i) + subSum(j) + subSum(l);
+      if (total > maxTotal) {
+          maxTotal = total;
+          res = [i, j, l];
+      }
+  }
+  return res;
+}
