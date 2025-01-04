@@ -15126,20 +15126,20 @@ All the values of the tree are unique.
  * }
  */
 
-class TreeNode {
-  // Node value
-  val: number;
-  // Left child
-  left: TreeNode | null;
-  // Right child
-  right: TreeNode | null;
-  // Constructor to initialize node
-  constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
-    this.val = val === undefined ? 0 : val;
-    this.left = left === undefined ? null : left;
-    this.right = right === undefined ? null : right;
-  }
-}
+// class TreeNode {
+//   // Node value
+//   val: number;
+//   // Left child
+//   left: TreeNode | null;
+//   // Right child
+//   right: TreeNode | null;
+//   // Constructor to initialize node
+//   constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+//     this.val = val === undefined ? 0 : val;
+//     this.left = left === undefined ? null : left;
+//     this.right = right === undefined ? null : right;
+//   }
+// }
 
 function minimumOperations(root: TreeNode | null): number {
   // If there's no tree, no operations needed
