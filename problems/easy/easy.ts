@@ -81,7 +81,9 @@ function imageSmoother(img: number[][]): number[][] {
   const n = img[0].length;
 
   // Initialize 'newImg' as a two-dimensional array filled with zeros.
-  const newImg: number[][] = Array.from({length: m}, () => new Array(n).fill(0));
+  const newImg: number[][] = Array.from({ length: m }, () =>
+    new Array(n).fill(0)
+  );
 
   // Iterate over each row of the image.
   for (let i = 0; i < m; i++) {
@@ -229,7 +231,7 @@ function maxScore(s: string): number {
 
   // Count the total number of '1's in the string since they will contribute to the score of every right substring
   for (const char of s) {
-    if (char === '1') {
+    if (char === "1") {
       onesCount++;
     }
   }
@@ -237,7 +239,7 @@ function maxScore(s: string): number {
   // Iterate through the string until the second-to-last character
   // The last character must be part of the right substring, so it's not included in the loop
   for (let i = 0; i < s.length - 1; i++) {
-    if (s[i] === '0') {
+    if (s[i] === "0") {
       zerosCount++; // If the current character is '0', increment zerosCount for the left substring
     } else {
       onesCount--; // If the current character is '1', decrement onesCount as it's now part of the left substring
@@ -297,16 +299,16 @@ function isPathCrossing(path: string): boolean {
   // Loop through the path string to move the current position
   for (let i = 0; i < path.length; i++) {
     switch (path[i]) {
-      case 'N':
+      case "N":
         y++;
         break; // Move north: increment y coordinate
-      case 'S':
+      case "S":
         y--;
         break; // Move south: decrement y coordinate
-      case 'E':
+      case "E":
         x++;
         break; // Move east: increment x coordinate
-      case 'W':
+      case "W":
         x--;
         break; // Move west: decrement x coordinate
     }
@@ -374,7 +376,7 @@ function minOperationsBT(s: string): number {
     // Check if the current index is even
     if (i % 2 === 0) {
       // If the character at the even index is '1', it mismatches with '0101...' pattern
-      if (s[i] === '1') {
+      if (s[i] === "1") {
         count1++; // Increment count1 for pattern '0101...'
       } else {
         // Otherwise, it mismatches with '1010...' pattern
@@ -383,7 +385,7 @@ function minOperationsBT(s: string): number {
     } else {
       // If the current index is odd
       // If the character at the odd index is '0', it mismatches with '0101...' pattern
-      if (s[i] === '0') {
+      if (s[i] === "0") {
         count1++; // Increment count1 for pattern '0101...'
       } else {
         // Otherwise, it mismatches with '1010...' pattern
@@ -626,7 +628,11 @@ function rangeSumBST(root: TreeNode | null, low: number, high: number): number {
   if (root.val < low) return rangeSumBST(root.right, low, high);
 
   // If current node's value is within the range, include it in sum and check both subtrees
-  return root.val + rangeSumBST(root.left, low, high) + rangeSumBST(root.right, low, high);
+  return (
+    root.val +
+    rangeSumBST(root.left, low, high) +
+    rangeSumBST(root.right, low, high)
+  );
 }
 
 /* 
@@ -683,7 +689,10 @@ function leafSimilar(root1: TreeNode | null, root2: TreeNode | null): boolean {
   dfs(root2, leaves2);
 
   // Check if leaf sequences are identical
-  return leaves1.length === leaves2.length && leaves1.every((val, index) => val === leaves2[index]);
+  return (
+    leaves1.length === leaves2.length &&
+    leaves1.every((val, index) => val === leaves2[index])
+  );
 }
 
 // Helper function to perform DFS and collect leaf values
@@ -730,10 +739,11 @@ s consists of uppercase and lowercase letters.
 
 function halvesAreAlike(s: string): boolean {
   // Helper function to check if a character is a vowel
-  const isVowel = (c: string) => 'aeiouAEIOU'.includes(c);
+  const isVowel = (c: string) => "aeiouAEIOU".includes(c);
 
   // Helper function to count the number of vowels in a string
-  const countVowels = (str: string) => [...str].filter(c => isVowel(c)).length;
+  const countVowels = (str: string) =>
+    [...str].filter((c) => isVowel(c)).length;
 
   // Calculate the length of each half
   const half = s.length / 2;
@@ -1141,13 +1151,13 @@ function firstPalindrome(words: string[]): string {
   for (const word of words) {
     // Check if the word is a palindrome
     // A word is a palindrome if it is equal to its reverse
-    if (word === word.split('').reverse().join('')) {
+    if (word === word.split("").reverse().join("")) {
       // If the word is a palindrome, return it as the first palindromic string
       return word;
     }
   }
   // If no palindromic string is found in the array, return an empty string
-  return '';
+  return "";
 }
 
 /* 
@@ -1420,14 +1430,14 @@ s contains at least one '1'.
 
 function maximumOddBinaryNumber(s: string): string {
   // Count the number of '1's in the string and subtract one to ensure the last digit is '1'
-  let ones = s.split('').filter(c => c === '1').length - 1;
+  let ones = s.split("").filter((c) => c === "1").length - 1;
   // Count the number of '0's by subtracting the number of '1's (excluding the last '1') from the total length
   let zeros = s.length - ones - 1;
   // Construct the maximum odd binary number:
   // - Use all but one '1' at the beginning
   // - Follow with all '0's
   // - Ensure the last digit is '1' to make it odd
-  return '1'.repeat(ones) + '0'.repeat(zeros) + '1';
+  return "1".repeat(ones) + "0".repeat(zeros) + "1";
 }
 
 /* 
@@ -1718,7 +1728,7 @@ function intersection(nums1: number[], nums2: number[]): number[] {
   const setNums1 = new Set(nums1);
   // Filter setNums1 to include only those numbers that are also present in nums2.
   // This effectively computes the intersection of nums1 and nums2.
-  const intersection = [...setNums1].filter(n => nums2.includes(n));
+  const intersection = [...setNums1].filter((n) => nums2.includes(n));
   // Convert the intersection array back into a Set to ensure all values are unique.
   const uniqueIntersection = new Set(intersection);
   // Spread the uniqueIntersection Set into an array and return it.
@@ -1924,7 +1934,7 @@ function lengthOfLastWord(s: string): number {
   // Trim the input string to remove leading and trailing spaces.
   s = s.trim();
   // Split the trimmed string into an array of words.
-  const words = s.split(' ');
+  const words = s.split(" ");
   // Pop the last word from the array.
   const lastWord = words.pop();
   // Return the length of the last word. The '!' asserts that 'lastWord' is not undefined.
@@ -1970,7 +1980,8 @@ function isIsomorphic(s: string, t: string): boolean {
     const x = s[i],
       y = t[i]; // Get the current characters from each string
     // Check if the current mapping violates the isomorphic conditions
-    if ((mapST[x] && mapST[x] !== y) || (mapTS[y] && mapTS[y] !== x)) return false;
+    if ((mapST[x] && mapST[x] !== y) || (mapTS[y] && mapTS[y] !== x))
+      return false;
     // Record the mappings
     mapST[x] = y;
     mapTS[y] = x;
@@ -2024,12 +2035,12 @@ function maxDepth(s: string): number {
   // Iterate through each character in the string s
   for (const char of s) {
     // If the character is an opening parenthesis, increment currentDepth
-    if (char === '(') {
+    if (char === "(") {
       currentDepth++;
       // Update maxDepth if the currentDepth exceeds it
       maxDepth = Math.max(maxDepth, currentDepth);
       // If the character is a closing parenthesis, decrement currentDepth
-    } else if (char === ')') {
+    } else if (char === ")") {
       currentDepth--;
     }
   }
@@ -2085,7 +2096,8 @@ function makeGood(s: string): string {
     // the current character and the last one in the stack is 32 (difference between upper and lower case)
     if (
       stack.length > 0 &&
-      Math.abs(char.charCodeAt(0) - stack[stack.length - 1].charCodeAt(0)) === 32
+      Math.abs(char.charCodeAt(0) - stack[stack.length - 1].charCodeAt(0)) ===
+        32
     ) {
       // If so, remove the last character from the stack as the pair is "bad"
       stack.pop();
@@ -2095,7 +2107,7 @@ function makeGood(s: string): string {
     }
   }
   // Join the characters in the stack to form the final "good" string and return it
-  return stack.join('');
+  return stack.join("");
 }
 
 /* 
@@ -2249,7 +2261,10 @@ The number of nodes in the tree is in the range [1, 1000].
  */
 
 // Function to sum the values of all left leaves in a binary tree
-function sumOfLeftLeaves(root: TreeNode | null, isLeft: boolean = false): number {
+function sumOfLeftLeaves(
+  root: TreeNode | null,
+  isLeft: boolean = false
+): number {
   // Base case: if the current node is null, return 0
   if (!root) return 0;
   // Check if the current node is a left leaf (a leaf and is the left child)
@@ -2350,7 +2365,12 @@ There are no self edges.
 */
 
 // Function to determine if there is a valid path in a graph
-function validPath(n: number, edges: number[][], source: number, destination: number): boolean {
+function validPath(
+  n: number,
+  edges: number[][],
+  source: number,
+  destination: number
+): boolean {
   // Initialize an adjacency list to represent the graph
   const adjList = new Map();
   // Populate the adjacency list with edges
@@ -2472,9 +2492,9 @@ function reversePrefix(word: string, ch: string): string {
   return (
     word
       .substring(0, index + 1)
-      .split('')
+      .split("")
       .reverse()
-      .join('') + word.substring(index + 1)
+      .join("") + word.substring(index + 1)
   );
 }
 
@@ -2560,16 +2580,18 @@ All the values in score are unique.
 
 function findRelativeRanks(score: number[]): string[] {
   // Map each score to its index, then sort these pairs by score in descending order
-  const sortedIndices = score.map((s, index) => [s, index]).sort((a, b) => b[0] - a[0]);
+  const sortedIndices = score
+    .map((s, index) => [s, index])
+    .sort((a, b) => b[0] - a[0]);
 
   // Create an array to hold the ranks corresponding to the original indices
   const result = new Array(score.length);
 
   // Assign medals or numeric ranks based on sorted positions
   sortedIndices.forEach((value, index) => {
-    if (index === 0) result[value[1]] = 'Gold Medal'; // First place
-    else if (index === 1) result[value[1]] = 'Silver Medal'; // Second place
-    else if (index === 2) result[value[1]] = 'Bronze Medal'; // Third place
+    if (index === 0) result[value[1]] = "Gold Medal"; // First place
+    else if (index === 1) result[value[1]] = "Silver Medal"; // Second place
+    else if (index === 2) result[value[1]] = "Bronze Medal"; // Third place
     else result[value[1]] = (index + 1).toString(); // Other places
   });
 
@@ -2611,7 +2633,7 @@ n == grid.length == grid[i].length
 function largestLocal(grid: number[][]): number[][] {
   const n = grid.length; // Size of the given grid
   // Create an output matrix of size (n-2)x(n-2)
-  const result = Array.from({length: n - 2}, () => Array(n - 2));
+  const result = Array.from({ length: n - 2 }, () => Array(n - 2));
 
   // Iterate through each possible top-left corner of a 3x3 sub-matrix
   for (let i = 0; i <= n - 3; i++) {
@@ -2815,7 +2837,7 @@ function specialArray(nums: number[]): number {
   // Iterate over all possible values of x from 0 to the length of the array
   for (let x = 0; x <= nums.length; x++) {
     // Count how many numbers are greater than or equal to x
-    const count = nums.filter(num => num >= x).length;
+    const count = nums.filter((num) => num >= x).length;
 
     // Check if the count matches x
     if (count === x) {
@@ -3458,12 +3480,12 @@ function minOperations(logs: string[]): number {
   // Iterate through each log entry
   for (const log of logs) {
     // If the log entry is to move to the parent folder
-    if (log === '../') {
+    if (log === "../") {
       // Decrease depth if we are not already at the root level
       if (depth > 0) depth--;
     }
     // If the log entry is to remain in the same folder
-    else if (log === './') {
+    else if (log === "./") {
       // Do nothing
       continue;
     }
@@ -3512,7 +3534,7 @@ All elements in the matrix are distinct.
 
 function luckyNumbers(matrix: number[][]): number[] {
   // Find the minimum value in each row
-  const minRowValues = matrix.map(row => Math.min(...row));
+  const minRowValues = matrix.map((row) => Math.min(...row));
 
   // Initialize an array to store the maximum values in each column
   const maxColValues = Array(matrix[0].length).fill(Number.MIN_SAFE_INTEGER);
@@ -3530,7 +3552,10 @@ function luckyNumbers(matrix: number[][]): number[] {
   // Traverse the matrix to find elements that are both minimum in their row and maximum in their column
   for (let row = 0; row < matrix.length; row++) {
     for (let col = 0; col < matrix[0].length; col++) {
-      if (matrix[row][col] === minRowValues[row] && matrix[row][col] === maxColValues[col]) {
+      if (
+        matrix[row][col] === minRowValues[row] &&
+        matrix[row][col] === maxColValues[col]
+      ) {
         luckyNumbers.push(matrix[row][col]);
       }
     }
@@ -3579,7 +3604,9 @@ sum(rowSum) == sum(colSum)
 
 function restoreMatrix(rowSum: number[], colSum: number[]): number[][] {
   // Initialize the matrix with all zeros
-  let matrix: number[][] = Array.from({length: rowSum.length}, () => Array(colSum.length).fill(0));
+  let matrix: number[][] = Array.from({ length: rowSum.length }, () =>
+    Array(colSum.length).fill(0)
+  );
 
   // Initialize row and column pointers
   let i = 0,
@@ -3643,13 +3670,16 @@ function sortPeople(names: string[], heights: number[]): string[] {
   const n = names.length;
 
   // Create an array of objects where each object contains the name and height of a person
-  const indexedNames = names.map((name, index) => ({name, height: heights[index]}));
+  const indexedNames = names.map((name, index) => ({
+    name,
+    height: heights[index],
+  }));
 
   // Sort the array of objects based on height in descending order
   indexedNames.sort((a, b) => b.height - a.height);
 
   // Extract and return only the names from the sorted array
-  return indexedNames.map(person => person.name);
+  return indexedNames.map((person) => person.name);
 }
 
 /* 
@@ -3685,7 +3715,7 @@ function frequencySort(nums: number[]): number[] {
   const freqMap = new Map<number, number>();
 
   // Populate the frequency map with counts of each number
-  nums.forEach(num => freqMap.set(num, (freqMap.get(num) || 0) + 1));
+  nums.forEach((num) => freqMap.set(num, (freqMap.get(num) || 0) + 1));
 
   // Sort the array based on the frequency map and required conditions
   return nums.sort((a, b) => {
@@ -3844,7 +3874,7 @@ arr[i] consists of lowercase English letters.
 
 function kthDistinct(arr: string[], k: number): string {
   // Create a frequency map to count occurrences of each string
-  const freqMap: {[key: string]: number} = {};
+  const freqMap: { [key: string]: number } = {};
 
   // Populate the frequency map
   for (const str of arr) {
@@ -3862,7 +3892,7 @@ function kthDistinct(arr: string[], k: number): string {
   }
 
   // Return the k-th distinct string or an empty string if there aren't enough
-  return distinctStrings[k - 1] || '';
+  return distinctStrings[k - 1] || "";
 }
 
 /* 
@@ -4201,7 +4231,11 @@ Constraints:
 </> Typescript Code:
 */
 
-function construct2DArray(original: number[], m: number, n: number): number[][] {
+function construct2DArray(
+  original: number[],
+  m: number,
+  n: number
+): number[][] {
   // Check if the total number of elements can be exactly divided into m rows and n columns
   if (original.length !== m * n) return [];
 
@@ -4266,18 +4300,18 @@ s consists of lowercase English letters.
 function getLucky(s: string, k: number): number {
   // Convert the string into its corresponding numeric string by mapping each character to its position in the alphabet
   let numStr = s
-    .split('')
-    .map(c => c.charCodeAt(0) - 96)
-    .join('');
+    .split("")
+    .map((c) => c.charCodeAt(0) - 96)
+    .join("");
 
   // Calculate the initial sum of the digits of the numeric string
-  let sum = numStr.split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+  let sum = numStr.split("").reduce((acc, digit) => acc + parseInt(digit), 0);
 
   // Repeat the digit sum transformation for k-1 times
   for (let i = 1; i < k; i++) {
     sum = sum
       .toString()
-      .split('')
+      .split("")
       .reduce((acc, digit) => acc + parseInt(digit), 0);
   }
 
@@ -4326,7 +4360,7 @@ function minBitFlips(start: number, goal: number): number {
   return (
     differingBits
       .toString(2) // Convert differingBits to binary string
-      .split('1').length - 1 // Split by '1' to get an array where each segment represents consecutive '0's
+      .split("1").length - 1 // Split by '1' to get an array where each segment represents consecutive '0's
   ); // Length of array - 1 gives the count of '1's which are the flips needed
 }
 
@@ -4368,9 +4402,9 @@ function countConsistentStrings(allowed: string, words: string[]): number {
 
   // Filter the words array to include only those strings that are consistent
   // A word is consistent if all its characters are in the allowed set
-  return words.filter(word =>
+  return words.filter((word) =>
     // Convert the word to an array of characters and check if all are in the allowed set
-    Array.from(word).every(char => allowedSet.has(char)),
+    Array.from(word).every((char) => allowedSet.has(char))
   ).length; // Return the count of consistent strings
 }
 
@@ -4408,17 +4442,17 @@ function uncommonFromSentences(s1: string, s2: string): string[] {
   const count: Record<string, number> = {};
 
   // Split s1 into words and count occurrences
-  for (const word of s1.split(' ')) {
+  for (const word of s1.split(" ")) {
     count[word] = (count[word] || 0) + 1; // If word not in map, initialize to 0 and add 1
   }
 
   // Split s2 into words and count occurrences
-  for (const word of s2.split(' ')) {
+  for (const word of s2.split(" ")) {
     count[word] = (count[word] || 0) + 1; // Same as above for s2
   }
 
   // Filter and return words that appear exactly once in the combined sentences
-  return Object.keys(count).filter(word => count[word] === 1);
+  return Object.keys(count).filter((word) => count[word] === 1);
 }
 
 /* 
@@ -4471,7 +4505,7 @@ function arrayRankTransform(arr: number[]): number[] {
 
   // Step 4: Transform the original array by replacing each value with its corresponding rank.
   // We use the rank map to find the rank for each value in the original array.
-  return arr.map(val => rankMap.get(val)!);
+  return arr.map((val) => rankMap.get(val)!);
 }
 
 /* 
@@ -4518,7 +4552,7 @@ function minLength(s: string): number {
     const last = stack[stack.length - 1];
 
     // If the current character forms a valid "AB" or "CD" with the last character, pop the stack
-    if ((last === 'A' && char === 'B') || (last === 'C' && char === 'D')) {
+    if ((last === "A" && char === "B") || (last === "C" && char === "D")) {
       stack.pop(); // Remove the last character since the pair is removed
     } else {
       // If no valid pair is found, push the current character onto the stack
@@ -4584,7 +4618,7 @@ function isCircularSentence(sentence: string): boolean {
   let prevChar = sentence[n - 1]; // Initialize prevChar to the last character of the sentence
   for (let i = 0; i < n; i++) {
     const currChar = sentence[i]; // Current character in the sentence
-    if (currChar === ' ') {
+    if (currChar === " ") {
       // Check if current character is a space
       if (prevChar !== sentence[i + 1]) {
         // Compare prevChar with first character of next word
@@ -4780,7 +4814,7 @@ function isPrefixOfWord(sentence: string, searchWord: string): number {
     n = sentence.length; // Length of the sentence
   while (i < n) {
     // Skip spaces to find the start of the word
-    while (i < n && sentence[i] === ' ') i++;
+    while (i < n && sentence[i] === " ") i++;
     if (i >= n) break; // If end of sentence, break
     let start = i; // Mark the start of the current word
     let match = true; // Flag to check for prefix match
@@ -4794,7 +4828,7 @@ function isPrefixOfWord(sentence: string, searchWord: string): number {
     }
     if (match) return index; // If prefix matches, return current index
     // Move to the end of the current word
-    while (i < n && sentence[i] !== ' ') i++;
+    while (i < n && sentence[i] !== " ") i++;
     index++; // Increment word index
   }
   return -1; // Return -1 if no prefix match is found
@@ -4872,7 +4906,10 @@ class MaxHeap {
       let parent = Math.floor((curr - 1) / 2);
       if (this.heap[parent] < this.heap[curr]) {
         // Swap if parent is smaller than current
-        [this.heap[parent], this.heap[curr]] = [this.heap[curr], this.heap[parent]];
+        [this.heap[parent], this.heap[curr]] = [
+          this.heap[curr],
+          this.heap[parent],
+        ];
         curr = parent; // Move up to the parent index
       } else {
         break; // Heap property satisfied
@@ -4908,7 +4945,10 @@ class MaxHeap {
       }
       // If largest is not parent, swap and continue
       if (largest !== idx) {
-        [this.heap[idx], this.heap[largest]] = [this.heap[largest], this.heap[idx]];
+        [this.heap[idx], this.heap[largest]] = [
+          this.heap[largest],
+          this.heap[idx],
+        ];
         idx = largest;
       } else {
         break; // Heap property satisfied
@@ -4957,7 +4997,11 @@ Constraints:
 </> Typescript Code:
 */
 
-function getFinalState(nums: number[], k: number, multiplier: number): number[] {
+function getFinalState(
+  nums: number[],
+  k: number,
+  multiplier: number
+): number[] {
   // Perform k operations
   for (let op = 0; op < k; op++) {
     let minVal = Infinity; // Initialize minimum value
@@ -5025,65 +5069,4 @@ function finalPrices(prices: number[]): number[] {
     stack.push(i); // Push the current index onto the stack
   }
   return result; // Return the array of final prices
-}
-
-/* 
-1422. Maximum Score After Splitting a String
-
-Given a string s of zeros and ones, return the maximum score after splitting the string into two non-empty substrings (i.e. left substring and right substring).
-
-The score after splitting a string is the number of zeros in the left substring plus the number of ones in the right substring.
-
-Example 1:
-Input: s = "011101"
-Output: 5 
-Explanation: 
-All possible ways of splitting s into two non-empty substrings are:
-left = "0" and right = "11101", score = 1 + 4 = 5 
-left = "01" and right = "1101", score = 1 + 3 = 4 
-left = "011" and right = "101", score = 1 + 2 = 3 
-left = "0111" and right = "01", score = 1 + 1 = 2 
-left = "01110" and right = "1", score = 2 + 1 = 3
-
-Example 2:
-Input: s = "00111"
-Output: 5
-Explanation: When left = "00" and right = "111", we get the maximum score = 2 + 3 = 5
-
-Example 3:
-Input: s = "1111"
-Output: 3
-
-Constraints:
-2 <= s.length <= 500
-The string s consists of characters '0' and '1' only.
-
-</> Typescript Code:
-*/
-
-function maxScore(s: string): number {
-  // Count total number of '1's across the entire string
-  let totalOnes = 0;
-  for (let i = 0; i < s.length; i++) {
-    if (s[i] === '1') totalOnes++;
-  }
-
-  // Track zeros in left part, ones in left part so far, and the best seen
-  let zeroCount = 0,
-    onesSoFar = 0,
-    ans = 0;
-
-  // Iterate up to the second-to-last character to keep right substring non-empty
-  for (let i = 0; i < s.length - 1; i++) {
-    // If current char is '0', increment zeroCount; otherwise increment onesSoFar
-    if (s[i] === '0') zeroCount++;
-    else onesSoFar++;
-
-    // Calculate current score by adding zeros from left and ones from right
-    let curr = zeroCount + (totalOnes - onesSoFar);
-
-    // Keep track of the highest score found
-    if (curr > ans) ans = curr;
-  }
-  return ans;
 }
