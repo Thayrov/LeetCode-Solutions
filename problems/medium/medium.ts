@@ -41,7 +41,10 @@ class ListNode {
   }
 }
 
-function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | null {
+function addTwoNumbers(
+  l1: ListNode | null,
+  l2: ListNode | null
+): ListNode | null {
   let dummyHead = new ListNode(0); // Create a dummy head node for the resulting linked list. This helps in simplifying list operations.
   let curr = dummyHead; // Initialize a current pointer to the dummy head. This will be used to build the result list.
 
@@ -111,7 +114,7 @@ function maxWidthOfVerticalArea(points: number[][]): number {
   // Extract x-coordinates from the array of points and sort them in ascending order.
   // map(point => point[0]): Extracts the x-coordinate (first element of each sub-array).
   // sort((a, b) => a - b): Sorts the x-coordinates in ascending numerical order.
-  let xCoords = points.map(point => point[0]).sort((a, b) => a - b);
+  let xCoords = points.map((point) => point[0]).sort((a, b) => a - b);
 
   // Initialize the variable to store the maximum width of the vertical area.
   let maxGap = 0;
@@ -177,19 +180,19 @@ s contains only digits and may contain leading zero(s).
 
 function numDecodings(s: string): number {
   // If the string is empty or starts with '0', there are no valid decodings.
-  if (s.length === 0 || s[0] === '0') {
+  if (s.length === 0 || s[0] === "0") {
     return 0;
   }
 
   // dp array to store the number of ways to decode up to the ith character
   let dp = new Array(s.length + 1).fill(0);
   dp[0] = 1; // Base case: one way to decode an empty string
-  dp[1] = s[0] !== '0' ? 1 : 0; // There is one way if the first character is not '0', otherwise 0 ways
+  dp[1] = s[0] !== "0" ? 1 : 0; // There is one way if the first character is not '0', otherwise 0 ways
 
   // Iterate over the string starting from the second character
   for (let i = 2; i <= s.length; i++) {
     // Check if the single digit is valid (not '0')
-    if (s[i - 1] !== '0') {
+    if (s[i - 1] !== "0") {
       // If valid, the number of ways to decode it is the same as the previous character
       dp[i] += dp[i - 1];
     }
@@ -246,7 +249,7 @@ Constraints:
 function numRollsToTarget(n: number, k: number, target: number): number {
   const MOD = 1000000007; // The modulo value
   // dp[i][j] will store the number of ways to get sum j with i dice
-  let dp = Array.from({length: n + 1}, () => new Array(target + 1).fill(0));
+  let dp = Array.from({ length: n + 1 }, () => new Array(target + 1).fill(0));
 
   // Base case: There's 1 way to get sum 0 with 0 dice
   dp[0][0] = 1;
@@ -458,7 +461,7 @@ function numberOfBeams(bank: string[]): number {
   // Iterate through each row in the bank
   for (const row of bank) {
     // Count the number of '1's in the current row
-    const currentCount = row.split('').filter(char => char === '1').length;
+    const currentCount = row.split("").filter((char) => char === "1").length;
 
     // If the current row has security devices
     if (currentCount > 0) {
@@ -680,7 +683,11 @@ function amountOfTime(root: TreeNode | null, start: number): number {
 }
 
 // Helper function to build the graph from the binary tree
-function buildGraph(node: TreeNode | null, parent: TreeNode | null, graph: Map<number, number[]>) {
+function buildGraph(
+  node: TreeNode | null,
+  parent: TreeNode | null,
+  graph: Map<number, number[]>
+) {
   if (!node) return; // Base case: if the node is null
   // Initialize the adjacency list for this node
   if (!graph.has(node.val)) graph.set(node.val, []);
@@ -754,7 +761,10 @@ function dfs2(node: TreeNode | null, minVal: number, maxVal: number): number {
   minVal = Math.min(minVal, node.val);
   maxVal = Math.max(maxVal, node.val);
   // Recursively call DFS for left and right children, and return the maximum difference
-  return Math.max(dfs2(node.left, minVal, maxVal), dfs2(node.right, minVal, maxVal));
+  return Math.max(
+    dfs2(node.left, minVal, maxVal),
+    dfs2(node.right, minVal, maxVal)
+  );
 }
 
 /* 
@@ -803,16 +813,18 @@ function minSteps(s: string, t: string): number {
 
   // Count the frequency of each character in string s
   for (const char of s) {
-    charCount[char.charCodeAt(0) - 'a'.charCodeAt(0)]++;
+    charCount[char.charCodeAt(0) - "a".charCodeAt(0)]++;
   }
 
   // Decrement the frequency based on characters in string t
   for (const char of t) {
-    charCount[char.charCodeAt(0) - 'a'.charCodeAt(0)]--;
+    charCount[char.charCodeAt(0) - "a".charCodeAt(0)]--;
   }
 
   // Sum up the counts that are positive, which indicates the number of replacements needed
-  return charCount.filter(count => count > 0).reduce((sum, count) => sum + count, 0);
+  return charCount
+    .filter((count) => count > 0)
+    .reduce((sum, count) => sum + count, 0);
 }
 
 /* 
@@ -870,7 +882,7 @@ function closeStrings(word1: string, word2: string): boolean {
   const countChars = (word: string) => {
     const count = Array(26).fill(0);
     for (const char of word) {
-      count[char.charCodeAt(0) - 'a'.charCodeAt(0)]++;
+      count[char.charCodeAt(0) - "a".charCodeAt(0)]++;
     }
     return count;
   };
@@ -1294,7 +1306,7 @@ function maxLength(arr: string[]): number {
   }
 
   // Start backtracking from the first string
-  backtrack(0, '');
+  backtrack(0, "");
   return result;
 }
 
@@ -1418,7 +1430,7 @@ function longestCommonSubsequence(text1: string, text2: string): number {
   const n = text2.length; // Length of text2
 
   // Create a 2D array (m+1) x (n+1) initialized with zeros
-  const dp = Array.from({length: m + 1}, () => new Array(n + 1).fill(0));
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
 
   // Iterate through each character of text1 and text2
   for (let i = 1; i <= m; i++) {
@@ -1470,7 +1482,7 @@ function findPaths(
   n: number,
   maxMove: number,
   startRow: number,
-  startColumn: number,
+  startColumn: number
 ): number {
   const MOD = 1000000007; // Modulo to avoid overflow
 
@@ -1561,20 +1573,20 @@ function evalRPN(tokens: string[]): number {
 
   for (const token of tokens) {
     // Iterate over each token in the input array
-    if (token === '+' || token === '-' || token === '*' || token === '/') {
+    if (token === "+" || token === "-" || token === "*" || token === "/") {
       // Check if the token is an operator
       const secondOperand = stack.pop(); // Pop the second operand from the stack
       const firstOperand = stack.pop(); // Pop the first operand from the stack
 
       // Check if operands are not undefined before performing operations
       if (firstOperand !== undefined && secondOperand !== undefined) {
-        if (token === '+') {
+        if (token === "+") {
           stack.push(firstOperand + secondOperand); // Perform addition
-        } else if (token === '-') {
+        } else if (token === "-") {
           stack.push(firstOperand - secondOperand); // Perform subtraction
-        } else if (token === '*') {
+        } else if (token === "*") {
           stack.push(firstOperand * secondOperand); // Perform multiplication
-        } else if (token === '/') {
+        } else if (token === "/") {
           stack.push(Math.trunc(firstOperand / secondOperand)); // Perform division and truncate towards zero
         }
       }
@@ -1709,7 +1721,7 @@ function sequentialDigits(low: number, high: number): number[] {
   // Initialize an array to store all possible sequential digit numbers
   const allSequentialDigits: number[] = [];
   // Define a string of all digits in sequence for easy access
-  const startDigits = '123456789';
+  const startDigits = "123456789";
 
   // Loop through possible lengths of sequential digits from 2 to 9
   for (let length = 2; length <= 9; length++) {
@@ -1806,7 +1818,7 @@ function groupAnagrams(strs: string[]): string[][] {
   // Iterate through each string in the input array
   for (const str of strs) {
     // Sort the characters of the string to form the key for the anagrams
-    const sorted = str.split('').sort().join('');
+    const sorted = str.split("").sort().join("");
     // If the sorted version of the string is not already a key in the map, add it with an empty array
     if (!map.has(sorted)) map.set(sorted, []);
     // Add the original string to the array associated with the sorted key
@@ -1851,7 +1863,7 @@ s consists of uppercase and lowercase English letters and digits.
 // Define the function frequencySort which takes a string s and returns a string
 function frequencySort(s: string): string {
   // Initialize a frequency map with character keys and number values to count occurrences
-  const freqMap: {[key: string]: number} = {};
+  const freqMap: { [key: string]: number } = {};
   // Loop over each character in the input string
   for (const char of s) {
     // Update the frequency map, incrementing the count for the current character
@@ -1864,7 +1876,7 @@ function frequencySort(s: string): string {
   return Object.entries(freqMap)
     .sort((a, b) => b[1] - a[1]) // Sort based on frequency
     .map(([char, freq]) => char.repeat(freq)) // Repeat each character by its frequency
-    .join(''); // Join all character strings into a single string
+    .join(""); // Join all character strings into a single string
 }
 
 /* 
@@ -2012,7 +2024,11 @@ function countSubstrings(s: string): number {
 }
 
 // Helper function to count palindromes given a center
-function countPalindromesAroundCenter(s: string, left: number, right: number): number {
+function countPalindromesAroundCenter(
+  s: string,
+  left: number,
+  right: number
+): number {
   let count = 0; // Initialize count of palindromes for the current center
   // Expand around the center as long as the substring is a palindrome
   while (left >= 0 && right < s.length && s[left] === s[right]) {
@@ -2063,9 +2079,9 @@ nums consists of equal number of positive and negative integers.
 // Define the function to rearrange array elements by sign according to the given conditions
 function rearrangeArray(nums: number[]): number[] {
   // Filter out positive numbers from the original array
-  const positive = nums.filter(n => n > 0);
+  const positive = nums.filter((n) => n > 0);
   // Filter out negative numbers from the original array
-  const negative = nums.filter(n => n < 0);
+  const negative = nums.filter((n) => n < 0);
   // Initialize the result array to hold the rearranged elements
   const result: number[] = [];
   // Loop through the arrays of positive and negative numbers
@@ -2172,7 +2188,10 @@ Constraints:
 
 function findLeastNumOfUniqueInts(arr: number[], k: number): number {
   // Create a map to count the frequency of each number in the array
-  const countMap = arr.reduce((acc, val) => acc.set(val, (acc.get(val) || 0) + 1), new Map());
+  const countMap = arr.reduce(
+    (acc, val) => acc.set(val, (acc.get(val) || 0) + 1),
+    new Map()
+  );
   // Convert the frequency map to an array of counts and sort it in ascending order
   const sortedCounts = Array.from(countMap.values()).sort((a, b) => a - b);
   let removed = 0; // Initialize the count of unique numbers removed
@@ -2229,7 +2248,11 @@ Constraints:
 </> Typescript Code:
 */
 
-function furthestBuilding(heights: number[], bricks: number, ladders: number): number {
+function furthestBuilding(
+  heights: number[],
+  bricks: number,
+  ladders: number
+): number {
   // Inicializa un arreglo para almacenar las diferencias máximas de altura que pueden ser superadas con escaleras.
   const maxDiffs: number[] = Array(ladders).fill(0);
 
@@ -2366,7 +2389,7 @@ function findCheapestPrice(
   flights: number[][],
   src: number,
   dst: number,
-  k: number,
+  k: number
 ): number {
   // Initialize an array to track the cheapest price to each city. Set all to Infinity initially.
   let prices = Array(n).fill(Infinity);
@@ -2505,7 +2528,8 @@ function isEvenOddTree(root: TreeNode | null): boolean {
   while (queue.length > 0) {
     const size = queue.length; // Number of nodes at the current level
     // Initialize the previous value based on the level
-    let prevValue = level % 2 === 0 ? Number.MIN_SAFE_INTEGER : Number.MAX_SAFE_INTEGER;
+    let prevValue =
+      level % 2 === 0 ? Number.MIN_SAFE_INTEGER : Number.MAX_SAFE_INTEGER;
 
     // Process all nodes at the current level
     for (let i = 0; i < size; ++i) {
@@ -2745,7 +2769,7 @@ function customSortString(order: string, s: string): string {
     count[char] = (count[char] || 0) + 1;
   }
   // Initialize the result string that will store the final sorted string
-  let result = '';
+  let result = "";
   // Iterate over the order string to add characters to the result in the specified order
   for (const char of order) {
     // Repeat the character by its count in s and add to the result string
@@ -3110,7 +3134,7 @@ function leastInterval(tasks: string[], n: number): number {
   const taskCounts = new Array(26).fill(0);
   // Loop through the tasks to count the occurrences of each
   for (const task of tasks) {
-    taskCounts[task.charCodeAt(0) - 'A'.charCodeAt(0)]++;
+    taskCounts[task.charCodeAt(0) - "A".charCodeAt(0)]++;
   }
   // Sort the counts in descending order to prioritize tasks with higher frequency
   taskCounts.sort((a, b) => b - a);
@@ -3170,7 +3194,7 @@ function mergeInBetween(
   list1: ListNode | null,
   a: number,
   b: number,
-  list2: ListNode | null,
+  list2: ListNode | null
 ): ListNode | null {
   // Create a dummy node to simplify edge case handling
   let dummy = new ListNode(0, list1);
@@ -3573,11 +3597,15 @@ function exist(board: string[][], word: string): boolean {
   const dfs = (r, c, i) => {
     if (i === word.length) return true; // If all characters are found
     // Return false if out of bounds, or current cell does not match the word character at i
-    if (r < 0 || c < 0 || r >= rows || c >= cols || board[r][c] !== word[i]) return false;
-    board[r][c] = '#'; // Temporarily mark the cell as visited
+    if (r < 0 || c < 0 || r >= rows || c >= cols || board[r][c] !== word[i])
+      return false;
+    board[r][c] = "#"; // Temporarily mark the cell as visited
     // Explore all four directions
     const exists =
-      dfs(r + 1, c, i + 1) || dfs(r - 1, c, i + 1) || dfs(r, c + 1, i + 1) || dfs(r, c - 1, i + 1);
+      dfs(r + 1, c, i + 1) ||
+      dfs(r - 1, c, i + 1) ||
+      dfs(r, c + 1, i + 1) ||
+      dfs(r, c - 1, i + 1);
     board[r][c] = word[i]; // Reset the cell back to its original value
     return exists; // Return true if word is found
   };
@@ -3630,24 +3658,25 @@ function minRemoveToMakeValid(s: string): string {
   // Use a stack to keep track of the indices of '(' characters that might need to be removed
   const stack: number[] = [];
   // Convert the string into an array for easy manipulation
-  const sArray = s.split('');
+  const sArray = s.split("");
   // Iterate over the array
   for (let i = 0; i < sArray.length; i++) {
-    if (sArray[i] === '(') {
+    if (sArray[i] === "(") {
       // If the current character is '(', push its index onto the stack
       stack.push(i);
-    } else if (sArray[i] === ')') {
+    } else if (sArray[i] === ")") {
       // If the current character is ')'
-      if (stack.length) stack.pop(); // If there's an unmatched '(', pop the stack (match found)
-      else sArray[i] = ''; // If there's no unmatched '(', mark this ')' for removal
+      if (stack.length)
+        stack.pop(); // If there's an unmatched '(', pop the stack (match found)
+      else sArray[i] = ""; // If there's no unmatched '(', mark this ')' for removal
     }
   }
   // Remove any unmatched '(' by setting them to '' using the indices left in the stack
   while (stack.length) {
-    sArray[stack.pop()!] = '';
+    sArray[stack.pop()!] = "";
   }
   // Join the array back into a string and return it
-  return sArray.join('');
+  return sArray.join("");
 }
 
 /* 
@@ -3689,9 +3718,9 @@ function checkValidString(s: string): boolean {
   // Iterate through each character in the string
   for (const char of s) {
     // If the character is '(', it could potentially increase the number of unmatched open parentheses
-    low += char === '(' ? 1 : -1;
+    low += char === "(" ? 1 : -1;
     // If the character is not ')', it could potentially act as '(' or be ignored, increasing the possibility of unmatched open parentheses
-    high += char !== ')' ? 1 : -1;
+    high += char !== ")" ? 1 : -1;
     // If high becomes negative, it means there are too many ')' without matching '(' before it, thus the string is invalid
     if (high < 0) break;
     // Low cannot be negative; a negative low would mean we are considering more closing ')' than opening '(', which is invalid
@@ -3819,10 +3848,10 @@ function removeKdigits(num: string, k: number): string {
   while (k--) stack.pop();
 
   // Remove leading zeros
-  while (stack.length && stack[0] === '0') stack.shift();
+  while (stack.length && stack[0] === "0") stack.shift();
 
   // If the stack is empty, return '0', otherwise join the stack to form the number
-  return stack.length ? stack.join('') : '0';
+  return stack.length ? stack.join("") : "0";
 }
 
 /* 
@@ -3933,7 +3962,11 @@ The depth of the tree is in the range [1, 10^4].
  */
 
 // Define the function addOneRow with the parameters root, val, and depth
-function addOneRow(root: TreeNode | null, val: number, depth: number): TreeNode | null {
+function addOneRow(
+  root: TreeNode | null,
+  val: number,
+  depth: number
+): TreeNode | null {
   // Handle the special case where the new row is added at the root
   if (depth === 1) {
     const newNode = new TreeNode(val); // Create a new node with the given value
@@ -3954,7 +3987,7 @@ function addOneRow(root: TreeNode | null, val: number, depth: number): TreeNode 
     currentDepth++; // Move to the next level
   }
   // Add the new row of nodes at the specified depth
-  queue.forEach(node => {
+  queue.forEach((node) => {
     const left = new TreeNode(val, node!.left, null); // Create a new node for the left child
     const right = new TreeNode(val, null, node!.right); // Create a new node for the right child
     node!.left = left; // Insert the new left child
@@ -4009,8 +4042,8 @@ The number of nodes in the tree is in the range [1, 8500].
  */
 
 function smallestFromLeaf(root: TreeNode | null): string {
-  if (!root) return ''; // Handle the case when the tree is empty.
-  let smallest = '{'; // Initialize the smallest string with a character that's lexicographically greater than 'z'.
+  if (!root) return ""; // Handle the case when the tree is empty.
+  let smallest = "{"; // Initialize the smallest string with a character that's lexicographically greater than 'z'.
 
   function dfs(node: TreeNode, path: string): void {
     // Depth-first search to traverse the tree.
@@ -4025,7 +4058,7 @@ function smallestFromLeaf(root: TreeNode | null): string {
     dfs(node.right!, currentChar + path); // Recursively search the right subtree.
   }
 
-  dfs(root, ''); // Start DFS from the root.
+  dfs(root, ""); // Start DFS from the root.
   return smallest; // Return the lexicographically smallest string.
 }
 
@@ -4067,11 +4100,17 @@ function numIslands(grid: string[][]): number {
   // Define the Depth-First Search (DFS) function to mark the visited land ('1') as water ('0')
   function dfs(i: number, j: number) {
     // Check for out-of-bounds or if the current cell is water ('0') and return if any condition is true
-    if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] === '0') {
+    if (
+      i < 0 ||
+      i >= grid.length ||
+      j < 0 ||
+      j >= grid[0].length ||
+      grid[i][j] === "0"
+    ) {
       return;
     }
     // Mark the current cell as visited by setting it to '0'
-    grid[i][j] = '0';
+    grid[i][j] = "0";
     // Recursively call dfs for all adjacent cells (up, down, left, right)
     dfs(i + 1, j);
     dfs(i - 1, j);
@@ -4085,7 +4124,7 @@ function numIslands(grid: string[][]): number {
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[0].length; j++) {
       // If the cell is land ('1'), perform DFS from that cell
-      if (grid[i][j] === '1') {
+      if (grid[i][j] === "1") {
         dfs(i, j);
         // After returning from DFS, increment the island count
         count++;
@@ -4148,9 +4187,11 @@ function findFarmland(land: number[][]): number[][] {
         let bottomRightI = i,
           bottomRightJ = j; // Initialize the bottom right corner
         // Expand the group downwards as far as possible
-        while (bottomRightI + 1 < m && land[bottomRightI + 1][j] === 1) bottomRightI++;
+        while (bottomRightI + 1 < m && land[bottomRightI + 1][j] === 1)
+          bottomRightI++;
         // Expand the group rightwards as far as possible
-        while (bottomRightJ + 1 < n && land[i][bottomRightJ + 1] === 1) bottomRightJ++;
+        while (bottomRightJ + 1 < n && land[i][bottomRightJ + 1] === 1)
+          bottomRightJ++;
         // Mark all hectares in the current group as visited by setting them to 0
         for (let x = i; x <= bottomRightI; x++)
           for (let y = j; y <= bottomRightJ; y++) land[x][y] = 0;
@@ -4206,9 +4247,9 @@ function openLock(deadends: string[], target: string): number {
   // Convert the list of deadends into a Set for efficient lookups
   const dead = new Set(deadends);
   // Initialize the queue with the starting point ('0000') and the number of turns (0)
-  const queue: [string, number][] = [['0000', 0]];
+  const queue: [string, number][] = [["0000", 0]];
   // Keep track of visited combinations to avoid cycles
-  const seen = new Set(['0000']);
+  const seen = new Set(["0000"]);
 
   // Process each state in the queue until it's empty
   while (queue.length) {
@@ -4291,7 +4332,7 @@ function findMinHeightTrees(n: number, edges: number[][]): number[] {
     for (let i of leaves) {
       let neighbor = adj[i].pop();
       if (neighbor) {
-        adj[neighbor] = adj[neighbor].filter(j => j !== i);
+        adj[neighbor] = adj[neighbor].filter((j) => j !== i);
         if (adj[neighbor].length === 1) newLeaves.push(neighbor);
       }
     }
@@ -4340,7 +4381,7 @@ function longestIdealString(s: string, k: number): number {
   // Iterate through each character in the string
   for (const char of s) {
     // Convert the character to its alphabet position (0 for 'a', 1 for 'b', etc.)
-    const index = char.charCodeAt(0) - 'a'.charCodeAt(0);
+    const index = char.charCodeAt(0) - "a".charCodeAt(0);
     // Initialize max to keep track of the maximum length of subsequence before this character
     let max = 0;
     // Check all possible characters within the allowed distance k
@@ -4397,8 +4438,8 @@ function minOperations(nums: number[], k: number): number {
     k
   ) // XOR the result with k to find the difference needed.
     .toString(2) // Convert the resulting number to a binary string.
-    .split('') // Split the binary string into an array of characters.
-    .filter(x => x === '1').length; // Filter out all '1's and count them.
+    .split("") // Split the binary string into an array of characters.
+    .filter((x) => x === "1").length; // Filter out all '1's and count them.
   // The count of '1's represents the minimum number of bit flips needed
   // because each '1' in the binary representation indicates a bit that must be flipped.
 }
@@ -4458,7 +4499,7 @@ function wonderfulSubstrings(word: string): number {
 
   for (let char of word) {
     // Update the bitmask for the current character, flipping the bit corresponding to the character
-    mask ^= 1 << (char.charCodeAt(0) - 'a'.charCodeAt(0));
+    mask ^= 1 << (char.charCodeAt(0) - "a".charCodeAt(0));
     // Add the number of times this mask has been seen, as it represents a valid wonderful substring ending at current character
     count += freq[mask];
     // Check for substrings that have exactly one character with an odd count
@@ -4513,8 +4554,8 @@ All the given revisions in version1 and version2 can be stored in a 32-bit integ
 // Function to compare two version numbers and return -1, 0, or 1
 function compareVersion(version1: string, version2: string): number {
   // Split the version strings into arrays of numbers
-  const v1 = version1.split('.').map(Number);
-  const v2 = version2.split('.').map(Number);
+  const v1 = version1.split(".").map(Number);
+  const v2 = version2.split(".").map(Number);
   // Determine the maximum length to iterate over
   const length = Math.max(v1.length, v2.length);
 
@@ -4770,7 +4811,7 @@ function doubleIt(head: ListNode | null): ListNode | null {
   if (!head) return null;
 
   // Initialize an empty string to accumulate the digits of the number
-  let num = '';
+  let num = "";
   let curr: ListNode | null = head;
 
   // Traverse the linked list and build the number as a string
@@ -5021,7 +5062,8 @@ function getMaximumGold(grid: number[][]): number {
   // Depth-first search function to explore all paths from a given cell
   function dfs(x: number, y: number, currentGold: number): number {
     // Base case: return current gold if out of bounds or cell has no gold
-    if (x < 0 || x >= m || y < 0 || y >= n || grid[x][y] === 0) return currentGold;
+    if (x < 0 || x >= m || y < 0 || y >= n || grid[x][y] === 0)
+      return currentGold;
 
     const gold = grid[x][y]; // Collect gold from the current cell
     grid[x][y] = 0; // Mark this cell as visited by setting it to 0
@@ -5107,7 +5149,7 @@ function maximumSafenessFactor(grid: number[][]): number {
     [0, -1],
   ];
   const queue: number[][] = [];
-  const dist = Array.from({length: n}, () => Array(n).fill(Infinity));
+  const dist = Array.from({ length: n }, () => Array(n).fill(Infinity));
 
   // Initialize BFS from all thief positions
   for (let r = 0; r < n; r++) {
@@ -5133,7 +5175,7 @@ function maximumSafenessFactor(grid: number[][]): number {
   }
 
   // Using a similar BFS, compute the maximum safeness factor of the path from (0, 0) to (n-1, n-1)
-  const pathDist = Array.from({length: n}, () => Array(n).fill(-1));
+  const pathDist = Array.from({ length: n }, () => Array(n).fill(-1));
   pathDist[0][0] = dist[0][0]; // Starting point safeness
   const pq = [[0, 0]];
   while (pq.length) {
@@ -5197,7 +5239,10 @@ The number of nodes in the tree is in the range [1, 3000].
  * }
  */
 
-function removeLeafNodes(root: TreeNode | null, target: number): TreeNode | null {
+function removeLeafNodes(
+  root: TreeNode | null,
+  target: number
+): TreeNode | null {
   // Base case: if the root is null, return null
   if (root === null) return null;
   // Recursively remove target leaf nodes from the left subtree
@@ -5455,7 +5500,7 @@ function beautifulSubsets(nums: number[], k: number): number {
     dfs(index + 1);
 
     // Check if adding the current element maintains the beautiful subset property
-    if (subset.every(num => Math.abs(num - nums[index]) !== k)) {
+    if (subset.every((num) => Math.abs(num - nums[index]) !== k)) {
       // Include the current element in the subset
       subset.push(nums[index]);
       // Recursive call including the current element
@@ -5804,7 +5849,10 @@ function isNStraightHand(hand: number[], groupSize: number): boolean {
       for (let i = 0; i < groupSize; i++) {
         const currentCard = card + i;
         // Check if the current card is available and has enough count
-        if (countMap.get(currentCard) === undefined || countMap.get(currentCard)! <= 0) {
+        if (
+          countMap.get(currentCard) === undefined ||
+          countMap.get(currentCard)! <= 0
+        ) {
           return false; // Return false if we can't form a valid group
         }
         // Decrease the count of the current card in the map
@@ -5852,7 +5900,7 @@ function replaceWords(dictionary: string[], sentence: string): string {
   // Convert the dictionary array to a set for fast lookup
   const rootSet = new Set(dictionary);
   // Split the sentence into individual words
-  const words = sentence.split(' ');
+  const words = sentence.split(" ");
 
   // Iterate over each word in the sentence
   for (let i = 0; i < words.length; i++) {
@@ -5869,7 +5917,7 @@ function replaceWords(dictionary: string[], sentence: string): string {
   }
 
   // Join the words back into a sentence and return it
-  return words.join(' ');
+  return words.join(" ");
 }
 
 /* 
@@ -5995,65 +6043,6 @@ function subarraysDivByK(nums: number[], k: number): number {
 }
 
 /* 
-75. Sort Colors
-
-Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
-
-We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
-
-You must solve this problem without using the library's sort function.
-
-Example 1:
-Input: nums = [2,0,2,1,1,0]
-Output: [0,0,1,1,2,2]
-
-Example 2:
-Input: nums = [2,0,1]
-Output: [0,1,2]
-
-Constraints:
-n == nums.length
-1 <= n <= 300
-nums[i] is either 0, 1, or 2.
-
-Follow up: Could you come up with a one-pass algorithm using only constant extra space?
-
-</> Typescript Code:
-*/
-
-/**
-  Do not return anything, modify nums in-place instead.
- */
-
-function sortColors(nums: number[]): void {
-  // Initialize three pointers for low, mid, and high colors (0, 1, and 2)
-  let low = 0; // Low color pointer starts at the beginning
-  let mid = 0; // Mid color pointer starts at the beginning
-  let high = nums.length - 1; // High color pointer starts at the end
-
-  while (mid <= high) {
-    // Continue until all colors are sorted
-    switch (nums[mid]) {
-      case 0: // If current color is low (0), swap with low and increment both pointers
-        swap(nums, low++, mid++);
-        break;
-      case 1: // If current color is mid (1), just move the mid pointer forward
-        mid++;
-        break;
-      case 2: // If current color is high (2), swap with high and decrement the high pointer
-        swap(nums, mid, high--);
-        break;
-    }
-  }
-}
-
-function swap(nums: number[], i: number, j: number): void {
-  const temp = nums[i]; // Store low color in temporary variable
-  nums[i] = nums[j]; // Move high color to the current position (i)
-  nums[j] = temp; // Put low color at the original position of high color
-}
-
-/* 
 945. Minimum Increment to Make Array Unique
 
 You are given an integer array nums. In one move, you can pick an index i where 0 <= i < nums.length and increment nums[i] by 1.
@@ -6167,7 +6156,11 @@ m == worker.length
 </> Typescript Code:
 */
 
-function maxProfitAssignment(difficulty: number[], profit: number[], worker: number[]): number {
+function maxProfitAssignment(
+  difficulty: number[],
+  profit: number[],
+  worker: number[]
+): number {
   // Combine difficulty and profit into a single array of jobs
   const jobs = difficulty.map((d, i) => [d, profit[i]]);
   // Sort the jobs based on difficulty in ascending order
@@ -6383,7 +6376,11 @@ grumpy[i] is either 0 or 1.
 </> Typescript Code:
 */
 
-function maxSatisfied(customers: number[], grumpy: number[], minutes: number): number {
+function maxSatisfied(
+  customers: number[],
+  grumpy: number[],
+  minutes: number
+): number {
   // Initialize total satisfied customers without using the technique
   let totalSatisfied = 0;
   // Initialize the additional satisfied customers by using the technique
@@ -6406,7 +6403,10 @@ function maxSatisfied(customers: number[], grumpy: number[], minutes: number): n
     }
 
     // Update the maximum additional satisfied customers
-    maxAdditionalSatisfied = Math.max(maxAdditionalSatisfied, additionalSatisfied);
+    maxAdditionalSatisfied = Math.max(
+      maxAdditionalSatisfied,
+      additionalSatisfied
+    );
   }
 
   // Return the sum of always satisfied customers and the best additional satisfied customers
@@ -6507,11 +6507,17 @@ function longestSubarray(nums: number[], limit: number): number {
   for (let right = 0; right < nums.length; right++) {
     // Iterate through the array with the right pointer
     // Maintain the maxDeque to always have the maximum element at the front
-    while (maxDeque.length && nums[maxDeque[maxDeque.length - 1]] <= nums[right]) {
+    while (
+      maxDeque.length &&
+      nums[maxDeque[maxDeque.length - 1]] <= nums[right]
+    ) {
       maxDeque.pop();
     }
     // Maintain the minDeque to always have the minimum element at the front
-    while (minDeque.length && nums[minDeque[minDeque.length - 1]] >= nums[right]) {
+    while (
+      minDeque.length &&
+      nums[minDeque[minDeque.length - 1]] >= nums[right]
+    ) {
       minDeque.pop();
     }
 
@@ -6764,8 +6770,8 @@ The graph is directed and acyclic.
 */
 
 function getAncestors(n: number, edges: number[][]): number[][] {
-  const ancestors: Set<number>[] = Array.from({length: n}, () => new Set()); // Array of sets to store ancestors of each node
-  const graph: number[][] = Array.from({length: n}, () => []); // Adjacency list to represent the graph
+  const ancestors: Set<number>[] = Array.from({ length: n }, () => new Set()); // Array of sets to store ancestors of each node
+  const graph: number[][] = Array.from({ length: n }, () => []); // Adjacency list to represent the graph
   const inDegree: number[] = new Array(n).fill(0); // Array to store the in-degrees of each node
 
   // Build the graph and in-degree array
@@ -6795,7 +6801,9 @@ function getAncestors(n: number, edges: number[][]): number[][] {
   }
 
   // Convert sets to sorted arrays
-  return ancestors.map(ancestorSet => Array.from(ancestorSet).sort((a, b) => a - b)); // Return the sorted list of ancestors for each node
+  return ancestors.map((ancestorSet) =>
+    Array.from(ancestorSet).sort((a, b) => a - b)
+  ); // Return the sorted list of ancestors for each node
 }
 
 /* 
@@ -7197,12 +7205,12 @@ function reverseParentheses(s: string): string {
 
   // Iterate through each character in the string
   for (let char of s) {
-    if (char === ')') {
+    if (char === ")") {
       // Temporary string to hold characters inside the parentheses
-      let temp = '';
+      let temp = "";
 
       // Pop characters until '(' is found
-      while (stack.length && stack[stack.length - 1] !== '(') {
+      while (stack.length && stack[stack.length - 1] !== "(") {
         temp += stack.pop();
       }
 
@@ -7220,7 +7228,7 @@ function reverseParentheses(s: string): string {
   }
 
   // Join the stack into a final string without parentheses
-  return stack.join('');
+  return stack.join("");
 }
 
 /* 
@@ -7266,7 +7274,11 @@ function maximumGain(s: string, x: number, y: number): number {
     // Iterate over each character in the string
     for (let char of s) {
       // Check if the current character and the last character in the stack form the pattern
-      if (stack.length && stack[stack.length - 1] === pattern[0] && char === pattern[1]) {
+      if (
+        stack.length &&
+        stack[stack.length - 1] === pattern[0] &&
+        char === pattern[1]
+      ) {
         stack.pop(); // Remove the last character in the stack
         maxPoints += points; // Add points to the score
       } else {
@@ -7274,21 +7286,21 @@ function maximumGain(s: string, x: number, y: number): number {
       }
     }
     // Join the stack into a new string and return it
-    s = stack.join('');
+    s = stack.join("");
     return s;
   }
 
   // Prioritize the operation with the higher points
   if (x > y) {
     // Remove "ab" substrings first
-    s = removeAndScore('ab', x);
+    s = removeAndScore("ab", x);
     // Then remove "ba" substrings
-    s = removeAndScore('ba', y);
+    s = removeAndScore("ba", y);
   } else {
     // Remove "ba" substrings first
-    s = removeAndScore('ba', y);
+    s = removeAndScore("ba", y);
     // Then remove "ab" substrings
-    s = removeAndScore('ab', x);
+    s = removeAndScore("ab", x);
   }
 
   // Return the total maximum points
@@ -7429,15 +7441,23 @@ startValue != destValue
  * }
  */
 
-function getDirections(root: TreeNode | null, startValue: number, destValue: number): string {
+function getDirections(
+  root: TreeNode | null,
+  startValue: number,
+  destValue: number
+): string {
   // Helper function to find the path from root to the given value node
-  const findPath = (node: TreeNode | null, value: number, path: string[]): boolean => {
+  const findPath = (
+    node: TreeNode | null,
+    value: number,
+    path: string[]
+  ): boolean => {
     if (!node) return false; // If node is null, return false
     if (node.val === value) return true; // If the node's value matches the target, return true
-    path.push('L'); // Try the left path
+    path.push("L"); // Try the left path
     if (findPath(node.left, value, path)) return true; // If left path leads to target, return true
     path.pop(); // Backtrack if left path does not lead to target
-    path.push('R'); // Try the right path
+    path.push("R"); // Try the right path
     if (findPath(node.right, value, path)) return true; // If right path leads to target, return true
     path.pop(); // Backtrack if right path does not lead to target
     return false; // Return false if neither path leads to the target
@@ -7449,12 +7469,16 @@ function getDirections(root: TreeNode | null, startValue: number, destValue: num
   findPath(root, destValue, destPath); // Find path to destValue
 
   let i = 0; // Index to find the common path length
-  while (i < startPath.length && i < destPath.length && startPath[i] === destPath[i]) {
+  while (
+    i < startPath.length &&
+    i < destPath.length &&
+    startPath[i] === destPath[i]
+  ) {
     i++; // Increment while both paths are the same
   }
 
   // Construct the result: 'U' for going up from startValue to the common ancestor, and then follow the path to destValue
-  return 'U'.repeat(startPath.length - i) + destPath.slice(i).join('');
+  return "U".repeat(startPath.length - i) + destPath.slice(i).join("");
 }
 
 /* 
@@ -7497,7 +7521,10 @@ to_delete contains distinct values between 1 and 1000.
  * }
  */
 
-function delNodes(root: TreeNode | null, to_delete: number[]): Array<TreeNode | null> {
+function delNodes(
+  root: TreeNode | null,
+  to_delete: number[]
+): Array<TreeNode | null> {
   // Convert the list of nodes to delete into a set for O(1) look-up times.
   const toDeleteSet = new Set(to_delete);
   // Initialize the result array to store the roots of the remaining trees.
@@ -7663,7 +7690,7 @@ function sortJumbled(mapping: number[], nums: number[]): number[] {
 // Function to calculate mapped value of a number based on mapping array
 function mapNumber(num: number, mapping: number[]): number {
   const numStr = num.toString(); // Convert number to string to process each digit
-  let mappedStr = ''; // Initialize mapped string
+  let mappedStr = ""; // Initialize mapped string
 
   // Iterate through each digit of the number
   for (let i = 0; i < numStr.length; i++) {
@@ -7800,9 +7827,15 @@ All pairs (fromi, toi) are distinct.
 </> Typescript Code:
 */
 
-function findTheCity(n: number, edges: number[][], distanceThreshold: number): number {
+function findTheCity(
+  n: number,
+  edges: number[][],
+  distanceThreshold: number
+): number {
   // Initialize a 2D array to store distances between each pair of cities
-  const distances: number[][] = Array.from({length: n}, () => Array(n).fill(Infinity));
+  const distances: number[][] = Array.from({ length: n }, () =>
+    Array(n).fill(Infinity)
+  );
 
   // Initialize distances for direct edges
   edges.forEach(([from, to, weight]) => {
@@ -7894,7 +7927,7 @@ function minimumCost(
   target: string,
   original: string[],
   changed: string[],
-  cost: number[],
+  cost: number[]
 ): number {
   const n = source.length; // Get the length of the source string
   const m = original.length; // Get the number of transformations
@@ -7906,7 +7939,10 @@ function minimumCost(
   for (let i = 0; i < m; i++) {
     if (!graph.has(original[i])) graph.set(original[i], new Map());
     const current = graph.get(original[i]);
-    if (current && (!current.has(changed[i]) || cost[i] < current.get(changed[i])!)) {
+    if (
+      current &&
+      (!current.has(changed[i]) || cost[i] < current.get(changed[i])!)
+    ) {
       current.set(changed[i], cost[i]); // Store the minimum cost for each transformation
     }
   }
@@ -8061,7 +8097,7 @@ function minimumDeletions(s: string): number {
   let balanceB = 0; // To keep track of 'b' characters that haven't been matched with 'a'
 
   for (let i = 0; i < s.length; i++) {
-    if (s[i] === 'a') {
+    if (s[i] === "a") {
       if (balanceB > 0) {
         // We found an unbalanced 'ba' pair, so we need to delete the 'b' to balance it
         deletions++;
@@ -8234,7 +8270,12 @@ n == nums.length
 </> Typescript Code:
 */
 
-function rangeSum(nums: number[], n: number, left: number, right: number): number {
+function rangeSum(
+  nums: number[],
+  n: number,
+  left: number,
+  right: number
+): number {
   const MOD = 1_000_000_007; // Define the modulus to handle large numbers
   const minHeap: number[] = []; // Array to store all subarray sums
   let result = 0; // Variable to store the final result
@@ -8320,7 +8361,7 @@ word consists of lowercase English letters.
 function minimumPushes(word: string): number {
   // Calculate the frequencies of each letter in the word
   const frequencies: number[] = new Array(26).fill(0); // Frequency array for letters 'a' to 'z'
-  const offset = 'a'.charCodeAt(0); // Character code offset for 'a'
+  const offset = "a".charCodeAt(0); // Character code offset for 'a'
   for (let i = 0; i < word.length; ++i) {
     const index = word.charCodeAt(i) - offset; // Calculate index for the letter
     frequencies[index]++; // Increment frequency count for the letter
@@ -8368,7 +8409,12 @@ Constraints:
 </> Typescript Code:
 */
 
-function spiralMatrixIII(rows: number, cols: number, rStart: number, cStart: number): number[][] {
+function spiralMatrixIII(
+  rows: number,
+  cols: number,
+  rStart: number,
+  cStart: number
+): number[][] {
   // Initialize the result array to store the coordinates in the spiral order
   const result: number[][] = [];
 
@@ -8406,7 +8452,12 @@ function spiralMatrixIII(rows: number, cols: number, rStart: number, cStart: num
         currentCol += directions[directionIndex][1];
 
         // Check if the current position is within the grid bounds
-        if (currentRow >= 0 && currentRow < rows && currentCol >= 0 && currentCol < cols) {
+        if (
+          currentRow >= 0 &&
+          currentRow < rows &&
+          currentCol >= 0 &&
+          currentCol < cols
+        ) {
           // Add the current position to the result
           result.push([currentRow, currentCol]);
         }
@@ -8551,10 +8602,10 @@ function regionsBySlashes(grid: string[]): number {
       const char = grid[i][j]; // Get the character in the current cell.
 
       // Union parts within the same cell based on the character.
-      if (char === '/') {
+      if (char === "/") {
         union(root + 0, root + 3); // Connect top to left.
         union(root + 1, root + 2); // Connect right to bottom.
-      } else if (char === '\\') {
+      } else if (char === "\\") {
         union(root + 0, root + 1); // Connect top to right.
         union(root + 2, root + 3); // Connect bottom to left.
       } else {
@@ -8822,7 +8873,11 @@ function nthUglyNumber(n: number): number {
   // Iterate until we find the nth ugly number
   while (uglyNumbers.length < n) {
     // Calculate the next potential ugly number from the smallest multiple of 2, 3, or 5
-    const nextUgly = Math.min(uglyNumbers[i2] * 2, uglyNumbers[i3] * 3, uglyNumbers[i5] * 5);
+    const nextUgly = Math.min(
+      uglyNumbers[i2] * 2,
+      uglyNumbers[i3] * 3,
+      uglyNumbers[i5] * 5
+    );
 
     // Add the next ugly number to the list
     uglyNumbers.push(nextUgly);
@@ -8922,7 +8977,7 @@ function stoneGameII(piles: number[]): number {
 
   // DP table initialized with 0, where dp[i][m] represents the maximum stones Alice can get
   // if starting from index i with M value m
-  const dp = Array.from({length: n + 1}, () => Array(n + 1).fill(0));
+  const dp = Array.from({ length: n + 1 }, () => Array(n + 1).fill(0));
 
   // Suffix sum array to quickly calculate the total remaining stones from index i to the end
   const suffixSum = piles.slice();
@@ -8949,7 +9004,10 @@ function stoneGameII(piles: number[]): number {
     // Try all valid x values (1 <= x <= 2 * m)
     for (let x = 1; x <= 2 * m; x++) {
       // Calculate the stones opponent can get in the worst case
-      minOpponentStones = Math.min(minOpponentStones, dfs(i + x, Math.max(m, x)));
+      minOpponentStones = Math.min(
+        minOpponentStones,
+        dfs(i + x, Math.max(m, x))
+      );
     }
 
     // Maximize Alice's stones by subtracting opponent's minimum possible stones from total
@@ -9004,9 +9062,9 @@ function fractionAddition(expression: string): string {
     let sign = 1;
 
     // Check for a sign at the current position (either '+' or '-')
-    if (expression[i] === '+' || expression[i] === '-') {
+    if (expression[i] === "+" || expression[i] === "-") {
       // Adjust the sign based on the current character
-      sign = expression[i] === '-' ? -1 : 1;
+      sign = expression[i] === "-" ? -1 : 1;
       i++;
     }
 
@@ -9015,14 +9073,18 @@ function fractionAddition(expression: string): string {
       denom = 0;
 
     // Parse the numerator part of the fraction
-    while (i < expression.length && expression[i] !== '/') {
+    while (i < expression.length && expression[i] !== "/") {
       num = num * 10 + Number(expression[i]);
       i++;
     }
     i++; // Skip the '/' character
 
     // Parse the denominator part of the fraction
-    while (i < expression.length && expression[i] >= '0' && expression[i] <= '9') {
+    while (
+      i < expression.length &&
+      expression[i] >= "0" &&
+      expression[i] <= "9"
+    ) {
       denom = denom * 10 + Number(expression[i]);
       i++;
     }
@@ -9105,7 +9167,10 @@ class MaxHeap {
     while (index > 0) {
       let parentIndex = Math.floor((index - 1) / 2);
       if (this.heap[index][0] <= this.heap[parentIndex][0]) break;
-      [this.heap[index], this.heap[parentIndex]] = [this.heap[parentIndex], this.heap[index]];
+      [this.heap[index], this.heap[parentIndex]] = [
+        this.heap[parentIndex],
+        this.heap[index],
+      ];
       index = parentIndex;
     }
   }
@@ -9127,15 +9192,20 @@ class MaxHeap {
 
       if (rightChildIndex < length) {
         if (
-          (swapIndex === null && this.heap[rightChildIndex][0] > this.heap[index][0]) ||
-          (swapIndex !== null && this.heap[rightChildIndex][0] > this.heap[leftChildIndex][0])
+          (swapIndex === null &&
+            this.heap[rightChildIndex][0] > this.heap[index][0]) ||
+          (swapIndex !== null &&
+            this.heap[rightChildIndex][0] > this.heap[leftChildIndex][0])
         ) {
           swapIndex = rightChildIndex;
         }
       }
 
       if (swapIndex === null) break;
-      [this.heap[index], this.heap[swapIndex]] = [this.heap[swapIndex], this.heap[index]];
+      [this.heap[index], this.heap[swapIndex]] = [
+        this.heap[swapIndex],
+        this.heap[index],
+      ];
       index = swapIndex;
     }
   }
@@ -9152,7 +9222,7 @@ function maxProbability(
   edges: number[][],
   succProb: number[],
   start_node: number,
-  end_node: number,
+  end_node: number
 ): number {
   // Build the graph as an adjacency list.
   const graph: Map<number, [number, number][]> = new Map();
@@ -9789,7 +9859,10 @@ The number of nodes in the list is in the range [0, 1000].
  * }
  */
 
-function splitListToParts(head: ListNode | null, k: number): Array<ListNode | null> {
+function splitListToParts(
+  head: ListNode | null,
+  k: number
+): Array<ListNode | null> {
   // Initialize variables: length to track the list length and current to iterate the list
   let length = 0,
     current = head;
@@ -9878,7 +9951,7 @@ The number of nodes in the list is in the range [1, m * n].
 
 function spiralMatrix(m: number, n: number, head: ListNode | null): number[][] {
   // Initialize result matrix with -1
-  const result: number[][] = Array.from({length: m}, () => Array(n).fill(-1));
+  const result: number[][] = Array.from({ length: m }, () => Array(n).fill(-1));
 
   // Define boundaries
   let left = 0,
@@ -10061,7 +10134,7 @@ function xorQueries(arr: number[], queries: number[][]): number[] {
     ([left, right]) =>
       // The XOR of subarray from left to right can be computed by
       // XORing prefixXOR[right + 1] (up to right) with prefixXOR[left] (up to left-1)
-      prefixXOR[right + 1] ^ prefixXOR[left],
+      prefixXOR[right + 1] ^ prefixXOR[left]
   );
 }
 
@@ -10157,7 +10230,7 @@ s contains only lowercase English letters.
 
 function findTheLongestSubstring(s: string): number {
   // Define a string containing all vowels for easy lookup.
-  const vowels = 'aeiou';
+  const vowels = "aeiou";
 
   // A map to track the first occurrence of each mask state.
   // The mask represents the parity (even/odd count) of vowels.
@@ -10223,8 +10296,8 @@ timePoints[i] is in the format "HH:MM".
 function findMinDifference(timePoints: string[]): number {
   // Convert each time point to the total minutes from midnight
   const minutes: number[] = timePoints
-    .map(t => {
-      const [h, m] = t.split(':').map(Number); // Split "HH:MM" into hours and minutes, then convert to numbers
+    .map((t) => {
+      const [h, m] = t.split(":").map(Number); // Split "HH:MM" into hours and minutes, then convert to numbers
       return h * 60 + m; // Convert hours and minutes to total minutes since midnight
     })
     .sort((a, b) => a - b); // Sort the minutes in ascending order
@@ -10275,10 +10348,10 @@ function largestNumber(nums: number[]): string {
   // Compare concatenated strings in both possible orders to determine the larger one
 
   // If the largest number after sorting is "0", return "0" (handles cases with leading zeros)
-  if (strNums[0] === '0') return '0';
+  if (strNums[0] === "0") return "0";
 
   // Concatenate sorted string numbers into the final result
-  return strNums.join(''); // Join the sorted array into a single string
+  return strNums.join(""); // Join the sorted array into a single string
 }
 
 /* 
@@ -10319,12 +10392,12 @@ function diffWaysToCompute(expression: string): number[] {
 
   // Tokenize the expression into numbers and operators
   const tokens: (number | string)[] = [];
-  let num = '';
+  let num = "";
   for (let c of expression) {
-    if (c === '+' || c === '-' || c === '*') {
+    if (c === "+" || c === "-" || c === "*") {
       tokens.push(parseInt(num)); // Add the parsed number to tokens
       tokens.push(c); // Add the operator to tokens
-      num = ''; // Reset the number string
+      num = ""; // Reset the number string
     } else {
       num += c; // Build the number string
     }
@@ -10359,9 +10432,9 @@ function diffWaysToCompute(expression: string): number[] {
       for (let l of left) {
         for (let r of right) {
           let val = 0;
-          if (op === '+') val = l + r;
-          else if (op === '-') val = l - r;
-          else if (op === '*') val = l * r;
+          if (op === "+") val = l + r;
+          else if (op === "-") val = l - r;
+          else if (op === "*") val = l * r;
           results.push(val);
         }
       }
@@ -11220,8 +11293,8 @@ The words in sentence1 and sentence2 are separated by a single space.
 
 function areSentencesSimilar(sentence1: string, sentence2: string): boolean {
   // Split both sentences into arrays of words for comparison
-  const s1 = sentence1.split(' ');
-  const s2 = sentence2.split(' ');
+  const s1 = sentence1.split(" ");
+  const s2 = sentence2.split(" ");
 
   // Initialize pointers for the front comparison (i) and rear comparison (j)
   let i = 0,
@@ -11231,7 +11304,11 @@ function areSentencesSimilar(sentence1: string, sentence2: string): boolean {
   while (i < s1.length && i < s2.length && s1[i] === s2[i]) i++;
 
   // Move the rear pointer j while both arrays' words match from the end
-  while (j < s1.length - i && j < s2.length - i && s1[s1.length - 1 - j] === s2[s2.length - 1 - j])
+  while (
+    j < s1.length - i &&
+    j < s2.length - i &&
+    s1[s1.length - 1 - j] === s2[s2.length - 1 - j]
+  )
     j++;
 
   // Check if the total matched words (from the front and rear) cover the length of the smaller sentence
@@ -11287,7 +11364,7 @@ function minSwaps(s: string): number {
 
   // Loop through each character in the string
   for (let i = 0; i < s.length; i++) {
-    if (s[i] === '[') {
+    if (s[i] === "[") {
       // If an opening bracket is found, increase imbalance since we now need one more closing bracket
       imbalance++;
     } else {
@@ -11342,7 +11419,7 @@ function minAddToMakeValid(s: string): number {
 
   // Iterate through each character in the string
   for (let char of s) {
-    if (char === '(') {
+    if (char === "(") {
       open++; // Increment 'open' for each '(' found
     } else if (open > 0) {
       open--; // If there is an unmatched '(', pair it with the current ')'
@@ -11478,7 +11555,8 @@ function smallestChair(times: number[][], targetFriend: number): number {
       availableChairs.insert(friendToChair[friend]);
     } else {
       // Arrival event: assign a chair
-      const chair = availableChairs.size > 0 ? availableChairs.extractMin() : nextChair++;
+      const chair =
+        availableChairs.size > 0 ? availableChairs.extractMin() : nextChair++;
       friendToChair[friend] = chair; // Map friend to chair
       if (friend === targetFriend) return chair; // Return if target friend
     }
@@ -11527,7 +11605,8 @@ class MinHeap {
         let smallest = i;
 
         if (left < heap.length && heap[left] < heap[smallest]) smallest = left;
-        if (right < heap.length && heap[right] < heap[smallest]) smallest = right;
+        if (right < heap.length && heap[right] < heap[smallest])
+          smallest = right;
         if (smallest === i) break; // Heap property restored
 
         [heap[i], heap[smallest]] = [heap[smallest], heap[i]]; // Swap with smallest child
@@ -11661,7 +11740,10 @@ function maxKelements(nums: number[], k: number): number {
         // If parent is greater or equal, the heap property is satisfied
         if (this.heap[parent] >= this.heap[index]) break;
         // Swap parent and child
-        [this.heap[parent], this.heap[index]] = [this.heap[index], this.heap[parent]];
+        [this.heap[parent], this.heap[index]] = [
+          this.heap[index],
+          this.heap[parent],
+        ];
         index = parent; // Move up to the parent's index
       }
     }
@@ -11691,13 +11773,19 @@ function maxKelements(nums: number[], k: number): number {
           swap = left;
         }
         // Check if right child exists and is greater than both the current element and left child
-        if (right < length && this.heap[right] > (swap === null ? element : this.heap[left])) {
+        if (
+          right < length &&
+          this.heap[right] > (swap === null ? element : this.heap[left])
+        ) {
           swap = right;
         }
         // If no swap needed, the heap property is satisfied
         if (swap === null) break;
         // Swap the current element with the larger child
-        [this.heap[index], this.heap[swap]] = [this.heap[swap], this.heap[index]];
+        [this.heap[index], this.heap[swap]] = [
+          this.heap[swap],
+          this.heap[index],
+        ];
         index = swap; // Move down to the child's index
       }
     }
@@ -11772,7 +11860,7 @@ function minimumSteps(s: string): number {
   // Loop through the binary string s
   for (let i = 0; i < s.length; i++) {
     // If the current ball is black (1)
-    if (s[i] === '1') {
+    if (s[i] === "1") {
       // Increment the black ball count
       blackCount++;
     } else {
@@ -11818,12 +11906,12 @@ a + b + c > 0
 */
 
 function longestDiverseString(a: number, b: number, c: number): string {
-  let result = ''; // Initialize the result string
+  let result = ""; // Initialize the result string
   let counts = [
     // Create an array to hold counts and corresponding characters
-    {char: 'a', count: a},
-    {char: 'b', count: b},
-    {char: 'c', count: c},
+    { char: "a", count: a },
+    { char: "b", count: b },
+    { char: "c", count: c },
   ];
   while (true) {
     // Loop until we cannot add any more characters
@@ -11836,7 +11924,11 @@ function longestDiverseString(a: number, b: number, c: number): string {
         continue;
       }
       let len = result.length; // Get current length of result
-      if (len >= 2 && result[len - 1] === counts[i].char && result[len - 2] === counts[i].char) {
+      if (
+        len >= 2 &&
+        result[len - 1] === counts[i].char &&
+        result[len - 2] === counts[i].char
+      ) {
         continue; // Avoid adding a character that would make three in a row
       }
       result += counts[i].char; // Append the character to result
@@ -11877,7 +11969,7 @@ Constraints:
 
 function maximumSwap(num: number): number {
   // Convert the number into an array of its digits
-  const digits = num.toString().split('').map(Number);
+  const digits = num.toString().split("").map(Number);
   // Create an array to keep track of the last occurrence of each digit
   const last = new Array(10).fill(-1);
   // Populate the last occurrence array
@@ -11891,7 +11983,7 @@ function maximumSwap(num: number): number {
         // Swap the current digit with the larger digit found
         [digits[i], digits[last[d]]] = [digits[last[d]], digits[i]];
         // Return the new number formed after the swap
-        return parseInt(digits.join(''));
+        return parseInt(digits.join(""));
       }
     }
   }
@@ -12003,7 +12095,7 @@ Constraints:
 
 function findKthBit(n: number, k: number): string {
   // Base case: S1 is "0"
-  if (n === 1) return '0';
+  if (n === 1) return "0";
 
   // Calculate length of Sn: length = 2^n - 1
   const len = (1 << n) - 1;
@@ -12012,7 +12104,7 @@ function findKthBit(n: number, k: number): string {
   const mid = len >> 1;
 
   // If k is at the middle, return "1"
-  if (k === mid + 1) return '1';
+  if (k === mid + 1) return "1";
 
   // If k is in the first half, recursively find kth bit in Sn-1
   if (k <= mid) return findKthBit(n - 1, k);
@@ -12020,7 +12112,7 @@ function findKthBit(n: number, k: number): string {
   // If k is in the second half, find mirrored position
   // Mirrored position in Sn-1 is (len - k + 1)
   // Invert the bit found in Sn-1
-  const mirroredBit = findKthBit(n - 1, len - k + 1) === '0' ? '1' : '0';
+  const mirroredBit = findKthBit(n - 1, len - k + 1) === "0" ? "1" : "0";
 
   // Return the inverted mirrored bit
   return mirroredBit;
@@ -12272,7 +12364,10 @@ function replaceValueInTree(root: TreeNode | null): TreeNode | null {
 
       totalSum += node.val; // Add node's value to total sum
       // Update the sum of values for the parent
-      parentToChildrenSum.set(parent, (parentToChildrenSum.get(parent) || 0) + node.val);
+      parentToChildrenSum.set(
+        parent,
+        (parentToChildrenSum.get(parent) || 0) + node.val
+      );
 
       if (node.left) {
         nodeToParent.set(node.left, node); // Map left child to its parent
@@ -12350,7 +12445,8 @@ function flipEquiv(root1: TreeNode | null, root2: TreeNode | null): boolean {
   // 1. Without flipping: left with left and right with right
   // 2. With flipping: left with right and right with left
   return (
-    (flipEquiv(root1.left, root2.left) && flipEquiv(root1.right, root2.right)) ||
+    (flipEquiv(root1.left, root2.left) &&
+      flipEquiv(root1.right, root2.right)) ||
     (flipEquiv(root1.left, root2.right) && flipEquiv(root1.right, root2.left))
   );
 }
@@ -12396,11 +12492,11 @@ function removeSubfolders(folder: string[]): string[] {
   // Initialize the result array
   const res: string[] = [];
   // Initialize the previous folder variable
-  let prev = '';
+  let prev = "";
   // Iterate over each folder path
   for (const f of folder) {
     // If the current folder is not a subfolder of the previous
-    if (!prev || !(f.startsWith(prev) && f[prev.length] === '/')) {
+    if (!prev || !(f.startsWith(prev) && f[prev.length] === "/")) {
       // Add the current folder to the result
       res.push(f);
       // Update the previous folder to the current one
@@ -12462,7 +12558,9 @@ function countSquares(matrix: number[][]): number {
       if (matrix[i][j] > 0 && i > 0 && j > 0) {
         // If cell is 1 and not on first row or column
         // Update cell with size of largest square ending at (i, j)
-        matrix[i][j] = Math.min(matrix[i - 1][j - 1], matrix[i - 1][j], matrix[i][j - 1]) + 1;
+        matrix[i][j] =
+          Math.min(matrix[i - 1][j - 1], matrix[i - 1][j], matrix[i][j - 1]) +
+          1;
       }
       result += matrix[i][j]; // Accumulate total squares
     }
@@ -12573,7 +12671,7 @@ function maxMoves(grid: number[][]): number {
   const n = grid[0].length;
 
   // Initialize a DP array with dimensions m x n, filled with -1
-  const dp = Array.from({length: m}, () => new Array(n).fill(-1));
+  const dp = Array.from({ length: m }, () => new Array(n).fill(-1));
 
   // Set the initial moves for the first column to 0
   for (let row = 0; row < m; row++) {
@@ -12651,7 +12749,7 @@ s consists only of lowercase English letters.
 function makeFancyString(s: string): string {
   const res: string[] = []; // Initialize an array to store the resulting characters
   let count = 0; // Initialize count of consecutive identical characters
-  let prev = ''; // Initialize previous character tracker
+  let prev = ""; // Initialize previous character tracker
 
   for (let i = 0; i < s.length; i++) {
     // Iterate over each character in the string
@@ -12669,7 +12767,7 @@ function makeFancyString(s: string): string {
     }
     // Else, skip the character to prevent three consecutive identical characters
   }
-  return res.join(''); // Join the result array into a string and return
+  return res.join(""); // Join the result array into a string and return
 }
 
 /* 
@@ -12707,7 +12805,7 @@ word consists only of lowercase English letters.
 
 function compressedString(word: string): string {
   // Initialize the compressed string
-  let comp = '';
+  let comp = "";
   // Index to traverse the word
   let i = 0;
   // Length of the word
@@ -13214,7 +13312,9 @@ function maximumBeauty(items: number[][], queries: number[]): number[] {
   items.sort((a, b) => a[0] - b[0]);
 
   // Pair each query with its original index and sort by query value
-  const queriesWithIndex = queries.map((q, idx) => [q, idx] as [number, number]);
+  const queriesWithIndex = queries.map(
+    (q, idx) => [q, idx] as [number, number]
+  );
   queriesWithIndex.sort((a, b) => a[0] - b[0]);
 
   // Initialize the answer array to store results for each query
@@ -13660,7 +13760,12 @@ All the positions in guards and walls are unique.
 
 */
 
-function countUnguarded(m: number, n: number, guards: number[][], walls: number[][]): number {
+function countUnguarded(
+  m: number,
+  n: number,
+  guards: number[][],
+  walls: number[][]
+): number {
   // Create a set to store positions of walls and guards
   const blocked = new Set<string>();
   // Add all guards and walls to the blocked set
@@ -13685,7 +13790,13 @@ function countUnguarded(m: number, n: number, guards: number[][], walls: number[
       let nr = r + dr;
       let nc = c + dc;
       // Move in the direction until hitting a wall, guard, or boundary
-      while (nr >= 0 && nr < m && nc >= 0 && nc < n && !blocked.has(`${nr},${nc}`)) {
+      while (
+        nr >= 0 &&
+        nr < m &&
+        nc >= 0 &&
+        nc < n &&
+        !blocked.has(`${nr},${nc}`)
+      ) {
         const key = `${nr},${nc}`;
         // Mark the cell as guarded
         if (!guarded.has(key)) {
@@ -13742,7 +13853,7 @@ function maxEqualRowsAfterFlips(matrix: number[][]): number {
   // Iterate over each row in the matrix
   for (const row of matrix) {
     // Generate a pattern by XORing each value with the first value
-    const pattern = row.map(v => v ^ row[0]).join(',');
+    const pattern = row.map((v) => v ^ row[0]).join(",");
     // Get the current count of this pattern and increment it
     const count = (patternCount.get(pattern) || 0) + 1;
     // Update the pattern count in the map
@@ -13814,15 +13925,15 @@ function rotateTheBox(box: string[][]): string[][] {
     let emptySlot = n - 1; // Position to place the next stone
     for (let j = n - 1; j >= 0; j--) {
       // Iterate from right to left
-      if (box[i][j] === '*') {
+      if (box[i][j] === "*") {
         // If obstacle encountered
         emptySlot = j - 1; // Reset emptySlot to before obstacle
-      } else if (box[i][j] === '#') {
+      } else if (box[i][j] === "#") {
         // If stone encountered
         if (j !== emptySlot) {
           // If stone is not in the rightmost possible position
-          box[i][emptySlot] = '#'; // Move stone to emptySlot
-          box[i][j] = '.'; // Mark current position as empty
+          box[i][emptySlot] = "#"; // Move stone to emptySlot
+          box[i][j] = "."; // Mark current position as empty
         }
         emptySlot--; // Move to the next position
       }
