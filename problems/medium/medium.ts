@@ -1,4 +1,4 @@
-/* 
+/*
 2. Add Two Numbers
 
 
@@ -105,7 +105,7 @@ Constraints:
 n == points.length
 2 <= n <= 105
 points[i].length == 2
-0 <= xi, yi <= 109 
+0 <= xi, yi <= 109
 
 </>Code:
 */
@@ -131,7 +131,7 @@ function maxWidthOfVerticalArea(points: number[][]): number {
   return maxGap;
 }
 
-/* 
+/*
 91. Decode Ways
 
 A message containing letters from A-Z can be encoded into numbers using the following mapping:
@@ -209,7 +209,7 @@ function numDecodings(s: string): number {
   return dp[s.length];
 }
 
-/* 
+/*
 1155. Number of Dice Rolls With Target Sum
 Medium
 
@@ -272,7 +272,7 @@ function numRollsToTarget(n: number, k: number, target: number): number {
   return dp[n][target];
 }
 
-/* 
+/*
 1578. Minimum Time to Make Rope Colorful
 
 Alice has n balloons arranged on a rope. You are given a 0-indexed string colors where colors[i] is the color of the ith balloon.
@@ -335,7 +335,7 @@ function minCost(colors: string, neededTime: number[]): number {
   return totalCost;
 }
 
-/* 
+/*
 2610. Convert an Array Into a 2D Array With Conditions
 
 You are given an integer array nums. You need to create a 2D array from nums satisfying the following conditions:
@@ -405,7 +405,7 @@ function findMatrix(nums: number[]): number[][] {
   return result;
 }
 
-/* 
+/*
 2125. Number of Laser Beams in a Bank
 
 Anti-theft security devices are activated inside a bank. You are given a 0-indexed binary string array bank representing the floor plan of the bank, which is an m x n 2D matrix. bank[i] represents the ith row, consisting of '0's and '1's. '0' means the cell is empty, while'1' means the cell has a security device.
@@ -476,7 +476,7 @@ function numberOfBeams(bank: string[]): number {
   return totalBeams;
 }
 
-/* 
+/*
 2870. Minimum Number of Operations to Make Array Empty
 
 You are given a 0-indexed array nums consisting of positive integers.
@@ -540,7 +540,7 @@ function minOperationsAlt(nums: number[]): number {
   return operations;
 }
 
-/* 
+/*
 300. Longest Increasing Subsequence
 
 Given an integer array nums, return the length of the longest strictly increasing subsequence.
@@ -593,7 +593,7 @@ function lengthOfLIS(nums: number[]): number {
   return Math.max(...dp);
 }
 
-/* 
+/*
 2385. Amount of Time for Binary Tree to Be Infected
 
 You are given the root of a binary tree with unique values, and an integer start. At minute 0, an infection starts from the node with value start.
@@ -701,7 +701,7 @@ function buildGraph(
   buildGraph(node.right, node, graph);
 }
 
-/* 
+/*
 1026. Maximum Difference Between Node and Ancestor
 
 Given the root of a binary tree, find the maximum value v for which there exist different nodes a and b where v = |a.val - b.val| and a is an ancestor of b.
@@ -767,7 +767,7 @@ function dfs2(node: TreeNode | null, minVal: number, maxVal: number): number {
   );
 }
 
-/* 
+/*
 1347. Minimum Number of Steps to Make Two Strings Anagram
 
 You are given two strings of the same length s and t. In one step you can choose any character of t and replace it with another character.
@@ -795,7 +795,7 @@ Example 3:
 
 Input: s = "anagram", t = "mangaar"
 Output: 0
-Explanation: "anagram" and "mangaar" are anagrams. 
+Explanation: "anagram" and "mangaar" are anagrams.
 
 
 Constraints:
@@ -827,7 +827,7 @@ function minSteps(s: string, t: string): number {
     .reduce((sum, count) => sum + count, 0);
 }
 
-/* 
+/*
 1657. Determine if Two Strings Are Close
 Two strings are considered close if you can attain one from the other using the following operations:
 
@@ -900,7 +900,7 @@ function closeStrings(word1: string, word2: string): boolean {
   return count1.sort().toString() === count2.sort().toString();
 }
 
-/* 
+/*
 2225. Find Players With Zero or One Losses
 
 You are given an integer array matches where matches[i] = [winneri, loseri] indicates that the player winneri defeated player loseri in a match.
@@ -973,7 +973,7 @@ function findWinners(matches: number[][]): number[][] {
   return [noLosses.sort((a, b) => a - b), oneLoss.sort((a, b) => a - b)];
 }
 
-/* 
+/*
 380. Insert Delete GetRandom O(1)
 
 Implement the RandomizedSet class:
@@ -1064,7 +1064,7 @@ class RandomizedSet {
  * var param_3 = obj.getRandom()
  */
 
-/* 
+/*
 931. Minimum Falling Path Sum
 
 Given an n x n array of integers matrix, return the minimum sum of any falling path through matrix.
@@ -1120,7 +1120,7 @@ function minFallingPathSum(matrix: number[][]): number {
   return Math.min(...matrix[n - 1]);
 }
 
-/* 
+/*
 907. Sum of Subarray Minimums
 
 Given an array of integers arr, find the sum of min(b), where b ranges over every (contiguous) subarray of arr. Since the answer may be large, return the answer modulo 109 + 7.
@@ -1130,8 +1130,8 @@ Example 1:
 
 Input: arr = [3,1,2,4]
 Output: 17
-Explanation: 
-Subarrays are [3], [1], [2], [4], [3,1], [1,2], [2,4], [3,1,2], [1,2,4], [3,1,2,4]. 
+Explanation:
+Subarrays are [3], [1], [2], [4], [3,1], [1,2], [2,4], [3,1,2], [1,2,4], [3,1,2,4].
 Minimums are 3, 1, 2, 4, 1, 1, 2, 1, 1, 1.
 Sum is 17.
 
@@ -1186,7 +1186,7 @@ function sumSubarrayMins(arr: number[]): number {
   return sum;
 }
 
-/* 
+/*
 198. House Robber
 
 You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
@@ -1241,7 +1241,7 @@ function rob(nums: number[]): number {
   return dp[nums.length - 1];
 }
 
-/* 
+/*
 1239. Maximum Length of a Concatenated String with Unique Characters
 
 You are given an array of strings arr. A string s is formed by the concatenation of a subsequence of arr that has unique characters.
@@ -1310,7 +1310,7 @@ function maxLength(arr: string[]): number {
   return result;
 }
 
-/* 
+/*
 1457. Pseudo-Palindromic Paths in a Binary Tree
 
 Given a binary tree where node values are digits from 1 to 9. A path in the binary tree is said to be pseudo-palindromic if at least one permutation of the node values in the path is a palindrome.
@@ -1321,14 +1321,14 @@ Return the number of pseudo-palindromic paths going from the root node to leaf n
 Example 1:
 
 Input: root = [2,3,1,3,1,null,1]
-Output: 2 
+Output: 2
 Explanation: The figure above represents the given binary tree. There are three paths going from the root node to leaf nodes: the red path [2,3,3], the green path [2,1,1], and the path [2,3,1]. Among these paths only red path and green path are pseudo-palindromic paths since the red path [2,3,3] can be rearranged in [3,2,3] (palindrome) and the green path [2,1,1] can be rearranged in [1,2,1] (palindrome).
 
 
 Example 2:
 
 Input: root = [2,1,1,1,3,null,null,null,null,null,1]
-Output: 1 
+Output: 1
 Explanation: The figure above represents the given binary tree. There are three paths going from the root node to leaf nodes: the green path [2,1,1], the path [2,1,3,1], and the path [2,1]. Among these paths only the green path is pseudo-palindromic since [2,1,1] can be rearranged in [1,2,1] (palindrome).
 
 
@@ -1386,7 +1386,7 @@ function pseudoPalindromicPaths(root: TreeNode | null): number {
   return count; // Return the count of pseudo-palindromic paths
 }
 
-/* 
+/*
 1143. Longest Common Subsequence
 
 Given two strings text1 and text2, return the length of their longest common subsequence. If there is no common subsequence, return 0.
@@ -1399,8 +1399,8 @@ A common subsequence of two strings is a subsequence that is common to both stri
 
 Example 1:
 
-Input: text1 = "abcde", text2 = "ace" 
-Output: 3  
+Input: text1 = "abcde", text2 = "ace"
+Output: 3
 Explanation: The longest common subsequence is "ace" and its length is 3.
 
 
@@ -1449,7 +1449,7 @@ function longestCommonSubsequence(text1: string, text2: string): number {
   return dp[m][n];
 }
 
-/* 
+/*
 576. Out of Boundary Paths
 
 There is an m x n grid with a ball. The ball is initially at the position [startRow, startColumn]. You are allowed to move the ball to one of the four adjacent cells in the grid (possibly out of the grid crossing the grid boundary). You can apply at most maxMove moves to the ball.
@@ -1519,7 +1519,7 @@ function findPaths(
   return count; // Return total count
 }
 
-/* 
+/*
 150. Evaluate Reverse Polish Notation
 
 You are given an array of strings tokens that represents an arithmetic expression in a Reverse Polish Notation.
@@ -1599,7 +1599,7 @@ function evalRPN(tokens: string[]): number {
   return stack.pop() ?? 0; // Return the result or 0 if the stack is somehow empty
 }
 
-/* 
+/*
 739. Daily Temperatures
 
 Given an array of integers temperatures represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no future day for which this is possible, keep answer[i] == 0 instead.
@@ -1646,7 +1646,7 @@ function dailyTemperatures(temperatures: number[]): number[] {
   return result;
 }
 
-/* 
+/*
 2966. Divide Array Into Arrays With Max Difference
 
 You are given an integer array nums of size n and a positive integer k.
@@ -1696,7 +1696,7 @@ function divideArray(nums: number[], k: number): number[][] {
   return result;
 }
 
-/* 
+/*
 1291. Sequential Digits
 
 An integer has sequential digits if and only if each digit in the number is one more than the previous digit.
@@ -1739,7 +1739,7 @@ function sequentialDigits(low: number, high: number): number[] {
   return allSequentialDigits.sort((a, b) => a - b);
 }
 
-/* 
+/*
 1043. Partition Array for Maximum Sum
 
 Given an integer array arr, partition the array into (contiguous) subarrays of length at most k. After partitioning, each subarray has their values changed to become the maximum value of that subarray.
@@ -1784,7 +1784,7 @@ function maxSumAfterPartitioning(arr: number[], k: number): number {
   return dp[arr.length];
 }
 
-/* 
+/*
 49. Group Anagrams
 
 Given an array of strings strs, group the anagrams together. You can return the answer in any order.
@@ -1828,7 +1828,7 @@ function groupAnagrams(strs: string[]): string[][] {
   return Array.from(map.values());
 }
 
-/* 
+/*
 451. Sort Characters By Frequency
 
 Given a string s, sort it in decreasing order based on the frequency of the characters. The frequency of a character is the number of times it appears in the string.
@@ -1879,7 +1879,7 @@ function frequencySort(s: string): string {
     .join(""); // Join all character strings into a single string
 }
 
-/* 
+/*
 279. Perfect Squares
 
 Given an integer n, return the least number of perfect square numbers that sum to n.
@@ -1920,7 +1920,7 @@ function numSquares(n: number): number {
   return dp[n];
 }
 
-/* 
+/*
 368. Largest Divisible Subset
 
 Given a set of distinct positive integers nums, return the largest subset answer such that every pair (answer[i], answer[j]) of elements in this subset satisfies:
@@ -1981,7 +1981,7 @@ function largestDivisibleSubset(nums: number[]): number[] {
   return result.reverse();
 }
 
-/* 
+/*
 647. Palindromic Substrings
 
 Given a string s, return the number of palindromic substrings in it.
@@ -2040,7 +2040,7 @@ function countPalindromesAroundCenter(
   return count;
 }
 
-/* 
+/*
 2149. Rearrange Array Elements by Sign
 
 You are given a 0-indexed integer array nums of even length consisting of an equal number of positive and negative integers.
@@ -2058,7 +2058,7 @@ Output: [3,-2,1,-5,2,-4]
 Explanation:
 The positive integers in nums are [3,1,2]. The negative integers are [-2,-5,-4].
 The only possible way to rearrange them such that they satisfy all conditions is [3,-2,1,-5,2,-4].
-Other ways such as [1,-2,2,-5,3,-4], [3,1,2,-2,-5,-4], [-2,3,-5,1,-4,2] are incorrect because they do not satisfy one or more conditions.  
+Other ways such as [1,-2,2,-5,3,-4], [3,1,2,-2,-5,-4], [-2,3,-5,1,-4,2] are incorrect because they do not satisfy one or more conditions.
 
 Example 2:
 Input: nums = [-1,1]
@@ -2093,7 +2093,7 @@ function rearrangeArray(nums: number[]): number[] {
   return result;
 }
 
-/* 
+/*
 2971. Find Polygon With the Largest Perimeter
 
 You are given an array of positive integers nums of length n.
@@ -2163,7 +2163,7 @@ function largestPerimeter(nums: number[]): number {
   return -1;
 }
 
-/* 
+/*
 1481. Least Number of Unique Integers after K Removals
 
 Given an array of integers arr and an integer k. Find the least number of unique integers after removing exactly k elements.
@@ -2303,7 +2303,7 @@ function furthestBuilding(
   return heights.length - 1;
 }
 
-/* 
+/*
 201. Bitwise AND of Numbers Range
 
 Given two integers left and right that represent the range [left, right], return the bitwise AND of all numbers in this range, inclusive.
@@ -2341,7 +2341,7 @@ function rangeBitwiseAnd(left: number, right: number): number {
   return left & right;
 }
 
-/* 
+/*
 787. Cheapest Flights Within K Stops
 
 There are n cities connected by some number of flights. You are given an array flights where flights[i] = [fromi, toi, pricei] indicates that there is a flight from city fromi to city toi with cost pricei.
@@ -2414,7 +2414,7 @@ function findCheapestPrice(
   return prices[dst] === Infinity ? -1 : prices[dst];
 }
 
-/* 
+/*
 513. Find Bottom Left Tree Value
 
 Given the root of a binary tree, return the leftmost value in the last row of the tree.
@@ -2463,7 +2463,7 @@ function findBottomLeftValue(root: TreeNode | null): number {
   return current.val; // Return the value of the leftmost node.
 }
 
-/* 
+/*
 1609. Even Odd Tree
 
 A binary tree is named Even-Odd if it meets the following conditions:
@@ -2552,7 +2552,7 @@ function isEvenOddTree(root: TreeNode | null): boolean {
   return true; // If all levels meet the Even-Odd property, return true
 }
 
-/* 
+/*
 19. Remove Nth Node From End of List
 
 Given the head of a linked list, remove the nth node from the end of the list and return its head.
@@ -2612,7 +2612,7 @@ function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
   return dummy.next; // Return the modified list, excluding the dummy node
 }
 
-/* 
+/*
 948. Bag of Tokens
 
 You start with an initial power of power, an initial score of 0, and a bag of tokens given as an integer array tokens, where each tokens[i] donates the value of tokeni.
@@ -2674,7 +2674,7 @@ function bagOfTokensScore(tokens: number[], power: number): number {
   return maxScore; // Return the maximum score achieved
 }
 
-/* 
+/*
 1750. Minimum Length of String After Deleting Similar Ends
 
 Given a string s consisting only of characters 'a', 'b', and 'c'. You are asked to apply the following algorithm on the string any number of times:
@@ -2729,7 +2729,7 @@ function minimumLength(s: string): number {
   return right - left + 1;
 }
 
-/* 
+/*
 791. Custom Sort String
 
 You are given two strings order and s. All the characters of order are unique and were sorted in some custom order previously.
@@ -2739,14 +2739,14 @@ Permute the characters of s so that they match the order that order was sorted. 
 Return any permutation of s that satisfies this property.
 
 Example 1:
-Input:  order = "cba", s = "abcd" 
-Output:  "cbad" 
+Input:  order = "cba", s = "abcd"
+Output:  "cbad"
 Explanation: "a", "b", "c" appear in order, so the order of "a", "b", "c" should be "c", "b", and "a".
 Since "d" does not appear in order, it can be at any position in the returned string. "dcba", "cdba", "cbda" are also valid outputs.
 
 Example 2:
-Input:  order = "bcafg", s = "abcd" 
-Output:  "bcad" 
+Input:  order = "bcafg", s = "abcd"
+Output:  "bcad"
 Explanation: The characters "b", "c", and "a" from order dictate the order for the characters in s. The character "d" in s does not appear in order, so its position is flexible.
 Following the order of appearance in order, "b", "c", and "a" from s should be arranged as "b", "c", "a". "d" can be placed at any position since it's not in order. The output "bcad" correctly follows this rule. Other arrangements like "bacd" or "bcda" would also be valid, as long as "b", "c", "a" maintain their order.
 
@@ -2786,7 +2786,7 @@ function customSortString(order: string, s: string): string {
   return result;
 }
 
-/* 
+/*
 1171. Remove Zero Sum Consecutive Nodes from Linked List
 
 Given the head of a linked list, we repeatedly delete consecutive sequences of nodes that sum to 0 until there are no such sequences.
@@ -2845,7 +2845,7 @@ function removeZeroSumSublists(head: ListNode | null): ListNode | null {
   return dummy.next; // Return head of the modified list
 }
 
-/* 
+/*
 930. Binary Subarrays With Sum
 
 Given a binary array nums and an integer goal, return the number of non-empty subarrays with a sum goal.
@@ -2887,7 +2887,7 @@ function numSubarraysWithSum(nums: number[], goal: number): number {
   return count; // Return the total count of valid subarrays
 }
 
-/* 
+/*
 238. Product of Array Except Self
 
 Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
@@ -2942,7 +2942,7 @@ function productExceptSelf(nums: number[]): number[] {
   return answer;
 }
 
-/* 
+/*
 525. Contiguous Array
 
 Given a binary array nums, return the maximum length of a contiguous subarray with an equal number of 0 and 1.
@@ -2989,7 +2989,7 @@ function findMaxLength(nums: number[]): number {
   return maxLength;
 }
 
-/* 
+/*
 57. Insert Interval
 
 You are given an array of non-overlapping intervals intervals where intervals[i] = [starti, endi] represent the start and the end of the ith interval and intervals is sorted in ascending order by starti. You are also given an interval newInterval = [start, end] that represents the start and end of another interval.
@@ -3045,7 +3045,7 @@ function insert(intervals: number[][], newInterval: number[]): number[][] {
   return result; // Return the modified intervals array
 }
 
-/* 
+/*
 452. Minimum Number of Arrows to Burst Balloons
 
 There are some spherical balloons taped onto a flat wall that represents the XY-plane. The balloons are represented as a 2D integer array points where points[i] = [xstart, xend] denotes a balloon whose horizontal diameter stretches between xstart and xend. You do not know the exact y-coordinates of the balloons.
@@ -3095,7 +3095,7 @@ function findMinArrowShots(points: number[][]): number {
   return arrows; // Return the minimum number of arrows needed
 }
 
-/* 
+/*
 621. Task Scheduler
 
 You are given an array of CPU tasks, each represented by letters A to Z, and a cooling time, n. Each cycle or interval allows the completion of one task. Tasks can be completed in any order, but there's a constraint: identical tasks must be separated by at least n intervals due to cooling time.
@@ -3149,7 +3149,7 @@ function leastInterval(tasks: string[], n: number): number {
   return idleSlots > 0 ? idleSlots + tasks.length : tasks.length;
 }
 
-/* 
+/*
 1669. Merge In Between Linked Lists
 
 You are given two linked lists: list1 and list2 of sizes n and m respectively.
@@ -3216,7 +3216,7 @@ function mergeInBetween(
   return dummy.next;
 }
 
-/* 
+/*
 143. Reorder List
 
 You are given the head of a singly linked-list. The list can be represented as:
@@ -3275,7 +3275,7 @@ function reorderList(head: ListNode | null): void {
   }
 }
 
-/* 
+/*
 287. Find the Duplicate Number
 
 Given an array of integers nums containing n + 1 integers where each integer is in the range [1, n] inclusive.
@@ -3338,7 +3338,7 @@ function findDuplicate(nums: number[]): number {
   return slow;
 }
 
-/* 
+/*
 442. Find All Duplicates in an Array
 
 Given an integer array nums of length n where all the integers of nums are in the range [1, n] and each integer appears once or twice, return an array of all the integers that appears twice.
@@ -3385,7 +3385,7 @@ function findDuplicates(nums: number[]): number[] {
   return output;
 }
 
-/* 
+/*
 713. Subarray Product Less Than K
 
 Given an array of integers nums and an integer k, return the number of contiguous subarrays where the product of all the elements in the subarray is strictly less than k.
@@ -3433,7 +3433,7 @@ function numSubarrayProductLessThanK(nums: number[], k: number): number {
   return count;
 }
 
-/* 
+/*
 2958. Length of Longest Subarray With at Most K Frequency
 
 You are given an integer array nums and an integer k.
@@ -3494,7 +3494,7 @@ function maxSubarrayLength(nums: number[], k: number): number {
   return maxLength;
 }
 
-/* 
+/*
 2962. Count Subarrays Where Max Element Appears at Least K Times
 
 You are given an integer array nums and a positive integer k.
@@ -3557,7 +3557,7 @@ function countSubarrays(nums: number[], k: number): number {
   return count; // Return the total count of valid subarrays.
 }
 
-/* 
+/*
 79. Word Search
 
 Given an m x n grid of characters board and a string word, return true if word exists in the grid.
@@ -3619,7 +3619,7 @@ function exist(board: string[][], word: string): boolean {
   return false; // If the word is not found in any path, return false
 }
 
-/* 
+/*
 1249. Minimum Remove to Make Valid Parentheses
 
 Given a string s of '(' , ')' and lowercase English characters.
@@ -3679,7 +3679,7 @@ function minRemoveToMakeValid(s: string): string {
   return sArray.join("");
 }
 
-/* 
+/*
 678. Valid Parenthesis String
 
 Given a string s containing only three types of characters: '(', ')' and '*', return true if s is valid.
@@ -3730,7 +3730,7 @@ function checkValidString(s: string): boolean {
   return low === 0;
 }
 
-/* 
+/*
 950. Reveal Cards In Increasing Order
 
 You are given an integer array deck. There is a deck of cards where every card has a unique integer. The integer on the ith card is deck[i].
@@ -3750,7 +3750,7 @@ Note that the first entry in the answer is considered to be the top of the deck.
 Example 1:
 Input: deck = [17,13,11,2,3,5,7]
 Output: [2,13,3,11,5,17,7]
-Explanation: 
+Explanation:
 We get the deck in the order [17,13,11,2,3,5,7] (this order does not matter), and reorder it.
 After reordering, the deck starts as [2,13,3,11,5,17,7], where 2 is the top of the deck.
 We reveal 2, and move 13 to the bottom.  The deck is now [3,11,5,17,7,13].
@@ -3797,7 +3797,7 @@ function deckRevealedIncreasing(deck: number[]): number[] {
   return result;
 }
 
-/* 
+/*
 402. Remove K Digits
 
 Given string num representing a non-negative integer num, and an integer k, return the smallest possible integer after removing k digits from num.
@@ -3854,7 +3854,7 @@ function removeKdigits(num: string, k: number): string {
   return stack.length ? stack.join("") : "0";
 }
 
-/* 
+/*
 129. Sum Root to Leaf Numbers
 
 You are given the root of a binary tree containing digits from 0 to 9 only.
@@ -3915,7 +3915,7 @@ function sumNumbers(root: TreeNode | null, currentSum: number = 0): number {
   return sumNumbers(root.left, currentSum) + sumNumbers(root.right, currentSum);
 }
 
-/* 
+/*
 623. Add One Row to Tree
 
 Given the root of a binary tree and two integers val and depth, add a row of nodes with value val at the given depth depth.
@@ -3996,7 +3996,7 @@ function addOneRow(
   return root; // Return the modified tree
 }
 
-/* 
+/*
 988. Smallest String Starting From Leaf
 
 You are given the root of a binary tree where each node has a value in the range [0, 25] representing the letters 'a' to 'z'.
@@ -4062,7 +4062,7 @@ function smallestFromLeaf(root: TreeNode | null): string {
   return smallest; // Return the lexicographically smallest string.
 }
 
-/* 
+/*
 200. Number of Islands
 
 Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
@@ -4135,7 +4135,7 @@ function numIslands(grid: string[][]): number {
   return count;
 }
 
-/* 
+/*
 1992. Find All Groups of Farmland
 
 You are given a 0-indexed m x n binary matrix land where a 0 represents a hectare of forested land and a 1 represents a hectare of farmland.
@@ -4203,7 +4203,7 @@ function findFarmland(land: number[][]): number[][] {
   return groups; // Return the list of groups
 }
 
-/* 
+/*
 752. Open the Lock
 
 You have a lock in front of you with 4 circular wheels. Each wheel has 10 slots: '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'. The wheels can rotate freely and wrap around: for example we can turn '9' to be '0', or '0' to be '9'. Each move consists of turning one wheel one slot.
@@ -4217,7 +4217,7 @@ Given a target representing the value of the wheels that will unlock the lock, r
 Example 1:
 Input: deadends = ["0201","0101","0102","1212","2002"], target = "0202"
 Output: 6
-Explanation: 
+Explanation:
 A sequence of valid moves would be "0000" -> "1000" -> "1100" -> "1200" -> "1201" -> "1202" -> "0202".
 Note that a sequence like "0000" -> "0001" -> "0002" -> "0102" -> "0202" would be invalid,
 because the wheels of the lock become stuck after the display becomes the dead end "0102".
@@ -4279,7 +4279,7 @@ function openLock(deadends: string[], target: string): number {
   return -1;
 }
 
-/* 
+/*
 310. Minimum Height Trees
 
 A tree is an undirected graph in which any two vertices are connected by exactly one path. In other words, any connected graph without simple cycles is a tree.
@@ -4342,7 +4342,7 @@ function findMinHeightTrees(n: number, edges: number[][]): number[] {
   return leaves;
 }
 
-/* 
+/*
 2370. Longest Ideal Subsequence
 
 You are given a string s consisting of lowercase letters and an integer k. We call a string t ideal if the following conditions are satisfied:
@@ -4396,7 +4396,7 @@ function longestIdealString(s: string, k: number): number {
   return Math.max(...dp);
 }
 
-/* 
+/*
 2997. Minimum Number of Operations to Make Array XOR Equal to K
 
 You are given a 0-indexed integer array nums and a positive integer k.
@@ -4444,7 +4444,7 @@ function minOperations(nums: number[], k: number): number {
   // because each '1' in the binary representation indicates a bit that must be flipped.
 }
 
-/* 
+/*
 1915. Number of Wonderful Substrings
 
 A wonderful string is a string where at most one letter appears an odd number of times.
@@ -4513,7 +4513,7 @@ function wonderfulSubstrings(word: string): number {
   return count; // Return the total count of wonderful substrings
 }
 
-/* 
+/*
 165. Compare Version Numbers
 
 Given two version numbers, version1 and version2, compare them.
@@ -4572,7 +4572,7 @@ function compareVersion(version1: string, version2: string): number {
   return 0;
 }
 
-/* 
+/*
 881. Boats to Save People
 
 You are given an array people where people[i] is the weight of the ith person, and an infinite number of boats where each boat can carry a maximum weight of limit. Each boat carries at most two people at the same time, provided the sum of the weight of those people is at most limit.
@@ -4622,7 +4622,7 @@ function numRescueBoats(people: number[], limit: number): number {
   return boats;
 }
 
-/* 
+/*
 237. Delete Node in a Linked List
 
 There is a singly-linked list head and we want to delete a node node in it.
@@ -4687,7 +4687,7 @@ function deleteNode(node: ListNode | null): void {
   node.next = node.next.next;
 }
 
-/* 
+/*
 2487. Remove Nodes From Linked List
 
 You are given the head of a linked list.
@@ -4769,7 +4769,7 @@ function removeNodes(head: ListNode | null): ListNode | null {
   return prev; // Return the head of the modified list
 }
 
-/* 
+/*
 2816. Double a Number Represented as a Linked List
 
 You are given the head of a non-empty linked list representing a non-negative integer without leading zeroes.
@@ -4784,7 +4784,7 @@ Explanation: The figure above corresponds to the given linked list which represe
 Example 2:
 Input: head = [9,9,9]
 Output: [1,9,9,8]
-Explanation: The figure above corresponds to the given linked list which represents the number 999. Hence, the returned linked list reprersents the number 999 * 2 = 1998. 
+Explanation: The figure above corresponds to the given linked list which represents the number 999. Hence, the returned linked list reprersents the number 999 * 2 = 1998.
 
 Constraints:
 The number of nodes in the list is in the range [1, 10^4]
@@ -4837,7 +4837,7 @@ function doubleIt(head: ListNode | null): ListNode | null {
   return result.next;
 }
 
-/* 
+/*
 3075. Maximize Happiness of Selected Children
 
 You are given an array happiness of length n, and a positive integer k.
@@ -4899,7 +4899,7 @@ function maximumHappinessSum(happiness: number[], k: number): number {
   return total; // Return the calculated total happiness
 }
 
-/* 
+/*
 786. K-th Smallest Prime Fraction
 
 You are given a sorted integer array arr containing 1 and prime numbers, where all the integers of arr are unique. You are also given an integer k.
@@ -4932,8 +4932,8 @@ Follow up: Can you solve the problem with better than O(n2) complexity?
 </> Typescript Code:
 */
 
-/* 
-  npm install @datastructures-js/priority-queue 
+/*
+  npm install @datastructures-js/priority-queue
   import { MinPriorityQueue } from '@datastructures-js/priority-queue';
 */
 
@@ -4962,7 +4962,7 @@ function kthSmallestPrimeFraction(arr: number[], k: number): number[] {
   return [arr[num], arr[den]];
 }
 
-/* 
+/*
 861. Score After Flipping Matrix
 
 You are given an m x n binary matrix grid.
@@ -5011,7 +5011,7 @@ function matrixScore(grid: number[][]): number {
   return score; // Return the calculated maximum score
 }
 
-/* 
+/*
 1219. Path with Maximum Gold
 
 In a gold mine grid of size m x n, each cell in this mine has an integer representing the amount of gold in that cell, 0 if it is empty.
@@ -5094,7 +5094,7 @@ function getMaximumGold(grid: number[][]): number {
   return maxGold; // Return the overall maximum gold collected
 }
 
-/* 
+/*
 2812. Find the Safest Path in a Grid
 
 You are given a 0-indexed 2D matrix grid of size n x n, where (r, c) represents:
@@ -5196,7 +5196,7 @@ function maximumSafenessFactor(grid: number[][]): number {
   return pathDist[n - 1][n - 1]; // Return the safeness of the last cell
 }
 
-/* 
+/*
 1325. Delete Leaves With a Given Value
 
 Given a binary tree root and an integer target, delete all the leaf nodes with value target.
@@ -5206,7 +5206,7 @@ Note that once you delete a leaf node with value target, if its parent node beco
 Example 1:
 Input: root = [1,2,3,2,null,2,4], target = 2
 Output: [1,null,3,null,4]
-Explanation: Leaf nodes in green with value (target = 2) are removed (Picture in left). 
+Explanation: Leaf nodes in green with value (target = 2) are removed (Picture in left).
 After removing, new nodes become leaf nodes with value (target = 2) (Picture in center).
 
 Example 2:
@@ -5257,7 +5257,7 @@ function removeLeafNodes(
   return root;
 }
 
-/* 
+/*
 979. Distribute Coins in Binary Tree
 
 You are given the root of a binary tree with n nodes where each node in the tree has node.val coins. There are n coins in total throughout the whole tree.
@@ -5327,10 +5327,10 @@ function distributeCoins(root: TreeNode | null): number {
   return moves;
 }
 
-/* 
+/*
 78. Subsets
 
-Given an integer array nums of unique elements, return all possible 
+Given an integer array nums of unique elements, return all possible
 subsets (the power set).
 
 The solution set must not contain duplicate subsets. Return the solution in any order.
@@ -5383,10 +5383,10 @@ function subsets(nums: number[]): number[][] {
   return result;
 }
 
-/* 
+/*
 131. Palindrome Partitioning
 
-Given a string s, partition s such that every substring of the partition is a palindrome. 
+Given a string s, partition s such that every substring of the partition is a palindrome.
 Return all possible palindrome partitioning of s.
 
 Example 1:
@@ -5450,7 +5450,7 @@ function partition(s: string): string[][] {
   return result;
 }
 
-/* 
+/*
 2597. The Number of Beautiful Subsets
 
 You are given an array nums of positive integers and a positive integer k.
@@ -5517,7 +5517,7 @@ function beautifulSubsets(nums: number[], k: number): number {
   return count;
 }
 
-/* 
+/*
 1208. Get Equal Substrings Within Budget
 
 You are given two strings s and t of the same length and an integer maxCost.
@@ -5576,7 +5576,7 @@ function equalSubstring(s: string, t: string, maxCost: number): number {
   return maxLength;
 }
 
-/* 
+/*
 1404. Number of Steps to Reduce a Number in Binary Representation to One
 
 Given the binary representation of an integer as a string s, return the number of steps to reduce it to 1 under the following rules:
@@ -5591,18 +5591,18 @@ Example 1:
 Input: s = "1101"
 Output: 6
 Explanation: "1101" corressponds to number 13 in their decimal representation.
-Step 1) 13 is odd, add 1 and obtain 14. 
+Step 1) 13 is odd, add 1 and obtain 14.
 Step 2) 14 is even, divide by 2 and obtain 7.
 Step 3) 7 is odd, add 1 and obtain 8.
-Step 4) 8 is even, divide by 2 and obtain 4.  
-Step 5) 4 is even, divide by 2 and obtain 2. 
-Step 6) 2 is even, divide by 2 and obtain 1.  
+Step 4) 8 is even, divide by 2 and obtain 4.
+Step 5) 4 is even, divide by 2 and obtain 2.
+Step 6) 2 is even, divide by 2 and obtain 1.
 
 Example 2:
 Input: s = "10"
 Output: 1
 Explanation: "10" corressponds to number 2 in their decimal representation.
-Step 1) 2 is even, divide by 2 and obtain 1.  
+Step 1) 2 is even, divide by 2 and obtain 1.
 
 Example 3:
 Input: s = "1"
@@ -5639,7 +5639,7 @@ function numSteps(s: string): number {
   return steps + carry;
 }
 
-/* 
+/*
 1442. Count Triplets That Can Form Two Arrays of Equal XOR
 
 Given an array of integers arr.
@@ -5697,7 +5697,7 @@ function countTriplets(arr: number[]): number {
   return count;
 }
 
-/* 
+/*
 260. Single Number III
 
 Given an integer array nums, in which exactly two elements appear only once and all the other elements appear exactly twice. Find the two elements that appear only once. You can return the answer in any order.
@@ -5754,7 +5754,7 @@ function singleNumber(nums: number[]): number[] {
   return [x, y];
 }
 
-/* 
+/*
 2486. Append Characters to String to Make Subsequence
 
 You are given two strings s and t consisting of only lowercase English letters.
@@ -5806,7 +5806,7 @@ function appendCharacters(s: string, t: string): number {
   return t.length - i;
 }
 
-/* 
+/*
 846. Hand of Straights
 
 Alice has some number of cards and she wants to rearrange the cards into groups so that each group is of size groupSize, and consists of groupSize consecutive cards.
@@ -5865,7 +5865,7 @@ function isNStraightHand(hand: number[], groupSize: number): boolean {
   return true;
 }
 
-/* 
+/*
 648. Replace Words
 
 In English, we have a concept called root, which can be followed by some other word to form another longer word - let's call this word derivative. For example, when the root "help" is followed by the word "ful", we can form a derivative "helpful".
@@ -5920,7 +5920,7 @@ function replaceWords(dictionary: string[], sentence: string): string {
   return words.join(" ");
 }
 
-/* 
+/*
 523. Continuous Subarray Sum
 
 Given an integer array nums and an integer k, return true if nums has a good subarray or false otherwise.
@@ -5989,7 +5989,7 @@ function checkSubarraySum(nums: number[], k: number): boolean {
   return false;
 }
 
-/* 
+/*
 974. Subarray Sums Divisible by K
 
 Given an integer array nums and an integer k, return the number of non-empty subarrays that have a sum divisible by k.
@@ -6042,7 +6042,7 @@ function subarraysDivByK(nums: number[], k: number): number {
   return result;
 }
 
-/* 
+/*
 945. Minimum Increment to Make Array Unique
 
 You are given an integer array nums. In one move, you can pick an index i where 0 <= i < nums.length and increment nums[i] by 1.
@@ -6093,7 +6093,7 @@ function minIncrementForUnique(nums: number[]): number {
   return moves;
 }
 
-/* 
+/*
 633. Sum of Square Numbers
 
 Given a non-negative integer c, decide whether there're two integers a and b such that a2 + b2 = c.
@@ -6127,7 +6127,7 @@ function judgeSquareSum(c: number): boolean {
   return false;
 }
 
-/* 
+/*
 826. Most Profit Assigning Work
 
 You have n jobs and m workers. You are given three arrays: difficulty, profit, and worker where: difficulty[i] and profit[i] are the difficulty and the profit of the ith job, and
@@ -6187,7 +6187,7 @@ function maxProfitAssignment(
   return maxProfit;
 }
 
-/* 
+/*
 1482. Minimum Number of Days to Make m Bouquets
 
 You are given an integer array bloomDay, an integer m and an integer k.
@@ -6274,7 +6274,7 @@ function minDays(bloomDay: number[], m: number, k: number): number {
   return left; // The minimum number of days required
 }
 
-/* 
+/*
 1552. Magnetic Force Between Two Balls
 
 In the universe Earth C-137, Rick discovered a special form of magnetic force between two balls if they are put in his new invented basket. Rick has n empty baskets, the ith basket is at position[i], Morty has m balls and needs to distribute the balls into the baskets such that the minimum magnetic force between any two balls is maximum.
@@ -6344,7 +6344,7 @@ function maxDistance(position: number[], m: number): number {
   return result; // Return the maximum minimum distance found
 }
 
-/* 
+/*
 1052. Grumpy Bookstore Owner
 
 There is a bookstore owner that has a store open for n minutes. Every minute, some number of customers enter the store. You are given an integer array customers of length n where customers[i] is the number of the customer that enters the store at the start of the ith minute and all those customers leave after the end of that minute.
@@ -6360,7 +6360,7 @@ Return the maximum number of customers that can be satisfied throughout the day.
 Example 1:
 Input: customers = [1,0,1,2,1,1,7,5], grumpy = [0,1,0,1,0,1,0,1], minutes = 3
 Output: 16
-Explanation: The bookstore owner keeps themselves not grumpy for the last 3 minutes. 
+Explanation: The bookstore owner keeps themselves not grumpy for the last 3 minutes.
 The maximum number of customers that can be satisfied = 1 + 1 + 1 + 1 + 7 + 5 = 16.
 
 Example 2:
@@ -6413,7 +6413,7 @@ function maxSatisfied(
   return totalSatisfied + maxAdditionalSatisfied;
 }
 
-/* 
+/*
 1248. Count Number of Nice Subarrays
 
 Given an array of integers nums and an integer k. A continuous subarray is called nice if there are k odd numbers on it.
@@ -6460,17 +6460,17 @@ function numberOfSubarrays(nums: number[], k: number): number {
   return count; // Return the total count of nice subarrays
 }
 
-/* 
+/*
 1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
 
 Given an array of integers nums and an integer limit, return the size of the longest non-empty subarray such that the absolute difference between any two elements of this subarray is less than or equal to limit.
 
 Example 1:
 Input: nums = [8,2,4,7], limit = 4
-Output: 2 
-Explanation: All subarrays are: 
+Output: 2
+Explanation: All subarrays are:
 [8] with maximum absolute diff |8-8| = 0 <= 4.
-[8,2] with maximum absolute diff |8-2| = 6 > 4. 
+[8,2] with maximum absolute diff |8-2| = 6 > 4.
 [8,2,4] with maximum absolute diff |8-2| = 6 > 4.
 [8,2,4,7] with maximum absolute diff |8-2| = 6 > 4.
 [2] with maximum absolute diff |2-2| = 0 <= 4.
@@ -6478,12 +6478,12 @@ Explanation: All subarrays are:
 [2,4,7] with maximum absolute diff |2-7| = 5 > 4.
 [4] with maximum absolute diff |4-4| = 0 <= 4.
 [4,7] with maximum absolute diff |4-7| = 3 <= 4.
-[7] with maximum absolute diff |7-7| = 0 <= 4. 
+[7] with maximum absolute diff |7-7| = 0 <= 4.
 Therefore, the size of the longest subarray is 2.
 
 Example 2:
 Input: nums = [10,1,2,4,7,2], limit = 5
-Output: 4 
+Output: 4
 Explanation: The subarray [2,4,7,2] is the longest since the maximum absolute diff is |2-7| = 5 <= 5.
 
 Example 3:
@@ -6539,7 +6539,7 @@ function longestSubarray(nums: number[], limit: number): number {
   return result; // Return the length of the longest subarray
 }
 
-/* 
+/*
 1038. Binary Search Tree to Greater Sum Tree
 
 Given the root of a Binary Search Tree (BST), convert it to a Greater Tree such that every key of the original BST is changed to the original key plus the sum of all keys greater than the original key in BST.
@@ -6597,7 +6597,7 @@ function bstToGst(root: TreeNode | null): TreeNode | null {
   return root; // Return the modified tree root
 }
 
-/* 
+/*
 1382. Balance a Binary Search Tree
 
 Given the root of a binary search tree, return a balanced binary search tree with the same node values. If there is more than one answer, return any of them.
@@ -6657,7 +6657,7 @@ function balanceBST(root: TreeNode | null): TreeNode | null {
   return sortedArrayToBST(0, values.length - 1); // Convert the sorted array to a balanced BST and return the root
 }
 
-/* 
+/*
 2285. Maximum Total Importance of Roads
 
 You are given an integer n denoting the number of cities in a country. The cities are numbered from 0 to n - 1.
@@ -6723,7 +6723,7 @@ function maximumImportance(n: number, roads: number[][]): number {
   return totalImportance; // Return the maximum total importance
 }
 
-/* 
+/*
 2192. All Ancestors of a Node in a Directed Acyclic Graph
 
 You are given a positive integer n representing the number of nodes of a Directed Acyclic Graph (DAG). The nodes are numbered from 0 to n - 1 (inclusive).
@@ -6806,7 +6806,7 @@ function getAncestors(n: number, edges: number[][]): number[][] {
   ); // Return the sorted list of ancestors for each node
 }
 
-/* 
+/*
 1509. Minimum Difference Between Largest and Smallest Value in Three Moves
 
 You are given an integer array nums.
@@ -6879,7 +6879,7 @@ function minDifference(nums: number[]): number {
   return minDifference;
 }
 
-/* 
+/*
 2181. Merge Nodes in Between Zeros
 
 You are given the head of a linked list, which contains a series of integers separated by 0's. The beginning and end of the linked list will have Node.val == 0.
@@ -6892,7 +6892,7 @@ Return the head of the modified linked list.
 Example 1:
 Input: head = [0,3,1,0,4,5,2,0]
 Output: [4,11]
-Explanation: 
+Explanation:
 The above figure represents the given linked list. The modified list contains
 - The sum of the nodes marked in green: 3 + 1 = 4.
 - The sum of the nodes marked in red: 4 + 5 + 2 = 11.
@@ -6900,7 +6900,7 @@ The above figure represents the given linked list. The modified list contains
 Example 2:
 Input: head = [0,1,0,3,0,2,2,0]
 Output: [1,3,4]
-Explanation: 
+Explanation:
 The above figure represents the given linked list. The modified list contains
 - The sum of the nodes marked in green: 1 = 1.
 - The sum of the nodes marked in red: 3 = 3.
@@ -6961,7 +6961,7 @@ function mergeNodes(head: ListNode | null): ListNode | null {
   return dummy.next;
 }
 
-/* 
+/*
 2058. Find the Minimum and Maximum Number of Nodes Between Critical Points
 
 A critical point in a linked list is defined as either a local maxima or a local minima.
@@ -7057,7 +7057,7 @@ function nodesBetweenCriticalPoints(head: ListNode | null): number[] {
   return [minDistance, lastCP - firstCP];
 }
 
-/* 
+/*
 1823. Find the Winner of the Circular Game
 
 There are n friends that are playing a game. The friends are sitting in a circle and are numbered from 1 to n in clockwise order. More formally, moving clockwise from the ith friend brings you to the (i+1)th friend for 1 <= i < n, and moving clockwise from the nth friend brings you to the 1st friend.
@@ -7114,7 +7114,7 @@ function findTheWinner(n: number, k: number): number {
   return winner + 1;
 }
 
-/* 
+/*
 1701. Average Waiting Time
 
 There is a restaurant with a single chef. You are given an array customers, where customers[i] = [arrivali, timei]:
@@ -7168,7 +7168,7 @@ function averageWaitingTime(customers: number[][]): number {
   return totalWaitTime / customers.length; // Calculate and return the average waiting time
 }
 
-/* 
+/*
 1190. Reverse Substrings Between Each Pair of Parentheses
 
 You are given a string s that consists of lower case English letters and brackets.
@@ -7231,7 +7231,7 @@ function reverseParentheses(s: string): string {
   return stack.join("");
 }
 
-/* 
+/*
 1717. Maximum Score From Removing Substrings
 
 You are given a string s and two integers x and y. You can perform two types of operations any number of times.
@@ -7307,7 +7307,7 @@ function maximumGain(s: string, x: number, y: number): number {
   return maxPoints;
 }
 
-/* 
+/*
 2196. Create Binary Tree From Descriptions
 
 You are given a 2D integer array descriptions where descriptions[i] = [parenti, childi, isLefti] indicates that parenti is the parent of childi in a binary tree of unique values. Furthermore,
@@ -7393,7 +7393,7 @@ function createBinaryTree(descriptions: number[][]): TreeNode | null {
   return null;
 }
 
-/* 
+/*
 2096. Step-By-Step Directions From a Binary Tree Node to Another
 
 You are given the root of a binary tree with n nodes. Each node is uniquely assigned a value from 1 to n. You are also given an integer startValue representing the value of the start node s, and a different integer destValue representing the value of the destination node t.
@@ -7481,7 +7481,7 @@ function getDirections(
   return "U".repeat(startPath.length - i) + destPath.slice(i).join("");
 }
 
-/* 
+/*
 1110. Delete Nodes And Return Forest
 
 Given the root of a binary tree, each node in the tree has a distinct value.
@@ -7552,7 +7552,7 @@ function delNodes(
   return result;
 }
 
-/* 
+/*
 1530. Number of Good Leaf Nodes Pairs
 
 You are given the root of a binary tree and an integer distance. A pair of two different leaf nodes of a binary tree is said to be good if the length of the shortest path between them is less than or equal to distance.
@@ -7632,7 +7632,7 @@ function countPairs(root: TreeNode | null, distance: number): number {
   return count; // Return the final count of good pairs
 }
 
-/* 
+/*
 2191. Sort the Jumbled Numbers
 
 You are given a 0-indexed integer array mapping which represents the mapping rule of a shuffled decimal system. mapping[i] = j means digit i should be mapped to digit j in this system.
@@ -7648,7 +7648,7 @@ The elements of nums should only be sorted based on their mapped values and not 
 Example 1:
 Input: mapping = [8,9,4,0,2,1,3,5,7,6], nums = [991,338,38]
 Output: [338,38,991]
-Explanation: 
+Explanation:
 Map the number 991 as follows:
 1. mapping[9] = 6, so all occurrences of the digit 9 will become 6.
 2. mapping[1] = 9, so all occurrences of the digit 1 will become 9.
@@ -7784,7 +7784,7 @@ function sortArray(nums: number[]): number[] {
   return mergeSort(nums);
 }
 
-/* 
+/*
 1334. Find the City With the Smallest Number of Neighbors at a Threshold Distance
 
 There are n cities numbered from 0 to n-1. Given the array edges where edges[i] = [fromi, toi, weighti] represents a bidirectional and weighted edge between cities fromi and toi, and given the integer distanceThreshold.
@@ -7796,24 +7796,24 @@ Notice that the distance of a path connecting cities i and j is equal to the sum
 Example 1:
 Input: n = 4, edges = [[0,1,3],[1,2,1],[1,3,4],[2,3,1]], distanceThreshold = 4
 Output: 3
-Explanation: The figure above describes the graph. 
+Explanation: The figure above describes the graph.
 The neighboring cities at a distanceThreshold = 4 for each city are:
-City 0 -> [City 1, City 2] 
-City 1 -> [City 0, City 2, City 3] 
-City 2 -> [City 0, City 1, City 3] 
-City 3 -> [City 1, City 2] 
+City 0 -> [City 1, City 2]
+City 1 -> [City 0, City 2, City 3]
+City 2 -> [City 0, City 1, City 3]
+City 3 -> [City 1, City 2]
 Cities 0 and 3 have 2 neighboring cities at a distanceThreshold = 4, but we have to return city 3 since it has the greatest number.
 
 Example 2:
 Input: n = 5, edges = [[0,1,2],[0,4,8],[1,2,3],[1,4,2],[2,3,1],[3,4,1]], distanceThreshold = 2
 Output: 0
-Explanation: The figure above describes the graph. 
+Explanation: The figure above describes the graph.
 The neighboring cities at a distanceThreshold = 2 for each city are:
-City 0 -> [City 1] 
-City 1 -> [City 0, City 4] 
-City 2 -> [City 3, City 4] 
+City 0 -> [City 1]
+City 1 -> [City 0, City 4]
+City 2 -> [City 3, City 4]
 City 3 -> [City 2, City 4]
-City 4 -> [City 1, City 2, City 3] 
+City 4 -> [City 1, City 2, City 3]
 The city 0 has 1 neighboring city at a distanceThreshold = 2.
 
 Constraints:
@@ -7879,7 +7879,7 @@ function findTheCity(
   return resultCity; // Return the city with the smallest number of reachable cities
 }
 
-/* 
+/*
 2976. Minimum Cost to Convert String I
 
 You are given two 0-indexed strings source and target, both of length n and consisting of lowercase English letters. You are also given two 0-indexed character arrays original and changed, and an integer array cost, where cost[i] represents the cost of changing the character original[i] to the character changed[i].
@@ -8000,7 +8000,7 @@ function minimumCost(
   return totalCost; // Return the total cost
 }
 
-/* 
+/*
 1395. Count Number of Teams
 
 There are n soldiers standing in a line. Each soldier is assigned a unique rating value.
@@ -8014,7 +8014,7 @@ Return the number of teams you can form given the conditions. (soldiers can be p
 Example 1:
 Input: rating = [2,5,3,4,1]
 Output: 3
-Explanation: We can form three teams given the conditions. (2,3,4), (5,4,1), (5,3,1). 
+Explanation: We can form three teams given the conditions. (2,3,4), (5,4,1), (5,3,1).
 
 Example 2:
 Input: rating = [2,1,3]
@@ -8064,7 +8064,7 @@ function numTeams(rating: number[]): number {
   return count; // Return the total number of valid teams
 }
 
-/* 
+/*
 1653. Minimum Deletions to Make String Balanced
 
 You are given a string s consisting only of characters 'a' and 'b'​​​​.
@@ -8112,7 +8112,7 @@ function minimumDeletions(s: string): number {
   return deletions;
 }
 
-/* 
+/*
 1105. Filling Bookcase Shelves
 
 You are given an array books where books[i] = [thicknessi, heighti] indicates the thickness and height of the ith book. You are also given an integer shelfWidth.
@@ -8174,7 +8174,7 @@ function minHeightShelves(books: number[][], shelfWidth: number): number {
   return dp[n];
 }
 
-/* 
+/*
 2134. Minimum Swaps to Group All 1's Together II
 
 A swap is defined as taking two distinct positions in an array and swapping the values in them.
@@ -8240,7 +8240,7 @@ function minSwaps(nums: number[]): number {
   return totalOnes - maxOnesInWindow;
 }
 
-/* 
+/*
 1508. Range Sum of Sorted Subarray Sums
 
 You are given the array nums consisting of n positive integers. You computed the sum of all non-empty continuous subarrays from the array and then sorted them in non-decreasing order, creating a new array of n * (n + 1) / 2 numbers.
@@ -8249,8 +8249,8 @@ Return the sum of the numbers from index left to index right (indexed from 1), i
 
 Example 1:
 Input: nums = [1,2,3,4], n = 4, left = 1, right = 5
-Output: 13 
-Explanation: All subarray sums are 1, 3, 6, 10, 2, 5, 9, 3, 7, 4. After sorting them in non-decreasing order we have the new array [1, 2, 3, 3, 4, 5, 6, 7, 9, 10]. The sum of the numbers from index le = 1 to ri = 5 is 1 + 2 + 3 + 3 + 4 = 13. 
+Output: 13
+Explanation: All subarray sums are 1, 3, 6, 10, 2, 5, 9, 3, 7, 4. After sorting them in non-decreasing order we have the new array [1, 2, 3, 3, 4, 5, 6, 7, 9, 10]. The sum of the numbers from index le = 1 to ri = 5 is 1 + 2 + 3 + 3 + 4 = 13.
 
 Example 2:
 Input: nums = [1,2,3,4], n = 4, left = 3, right = 4
@@ -8299,7 +8299,7 @@ function rangeSum(
   return result; // Return the final result
 }
 
-/* 
+/*
 3016. Minimum Number of Pushes to Type Word II
 
 You are given a string word containing lowercase English letters.
@@ -8384,7 +8384,7 @@ function minimumPushes(word: string): number {
   return minPushes; // Return the total pushes required
 }
 
-/* 
+/*
 885. Spiral Matrix III
 
 You start at the cell (rStart, cStart) of an rows x cols grid facing east. The northwest corner is at the first row and column in the grid, and the southeast corner is at the last row and column.
@@ -8473,7 +8473,7 @@ function spiralMatrixIII(
   return result;
 }
 
-/* 
+/*
 840. Magic Squares In Grid
 
 A 3 x 3 magic square is a 3 x 3 grid filled with distinct numbers from 1 to 9 such that each row, column, and both diagonals all have the same sum.
@@ -8485,7 +8485,7 @@ Note: while a magic square can only contain numbers from 1 to 9, grid may contai
 Example 1:
 Input: grid = [[4,3,8,4],[9,5,1,9],[2,7,6,2]]
 Output: 1
-Explanation: 
+Explanation:
 The following subgrid is a 3 x 3 magic square:
 while this one is not:
 In total, there is only one magic square inside the given grid.
@@ -8542,7 +8542,7 @@ function numMagicSquaresInside(grid: number[][]): number {
   return count; // Return the total count of magic squares found
 }
 
-/* 
+/*
 959. Regions Cut By Slashes
 
 An n x n grid is composed of 1 x 1 squares where each 1 x 1 square consists of a '/', '\', or blank space ' '. These characters divide the square into contiguous regions.
@@ -8629,7 +8629,7 @@ function regionsBySlashes(grid: string[]): number {
   return regions; // Return the total number of regions.
 }
 
-/* 
+/*
 40. Combination Sum II
 
 Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
@@ -8640,7 +8640,7 @@ Note: The solution set must not contain duplicate combinations.
 
 Example 1:
 Input: candidates = [10,1,2,7,6,1,5], target = 8
-Output: 
+Output:
 [
 [1,1,6],
 [1,2,5],
@@ -8650,7 +8650,7 @@ Output:
 
 Example 2:
 Input: candidates = [2,5,2,1,2], target = 5
-Output: 
+Output:
 [
 [1,2,2],
 [5]
@@ -8697,7 +8697,7 @@ function combinationSum2(candidates: number[], target: number): number[][] {
   return results;
 }
 
-/* 
+/*
 624. Maximum Distance in Arrays
 
 You are given m arrays, where each array is sorted in ascending order.
@@ -8753,7 +8753,7 @@ function maxDistance(arrays: number[][]): number {
   return result;
 }
 
-/* 
+/*
 1937. Maximum Number of Points with Cost
 
 You are given an m x n integer matrix points (0-indexed). Starting with 0 points, you want to maximize the number of points you can get from the matrix.
@@ -8838,7 +8838,7 @@ function maxPoints(points: number[][]): number {
   return Math.max(...previousRow);
 }
 
-/* 
+/*
 264. Ugly Number II
 
 An ugly number is a positive integer whose prime factors are limited to 2, 3, and 5.
@@ -8892,7 +8892,7 @@ function nthUglyNumber(n: number): number {
   return uglyNumbers[n - 1];
 }
 
-/* 
+/*
 650. 2 Keys Keyboard
 
 There is only one character 'A' on the screen of a notepad. You can perform one of two operations on this notepad for each step:
@@ -8942,10 +8942,10 @@ function minSteps(n: number): number {
   return steps;
 }
 
-/* 
+/*
 1140. Stone Game II
 
-Alice and Bob continue their games with piles of stones.  There are a number of piles arranged in a row, and each pile has a positive integer number of stones piles[i].  The objective of the game is to end with the most stones. 
+Alice and Bob continue their games with piles of stones.  There are a number of piles arranged in a row, and each pile has a positive integer number of stones piles[i].  The objective of the game is to end with the most stones.
 
 Alice and Bob take turns, with Alice starting first.  Initially, M = 1.
 
@@ -8958,7 +8958,7 @@ Assuming Alice and Bob play optimally, return the maximum number of stones Alice
 Example 1:
 Input: piles = [2,7,9,4,4]
 Output: 10
-Explanation:  If Alice takes one pile at the beginning, Bob takes two piles, then Alice takes 2 piles again. Alice can get 2 + 4 + 4 = 10 piles in total. If Alice takes two piles at the beginning, then Bob can take all three piles left. In this case, Alice get 2 + 7 = 9 piles in total. So we return 10 since it's larger. 
+Explanation:  If Alice takes one pile at the beginning, Bob takes two piles, then Alice takes 2 piles again. Alice can get 2 + 4 + 4 = 10 piles in total. If Alice takes two piles at the beginning, then Bob can take all three piles left. In this case, Alice get 2 + 7 = 9 piles in total. So we return 10 since it's larger.
 
 Example 2:
 Input: piles = [1,2,3,4,5,100]
@@ -9019,7 +9019,7 @@ function stoneGameII(piles: number[]): number {
   return dfs(0, 1);
 }
 
-/* 
+/*
 592. Fraction Addition and Subtraction
 
 Given a string expression representing an expression of fraction addition and subtraction, return the calculation result in string format.
@@ -9103,7 +9103,7 @@ function fractionAddition(expression: string): string {
   return `${numerator}/${denominator}`;
 }
 
-/* 
+/*
 1514. Path with Maximum Probability
 
 You are given an undirected weighted graph of n nodes (0-indexed), represented by an edge list where edges[i] = [a, b] is an undirected edge connecting the nodes a and b with a probability of success of traversing that edge succProb[i].
@@ -9262,7 +9262,7 @@ function maxProbability(
   return 0;
 }
 
-/* 
+/*
 1905. Count Sub Islands
 
 You are given two m x n binary matrices grid1 and grid2 containing only 0's (representing water) and 1's (representing land). An island is a group of 1's connected 4-directionally (horizontal or vertical). Any cells outside of the grid are considered water cells.
@@ -9279,7 +9279,7 @@ The 1s colored red in grid2 are those considered to be part of a sub-island. The
 
 Example 2:
 Input: grid1 = [[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]], grid2 = [[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]
-Output: 2 
+Output: 2
 Explanation: In the picture above, the grid on the left is grid1 and the grid on the right is grid2.
 The 1s colored red in grid2 are those considered to be part of a sub-island. There are two sub-islands.
 
@@ -9322,7 +9322,7 @@ function countSubIslands(grid1: number[][], grid2: number[][]): number {
   return count; // Return the total number of sub-islands
 }
 
-/* 
+/*
 947. Most Stones Removed with Same Row or Column
 
 On a 2D plane, we place n stones at some integer coordinate points. Each coordinate point may have at most one stone.
@@ -9424,7 +9424,7 @@ function removeStones(stones: number[][]): number {
   return stones.length - uniqueParents.size;
 }
 
-/* 
+/*
 1894. Find the Student that Will Replace the Chalk
 
 There are n students in a class numbered from 0 to n - 1. The teacher will give each student a problem starting with the student number 0, then the student number 1, and so on until the teacher reaches the student number n - 1. After that, the teacher will restart the process, starting with the student number 0 again.
@@ -9493,7 +9493,7 @@ function chalkReplacer(chalk: number[], k: number): number {
   return -1;
 }
 
-/* 
+/*
 874. Walking Robot Simulation
 
 A robot on an infinite XY-plane starts at point (0, 0) facing north. The robot can receive a sequence of these three possible types of commands:
@@ -9596,7 +9596,7 @@ function robotSim(commands: number[], obstacles: number[][]): number {
   return maxDistance; // Return the maximum squared distance found
 }
 
-/* 
+/*
 2028. Find Missing Observations
 
 You have observations of n + m 6-sided dice rolls with each face numbered from 1 to 6. n of the observations went missing, and you only have the observations of m rolls. Fortunately, you have also calculated the average value of the n + m rolls.
@@ -9663,7 +9663,7 @@ function missingRolls(rolls: number[], mean: number, n: number): number[] {
   return result; // Return the final array of missing rolls
 }
 
-/* 
+/*
 3217. Delete Nodes From Linked List Present in Array
 
 You are given an array of integers nums and the head of a linked list. Return the head of the modified linked list after removing all nodes from the linked list that have a value that exists in nums.
@@ -9735,10 +9735,10 @@ function modifiedList(nums: number[], head: ListNode | null): ListNode | null {
   return dummy.next;
 }
 
-/* 
+/*
 1367. Linked List in Binary Tree
 
-Given a binary tree root and a linked list with head as the first node. 
+Given a binary tree root and a linked list with head as the first node.
 
 Return True if all the elements in the linked list starting from the head correspond to some downward path connected in the binary tree otherwise return False.
 
@@ -9747,7 +9747,7 @@ In this context downward path means a path that starts at some node and goes dow
 Example 1:
 Input: head = [4,2,8], root = [1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]
 Output: true
-Explanation: Nodes in blue form a subpath in the binary Tree.  
+Explanation: Nodes in blue form a subpath in the binary Tree.
 
 Example 2:
 Input: head = [1,4,2,6], root = [1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]
@@ -9815,7 +9815,7 @@ function dfs(root: TreeNode | null, head: ListNode | null): boolean {
   return dfs(root.left, head.next) || dfs(root.right, head.next);
 }
 
-/* 
+/*
 725. Split Linked List in Parts
 
 Given the head of a singly linked list and an integer k, split the linked list into k consecutive linked list parts.
@@ -9905,7 +9905,7 @@ function splitListToParts(
   return result; // Return the array of parts
 }
 
-/* 
+/*
 2326. Spiral Matrix IV
 
 You are given two integers m and n, which represent the dimensions of a matrix.
@@ -10008,7 +10008,7 @@ function spiralMatrix(m: number, n: number, head: ListNode | null): number[][] {
   return result;
 }
 
-/* 
+/*
 2807. Insert Greatest Common Divisors in Linked List
 
 Given the head of a linked list head, in which each node contains an integer value.
@@ -10081,7 +10081,7 @@ function insertGreatestCommonDivisors(head: ListNode | null): ListNode | null {
   return head; // Return the modified list
 }
 
-/* 
+/*
 1310. XOR Queries of a Subarray
 
 You are given an array arr of positive integers. You are also given the array queries where queries[i] = [lefti, righti].
@@ -10092,17 +10092,17 @@ Return an array answer where answer[i] is the answer to the ith query.
 
 Example 1:
 Input: arr = [1,3,4,8], queries = [[0,1],[1,2],[0,3],[3,3]]
-Output: [2,7,14,8] 
-Explanation: 
+Output: [2,7,14,8]
+Explanation:
 The binary representation of the elements in the array are:
-1 = 0001 
-3 = 0011 
-4 = 0100 
-8 = 1000 
+1 = 0001
+3 = 0011
+4 = 0100
+8 = 1000
 The XOR values for queries are:
-[0,1] = 1 xor 3 = 2 
-[1,2] = 3 xor 4 = 7 
-[0,3] = 1 xor 3 xor 4 xor 8 = 14 
+[0,1] = 1 xor 3 = 2
+[1,2] = 3 xor 4 = 7
+[0,3] = 1 xor 3 xor 4 xor 8 = 14
 [3,3] = 8
 
 Example 2:
@@ -10138,7 +10138,7 @@ function xorQueries(arr: number[], queries: number[][]): number[] {
   );
 }
 
-/* 
+/*
 2419. Longest Subarray With Maximum Bitwise AND
 
 You are given an integer array nums of size n.
@@ -10201,7 +10201,7 @@ function longestSubarray(nums: number[]): number {
   return longest;
 }
 
-/* 
+/*
 1371. Find the Longest Substring Containing Vowels in Even Counts
 
 Given the string s, return the size of the longest substring containing each vowel an even number of times. That is, 'a', 'e', 'i', 'o', and 'u' must appear an even number of times.
@@ -10273,7 +10273,7 @@ function findTheLongestSubstring(s: string): number {
   return maxLength;
 }
 
-/* 
+/*
 539. Minimum Time Difference
 
 Given a list of 24-hour clock time points in "HH:MM" format, return the minimum minutes difference between any two time-points in the list.
@@ -10317,7 +10317,7 @@ function findMinDifference(timePoints: string[]): number {
   return minDiff; // Return the smallest time difference found
 }
 
-/* 
+/*
 179. Largest Number
 
 Given a list of non-negative integers nums, arrange them such that they form the largest number and return it.
@@ -10354,7 +10354,7 @@ function largestNumber(nums: number[]): string {
   return strNums.join(""); // Join the sorted array into a single string
 }
 
-/* 
+/*
 241. Different Ways to Add Parentheses
 
 Given a string expression of numbers and operators, return all possible results from computing all the different possible ways to group numbers and operators. You may return the answer in any order.
@@ -10365,17 +10365,17 @@ Example 1:
 Input: expression = "2-1-1"
 Output: [0,2]
 Explanation:
-((2-1)-1) = 0 
+((2-1)-1) = 0
 (2-(1-1)) = 2
 
 Example 2:
 Input: expression = "2*3-4*5"
 Output: [-34,-14,-10,-10,10]
 Explanation:
-(2*(3-(4*5))) = -34 
-((2*3)-(4*5)) = -14 
-((2*(3-4))*5) = -10 
-(2*((3-4)*5)) = -10 
+(2*(3-(4*5))) = -34
+((2*3)-(4*5)) = -14
+((2*(3-4))*5) = -10
+(2*((3-4)*5)) = -10
 (((2*3)-4)*5) = 10
 
 Constraints:
@@ -10450,7 +10450,7 @@ function diffWaysToCompute(expression: string): number[] {
   return compute(0, tokens.length - 1);
 }
 
-/* 
+/*
 2707. Extra Characters in a String
 
 You are given a 0-indexed string s and a dictionary of words dictionary. You have to break s into one or more non-overlapping substrings such that each substring is present in dictionary. There may be some extra characters in s which are not present in any of the substrings.
@@ -10504,7 +10504,7 @@ function minExtraChar(s: string, dictionary: string[]): number {
   return dp[s.length];
 }
 
-/* 
+/*
 3043. Find the Length of the Longest Common Prefix
 
 You are given two arrays with positive integers arr1 and arr2.
@@ -10576,7 +10576,7 @@ function longestCommonPrefix(arr1: number[], arr2: number[]): number {
   return maxPrefixLength;
 }
 
-/* 
+/*
 729. My Calendar I
 
 You are implementing a program to use as your calendar. We can add a new event if adding the event will not cause a double booking.
@@ -10642,7 +10642,7 @@ class MyCalendar {
   }
 }
 
-/* 
+/*
 731. My Calendar II
 
 You are implementing a program to use as your calendar. We can add a new event if adding the event will not cause a triple booking.
@@ -10664,9 +10664,9 @@ Output
 [null, true, true, true, false, true, true]
 Explanation
 MyCalendarTwo myCalendarTwo = new MyCalendarTwo();
-myCalendarTwo.book(10, 20); // return True, The event can be booked. 
-myCalendarTwo.book(50, 60); // return True, The event can be booked. 
-myCalendarTwo.book(10, 40); // return True, The event can be double booked. 
+myCalendarTwo.book(10, 20); // return True, The event can be booked.
+myCalendarTwo.book(50, 60); // return True, The event can be booked.
+myCalendarTwo.book(10, 40); // return True, The event can be double booked.
 myCalendarTwo.book(5, 15);  // return False, The event cannot be booked, because it would result in a triple booking.
 myCalendarTwo.book(5, 10); // return True, The event can be booked, as it does not use time 10 which is already double booked.
 myCalendarTwo.book(25, 55); // return True, The event can be booked, as the time in [25, 40) will be double booked with the third event, the time [40, 50) will be single booked, and the time [50, 55) will be double booked with the second event.
@@ -10712,7 +10712,7 @@ class MyCalendarTwo {
   }
 }
 
-/* 
+/*
 641. Design Circular Deque
 
 Design your implementation of the circular double-ended queue (deque).
@@ -10842,7 +10842,7 @@ class MyCircularDeque {
   }
 }
 
-/* 
+/*
 1381. Design a Stack With Increment Operation
 
 Design a stack that supports increment operations on its elements.
@@ -10924,7 +10924,7 @@ class CustomStack {
   }
 }
 
-/* 
+/*
 1497. Check If Array Pairs Are Divisible by k
 
 Given an array of integers arr of even length n and an integer k.
@@ -10983,7 +10983,7 @@ function canArrange(arr: number[], k: number): boolean {
   return true;
 }
 
-/* 
+/*
 1590. Make Sum Divisible by P
 
 Given an array of positive integers nums, remove the smallest subarray (possibly empty) such that the sum of the remaining elements is divisible by p. It is not allowed to remove the whole array.
@@ -11056,7 +11056,7 @@ function minSubarray(nums: number[], p: number): number {
   return minLength === Infinity || minLength === nums.length ? -1 : minLength;
 }
 
-/* 
+/*
 2491. Divide Players Into Teams of Equal Skill
 
 You are given a positive integer array skill of even length n where skill[i] denotes the skill of the ith player. Divide the players into n / 2 teams of size 2 such that the total skill of each team is equal.
@@ -11068,21 +11068,21 @@ Return the sum of the chemistry of all the teams, or return -1 if there is no wa
 Example 1:
 Input: skill = [3,2,5,1,3,4]
 Output: 22
-Explanation: 
+Explanation:
 Divide the players into the following teams: (1, 5), (2, 4), (3, 3), where each team has a total skill of 6.
 The sum of the chemistry of all the teams is: 1 * 5 + 2 * 4 + 3 * 3 = 5 + 8 + 9 = 22.
 
 Example 2:
 Input: skill = [3,4]
 Output: 12
-Explanation: 
+Explanation:
 The two players form a team with a total skill of 7.
 The chemistry of the team is 3 * 4 = 12.
 
 Example 3:
 Input: skill = [1,1,2,3]
 Output: -1
-Explanation: 
+Explanation:
 There is no way to divide the players into teams such that the total skill of each team is equal.
 
 Constraints:
@@ -11121,10 +11121,10 @@ function dividePlayers(skill: number[]): number {
   return chemistrySum;
 }
 
-/* 
+/*
 567. Permutation in String
 
-Given two strings s1 and s2, return true if s2 contains a 
+Given two strings s1 and s2, return true if s2 contains a
 permutation of s1, or false otherwise.
 
 In other words, return true if one of s1's permutations is the substring of s2.
@@ -11195,7 +11195,7 @@ function checkInclusion(s1: string, s2: string): boolean {
   return matches === 26;
 }
 
-/* 
+/*
 1813. Sentence Similarity III
 
 You are given two strings sentence1 and sentence2, each representing a sentence composed of words. A sentence is a list of words that are separated by a single space with no leading or trailing spaces. Each word consists of only uppercase and lowercase English characters.
@@ -11259,7 +11259,7 @@ function areSentencesSimilar(sentence1: string, sentence2: string): boolean {
   return i + j >= Math.min(s1.length, s2.length);
 }
 
-/* 
+/*
 1963. Minimum Number of Swaps to Make the String Balanced
 
 You are given a 0-indexed string s of even length n. The string consists of exactly n / 2 opening brackets '[' and n / 2 closing brackets ']'.
@@ -11329,7 +11329,7 @@ function minSwaps(s: string): number {
   return swaps;
 }
 
-/* 
+/*
 921. Minimum Add to Make Parentheses Valid
 
 A parentheses string is valid if and only if:
@@ -11376,7 +11376,7 @@ function minAddToMakeValid(s: string): number {
   return open + close;
 }
 
-/* 
+/*
 962. Maximum Width Ramp
 
 A ramp in an integer array nums is a pair (i, j) for which i < j and nums[i] <= nums[j]. The width of such a ramp is j - i.
@@ -11428,7 +11428,7 @@ function maxWidthRamp(nums: number[]): number {
   return maxRamp; // Return the maximum width ramp found
 }
 
-/* 
+/*
 1942. The Number of the Smallest Unoccupied Chair
 
 There is a party where n friends numbered from 0 to n - 1 are attending. There is an infinite number of chairs in this party that are numbered from 0 to infinity. When a friend arrives at the party, they sit on the unoccupied chair with the smallest number.
@@ -11443,7 +11443,7 @@ Return the chair number that the friend numbered targetFriend will sit on.
 Example 1:
 Input: times = [[1,4],[2,3],[4,6]], targetFriend = 1
 Output: 1
-Explanation: 
+Explanation:
 - Friend 0 arrives at time 1 and sits on chair 0.
 - Friend 1 arrives at time 2 and sits on chair 1.
 - Friend 1 leaves at time 3 and chair 1 becomes empty.
@@ -11454,7 +11454,7 @@ Since friend 1 sat on chair 1, we return 1.
 Example 2:
 Input: times = [[3,10],[1,5],[2,6]], targetFriend = 0
 Output: 2
-Explanation: 
+Explanation:
 - Friend 1 arrives at time 1 and sits on chair 0.
 - Friend 2 arrives at time 2 and sits on chair 1.
 - Friend 0 arrives at time 3 and sits on chair 2.
@@ -11561,7 +11561,7 @@ class MinHeap {
   }
 }
 
-/* 
+/*
 2406. Divide Intervals Into Minimum Number of Groups
 
 You are given a 2D integer array intervals where intervals[i] = [lefti, righti] represents the inclusive interval [lefti, righti].
@@ -11623,7 +11623,7 @@ function minGroups(intervals: number[][]): number {
   return maxOverlap;
 }
 
-/* 
+/*
 2530. Maximal Score After Applying K Operations
 
 You are given a 0-indexed integer array nums and an integer k. You have a starting score of 0.
@@ -11756,7 +11756,7 @@ function maxKelements(nums: number[], k: number): number {
   return score; // Return the maximum possible score after k operations
 }
 
-/* 
+/*
 2938. Separate Black and White Balls
 
 There are n balls on a table, each ball has a color black or white.
@@ -11818,7 +11818,7 @@ function minimumSteps(s: string): number {
   return minSteps;
 }
 
-/* 
+/*
 1405. Longest Happy String
 
 A string s is called happy if it satisfies the following conditions:
@@ -11888,7 +11888,7 @@ function longestDiverseString(a: number, b: number, c: number): string {
   return result; // Return the constructed happy string
 }
 
-/* 
+/*
 670. Maximum Swap
 
 You are given an integer num. You can swap two digits at most once to get the maximum valued number.
@@ -11935,7 +11935,7 @@ function maximumSwap(num: number): number {
   return num;
 }
 
-/* 
+/*
 2044. Count Number of Maximum Bitwise-OR Subsets
 
 Given an integer array nums, find the maximum possible bitwise OR of a subset of nums and return the number of different non-empty subsets with the maximum bitwise OR.
@@ -12001,7 +12001,7 @@ function countMaxOrSubsets(nums: number[]): number {
   return dp.get(max_or) || 0;
 }
 
-/* 
+/*
 1545. Find Kth Bit in Nth Binary String
 
 Given two positive integers n and k, the binary string Sn is formed as follows:
@@ -12062,7 +12062,7 @@ function findKthBit(n: number, k: number): string {
   return mirroredBit;
 }
 
-/* 
+/*
 1593. Split a String Into the Max Number of Unique Substrings
 
 Given a string s, return the maximum number of unique substrings that the given string can be split into.
@@ -12118,7 +12118,7 @@ function maxUniqueSplit(s: string): number {
   return maxCount; // Return the maximum count of unique substrings found
 }
 
-/* 
+/*
 2583. Kth Largest Sum in a Binary Tree
 
 You are given the root of a binary tree and a positive integer k.
@@ -12237,7 +12237,7 @@ function kthLargestLevelSum(root: TreeNode | null, k: number): number {
   return quickSelect(sums, k);
 }
 
-/* 
+/*
 2641. Cousins in Binary Tree II
 
 Given the root of a binary tree, replace the value of each node in the tree with the sum of all its cousins' values.
@@ -12334,7 +12334,7 @@ function replaceValueInTree(root: TreeNode | null): TreeNode | null {
   return root; // Return the modified tree
 }
 
-/* 
+/*
 951. Flip Equivalent Binary Trees
 
 For a binary tree T, we can define a flip operation as follows: choose any node, and swap the left and right child subtrees.
@@ -12395,63 +12395,7 @@ function flipEquiv(root1: TreeNode | null, root2: TreeNode | null): boolean {
   );
 }
 
-/* 
-1233. Remove Sub-Folders from the Filesystem
-
-Given a list of folders folder, return the folders after removing all sub-folders in those folders. You may return the answer in any order.
-
-If a folder[i] is located within another folder[j], it is called a sub-folder of it. A sub-folder of folder[j] must start with folder[j], followed by a "/". For example, "/a/b" is a sub-folder of "/a", but "/b" is not a sub-folder of "/a/b/c".
-
-The format of a path is one or more concatenated strings of the form: '/' followed by one or more lowercase English letters.
-
-For example, "/leetcode" and "/leetcode/problems" are valid paths while an empty string and "/" are not.
-
-Example 1:
-Input: folder = ["/a","/a/b","/c/d","/c/d/e","/c/f"]
-Output: ["/a","/c/d","/c/f"]
-Explanation: Folders "/a/b" is a subfolder of "/a" and "/c/d/e" is inside of folder "/c/d" in our filesystem.
-
-Example 2:
-Input: folder = ["/a","/a/b/c","/a/b/d"]
-Output: ["/a"]
-Explanation: Folders "/a/b/c" and "/a/b/d" will be removed because they are subfolders of "/a".
-
-Example 3:
-Input: folder = ["/a/b/c","/a/b/ca","/a/b/d"]
-Output: ["/a/b/c","/a/b/ca","/a/b/d"]
-
-Constraints:
-1 <= folder.length <= 4 * 10^4
-2 <= folder[i].length <= 100
-folder[i] contains only lowercase letters and '/'.
-folder[i] always starts with the character '/'.
-Each folder name is unique.
-
-</> Typescript Code:
-*/
-
-function removeSubfolders(folder: string[]): string[] {
-  // Sort the folder paths lexicographically
-  folder.sort();
-  // Initialize the result array
-  const res: string[] = [];
-  // Initialize the previous folder variable
-  let prev = "";
-  // Iterate over each folder path
-  for (const f of folder) {
-    // If the current folder is not a subfolder of the previous
-    if (!prev || !(f.startsWith(prev) && f[prev.length] === "/")) {
-      // Add the current folder to the result
-      res.push(f);
-      // Update the previous folder to the current one
-      prev = f;
-    }
-  }
-  // Return the filtered list of folders
-  return res;
-}
-
-/* 
+/*
 1277. Count Square Submatrices with All Ones
 
 Given a m * n matrix of ones and zeros, return how many square submatrices have all ones.
@@ -12464,23 +12408,23 @@ Input: matrix =
   [0,1,1,1]
 ]
 Output: 15
-Explanation: 
+Explanation:
 There are 10 squares of side 1.
 There are 4 squares of side 2.
 There is  1 square of side 3.
 Total number of squares = 10 + 4 + 1 = 15.
 
 Example 2:
-Input: matrix = 
+Input: matrix =
 [
   [1,0,1],
   [1,1,0],
   [1,1,0]
 ]
 Output: 7
-Explanation: 
-There are 6 squares of side 1.  
-There is 1 square of side 2. 
+Explanation:
+There are 6 squares of side 1.
+There is 1 square of side 2.
 Total number of squares = 6 + 1 = 7.
 
 Constraints:
@@ -12512,7 +12456,7 @@ function countSquares(matrix: number[][]): number {
   return result; // Return total number of squares
 }
 
-/* 
+/*
 2501. Longest Square Streak in an Array
 
 You are given an integer array nums. A subsequence of nums is called a square streak if:
@@ -12575,7 +12519,7 @@ function longestSquareStreak(nums: number[]): number {
   return maxLength >= 2 ? maxLength : -1;
 }
 
-/* 
+/*
 2684. Maximum Number of Moves in a Grid
 
 You are given a 0-indexed m x n matrix grid consisting of positive integers.
@@ -12654,7 +12598,7 @@ function maxMoves(grid: number[][]): number {
   return maxMoves;
 }
 
-/* 
+/*
 1957. Delete Characters to Make Fancy String
 
 A fancy string is a string where no three consecutive characters are equal.
@@ -12714,7 +12658,7 @@ function makeFancyString(s: string): string {
   return res.join(""); // Join the result array into a string and return
 }
 
-/* 
+/*
 3163. String Compression III
 
 Given a string word, compress it using the following algorithm:
@@ -12772,7 +12716,7 @@ function compressedString(word: string): string {
   return comp;
 }
 
-/* 
+/*
 2914. Minimum Number of Changes to Make Binary String Beautiful
 
 You are given a 0-indexed binary string s having an even length.
@@ -12824,12 +12768,12 @@ function minChanges(s: string): number {
   return changes; // Return the total number of changes needed
 }
 
-/* 
+/*
 3011. Find if Array Can Be Sorted
 
 You are given a 0-indexed array of positive integers nums.
 
-In one operation, you can swap any two adjacent elements if they have the same number of 
+In one operation, you can swap any two adjacent elements if they have the same number of
 set bits
 . You are allowed to do this operation any number of times (including zero).
 
@@ -12916,7 +12860,7 @@ function countBits(num: number): number {
   return count; // Return total set bits
 }
 
-/* 
+/*
 2275. Largest Combination With Bitwise AND Greater Than Zero
 
 The bitwise AND of an array nums is the bitwise AND of all integers in nums.
@@ -12963,7 +12907,7 @@ function largestCombination(candidates: number[]): number {
   return Math.max(...counts); // Return the maximum count among all bit positions
 }
 
-/* 
+/*
 1829. Maximum XOR for Each Query
 
 You are given a sorted array nums of n non-negative integers and an integer maximumBit. You want to perform the following query n times:
@@ -13020,7 +12964,7 @@ function getMaximumXor(nums: number[], maximumBit: number): number[] {
   return result; // Return the array of answers
 }
 
-/* 
+/*
 3133. Minimum Array End
 
 You are given two integers n and x. You have to construct an array of positive integers nums of size n where for every 0 <= i < n - 1, nums[i + 1] is greater than nums[i], and the result of the bitwise AND operation between all elements of nums is x.
@@ -13071,14 +13015,14 @@ function minEnd(n: number, x: number): number {
   return Number(result);
 }
 
-/* 
+/*
 3097. Shortest Subarray With OR at Least K II
 
 You are given an array nums of non-negative integers and an integer k.
 
 An array is called special if the bitwise OR of all of its elements is at least k.
 
-Return the length of the shortest special non-empty 
+Return the length of the shortest special non-empty
 subarray of nums, or return -1 if no special subarray exists.
 
 
@@ -13131,7 +13075,7 @@ function minimumSubarrayLength(nums: number[], k: number): number {
   return res === Infinity ? -1 : res; // Return -1 if no valid subarray found
 }
 
-/* 
+/*
 2601. Prime Subtraction Operation
 
 You are given a 0-indexed integer array nums of length n.
@@ -13208,7 +13152,7 @@ function primeSubOperation(nums: number[]): boolean {
   return true; // Successfully made the array strictly increasing
 }
 
-/* 
+/*
 2070. Most Beautiful Item for Each Query
 
 You are given a 2D integer array items where items[i] = [pricei, beautyi] denotes the price and beauty of an item respectively.
@@ -13222,7 +13166,7 @@ Input: items = [[1,2],[3,2],[2,4],[5,6],[3,5]], queries = [1,2,3,4,5,6]
 Output: [2,4,5,5,6,6]
 Explanation:
 - For queries[0]=1, [1,2] is the only item which has price <= 1. Hence, the answer for this query is 2.
-- For queries[1]=2, the items which can be considered are [1,2] and [2,4]. 
+- For queries[1]=2, the items which can be considered are [1,2] and [2,4].
   The maximum beauty among them is 4.
 - For queries[2]=3 and queries[3]=4, the items which can be considered are [1,2], [3,2], [2,4], and [3,5].
   The maximum beauty among them is 5.
@@ -13232,9 +13176,9 @@ Explanation:
   Example 2:
 Input: items = [[1,2],[1,2],[1,3],[1,4]], queries = [1]
 Output: [4]
-Explanation: 
-The price of every item is equal to 1, so we choose the item with the maximum beauty 4. 
-Note that multiple items can have the same price and/or beauty.  
+Explanation:
+The price of every item is equal to 1, so we choose the item with the maximum beauty 4.
+Note that multiple items can have the same price and/or beauty.
 
 Example 3:
 Input: items = [[10,1000]], queries = [5]
@@ -13284,7 +13228,7 @@ function maximumBeauty(items: number[][], queries: number[]): number[] {
   return answer;
 }
 
-/* 
+/*
 2563. Count the Number of Fair Pairs
 
 Given a 0-indexed integer array nums of size n and two integers lower and upper, return the number of fair pairs.
@@ -13349,7 +13293,7 @@ function upperBound(arr: number[], target: number, start: number): number {
   return left; // Return the upper bound index
 }
 
-/* 
+/*
 2064. Minimized Maximum of Products Distributed to Any Store
 
 You are given an integer n indicating there are n specialty retail stores. There are m product types of varying amounts, which are given as a 0-indexed integer array quantities, where quantities[i] represents the number of products of the ith product type.
@@ -13419,7 +13363,7 @@ function minimizedMaximum(n: number, quantities: number[]): number {
   return left;
 }
 
-/* 
+/*
 1574. Shortest Subarray to be Removed to Make Array Sorted
 
 Given an integer array arr, remove a subarray (can be empty) from arr such that the remaining elements in arr are non-decreasing.
@@ -13482,7 +13426,7 @@ function findLengthOfShortestSubarray(arr: number[]): number {
   return result;
 }
 
-/* 
+/*
 3254. Find the Power of K-Size Subarrays I
 
 You are given an array of integers nums of length n and a positive integer k.
@@ -13491,7 +13435,7 @@ The power of an array is defined as:
 
 Its maximum element if all of its elements are consecutive and sorted in ascending order.
 -1 otherwise.
-You need to find the power of all 
+You need to find the power of all
 subarrays of nums of size k.
 
 Return an integer array results of size n - k + 1, where results[i] is the power of nums[i..(i + k - 1)].
@@ -13548,7 +13492,7 @@ function resultsArray(nums: number[], k: number): number[] {
   return results; // Return the results array
 }
 
-/* 
+/*
 2461. Maximum Sum of Distinct Subarrays With Length K
 
 You are given an integer array nums and an integer k. Find the maximum subarray sum of all the subarrays of nums that meet the following conditions:
@@ -13618,7 +13562,7 @@ function maximumSubarraySum(nums: number[], k: number): number {
   return maxSum; // Return the maximum sum found
 }
 
-/* 
+/*
 2516. Take K of Each Character From Left and Right
 
 You are given a string s consisting of the characters 'a', 'b', and 'c' and a non-negative integer k. Each minute, you may take either the leftmost character of s, or the rightmost character of s.
@@ -13628,7 +13572,7 @@ Return the minimum number of minutes needed for you to take at least k of each c
 Example 1:
 Input: s = "aabaaaacaabc", k = 2
 Output: 8
-Explanation: 
+Explanation:
 Take three characters from the left of s. You now have two 'a' characters, and one 'b' character.
 Take five characters from the right of s. You now have four 'a' characters, two 'b' characters, and two 'c' characters.
 A total of 3 + 5 = 8 minutes is needed.
@@ -13671,7 +13615,7 @@ function takeCharacters(s: string, k: number): number {
   return n - maxWindow; // Minimum minutes needed is total length minus maximum window size
 }
 
-/* 
+/*
 2257. Count Unguarded Cells in the Grid
 
 You are given two integers m and n representing a 0-indexed m x n grid. You are also given two 2D integer arrays guards and walls where guards[i] = [rowi, coli] and walls[j] = [rowj, colj] represent the positions of the ith guard and jth wall respectively.
@@ -13756,7 +13700,7 @@ function countUnguarded(
   return m * n - blocked.size - guarded.size;
 }
 
-/* 
+/*
 1072. Flip Columns For Maximum Number of Equal Rows
 
 You are given an m x n binary matrix matrix.
@@ -13811,7 +13755,7 @@ function maxEqualRowsAfterFlips(matrix: number[][]): number {
   return maxRows;
 }
 
-/* 
+/*
 1861. Rotating the Box
 
 You are given an m x n matrix of characters box representing a side-view of a box. Each cell of the box is one of the following:
@@ -13897,7 +13841,7 @@ function rotateTheBox(box: string[][]): string[][] {
   return rotated; // Return the rotated box
 }
 
-/* 
+/*
 1975. Maximum Matrix Sum
 
 You are given an n x n integer matrix. You can do the following operation any number of times:
@@ -13966,7 +13910,7 @@ function maxMatrixSum(matrix: number[][]): number {
   }
 }
 
-/* 
+/*
 2924. Find Champion II
 
 There are n teams numbered from 0 to n - 1 in a tournament; each team is also a node in a DAG.
