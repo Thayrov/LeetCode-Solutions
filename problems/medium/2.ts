@@ -1,45 +1,71 @@
 /*
-11. Container With Most Water
+2. Add Two Numbers
 
-You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
-Find two lines that together with the x-axis form a container, such that the container contains the most water.
-Return the maximum amount of water a container can store.
-Notice that you may not slant the container.
+You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
 
 Example 1:
-Input: height = [1,8,6,2,5,4,8,3,7]
-Output: 49
-Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+Input: l1 = [2,4,3], l2 = [5,6,4]
+Output: [7,0,8]
+Explanation: 342 + 465 = 807.
 
 Example 2:
-Input: height = [1,1]
-Output: 1
+Input: l1 = [0], l2 = [0]
+Output: [0]
+
+Example 3:
+Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+Output: [8,9,9,9,0,0,0,1]
 
 Constraints:
-n == height.length
-2 <= n <= 10^5
-0 <= height[i] <= 10^4
+The number of nodes in each linked list is in the range [1, 100].
+0 <= Node.val <= 9
+It is guaranteed that the list represents a number that does not have leading zeros.
 
 </> Typescript code:
 */
 
-function maxArea(height: number[]): number {
-    // Initialize left pointer at start, right pointer at end
-    let l = 0, r = height.length - 1, max = 0;
-    
-    // Two-pointer approach: move pointers inward until they meet
-    while (l < r) {
-        // Determine container height (min of two lines) and move the shorter pointer inward
-        // This is optimal because moving the taller pointer can only decrease area
-        const h = height[l] < height[r] ? height[l++] : height[r--];
-        
-        // Calculate area: height * width (after pointer moved, so add 1 back)
-        const area = h * (r - l + 1);
-        
-        // Update maximum area if current area is larger
-        if (area > max) max = area;
+/* Definition for singly-linked list. */
+class ListNode {
+  val: number;
+  next: ListNode | null;
+  constructor(val?: number, next?: ListNode | null) {
+    this.val = val === undefined ? 0 : val; // Constructor: Initializes the value of the node. Defaults to 0 if not provided.
+    this.next = next === undefined ? null : next; // Constructor: Initializes the next node. Defaults to null if not provided.
+  }
+}
+
+function addTwoNumbers(
+  l1: ListNode | null,
+  l2: ListNode | null
+): ListNode | null {
+  let dummyHead = new ListNode(0); // Create a dummy head node for the resulting linked list. This helps in simplifying list operations.
+  let curr = dummyHead; // Initialize a current pointer to the dummy head. This will be used to build the result list.
+
+  let carry = 0; // Initialize the carry to 0. This will store any carry-over during addition.
+
+  // Start a loop that runs until both l1 and l2 are fully traversed
+  while (l1 !== null || l2 !== null) {
+    let sum = carry; // Start with the carry value in the sum for this digit.
+
+    if (l1 !== null) {
+      sum += l1.val; // Add the value of the current node of l1 to sum if l1 is not null.
+      l1 = l1.next; // Move to the next node in l1.
     }
-    
-    // Return the maximum area found
-    return max;
+    if (l2 !== null) {
+      sum += l2.val; // Add the value of the current node of l2 to sum if l2 is not null.
+      l2 = l2.next; // Move to the next node in l2.
+    }
+
+    carry = Math.floor(sum / 10); // Calculate the carry for the next digit (1 if sum is 10 or more, otherwise 0).
+    curr.next = new ListNode(sum % 10); // Create a new node with the digit part of the sum and add it to the result list.
+    curr = curr.next; // Move the current pointer to the new node.
+  }
+
+  // After processing both lists, if there's still a carry, add a new node with the carry value.
+  if (carry > 0) {
+    curr.next = new ListNode(carry);
+  }
+
+  return dummyHead.next; // Return the next node of dummy head, which is the start of the actual result list.
 }
