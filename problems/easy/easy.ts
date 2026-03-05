@@ -41,7 +41,7 @@ function imageSmoother(img: number[][]): number[][] {
 
   // Initialize 'newImg' as a two-dimensional array filled with zeros.
   const newImg: number[][] = Array.from({ length: m }, () =>
-    new Array(n).fill(0)
+    new Array(n).fill(0),
   );
 
   // Iterate over each row of the image.
@@ -286,76 +286,6 @@ function isPathCrossing(path: string): boolean {
 
   // If no coordinates have been visited more than once, return false
   return false;
-}
-
-/* 1758. Minimum Changes To Make Alternating Binary String
-Easy
-Topics
-Companies
-Hint
-You are given a string s consisting only of the characters '0' and '1'. In one operation, you can change any '0' to '1' or vice versa.
-
-The string is called alternating if no two adjacent characters are equal. For example, the string "010" is alternating, while the string "0100" is not.
-
-Return the minimum number of operations needed to make s alternating.
-
-Example 1:
-
-Input: s = "0100"
-Output: 1
-Explanation: If you change the last character to '1', s will be "0101", which is alternating.
-
-Example 2:
-
-Input: s = "10"
-Output: 0
-Explanation: s is already alternating.
-
-Example 3:
-
-Input: s = "1111"
-Output: 2
-Explanation: You need two operations to reach "0101" or "1010".
-
-Constraints:
-
-1 <= s.length <= 104
-s[i] is either '0' or '1'.
-
-</> Typescript Code:
-*/
-
-function minOperationsBT(s: string): number {
-  // Initialize two counters to track mismatches with the two possible alternating patterns
-  let count1 = 0; // Count mismatches for pattern '0101...'
-  let count2 = 0; // Count mismatches for pattern '1010...'
-
-  // Loop through each character of the string
-  for (let i = 0; i < s.length; i++) {
-    // Check if the current index is even
-    if (i % 2 === 0) {
-      // If the character at the even index is '1', it mismatches with '0101...' pattern
-      if (s[i] === "1") {
-        count1++; // Increment count1 for pattern '0101...'
-      } else {
-        // Otherwise, it mismatches with '1010...' pattern
-        count2++; // Increment count2 for pattern '1010...'
-      }
-    } else {
-      // If the current index is odd
-      // If the character at the odd index is '0', it mismatches with '0101...' pattern
-      if (s[i] === "0") {
-        count1++; // Increment count1 for pattern '0101...'
-      } else {
-        // Otherwise, it mismatches with '1010...' pattern
-        count2++; // Increment count2 for pattern '1010...'
-      }
-    }
-  }
-
-  // Finally, return the minimum of the two mismatch counts
-  // This represents the minimum number of changes needed to make the string alternating
-  return Math.min(count1, count2);
 }
 
 /* 
@@ -2134,7 +2064,7 @@ The number of nodes in the tree is in the range [1, 1000].
 // Function to sum the values of all left leaves in a binary tree
 function sumOfLeftLeaves(
   root: TreeNode | null,
-  isLeft: boolean = false
+  isLeft: boolean = false,
 ): number {
   // Base case: if the current node is null, return 0
   if (!root) return 0;
@@ -2240,7 +2170,7 @@ function validPath(
   n: number,
   edges: number[][],
   source: number,
-  destination: number
+  destination: number,
 ): boolean {
   // Initialize an adjacency list to represent the graph
   const adjList = new Map();
@@ -2460,9 +2390,12 @@ function findRelativeRanks(score: number[]): string[] {
 
   // Assign medals or numeric ranks based on sorted positions
   sortedIndices.forEach((value, index) => {
-    if (index === 0) result[value[1]] = "Gold Medal"; // First place
-    else if (index === 1) result[value[1]] = "Silver Medal"; // Second place
-    else if (index === 2) result[value[1]] = "Bronze Medal"; // Third place
+    if (index === 0)
+      result[value[1]] = "Gold Medal"; // First place
+    else if (index === 1)
+      result[value[1]] = "Silver Medal"; // Second place
+    else if (index === 2)
+      result[value[1]] = "Bronze Medal"; // Third place
     else result[value[1]] = (index + 1).toString(); // Other places
   });
 
@@ -3388,7 +3321,7 @@ sum(rowSum) == sum(colSum)
 function restoreMatrix(rowSum: number[], colSum: number[]): number[][] {
   // Initialize the matrix with all zeros
   let matrix: number[][] = Array.from({ length: rowSum.length }, () =>
-    Array(colSum.length).fill(0)
+    Array(colSum.length).fill(0),
   );
 
   // Initialize row and column pointers
@@ -4017,7 +3950,7 @@ Constraints:
 function construct2DArray(
   original: number[],
   m: number,
-  n: number
+  n: number,
 ): number[][] {
   // Check if the total number of elements can be exactly divided into m rows and n columns
   if (original.length !== m * n) return [];
@@ -4187,7 +4120,7 @@ function countConsistentStrings(allowed: string, words: string[]): number {
   // A word is consistent if all its characters are in the allowed set
   return words.filter((word) =>
     // Convert the word to an array of characters and check if all are in the allowed set
-    Array.from(word).every((char) => allowedSet.has(char))
+    Array.from(word).every((char) => allowedSet.has(char)),
   ).length; // Return the count of consistent strings
 }
 
@@ -4783,7 +4716,7 @@ Constraints:
 function getFinalState(
   nums: number[],
   k: number,
-  multiplier: number
+  multiplier: number,
 ): number[] {
   // Perform k operations
   for (let op = 0; op < k; op++) {
