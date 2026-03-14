@@ -2,13 +2,10 @@
 1415. The k-th Lexicographical String of All Happy Strings of Length n
 
 A happy string is a string that:
-
 consists only of letters of the set ['a', 'b', 'c'].
 s[i] != s[i + 1] for all values of i from 1 to s.length - 1 (string is 1-indexed).
 For example, strings "abc", "ac", "b" and "abcbabcbcb" are all happy strings and strings "aa", "baa" and "ababbc" are not happy strings.
-
 Given two integers n and k, consider a list of all happy strings of length n sorted in lexicographical order.
-
 Return the kth string of this list or return an empty string if there are less than k happy strings of length n.
 
 Example 1:
@@ -37,16 +34,16 @@ function getHappyString(n: number, k: number): string {
   // Compute the total number of happy strings of length n.
   const total = 3 * Math.pow(2, n - 1);
   // If k exceeds the total count, return an empty string.
-  if (k > total) return '';
+  if (k > total) return "";
 
   // Initialize the resulting string and a variable to store the last character added.
-  let result = '';
-  let last = '';
+  let result = "";
+  let last = "";
 
   // Iterate over each position in the string.
   for (let i = 0; i < n; i++) {
     // Explore letters 'a', 'b', and 'c' in lexicographical order.
-    for (const ch of ['a', 'b', 'c']) {
+    for (const ch of ["a", "b", "c"]) {
       // Skip the character if it's the same as the last added character
       // to ensure adjacent characters are different.
       if (ch === last) continue;
