@@ -40,7 +40,7 @@ s contains only lowercase English letters.
 function getLengthOfOptimalCompression(s: string, k: number): number {
   const n = s.length;
   // Create a 2D DP array with dimensions (n+1)x(k+1), initialized to Infinity
-  const dp = Array.from({length: n + 1}, () => Array(k + 1).fill(Infinity));
+  const dp = Array.from({ length: n + 1 }, () => Array(k + 1).fill(Infinity));
   dp[0][0] = 0; // Base case: no characters and no deletions lead to a length of 0
 
   // Iterate over each character in the string
@@ -62,7 +62,9 @@ function getLengthOfOptimalCompression(s: string, k: number): number {
         if (j - del >= 0) {
           dp[i][j] = Math.min(
             dp[i][j],
-            dp[l - 1][j - del] + 1 + (count >= 100 ? 3 : count >= 10 ? 2 : count >= 2 ? 1 : 0),
+            dp[l - 1][j - del] +
+              1 +
+              (count >= 100 ? 3 : count >= 10 ? 2 : count >= 2 ? 1 : 0),
           );
         }
       }
@@ -125,7 +127,7 @@ function minDifficulty(jobDifficulty: number[], d: number): number {
   if (n < d) return -1;
 
   // Initialize a 2D dynamic programming array with size (n+1)x(d+1), filled with Infinity
-  const dp = Array.from({length: n + 1}, () => Array(d + 1).fill(Infinity));
+  const dp = Array.from({ length: n + 1 }, () => Array(d + 1).fill(Infinity));
   // Base case: no difficulty for scheduling 0 jobs in 0 days
   dp[0][0] = 0;
 
@@ -193,7 +195,11 @@ Constraints:
 </> Typescript Code:
 */
 
-function jobScheduling(startTime: number[], endTime: number[], profit: number[]): number {
+function jobScheduling(
+  startTime: number[],
+  endTime: number[],
+  profit: number[],
+): number {
   // Combine startTime, endTime, and profit into a single array of jobs
   let jobs = startTime.map((start, i) => [start, endTime[i], profit[i]]);
   // Sort the jobs based on their end times
@@ -275,7 +281,7 @@ Constraints:
 function numberOfArithmeticSlices(nums: number[]): number {
   let total = 0; // Total count of arithmetic subsequences
   // An array of maps, where each map holds the count of subsequences ending at index i with a given difference
-  const dp = Array.from({length: nums.length}, () => new Map());
+  const dp = Array.from({ length: nums.length }, () => new Map());
 
   // Iterate through the nums array
   for (let i = 0; i < nums.length; i++) {
@@ -329,7 +335,7 @@ Constraints:
 function kInversePairs(n: number, k: number): number {
   const MOD = 1e9 + 7; // Modulus for large numbers
   // Initialize the dynamic programming table
-  const dp = Array.from({length: n + 1}, () => new Array(k + 1).fill(0));
+  const dp = Array.from({ length: n + 1 }, () => new Array(k + 1).fill(0));
   dp[0][0] = 1; // Base case
 
   // Iterate over each number from 1 to n
@@ -408,7 +414,8 @@ function numSubmatrixSumTarget(matrix: number[][], target: number): number {
 
       for (let row = 0; row < m; row++) {
         // Calculate cumulative sum for the submatrix
-        currSum += matrix[row][endCol] - (startCol > 0 ? matrix[row][startCol - 1] : 0);
+        currSum +=
+          matrix[row][endCol] - (startCol > 0 ? matrix[row][startCol - 1] : 0);
         // Count the number of times (currSum - target) has occurred
         count += sumMap.get(currSum - target) || 0;
         // Update the frequency map
@@ -464,7 +471,7 @@ function minWindow(s: string, t: string): string {
   for (let c of t) need.set(c, (need.get(c) || 0) + 1);
 
   // Initialize the result string and pointers for the sliding window
-  let result = '',
+  let result = "",
     left = 0,
     right = 0,
     minLen = Infinity;
@@ -546,15 +553,17 @@ function cherryPickup(grid: number[][]): number {
   const rows = grid.length,
     cols = grid[0].length;
   // DP table to store the max cherries picked up to row i, with robots at (i, col1) and (i, col2)
-  const dp = Array.from({length: rows}, () =>
-    Array.from({length: cols}, () => Array(cols).fill(0)),
+  const dp = Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => Array(cols).fill(0)),
   );
 
   // Base case: Initialize the last row with the cherries that can be picked by both robots
   for (let col1 = 0; col1 < cols; col1++) {
     for (let col2 = 0; col2 < cols; col2++) {
       dp[rows - 1][col1][col2] =
-        col1 === col2 ? grid[rows - 1][col1] : grid[rows - 1][col1] + grid[rows - 1][col2];
+        col1 === col2
+          ? grid[rows - 1][col1]
+          : grid[rows - 1][col1] + grid[rows - 1][col2];
     }
   }
 
@@ -569,14 +578,23 @@ function cherryPickup(grid: number[][]): number {
             const newCol1 = col1 + move1,
               newCol2 = col2 + move2;
             // Ensure new positions are within grid boundaries
-            if (newCol1 >= 0 && newCol1 < cols && newCol2 >= 0 && newCol2 < cols) {
-              maxCherries = Math.max(maxCherries, dp[row + 1][newCol1][newCol2]);
+            if (
+              newCol1 >= 0 &&
+              newCol1 < cols &&
+              newCol2 >= 0 &&
+              newCol2 < cols
+            ) {
+              maxCherries = Math.max(
+                maxCherries,
+                dp[row + 1][newCol1][newCol2],
+              );
             }
           }
         }
         // Update DP table with max cherries + current cell cherries
         dp[row][col1][col2] =
-          maxCherries + (col1 === col2 ? grid[row][col1] : grid[row][col1] + grid[row][col2]);
+          maxCherries +
+          (col1 === col2 ? grid[row][col1] : grid[row][col1] + grid[row][col2]);
       }
     }
   }
@@ -625,7 +643,7 @@ function canTraverseAllPairs(nums: number[]): boolean {
   const spf = smallestPrimeFactor(maxVal);
 
   // Initialize the parent array for union-find, setting each element to be its own parent.
-  const parent = Array.from({length: nums.length}, (_, i) => i);
+  const parent = Array.from({ length: nums.length }, (_, i) => i);
 
   // Find function for union-find to find the root parent of x.
   function find(x) {
@@ -644,14 +662,14 @@ function canTraverseAllPairs(nums: number[]): boolean {
   const factorToIndices = new Map();
   nums.forEach((num, idx) => {
     let factors = getPrimeFactors(num, spf); // Get all prime factors of num.
-    factors.forEach(factor => {
+    factors.forEach((factor) => {
       if (!factorToIndices.has(factor)) factorToIndices.set(factor, []); // Initialize array if factor not seen before.
       factorToIndices.get(factor).push(idx); // Associate idx with this factor.
     });
   });
 
   // For each set of indices associated with a common prime factor, union them.
-  factorToIndices.forEach(indices => {
+  factorToIndices.forEach((indices) => {
     for (let i = 1; i < indices.length; i++) {
       union(indices[0], indices[i]); // Union first index with all others sharing the factor.
     }
@@ -668,7 +686,7 @@ function canTraverseAllPairs(nums: number[]): boolean {
 
 // Function to compute the smallest prime factor of each number up to maxVal using the Sieve of Eratosthenes.
 function smallestPrimeFactor(maxVal) {
-  const spf = Array.from({length: maxVal + 1}, (_, i) => i); // Initialize SPF array.
+  const spf = Array.from({ length: maxVal + 1 }, (_, i) => i); // Initialize SPF array.
   for (let p = 2; p * p <= maxVal; p++) {
     if (spf[p] === p) {
       // If p is its own SPF, p is prime.
@@ -780,7 +798,8 @@ function subarraysWithKDistinct(nums: number[], k: number): number {
   const add = (map, key) => map.set(key, (map.get(key) || 0) + 1); // Helper to add/update key counts in a window
   const remove = (map, key) => {
     // Helper to remove/update key counts in a window
-    if (map.get(key) === 1) map.delete(key); // If count is 1, remove key
+    if (map.get(key) === 1)
+      map.delete(key); // If count is 1, remove key
     else map.set(key, map.get(key) - 1); // Otherwise, decrement count
   };
 
@@ -835,7 +854,11 @@ Constraints:
 </> Typescript Code:
 */
 
-function countSubarraysHard(nums: number[], minK: number, maxK: number): number {
+function countSubarraysHard(
+  nums: number[],
+  minK: number,
+  maxK: number,
+): number {
   let lastMin = -1, // Last index where minK was found
     lastMax = -1, // Last index where maxK was found
     lastInvalid = -1, // Last index where a value outside [minK, maxK] was found
@@ -892,12 +915,16 @@ function trap(height: number[]): number {
     if (height[left] < height[right]) {
       // Check if the current left height is greater than or equal to maxLeft
       // If so, update maxLeft. Otherwise, add the difference to ans
-      height[left] >= maxLeft ? (maxLeft = height[left]) : (ans += maxLeft - height[left]);
+      height[left] >= maxLeft
+        ? (maxLeft = height[left])
+        : (ans += maxLeft - height[left]);
       // Move the left pointer to the right
       left++;
     } else {
       // Otherwise, do a similar check for the right side
-      height[right] >= maxRight ? (maxRight = height[right]) : (ans += maxRight - height[right]);
+      height[right] >= maxRight
+        ? (maxRight = height[right])
+        : (ans += maxRight - height[right]);
       // Move the right pointer to the left
       right--;
     }
@@ -1067,7 +1094,7 @@ The given input represents a valid tree.
 // Function to compute the sum of distances in a tree
 function sumOfDistancesInTree(n: number, edges: number[][]): number[] {
   // Create adjacency list for the tree
-  const tree: number[][] = Array.from({length: n}, () => []);
+  const tree: number[][] = Array.from({ length: n }, () => []);
   // Array to count the number of nodes in the subtree rooted at each node
   const count = new Array(n).fill(1);
   // Array to store the sum of distances for each node
@@ -1137,12 +1164,18 @@ n == quality.length == wage.length
 
 // import { MinPriorityQueue } from '@datastructures-js/priority-queue';
 
-function mincostToHireWorkers(quality: number[], wage: number[], k: number): number {
+function mincostToHireWorkers(
+  quality: number[],
+  wage: number[],
+  k: number,
+): number {
   // Map each worker to an array containing their wage-to-quality ratio and their quality
-  const workers = quality.map((q, i) => [wage[i] / q, q]).sort((a, b) => a[0] - b[0]); // Sort workers by their wage-to-quality ratio
+  const workers = quality
+    .map((q, i) => [wage[i] / q, q])
+    .sort((a, b) => a[0] - b[0]); // Sort workers by their wage-to-quality ratio
 
   let totalQuality = 0; // Initialize total quality of the group
-  const maxHeap = new MinPriorityQueue({priority: x => -x}); // Min-heap to keep the smallest quality values
+  const maxHeap = new MinPriorityQueue({ priority: (x) => -x }); // Min-heap to keep the smallest quality values
   let minCost = Number.POSITIVE_INFINITY; // Initialize minimum cost to a large number
 
   // Loop through each worker
@@ -1273,7 +1306,11 @@ words[i], letters[i] contains only lower case English letters.
 </> Typescript Code:
 */
 
-function maxScoreWords(words: string[], letters: string[], score: number[]): number {
+function maxScoreWords(
+  words: string[],
+  letters: string[],
+  score: number[],
+): number {
   // Initialize an array to count the available letters
   const letterCount = new Array(26).fill(0);
   for (const letter of letters) {
@@ -1301,7 +1338,11 @@ function maxScoreWords(words: string[], letters: string[], score: number[]): num
   }
 
   // Depth-First Search (DFS) function to explore all combinations of words
-  function dfs(index: number, currentScore: number, letterCount: number[]): number {
+  function dfs(
+    index: number,
+    currentScore: number,
+    letterCount: number[],
+  ): number {
     // Base case: if all words are considered, return the current score
     if (index === words.length) return currentScore;
 
@@ -1369,7 +1410,7 @@ function wordBreak(s: string, wordDict: string[]): string[] {
   // Helper function for backtracking
   function backtrack(start: number): string[] {
     // If start index reaches the end of the string, return an empty string
-    if (start === s.length) return [''];
+    if (start === s.length) return [""];
     // If result for this start index is already computed, return it
     if (memo.has(start)) return memo.get(start)!;
 
@@ -1384,7 +1425,7 @@ function wordBreak(s: string, wordDict: string[]): string[] {
         const subResults = backtrack(end);
         // Concatenate the current word with results from the end index
         for (const sub of subResults) {
-          results.push(word + (sub ? ' ' + sub : ''));
+          results.push(word + (sub ? " " + sub : ""));
         }
       }
     }
@@ -1439,7 +1480,7 @@ function checkRecord(n: number): number {
 
   // Initialize the DP table with dimensions [n+1][2][3]
   // dp[i][a][l] represents the number of valid sequences of length i with a 'A' and l 'L'
-  const dp = Array.from({length: n + 1}, () =>
+  const dp = Array.from({ length: n + 1 }, () =>
     Array(2)
       .fill(0)
       .map(() => Array(3).fill(0)),
@@ -1511,7 +1552,12 @@ n == capital.length
 </> Typescript Code:
 */
 
-function findMaximizedCapital(k: number, w: number, profits: number[], capital: number[]): number {
+function findMaximizedCapital(
+  k: number,
+  w: number,
+  profits: number[],
+  capital: number[],
+): number {
   // Combine profits and capital into a single array of projects
   const projects = profits.map((profit, index) => [profit, capital[index]]);
   // Sort projects by their capital requirement in ascending order
@@ -1520,7 +1566,9 @@ function findMaximizedCapital(k: number, w: number, profits: number[], capital: 
   // Create a max-heap to store the profits of the projects we can afford
   // npm install @datastructures-js/priority-queue
   // import { MaxPriorityQueue } from '@datastructures-js/priority-queue';
-  const maxHeap = new MaxPriorityQueue({priority: (project: number[]) => project[0]});
+  const maxHeap = new MaxPriorityQueue({
+    priority: (project: number[]) => project[0],
+  });
   let i = 0;
 
   // Iterate up to k times, as we can complete at most k projects
@@ -1708,7 +1756,7 @@ function maxNumEdgesToRemove(n: number, edges: number[][]): number {
     rank: number[];
 
     constructor(size: number) {
-      this.parent = Array.from({length: size}, (_, i) => i); // Initialize parent array
+      this.parent = Array.from({ length: size }, (_, i) => i); // Initialize parent array
       this.rank = new Array(size).fill(0); // Initialize rank array
     }
 
@@ -1779,95 +1827,6 @@ function maxNumEdgesToRemove(n: number, edges: number[][]): number {
 }
 
 /* 
-2751. Robot Collisions
-
-There are n 1-indexed robots, each having a position on a line, health, and movement direction.
-
-You are given 0-indexed integer arrays positions, healths, and a string directions (directions[i] is either 'L' for left or 'R' for right). All integers in positions are unique.
-
-All robots start moving on the line simultaneously at the same speed in their given directions. If two robots ever share the same position while moving, they will collide.
-
-If two robots collide, the robot with lower health is removed from the line, and the health of the other robot decreases by one. The surviving robot continues in the same direction it was going. If both robots have the same health, they are both removed from the line.
-
-Your task is to determine the health of the robots that survive the collisions, in the same order that the robots were given, i.e. final heath of robot 1 (if survived), final health of robot 2 (if survived), and so on. If there are no survivors, return an empty array.
-
-Return an array containing the health of the remaining robots (in the order they were given in the input), after no further collisions can occur.
-
-Note: The positions may be unsorted.
-
-Example 1:
-Input: positions = [5,4,3,2,1], healths = [2,17,9,15,10], directions = "RRRRR"
-Output: [2,17,9,15,10]
-Explanation: No collision occurs in this example, since all robots are moving in the same direction. So, the health of the robots in order from the first robot is returned, [2, 17, 9, 15, 10].
-
-Example 2:
-Input: positions = [3,5,2,6], healths = [10,10,15,12], directions = "RLRL"
-Output: [14]
-Explanation: There are 2 collisions in this example. Firstly, robot 1 and robot 2 will collide, and since both have the same health, they will be removed from the line. Next, robot 3 and robot 4 will collide and since robot 4's health is smaller, it gets removed, and robot 3's health becomes 15 - 1 = 14. Only robot 3 remains, so we return [14].
-
-Example 3:
-Input: positions = [1,2,5,6], healths = [10,10,11,11], directions = "RLRL"
-Output: []
-Explanation: Robot 1 and robot 2 will collide and since both have the same health, they are both removed. Robot 3 and 4 will collide and since both have the same health, they are both removed. So, we return an empty array, [].
-
-
-Constraints:
-1 <= positions.length == healths.length == directions.length == n <= 10^5
-1 <= positions[i], healths[i] <= 10^9
-directions[i] == 'L' or directions[i] == 'R'
-All values in positions are distinct
-
-</> Typescript Code:
-*/
-
-function survivedRobotsHealths(
-  positions: number[],
-  healths: number[],
-  directions: string,
-): number[] {
-  // Combine positions, healths, and directions into a single array of objects with an additional index field
-  const robots = positions.map((pos, index) => ({
-    pos,
-    health: healths[index],
-    dir: directions[index],
-    index,
-  }));
-
-  // Sort robots by their positions
-  robots.sort((a, b) => a.pos - b.pos);
-
-  // Initialize a stack to handle collisions
-  const stack: {pos: number; health: number; dir: string; index: number}[] = [];
-
-  // Iterate through each robot
-  for (const robot of robots) {
-    // Handle collisions between robots moving in opposite directions
-    while (stack.length && stack[stack.length - 1].dir === 'R' && robot.dir === 'L') {
-      const top = stack.pop();
-      if (!top) break;
-      if (top.health > robot.health) {
-        // Top robot wins the collision and its health decreases by 1
-        stack.push({...top, health: top.health - 1});
-        robot.health = 0;
-        break;
-      } else if (top.health < robot.health) {
-        // Current robot wins the collision and its health decreases by 1
-        robot.health -= 1;
-      } else {
-        // Both robots have the same health and are removed
-        robot.health = 0;
-        break;
-      }
-    }
-    // If the robot still has health, push it onto the stack
-    if (robot.health > 0) stack.push(robot);
-  }
-
-  // Sort the surviving robots by their original index to return healths in the original order
-  return stack.sort((a, b) => a.index - b.index).map(robot => robot.health);
-}
-
-/* 
 726. Number of Atoms
 
 Given a string formula representing a chemical formula, return the count of each atom.
@@ -1921,12 +1880,12 @@ function countOfAtoms(formula: string): string {
   while (i < formula.length) {
     const char = formula[i];
 
-    if (char === '(') {
+    if (char === "(") {
       // Push current map to stack and reset for new scope
       stack.push(currentMap);
       currentMap = new Map<string, number>();
       i++;
-    } else if (char === ')') {
+    } else if (char === ")") {
       // Handle closing parentheses and optional number following
       let j = i + 1;
       let num = 0;
@@ -1990,7 +1949,7 @@ function countOfAtoms(formula: string): string {
 
   // Sort atoms alphabetically and generate final result string
   const sortedAtoms = Array.from(currentMap.keys()).sort();
-  let result = '';
+  let result = "";
 
   for (const atom of sortedAtoms) {
     result += atom;
@@ -2050,7 +2009,11 @@ lefti != righti
 */
 
 // Commented Solution
-function buildMatrix(k: number, rowConditions: number[][], colConditions: number[][]): number[][] {
+function buildMatrix(
+  k: number,
+  rowConditions: number[][],
+  colConditions: number[][],
+): number[][] {
   // Function to perform topological sort on given conditions
   const topologicalSort = (conditions: number[][]) => {
     // Initialize graph and in-degree map for k elements
@@ -2094,7 +2057,7 @@ function buildMatrix(k: number, rowConditions: number[][], colConditions: number
   const rowPos = new Map(rowOrder.map((num, idx) => [num, idx]));
   const colPos = new Map(colOrder.map((num, idx) => [num, idx]));
   // Initialize the matrix with zeros
-  const matrix = Array.from({length: k}, () => Array(k).fill(0));
+  const matrix = Array.from({ length: k }, () => Array(k).fill(0));
   // Place numbers in the matrix according to their positions
   for (let i = 1; i <= k; i++) {
     matrix[rowPos.get(i)!][colPos.get(i)!] = i;
@@ -2157,16 +2120,21 @@ Each vertex can be reached directly or indirectly from every other vertex.
 </> Typescript Code:
 */
 
-function secondMinimum(n: number, edges: number[][], time: number, change: number): number {
+function secondMinimum(
+  n: number,
+  edges: number[][],
+  time: number,
+  change: number,
+): number {
   // Initialize the graph as an adjacency list
-  const graph: number[][] = Array.from({length: n + 1}, () => []);
+  const graph: number[][] = Array.from({ length: n + 1 }, () => []);
   for (const [u, v] of edges) {
     graph[u].push(v);
     graph[v].push(u);
   }
 
   // Initialize distances array to store the first and second minimum distances to each node
-  const distances = Array.from({length: n + 1}, () => [
+  const distances = Array.from({ length: n + 1 }, () => [
     Number.MAX_SAFE_INTEGER,
     Number.MAX_SAFE_INTEGER,
   ]);
@@ -2178,14 +2146,18 @@ function secondMinimum(n: number, edges: number[][], time: number, change: numbe
     const [node, dist] = queue.shift()!; // Dequeue an element
     for (const neighbor of graph[node]) {
       // Traverse the neighbors of the current node
-      const waitTime = Math.floor(dist / change) % 2 === 1 ? change - (dist % change) : 0; // Calculate wait time if the signal is red
+      const waitTime =
+        Math.floor(dist / change) % 2 === 1 ? change - (dist % change) : 0; // Calculate wait time if the signal is red
       const newDist = dist + time + waitTime; // Total time to reach the neighbor
       if (newDist < distances[neighbor][0]) {
         // Update if new distance is smaller than the smallest recorded distance
         distances[neighbor][1] = distances[neighbor][0];
         distances[neighbor][0] = newDist;
         queue.push([neighbor, newDist]); // Enqueue the neighbor
-      } else if (newDist > distances[neighbor][0] && newDist < distances[neighbor][1]) {
+      } else if (
+        newDist > distances[neighbor][0] &&
+        newDist < distances[neighbor][1]
+      ) {
         // Update if new distance is second smallest
         distances[neighbor][1] = newDist;
         queue.push([neighbor, newDist]); // Enqueue the neighbor
@@ -2220,62 +2192,64 @@ Constraints:
 */
 
 function numberToWords(num: number): string {
-  if (num === 0) return 'Zero'; // If number is 0, return "Zero" immediately
+  if (num === 0) return "Zero"; // If number is 0, return "Zero" immediately
 
   // Arrays to store word representations of numbers
   const belowTwenty = [
-    '',
-    'One',
-    'Two',
-    'Three',
-    'Four',
-    'Five',
-    'Six',
-    'Seven',
-    'Eight',
-    'Nine',
-    'Ten',
-    'Eleven',
-    'Twelve',
-    'Thirteen',
-    'Fourteen',
-    'Fifteen',
-    'Sixteen',
-    'Seventeen',
-    'Eighteen',
-    'Nineteen',
+    "",
+    "One",
+    "Two",
+    "Three",
+    "Four",
+    "Five",
+    "Six",
+    "Seven",
+    "Eight",
+    "Nine",
+    "Ten",
+    "Eleven",
+    "Twelve",
+    "Thirteen",
+    "Fourteen",
+    "Fifteen",
+    "Sixteen",
+    "Seventeen",
+    "Eighteen",
+    "Nineteen",
   ];
   const tens = [
-    '',
-    '',
-    'Twenty',
-    'Thirty',
-    'Forty',
-    'Fifty',
-    'Sixty',
-    'Seventy',
-    'Eighty',
-    'Ninety',
+    "",
+    "",
+    "Twenty",
+    "Thirty",
+    "Forty",
+    "Fifty",
+    "Sixty",
+    "Seventy",
+    "Eighty",
+    "Ninety",
   ];
-  const thousands = ['', 'Thousand', 'Million', 'Billion'];
+  const thousands = ["", "Thousand", "Million", "Billion"];
 
   // Helper function to convert number less than 1000 to words
   const helper = (n: number): string => {
-    if (n === 0) return ''; // Base case for recursion: if n is 0, return an empty string
+    if (n === 0)
+      return ""; // Base case for recursion: if n is 0, return an empty string
     else if (n < 20)
-      return belowTwenty[n] + ' '; // If n is less than 20, get the word from belowTwenty array
+      return belowTwenty[n] + " "; // If n is less than 20, get the word from belowTwenty array
     else if (n < 100)
-      return tens[Math.floor(n / 10)] + ' ' + helper(n % 10); // For numbers between 20 and 99
-    else return belowTwenty[Math.floor(n / 100)] + ' Hundred ' + helper(n % 100); // For numbers between 100 and 999
+      return tens[Math.floor(n / 10)] + " " + helper(n % 10); // For numbers between 20 and 99
+    else
+      return belowTwenty[Math.floor(n / 100)] + " Hundred " + helper(n % 100); // For numbers between 100 and 999
   };
 
-  let result = ''; // Initialize result string
+  let result = ""; // Initialize result string
 
   // Process the number in chunks of 1000
   for (let i = 0; num > 0; i++) {
     if (num % 1000 !== 0) {
       // Only process if the current chunk is not zero
-      result = helper(num % 1000) + thousands[i] + ' ' + result; // Convert chunk to words and add to result
+      result = helper(num % 1000) + thousands[i] + " " + result; // Convert chunk to words and add to result
     }
     num = Math.floor(num / 1000); // Move to the next chunk
   }
@@ -2320,12 +2294,22 @@ function minDays(grid: number[][]): number {
 
   // Function to check if the grid is connected (i.e., forms a single island)
   const isConnected = (g: number[][]): boolean => {
-    let visited = new Array(rows).fill(0).map(() => new Array(cols).fill(false)); // Create a visited matrix
+    let visited = new Array(rows)
+      .fill(0)
+      .map(() => new Array(cols).fill(false)); // Create a visited matrix
     let foundIsland = false; // Flag to track if an island has been found
 
     // Depth-first search (DFS) to explore the connected components (island)
     const dfs = (i: number, j: number): void => {
-      if (i < 0 || i >= rows || j < 0 || j >= cols || g[i][j] === 0 || visited[i][j]) return; // Boundary and visited checks
+      if (
+        i < 0 ||
+        i >= rows ||
+        j < 0 ||
+        j >= cols ||
+        g[i][j] === 0 ||
+        visited[i][j]
+      )
+        return; // Boundary and visited checks
       visited[i][j] = true; // Mark the cell as visited
       dfs(i + 1, j); // Explore downward
       dfs(i - 1, j); // Explore upward
@@ -2486,7 +2470,7 @@ s consists of lowercase English letters.
 
 function strangePrinter(s: string): number {
   const n = s.length; // Length of the input string
-  const dp = Array.from({length: n}, () => Array(n).fill(0)); // DP table initialization
+  const dp = Array.from({ length: n }, () => Array(n).fill(0)); // DP table initialization
 
   // Iterate over different lengths of substrings
   for (let len = 1; len <= n; len++) {
@@ -2540,8 +2524,8 @@ n is representing an integer in the range [1, 1018 - 1]
 
 function nearestPalindromic(n: string): string {
   // Handle special cases directly for "10" and "11"
-  if (n === '10' || n === '11') {
-    return '9';
+  if (n === "10" || n === "11") {
+    return "9";
   }
 
   let number = 0;
@@ -2584,32 +2568,32 @@ function nearestPalindromic(n: string): string {
   // Generate a smaller palindrome candidate by decrementing the first half of the number
   copyNumber = Math.floor(number / dp[mid]);
   copyNumber -= 1;
-  let takeOffMid = '';
+  let takeOffMid = "";
   let firstHalf = copyNumber.toString();
   if (n.length % 2 && firstHalf.length > mid) {
     takeOffMid = firstHalf[firstHalf.length - 1];
     firstHalf = firstHalf.slice(0, firstHalf.length - 1);
   }
-  let reversedHalf = firstHalf.split('').reverse().join('');
+  let reversedHalf = firstHalf.split("").reverse().join("");
   let less = firstHalf + takeOffMid + reversedHalf;
 
   // Generate a larger palindrome candidate by incrementing the first half of the number
   copyNumber = Math.floor(number / dp[mid]);
   copyNumber += 1;
   if (copyNumber === 0) {
-    return '9';
+    return "9";
   }
-  takeOffMid = '';
+  takeOffMid = "";
   firstHalf = copyNumber.toString();
   if (n.length % 2) {
     takeOffMid = firstHalf[firstHalf.length - 1];
     firstHalf = firstHalf.slice(0, firstHalf.length - 1);
   }
-  reversedHalf = firstHalf.split('').reverse().join('');
+  reversedHalf = firstHalf.split("").reverse().join("");
   let more = firstHalf + takeOffMid + reversedHalf;
 
   // Compare the smaller and larger candidates to find the closest palindrome
-  let possibleAns = '';
+  let possibleAns = "";
   if (Number(more) - number < number - Number(less)) {
     possibleAns = more;
   } else {
@@ -2624,9 +2608,13 @@ function nearestPalindromic(n: string): string {
       j--;
     }
     const thirdParty = Number(n);
-    if (Math.abs(Number(possibleAns) - number) > Math.abs(number - thirdParty)) {
+    if (
+      Math.abs(Number(possibleAns) - number) > Math.abs(number - thirdParty)
+    ) {
       possibleAns = n;
-    } else if (Math.abs(Number(possibleAns) - number) === Math.abs(number - thirdParty)) {
+    } else if (
+      Math.abs(Number(possibleAns) - number) === Math.abs(number - thirdParty)
+    ) {
       if (thirdParty <= Number(possibleAns)) {
         possibleAns = n;
       }
@@ -2701,14 +2689,14 @@ function modifiedGraphEdges(
 ): number[][] {
   // PriorityQueue class for Dijkstra's algorithm, maintaining a sorted queue of elements by priority
   class PriorityQueue<T> {
-    private elements: {element: T; priority: number}[] = [];
+    private elements: { element: T; priority: number }[] = [];
 
     enqueue(element: T, priority: number): void {
-      this.elements.push({element, priority});
+      this.elements.push({ element, priority });
       this.elements.sort((a, b) => a.priority - b.priority); // Ensure the queue is sorted by priority
     }
 
-    dequeue(): {element: T; priority: number} | undefined {
+    dequeue(): { element: T; priority: number } | undefined {
       return this.elements.shift(); // Remove and return the element with the highest priority (smallest value)
     }
 
@@ -2718,7 +2706,10 @@ function modifiedGraphEdges(
   }
 
   // Create an adjacency list representation of the graph
-  const adjacencyList: [number, number][][] = Array.from({length: n}, () => []);
+  const adjacencyList: [number, number][][] = Array.from(
+    { length: n },
+    () => [],
+  );
   for (let i = 0; i < edges.length; i++) {
     const [nodeA, nodeB] = edges[i];
     adjacencyList[nodeA].push([nodeB, i]); // Add edges to the adjacency list for both nodes
@@ -2726,7 +2717,10 @@ function modifiedGraphEdges(
   }
 
   // Distance array, each node has two distances: one for the first run and another for the second run of Dijkstra
-  const distances: number[][] = Array.from({length: n}, () => [Infinity, Infinity]);
+  const distances: number[][] = Array.from({ length: n }, () => [
+    Infinity,
+    Infinity,
+  ]);
   distances[source] = [0, 0]; // Set the distance from the source to itself as 0
 
   // Run Dijkstra's algorithm for the first time
@@ -2770,7 +2764,8 @@ function modifiedGraphEdges(
         if (weight === -1) weight = 1; // Initially consider -1 as weight 1
 
         if (run === 1 && edges[edgeIndex][2] === -1) {
-          const newWeight = difference + distances[nextNode][0] - distances[currentNode][1];
+          const newWeight =
+            difference + distances[nextNode][0] - distances[currentNode][1];
           if (newWeight > weight) {
             edges[edgeIndex][2] = weight = newWeight; // Adjust weight to help reach the target distance
           }
@@ -2811,10 +2806,10 @@ s consists of lowercase English letters only.
 
 function shortestPalindrome(s: string): string {
   // Step 1: Reverse the input string
-  const rev = s.split('').reverse().join(''); // reverse string
+  const rev = s.split("").reverse().join(""); // reverse string
 
   // Step 2: Combine the original and reversed strings, separated by a unique character
-  const combined = s + '#' + rev; // combine original and reversed strings with '#' to avoid overlap confusion
+  const combined = s + "#" + rev; // combine original and reversed strings with '#' to avoid overlap confusion
 
   // Step 3: Create a table to store the length of the longest proper prefix which is also a suffix
   const table = new Array(combined.length).fill(0); // initialize prefix table for KMP algorithm
@@ -2839,7 +2834,6 @@ function shortestPalindrome(s: string): string {
   // Step 6: Return the shortest palindrome by adding necessary characters in front
   return toAdd + s; // concatenate the necessary characters with the original string
 }
-
 
 /* 
 2416. Sum of Prefix Scores of Strings
@@ -3032,7 +3026,8 @@ class AllOne {
     this.keyCount.set(key, newCount); // Update the key's count
 
     // Determine the node corresponding to the current count
-    let currentNode = currentCount === 0 ? this.head : this.countNode.get(currentCount)!;
+    let currentNode =
+      currentCount === 0 ? this.head : this.countNode.get(currentCount)!;
     // Check if a node for the new count already exists
     let newNode = this.countNode.get(newCount);
 
@@ -3086,12 +3081,12 @@ class AllOne {
   }
 
   getMaxKey(): string {
-    if (this.tail.prev === this.head) return ''; // If no keys exist, return empty string
+    if (this.tail.prev === this.head) return ""; // If no keys exist, return empty string
     return this.tail.prev!.keys.values().next().value; // Return any key from the max count node
   }
 
   getMinKey(): string {
-    if (this.head.next === this.tail) return ''; // If no keys exist, return empty string
+    if (this.head.next === this.tail) return ""; // If no keys exist, return empty string
     return this.head.next!.keys.values().next().value; // Return any key from the min count node
   }
 
@@ -3157,13 +3152,13 @@ function smallestRange(nums: number[][]): number[] {
   // Initialize the heap with the first element from each list
   for (let i = 0; i < k; i++) {
     const val = nums[i][0]; // Get the first element of the ith list
-    heap.insert({value: val, row: i}); // Insert the element along with its list index into the heap
+    heap.insert({ value: val, row: i }); // Insert the element along with its list index into the heap
     if (val > max) max = val; // Update the current maximum if necessary
   }
 
   // Loop until one of the lists is exhausted
   while (true) {
-    const {value: minValue, row} = heap.extractMin(); // Extract the minimum element from the heap
+    const { value: minValue, row } = heap.extractMin(); // Extract the minimum element from the heap
     // Check if the current range is smaller than the previously recorded minimum range
     if (
       max - minValue < minRange[1] - minRange[0] || // If current range is smaller
@@ -3174,7 +3169,7 @@ function smallestRange(nums: number[][]): number[] {
     pointers[row]++; // Move to the next element in the list from which the minValue was extracted
     if (pointers[row] === nums[row].length) break; // If we've reached the end of a list, break the loop
     const nextVal = nums[row][pointers[row]]; // Get the next element from the same list
-    heap.insert({value: nextVal, row}); // Insert the next element into the heap
+    heap.insert({ value: nextVal, row }); // Insert the next element into the heap
     if (nextVal > max) max = nextVal; // Update the current maximum if necessary
   }
 
@@ -3182,18 +3177,18 @@ function smallestRange(nums: number[][]): number[] {
 }
 
 class MinHeap {
-  heap: {value: number; row: number}[]; // Array to store the heap elements
+  heap: { value: number; row: number }[]; // Array to store the heap elements
 
   constructor() {
     this.heap = []; // Initialize the heap as an empty array
   }
 
-  insert(node: {value: number; row: number}) {
+  insert(node: { value: number; row: number }) {
     this.heap.push(node); // Add the new node to the end of the heap
     this.bubbleUp(); // Restore the heap property by moving the new node up
   }
 
-  extractMin(): {value: number; row: number} {
+  extractMin(): { value: number; row: number } {
     if (this.heap.length === 1) return this.heap.pop()!; // If only one element, remove and return it
     const min = this.heap[0]; // The root of the heap is the minimum element
     this.heap[0] = this.heap.pop()!; // Replace the root with the last element
@@ -3206,7 +3201,10 @@ class MinHeap {
     while (index > 0) {
       let parent = (index - 1) >> 1; // Calculate the parent index
       if (this.heap[parent].value <= this.heap[index].value) break; // If parent is smaller or equal, heap is valid
-      [this.heap[parent], this.heap[index]] = [this.heap[index], this.heap[parent]]; // Swap with parent
+      [this.heap[parent], this.heap[index]] = [
+        this.heap[index],
+        this.heap[parent],
+      ]; // Swap with parent
       index = parent; // Move up to the parent index
     }
   }
@@ -3225,17 +3223,22 @@ class MinHeap {
       }
 
       // If right child exists and is smaller, update smallest
-      if (right < length && this.heap[right].value < this.heap[smallest].value) {
+      if (
+        right < length &&
+        this.heap[right].value < this.heap[smallest].value
+      ) {
         smallest = right;
       }
 
       if (smallest === index) break; // If the smallest is the current node, the heap is valid
-      [this.heap[index], this.heap[smallest]] = [this.heap[smallest], this.heap[index]]; // Swap with the smallest child
+      [this.heap[index], this.heap[smallest]] = [
+        this.heap[smallest],
+        this.heap[index],
+      ]; // Swap with the smallest child
       index = smallest; // Move down to the smallest child index
     }
   }
 }
-
 
 /* 
 1106. Parsing A Boolean Expression
@@ -3280,28 +3283,33 @@ expression[i] is one following characters: '(', ')', '&', '|', '!', 't', 'f', an
 
 function parseBoolExpr(expression: string): boolean {
   const stack: string[] = []; // Initialize a stack to hold characters.
-  for (let c of expression) { // Iterate over each character in the expression.
-      if (c === ',') continue; // Skip commas as they are not needed.
-      else if (c !== ')') stack.push(c); // Push operators, operands, and '(' onto the stack.
-      else {
-          const operands: string[] = []; // List to collect operands within parentheses.
-          while (stack[stack.length - 1] !== '(') // Collect operands until '(' is found.
-              operands.push(stack.pop()!); // Pop operands from the stack.
-          stack.pop(); // Remove the '(' from the stack.
-          const operator = stack.pop()!; // Pop the operator ('!', '&', '|') from the stack.
-          let result: string;
-          if (operator === '!') // If operator is NOT.
-              result = operands[0] === 't' ? 'f' : 't'; // Invert the operand.
-          else if (operator === '&') // If operator is AND.
-              result = operands.every(v => v === 't') ? 't' : 'f'; // Result is 't' if all operands are 't'.
-          else // Operator is OR.
-              result = operands.some(v => v === 't') ? 't' : 'f'; // Result is 't' if any operand is 't'.
-          stack.push(result); // Push the result back onto the stack.
-      }
+  for (let c of expression) {
+    // Iterate over each character in the expression.
+    if (c === ",")
+      continue; // Skip commas as they are not needed.
+    else if (c !== ")")
+      stack.push(c); // Push operators, operands, and '(' onto the stack.
+    else {
+      const operands: string[] = []; // List to collect operands within parentheses.
+      while (stack[stack.length - 1] !== "(")
+        // Collect operands until '(' is found.
+        operands.push(stack.pop()!); // Pop operands from the stack.
+      stack.pop(); // Remove the '(' from the stack.
+      const operator = stack.pop()!; // Pop the operator ('!', '&', '|') from the stack.
+      let result: string;
+      if (operator === "!")
+        // If operator is NOT.
+        result = operands[0] === "t" ? "f" : "t"; // Invert the operand.
+      else if (operator === "&")
+        // If operator is AND.
+        result = operands.every((v) => v === "t") ? "t" : "f"; // Result is 't' if all operands are 't'.
+        // Operator is OR.
+      else result = operands.some((v) => v === "t") ? "t" : "f"; // Result is 't' if any operand is 't'.
+      stack.push(result); // Push the result back onto the stack.
+    }
   }
-  return stack.pop() === 't'; // The final result is on the top of the stack.
-};
-
+  return stack.pop() === "t"; // The final result is on the top of the stack.
+}
 
 /* 
 2458. Height of Binary Tree After Subtree Removal Queries
@@ -3361,31 +3369,31 @@ queries[i] != root.val
 
 function treeQueries(root: TreeNode | null, queries: number[]): number[] {
   const height: number[] = []; // Stores the height of each node's subtree.
-  const depth: number[] = [];  // Stores the depth of each node from the root.
+  const depth: number[] = []; // Stores the depth of each node from the root.
   const maxHeightAtDepth: Map<number, number[]> = new Map(); // Stores top two heights at each depth.
 
   // DFS to compute height and depth of each node.
   function dfs(u: TreeNode | null, d: number): number {
-      if (!u) return -1; // Base case: null node has height -1.
-      depth[u.val] = d; // Set the depth of current node.
-      const left = dfs(u.left, d + 1);  // Recurse on left child.
-      const right = dfs(u.right, d + 1); // Recurse on right child.
-      height[u.val] = Math.max(left, right) + 1; // Compute height of current node.
+    if (!u) return -1; // Base case: null node has height -1.
+    depth[u.val] = d; // Set the depth of current node.
+    const left = dfs(u.left, d + 1); // Recurse on left child.
+    const right = dfs(u.right, d + 1); // Recurse on right child.
+    height[u.val] = Math.max(left, right) + 1; // Compute height of current node.
 
-      const h = height[u.val]; // Current node's height.
-      // Update the top two heights at depth d.
-      if (!maxHeightAtDepth.has(d)) {
-          maxHeightAtDepth.set(d, [h, -1]); // Initialize with current height.
-      } else {
-          const arr = maxHeightAtDepth.get(d)!;
-          if (h > arr[0]) {
-              arr[1] = arr[0]; // Shift current max to second max.
-              arr[0] = h;      // Set new max height.
-          } else if (h > arr[1]) {
-              arr[1] = h;      // Update second max height.
-          }
+    const h = height[u.val]; // Current node's height.
+    // Update the top two heights at depth d.
+    if (!maxHeightAtDepth.has(d)) {
+      maxHeightAtDepth.set(d, [h, -1]); // Initialize with current height.
+    } else {
+      const arr = maxHeightAtDepth.get(d)!;
+      if (h > arr[0]) {
+        arr[1] = arr[0]; // Shift current max to second max.
+        arr[0] = h; // Set new max height.
+      } else if (h > arr[1]) {
+        arr[1] = h; // Update second max height.
       }
-      return height[u.val]; // Return height to parent call.
+    }
+    return height[u.val]; // Return height to parent call.
   }
 
   dfs(root, 0); // Start DFS from root at depth 0.
@@ -3394,19 +3402,21 @@ function treeQueries(root: TreeNode | null, queries: number[]): number[] {
   const originalHeight = height[root.val]; // Original tree height.
 
   for (const q of queries) {
-      const d = depth[q]; // Depth of queried node.
-      const h = height[q]; // Height of queried node.
-      const arr = maxHeightAtDepth.get(d)!; // Top two heights at this depth.
+    const d = depth[q]; // Depth of queried node.
+    const h = height[q]; // Height of queried node.
+    const arr = maxHeightAtDepth.get(d)!; // Top two heights at this depth.
 
-      let newHeight = originalHeight; // Initialize new height.
-      if (arr[0] === h) { // If queried node has max height at its depth.
-          if (arr[1] !== -1) { // If there is a second max height.
-              newHeight = d + arr[1]; // New height is depth plus second max height.
-          } else {
-              newHeight = d - 1; // No other nodes at this depth, reduce height.
-          }
+    let newHeight = originalHeight; // Initialize new height.
+    if (arr[0] === h) {
+      // If queried node has max height at its depth.
+      if (arr[1] !== -1) {
+        // If there is a second max height.
+        newHeight = d + arr[1]; // New height is depth plus second max height.
+      } else {
+        newHeight = d - 1; // No other nodes at this depth, reduce height.
       }
-      res.push(newHeight); // Append result for this query.
+    }
+    res.push(newHeight); // Append result for this query.
   }
   return res; // Return all answers.
 }
@@ -3450,24 +3460,24 @@ function minimumMountainRemovals(nums: number[]): number {
 
   // Compute LIS for each index
   for (let i = 0; i < n; i++) {
-      // Compare nums[i] with all previous elements
-      for (let j = 0; j < i; j++) {
-          // If nums[j] < nums[i], update dp1[i]
-          if (nums[j] < nums[i]) {
-              dp1[i] = Math.max(dp1[i], dp1[j] + 1);
-          }
+    // Compare nums[i] with all previous elements
+    for (let j = 0; j < i; j++) {
+      // If nums[j] < nums[i], update dp1[i]
+      if (nums[j] < nums[i]) {
+        dp1[i] = Math.max(dp1[i], dp1[j] + 1);
       }
+    }
   }
 
   // Compute LDS for each index
-  for (let i = n -1; i >=0; i--) {
-      // Compare nums[i] with all next elements
-      for (let j = n -1; j > i; j--) {
-          // If nums[j] < nums[i], update dp2[i]
-          if (nums[j] < nums[i]) {
-              dp2[i] = Math.max(dp2[i], dp2[j] +1);
-          }
+  for (let i = n - 1; i >= 0; i--) {
+    // Compare nums[i] with all next elements
+    for (let j = n - 1; j > i; j--) {
+      // If nums[j] < nums[i], update dp2[i]
+      if (nums[j] < nums[i]) {
+        dp2[i] = Math.max(dp2[i], dp2[j] + 1);
       }
+    }
   }
 
   // Initialize variable to track the maximum length of bitonic subsequence
@@ -3475,17 +3485,16 @@ function minimumMountainRemovals(nums: number[]): number {
 
   // Iterate through each index to find the maximum bitonic subsequence length
   for (let i = 0; i < n; i++) {
-      // Only consider peaks that are not at the ends
-      if (dp1[i] > 1 && dp2[i] > 1) {
-          // Update maxLength if a longer bitonic subsequence is found
-          maxLength = Math.max(maxLength, dp1[i] + dp2[i] -1);
-      }
+    // Only consider peaks that are not at the ends
+    if (dp1[i] > 1 && dp2[i] > 1) {
+      // Update maxLength if a longer bitonic subsequence is found
+      maxLength = Math.max(maxLength, dp1[i] + dp2[i] - 1);
+    }
   }
 
   // The minimum number of removals is total length minus maximum bitonic subsequence length
   return n - maxLength;
 }
-
 
 /* 
 2463. Minimum Total Distance Traveled
@@ -3547,32 +3556,34 @@ function minimumTotalDistance(robot: number[], factory: number[][]): number {
 
   // Initialize dp array where dp[i][j] represents the minimal total distance
   // for the first i robots and first j factories
-  const dp = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(Infinity));
+  const dp = Array.from({ length: n + 1 }, () =>
+    new Array(m + 1).fill(Infinity),
+  );
   dp[0][0] = 0; // Base case: no robots and no factories
 
   // Precompute distance sums between robots and each factory
   const distSum = Array.from({ length: m }, () => [0]);
   for (let j = 0; j < m; j++) {
-      const pos = factory[j][0]; // Position of factory j
-      for (let i = 0; i < n; i++) {
-          // Cumulative sum of distances for factory j
-          distSum[j][i + 1] = distSum[j][i] + Math.abs(robot[i] - pos);
-      }
+    const pos = factory[j][0]; // Position of factory j
+    for (let i = 0; i < n; i++) {
+      // Cumulative sum of distances for factory j
+      distSum[j][i + 1] = distSum[j][i] + Math.abs(robot[i] - pos);
+    }
   }
 
   // Dynamic programming to compute minimal total distance
   for (let i = 0; i <= n; i++) {
-      for (let j = 1; j <= m; j++) {
-          // Initialize dp[i][j] with the value from the previous factory
-          dp[i][j] = dp[i][j - 1];
-          const limit = factory[j - 1][1]; // Limit of factory j-1
-          for (let k = 1; k <= Math.min(limit, i); k++) {
-              // Cost to assign k robots to factory j-1
-              const cost = distSum[j - 1][i] - distSum[j - 1][i - k];
-              // Update dp[i][j] with the minimal value
-              dp[i][j] = Math.min(dp[i][j], dp[i - k][j - 1] + cost);
-          }
+    for (let j = 1; j <= m; j++) {
+      // Initialize dp[i][j] with the value from the previous factory
+      dp[i][j] = dp[i][j - 1];
+      const limit = factory[j - 1][1]; // Limit of factory j-1
+      for (let k = 1; k <= Math.min(limit, i); k++) {
+        // Cost to assign k robots to factory j-1
+        const cost = distSum[j - 1][i] - distSum[j - 1][i - k];
+        // Update dp[i][j] with the minimal value
+        dp[i][j] = Math.min(dp[i][j], dp[i - k][j - 1] + cost);
       }
+    }
   }
 
   return dp[n][m]; // Return the minimal total distance for all robots and factories
@@ -3610,24 +3621,26 @@ function shortestSubarray(nums: number[], k: number): number {
   // Create a prefix sum array to store cumulative sums
   const prefixSum = new Array(n + 1).fill(0);
   for (let i = 0; i < n; i++) {
-      prefixSum[i + 1] = prefixSum[i] + nums[i];
+    prefixSum[i + 1] = prefixSum[i] + nums[i];
   }
   let result = n + 1; // Initialize result to a large value
   const deque: number[] = []; // Deque to store indices of prefix sums
   for (let i = 0; i <= n; i++) {
-      // Check if the current prefix sum minus the smallest prefix sum in deque is at least k
-      while (deque.length > 0 && prefixSum[i] - prefixSum[deque[0]] >= k) {
-          result = Math.min(result, i - deque.shift()!); // Update result with the shortest length
-      }
-      // Maintain deque in increasing order of prefix sums
-      while (deque.length > 0 && prefixSum[i] <= prefixSum[deque[deque.length - 1]]) {
-          deque.pop();
-      }
-      deque.push(i); // Add current index to deque
+    // Check if the current prefix sum minus the smallest prefix sum in deque is at least k
+    while (deque.length > 0 && prefixSum[i] - prefixSum[deque[0]] >= k) {
+      result = Math.min(result, i - deque.shift()!); // Update result with the shortest length
+    }
+    // Maintain deque in increasing order of prefix sums
+    while (
+      deque.length > 0 &&
+      prefixSum[i] <= prefixSum[deque[deque.length - 1]]
+    ) {
+      deque.pop();
+    }
+    deque.push(i); // Add current index to deque
   }
   return result <= n ? result : -1; // Return result if found, otherwise -1
 }
-
 
 /* 
 773. Sliding Puzzle
@@ -3669,21 +3682,20 @@ Each value board[i][j] is unique.
 </> Typescript Code:
 */
 
-
 function slidingPuzzle(board: number[][]): number {
   // The target state we want to reach
   const target = "123450";
   // Flatten the 2D board to a 1D string for easier manipulation
-  const start = board.flat().join('');
+  const start = board.flat().join("");
 
   // Define the valid moves for each position on the board
   const neighbors = [
-      [1, 3],     // Moves for position 0 (top-left)
-      [0, 2, 4],  // Moves for position 1 (top-middle)
-      [1, 5],     // Moves for position 2 (top-right)
-      [0, 4],     // Moves for position 3 (bottom-left)
-      [1, 3, 5],  // Moves for position 4 (bottom-middle)
-      [2, 4]      // Moves for position 5 (bottom-right)
+    [1, 3], // Moves for position 0 (top-left)
+    [0, 2, 4], // Moves for position 1 (top-middle)
+    [1, 5], // Moves for position 2 (top-right)
+    [0, 4], // Moves for position 3 (bottom-left)
+    [1, 3, 5], // Moves for position 4 (bottom-middle)
+    [2, 4], // Moves for position 5 (bottom-right)
   ];
 
   // Initialize a queue for BFS with the initial state and 0 steps
@@ -3693,27 +3705,30 @@ function slidingPuzzle(board: number[][]): number {
 
   // Perform BFS
   while (queue.length > 0) {
-      // Dequeue the next state to process
-      const [state, steps] = queue.shift()!;
-      // If we've reached the target state, return the number of steps
-      if (state === target) return steps;
+    // Dequeue the next state to process
+    const [state, steps] = queue.shift()!;
+    // If we've reached the target state, return the number of steps
+    if (state === target) return steps;
 
-      // Find the index of the empty square (0)
-      const zeroIndex = state.indexOf('0');
+    // Find the index of the empty square (0)
+    const zeroIndex = state.indexOf("0");
 
-      // Explore all valid moves from the current position
-      for (const swapIndex of neighbors[zeroIndex]) {
-          // Create a new state by swapping 0 with the adjacent number
-          const newState = state.split('');
-          [newState[zeroIndex], newState[swapIndex]] = [newState[swapIndex], newState[zeroIndex]];
-          const newString = newState.join('');
+    // Explore all valid moves from the current position
+    for (const swapIndex of neighbors[zeroIndex]) {
+      // Create a new state by swapping 0 with the adjacent number
+      const newState = state.split("");
+      [newState[zeroIndex], newState[swapIndex]] = [
+        newState[swapIndex],
+        newState[zeroIndex],
+      ];
+      const newString = newState.join("");
 
-          // If this state has not been visited, enqueue it
-          if (!seen.has(newString)) {
-              seen.add(newString);
-              queue.push([newString, steps + 1]);
-          }
+      // If this state has not been visited, enqueue it
+      if (!seen.has(newString)) {
+        seen.add(newString);
+        queue.push([newString, steps + 1]);
       }
+    }
   }
   // If we exhaust the queue without finding the target, return -1
   return -1;
@@ -3763,7 +3778,12 @@ function minimumObstacles(grid: number[][]): number {
   dist[0][0] = 0;
 
   // Directions for movement: right, down, left, up
-  const dirs = [[0,1],[1,0],[-1,0],[0,-1]];
+  const dirs = [
+    [0, 1],
+    [1, 0],
+    [-1, 0],
+    [0, -1],
+  ];
 
   // Initialize a min-heap priority queue
   const heap = new MinHeap<[number, number, number]>((a, b) => a[0] - b[0]);
@@ -3771,26 +3791,26 @@ function minimumObstacles(grid: number[][]): number {
   heap.insert([0, 0, 0]);
 
   while (!heap.isEmpty()) {
-      // Extract the position with the minimum cost
-      const [cost, x, y] = heap.extract();
-      // If we have already found a better path, skip
-      if (dist[x][y] < cost) continue;
+    // Extract the position with the minimum cost
+    const [cost, x, y] = heap.extract();
+    // If we have already found a better path, skip
+    if (dist[x][y] < cost) continue;
 
-      // Explore all adjacent positions
-      for (const [dx, dy] of dirs) {
-          const nx = x + dx;
-          const ny = y + dy;
-          // Check boundaries
-          if (nx >=0 && nx < m && ny >=0 && ny < n) {
-              // Calculate new cost
-              const ncost = cost + grid[nx][ny];
-              // If a shorter path is found
-              if (dist[nx][ny] > ncost) {
-                  dist[nx][ny] = ncost; // Update distance
-                  heap.insert([ncost, nx, ny]); // Add to the heap
-              }
-          }
+    // Explore all adjacent positions
+    for (const [dx, dy] of dirs) {
+      const nx = x + dx;
+      const ny = y + dy;
+      // Check boundaries
+      if (nx >= 0 && nx < m && ny >= 0 && ny < n) {
+        // Calculate new cost
+        const ncost = cost + grid[nx][ny];
+        // If a shorter path is found
+        if (dist[nx][ny] > ncost) {
+          dist[nx][ny] = ncost; // Update distance
+          heap.insert([ncost, nx, ny]); // Add to the heap
+        }
       }
+    }
   }
   // Return the minimum number of obstacles to remove
   return dist[m - 1][n - 1];
@@ -3802,75 +3822,77 @@ class MinHeap<T> {
   private comparator: (a: T, b: T) => number;
 
   constructor(comparator: (a: T, b: T) => number) {
-      this.heap = [];
-      this.comparator = comparator;
+    this.heap = [];
+    this.comparator = comparator;
   }
 
   insert(value: T) {
-      this.heap.push(value); // Add value to the heap
-      this.bubbleUp(); // Restore heap property upwards
+    this.heap.push(value); // Add value to the heap
+    this.bubbleUp(); // Restore heap property upwards
   }
 
   extract(): T {
-      const top = this.heap[0]; // Get the smallest value
-      const end = this.heap.pop()!; // Remove the last element
-      if (this.heap.length > 0) {
-          this.heap[0] = end; // Move the last element to the top
-          this.bubbleDown(); // Restore heap property downwards
-      }
-      return top; // Return the smallest value
+    const top = this.heap[0]; // Get the smallest value
+    const end = this.heap.pop()!; // Remove the last element
+    if (this.heap.length > 0) {
+      this.heap[0] = end; // Move the last element to the top
+      this.bubbleDown(); // Restore heap property downwards
+    }
+    return top; // Return the smallest value
   }
 
   isEmpty(): boolean {
-      return this.heap.length === 0; // Check if the heap is empty
+    return this.heap.length === 0; // Check if the heap is empty
   }
 
   private bubbleUp() {
-      let index = this.heap.length - 1;
-      const element = this.heap[index];
-      // While element is not at the root and smaller than its parent
-      while (index > 0) {
-          const parentIndex = Math.floor((index -1) / 2);
-          const parent = this.heap[parentIndex];
-          if (this.comparator(element, parent) >= 0) break; // Correct position
-          this.heap[index] = parent; // Swap with parent
-          this.heap[parentIndex] = element;
-          index = parentIndex; // Move up to parent's index
-      }
+    let index = this.heap.length - 1;
+    const element = this.heap[index];
+    // While element is not at the root and smaller than its parent
+    while (index > 0) {
+      const parentIndex = Math.floor((index - 1) / 2);
+      const parent = this.heap[parentIndex];
+      if (this.comparator(element, parent) >= 0) break; // Correct position
+      this.heap[index] = parent; // Swap with parent
+      this.heap[parentIndex] = element;
+      index = parentIndex; // Move up to parent's index
+    }
   }
 
   private bubbleDown() {
-      let index = 0;
-      const length = this.heap.length;
-      const element = this.heap[0];
-      while (true) {
-          let leftChildIndex = 2*index + 1;
-          let rightChildIndex = 2*index + 2;
-          let leftChild: T, rightChild: T;
-          let swapIndex = -1;
+    let index = 0;
+    const length = this.heap.length;
+    const element = this.heap[0];
+    while (true) {
+      let leftChildIndex = 2 * index + 1;
+      let rightChildIndex = 2 * index + 2;
+      let leftChild: T, rightChild: T;
+      let swapIndex = -1;
 
-          // Check left child
-          if (leftChildIndex < length) {
-              leftChild = this.heap[leftChildIndex];
-              if (this.comparator(leftChild, element) < 0) {
-                  swapIndex = leftChildIndex;
-              }
-          }
-          // Check right child
-          if (rightChildIndex < length) {
-              rightChild = this.heap[rightChildIndex];
-              if ((swapIndex === -1 && this.comparator(rightChild, element) < 0) ||
-                  (swapIndex !== -1 && this.comparator(rightChild, leftChild!) < 0)) {
-                  swapIndex = rightChildIndex;
-              }
-          }
-          // If no swap needed, break
-          if (swapIndex === -1) break;
-          // Swap with the smaller child
-          this.heap[index] = this.heap[swapIndex];
-          this.heap[swapIndex] = element;
-          index = swapIndex; // Move down to child's index
+      // Check left child
+      if (leftChildIndex < length) {
+        leftChild = this.heap[leftChildIndex];
+        if (this.comparator(leftChild, element) < 0) {
+          swapIndex = leftChildIndex;
+        }
       }
+      // Check right child
+      if (rightChildIndex < length) {
+        rightChild = this.heap[rightChildIndex];
+        if (
+          (swapIndex === -1 && this.comparator(rightChild, element) < 0) ||
+          (swapIndex !== -1 && this.comparator(rightChild, leftChild!) < 0)
+        ) {
+          swapIndex = rightChildIndex;
+        }
+      }
+      // If no swap needed, break
+      if (swapIndex === -1) break;
+      // Swap with the smaller child
+      this.heap[index] = this.heap[swapIndex];
+      this.heap[swapIndex] = element;
+      index = swapIndex; // Move down to child's index
+    }
   }
 }
 
@@ -3933,42 +3955,45 @@ function minimumTime(grid: number[][]): number {
 
   // Directions for moving up, down, left, right
   const dirs = [
-      [0, 1], [1, 0], [0, -1], [-1, 0]
+    [0, 1],
+    [1, 0],
+    [0, -1],
+    [-1, 0],
   ];
 
   // Dijkstra's algorithm
   while (!heap.isEmpty()) {
-      const [t, x, y] = heap.pop();
+    const [t, x, y] = heap.pop();
 
-      // If we've reached the bottom-right cell, return the time
-      if (x === m - 1 && y === n - 1) return t;
+    // If we've reached the bottom-right cell, return the time
+    if (x === m - 1 && y === n - 1) return t;
 
-      // If we have already found a better path, skip
-      if (t > dist[x][y]) continue;
+    // If we have already found a better path, skip
+    if (t > dist[x][y]) continue;
 
-      // Explore all adjacent cells
-      for (const [dx, dy] of dirs) {
-          const nx = x + dx;
-          const ny = y + dy;
+    // Explore all adjacent cells
+    for (const [dx, dy] of dirs) {
+      const nx = x + dx;
+      const ny = y + dy;
 
-          // Check boundaries
-          if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+      // Check boundaries
+      if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
 
-          // Calculate the earliest arrival time
-          let nt = t + 1;
+      // Calculate the earliest arrival time
+      let nt = t + 1;
 
-          // If we can't enter the cell at nt, adjust the time
-          if (grid[nx][ny] > nt) {
-              const wait = grid[nx][ny] - nt;
-              nt = grid[nx][ny] + (wait % 2);
-          }
-
-          // If this path is better, update and push to heap
-          if (nt < dist[nx][ny]) {
-              dist[nx][ny] = nt;
-              heap.push([nt, nx, ny]);
-          }
+      // If we can't enter the cell at nt, adjust the time
+      if (grid[nx][ny] > nt) {
+        const wait = grid[nx][ny] - nt;
+        nt = grid[nx][ny] + (wait % 2);
       }
+
+      // If this path is better, update and push to heap
+      if (nt < dist[nx][ny]) {
+        dist[nx][ny] = nt;
+        heap.push([nt, nx, ny]);
+      }
+    }
   }
 
   // If the bottom-right cell is unreachable
@@ -3979,59 +4004,62 @@ class MinHeap {
   heap: number[][] = [];
 
   push(node: number[]) {
-      this.heap.push(node);
-      this._bubbleUp();
+    this.heap.push(node);
+    this._bubbleUp();
   }
 
   pop(): number[] {
-      const top = this.heap[0];
-      const bottom = this.heap.pop()!;
-      if (this.heap.length > 0) {
-          this.heap[0] = bottom;
-          this._bubbleDown();
-      }
-      return top;
+    const top = this.heap[0];
+    const bottom = this.heap.pop()!;
+    if (this.heap.length > 0) {
+      this.heap[0] = bottom;
+      this._bubbleDown();
+    }
+    return top;
   }
 
   isEmpty(): boolean {
-      return this.heap.length === 0;
+    return this.heap.length === 0;
   }
 
   _bubbleUp() {
-      let index = this.heap.length - 1;
-      const node = this.heap[index];
-      while (index > 0) {
-          const parentIndex = (index - 1) >> 1;
-          const parent = this.heap[parentIndex];
-          if (node[0] >= parent[0]) break;
-          this.heap[parentIndex] = node;
-          this.heap[index] = parent;
-          index = parentIndex;
-      }
+    let index = this.heap.length - 1;
+    const node = this.heap[index];
+    while (index > 0) {
+      const parentIndex = (index - 1) >> 1;
+      const parent = this.heap[parentIndex];
+      if (node[0] >= parent[0]) break;
+      this.heap[parentIndex] = node;
+      this.heap[index] = parent;
+      index = parentIndex;
+    }
   }
 
   _bubbleDown() {
-      let index = 0;
-      const length = this.heap.length;
-      const node = this.heap[0];
-      const nodeTime = node[0];
-      while (true) {
-          let leftIndex = (index << 1) + 1;
-          let rightIndex = leftIndex + 1;
-          let smallest = index;
-          if (leftIndex < length && this.heap[leftIndex][0] < nodeTime) {
-              smallest = leftIndex;
-          }
-          if (rightIndex < length && this.heap[rightIndex][0] < this.heap[smallest][0]) {
-              smallest = rightIndex;
-          }
-          if (smallest === index) break;
-          this.heap[index] = this.heap[smallest];
-          this.heap[smallest] = node;
-          index = smallest;
+    let index = 0;
+    const length = this.heap.length;
+    const node = this.heap[0];
+    const nodeTime = node[0];
+    while (true) {
+      let leftIndex = (index << 1) + 1;
+      let rightIndex = leftIndex + 1;
+      let smallest = index;
+      if (leftIndex < length && this.heap[leftIndex][0] < nodeTime) {
+        smallest = leftIndex;
       }
+      if (
+        rightIndex < length &&
+        this.heap[rightIndex][0] < this.heap[smallest][0]
+      ) {
+        smallest = rightIndex;
+      }
+      if (smallest === index) break;
+      this.heap[index] = this.heap[smallest];
+      this.heap[smallest] = node;
+      index = smallest;
+    }
   }
-};
+}
 
 /* 
 2097. Valid Arrangement of Pairs
@@ -4088,26 +4116,26 @@ function validArrangement(pairs: number[][]): number[][] {
 
   // Build graph and degree counts
   for (const [u, v] of pairs) {
-      // Initialize adjacency list for u
-      if (!adj.has(u)) adj.set(u, []);
-      // Add edge from u to v
-      adj.get(u)!.push(v);
-      // Increment out-degree of u
-      outDegree.set(u, (outDegree.get(u) || 0) + 1);
-      // Increment in-degree of v
-      inDegree.set(v, (inDegree.get(v) || 0) + 1);
+    // Initialize adjacency list for u
+    if (!adj.has(u)) adj.set(u, []);
+    // Add edge from u to v
+    adj.get(u)!.push(v);
+    // Increment out-degree of u
+    outDegree.set(u, (outDegree.get(u) || 0) + 1);
+    // Increment in-degree of v
+    inDegree.set(v, (inDegree.get(v) || 0) + 1);
   }
 
   // Find starting node for Eulerian trail
   let startNode = pairs[0][0];
   for (const node of adj.keys()) {
-      const out = outDegree.get(node) || 0;
-      const inn = inDegree.get(node) || 0;
-      // Node with extra out-degree
-      if (out > inn) {
-          startNode = node;
-          break;
-      }
+    const out = outDegree.get(node) || 0;
+    const inn = inDegree.get(node) || 0;
+    // Node with extra out-degree
+    if (out > inn) {
+      startNode = node;
+      break;
+    }
   }
 
   // Result array for valid arrangement
@@ -4117,21 +4145,21 @@ function validArrangement(pairs: number[][]): number[][] {
 
   // Hierholzer's algorithm
   while (stack.length) {
-      const u = stack[stack.length - 1];
-      // If u has outgoing edges
-      if (adj.has(u) && adj.get(u)!.length > 0) {
-          // Get next node v
-          const v = adj.get(u)!.pop()!;
-          // Continue traversal
-          stack.push(v);
-      } else {
-          // Backtrack
-          stack.pop();
-          if (stack.length) {
-              // Add edge to result
-              res.push([stack[stack.length - 1], u]);
-          }
+    const u = stack[stack.length - 1];
+    // If u has outgoing edges
+    if (adj.has(u) && adj.get(u)!.length > 0) {
+      // Get next node v
+      const v = adj.get(u)!.pop()!;
+      // Continue traversal
+      stack.push(v);
+    } else {
+      // Backtrack
+      stack.pop();
+      if (stack.length) {
+        // Add edge to result
+        res.push([stack[stack.length - 1], u]);
       }
+    }
   }
 
   // Reverse to get correct order
@@ -4181,7 +4209,10 @@ queries[i] = [ai, bi]
 </> Typescript Code:
 */
 
-function leftmostBuildingQueries(heights: number[], queries: number[][]): number[] {
+function leftmostBuildingQueries(
+  heights: number[],
+  queries: number[][],
+): number[] {
   // Create an output array "ans" with the same length as queries, initialized to -1
   const ans = new Array(queries.length).fill(-1);
 
@@ -4191,59 +4222,59 @@ function leftmostBuildingQueries(heights: number[], queries: number[][]): number
 
   // Iterate over each query to prepare them based on conditions
   for (let i = 0; i < queries.length; i++) {
-      // Extract Alice and Bob's building
-      const [q1, q2] = queries[i];
+    // Extract Alice and Bob's building
+    const [q1, q2] = queries[i];
 
-      // Ensure left is the smaller index and right is the larger index
-      const left = q1 < q2 ? q1 : q2;
-      const right = q1 < q2 ? q2 : q1;
-      
-      // If both indices are the same, the answer is that index
-      if (left === right) {
-          ans[i] = right;
-          continue;
-      }
-      
-      // Get the heights of the left and right buildings
-      const heightLeft = heights[left];
-      const heightRight = heights[right];
-      
-      // If the left building's height is strictly less, Bob is already reachable
-      if (heightLeft < heightRight) {
-          ans[i] = right;
-          continue;
-      }
+    // Ensure left is the smaller index and right is the larger index
+    const left = q1 < q2 ? q1 : q2;
+    const right = q1 < q2 ? q2 : q1;
 
-      // Otherwise, we push a query object into the "remain" list for building "right"
-      remain[right].push({
-          height: Math.max(heightLeft, heightRight),
-          queryIndex: i 
-      });
+    // If both indices are the same, the answer is that index
+    if (left === right) {
+      ans[i] = right;
+      continue;
+    }
+
+    // Get the heights of the left and right buildings
+    const heightLeft = heights[left];
+    const heightRight = heights[right];
+
+    // If the left building's height is strictly less, Bob is already reachable
+    if (heightLeft < heightRight) {
+      ans[i] = right;
+      continue;
+    }
+
+    // Otherwise, we push a query object into the "remain" list for building "right"
+    remain[right].push({
+      height: Math.max(heightLeft, heightRight),
+      queryIndex: i,
+    });
   }
 
   // Create a min priority queue where items are sorted by "height"
   // This helps determine the next building that can be reached based on height
   const minPQ = new MinPriorityQueue({
-      priority: (item) => item.height
+    priority: (item) => item.height,
   });
 
   // Traverse buildings in ascending order of index
   for (let j = 0; j < heights.length; j++) {
-      // While the queue's front has a smaller height than the current building,
-      // this building "j" is the first one tall enough to meet the query
-      while (!minPQ.isEmpty() && minPQ.front().element.height < heights[j]) {
-          ans[minPQ.dequeue().element.queryIndex] = j;
-      }
+    // While the queue's front has a smaller height than the current building,
+    // this building "j" is the first one tall enough to meet the query
+    while (!minPQ.isEmpty() && minPQ.front().element.height < heights[j]) {
+      ans[minPQ.dequeue().element.queryIndex] = j;
+    }
 
-      // Enqueue all queries that have building "j" as the designated place to check
-      for (const r of remain[j]) {
-          minPQ.enqueue(r);
-      }
+    // Enqueue all queries that have building "j" as the designated place to check
+    for (const r of remain[j]) {
+      minPQ.enqueue(r);
+    }
   }
-  
+
   // Return the array of answers after processing all queries
   return ans;
-};
+}
 
 /* 
 3203. Find Minimum Diameter After Merging Two Trees
@@ -4282,7 +4313,10 @@ The input is generated such that edges1 and edges2 represent valid trees.
 </> Typescript Code:
 */
 
-function minimumDiameterAfterMerge(edges1: number[][], edges2: number[][]): number {
+function minimumDiameterAfterMerge(
+  edges1: number[][],
+  edges2: number[][],
+): number {
   // Helper function to compute diameter of a tree
   const getDiameter = (e: number[][], n: number) => {
     // If only one node, diameter is 0
@@ -4369,36 +4403,48 @@ Constraints:
 
 function maxSumOfThreeSubarrays(nums: number[], k: number): number[] {
   // Calculate array length and create prefix sums array
-  const n = nums.length, prefix = new Array(n + 1).fill(0);
+  const n = nums.length,
+    prefix = new Array(n + 1).fill(0);
   // Build prefix sums for fast range-sum calculation
   for (let i = 0; i < n; i++) prefix[i + 1] = prefix[i] + nums[i];
   // Helper function to get sum of subarray starting at index i with length k
   const subSum = (i: number) => prefix[i + k] - prefix[i];
   // Arrays to keep track of best left and right subarray indices
-  const bestLeft = new Array(n).fill(0), bestRight = new Array(n).fill(n - k);
+  const bestLeft = new Array(n).fill(0),
+    bestRight = new Array(n).fill(n - k);
   // Track max subarray sum for left intervals
-  let mx = subSum(0), pos = 0;
+  let mx = subSum(0),
+    pos = 0;
   for (let i = 1; i <= n - k; i++) {
-      const s = subSum(i);
-      if (s > mx) { mx = s; pos = i; }
-      bestLeft[i] = pos;
+    const s = subSum(i);
+    if (s > mx) {
+      mx = s;
+      pos = i;
+    }
+    bestLeft[i] = pos;
   }
   // Track max subarray sum for right intervals
-  mx = subSum(n - k); pos = n - k;
+  mx = subSum(n - k);
+  pos = n - k;
   for (let i = n - k; i >= 0; i--) {
-      const s = subSum(i);
-      if (s >= mx) { mx = s; pos = i; }
-      bestRight[i] = pos;
+    const s = subSum(i);
+    if (s >= mx) {
+      mx = s;
+      pos = i;
+    }
+    bestRight[i] = pos;
   }
   // Try placing the middle subarray at each valid position
-  let res = [0, 0, 0], maxTotal = 0;
+  let res = [0, 0, 0],
+    maxTotal = 0;
   for (let j = k; j <= n - 2 * k; j++) {
-      const i = bestLeft[j - k], l = bestRight[j + k];
-      const total = subSum(i) + subSum(j) + subSum(l);
-      if (total > maxTotal) {
-          maxTotal = total;
-          res = [i, j, l];
-      }
+    const i = bestLeft[j - k],
+      l = bestRight[j + k];
+    const total = subSum(i) + subSum(j) + subSum(l);
+    if (total > maxTotal) {
+      maxTotal = total;
+      res = [i, j, l];
+    }
   }
   return res;
 }
