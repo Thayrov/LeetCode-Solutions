@@ -33,43 +33,30 @@ It is guaranteed that A and B are both a permutation of n integers.
 */
 
 function findThePrefixCommonArray(A: number[], B: number[]): number[] {
-  // Store array length
+  // Store the permutation length.
   const n = A.length;
-  // Track which elements have been seen in A and B
-  const seenA = new Array<boolean>(n + 1).fill(false);
-  const seenB = new Array<boolean>(n + 1).fill(false);
-  // Prepare result array
-  const result = new Array<number>(n);
-  // Keep running count of common elements
-  let commonCount = 0;
 
-  // Iterate over each index
+  // Track how many times each value has appeared across both prefixes.
+  const seen = new Int8Array(n + 1);
+
+  // Store the answer for every prefix index.
+  const ans = new Array<number>(n);
+
+  // Count values already present in both prefixes.
+  let common = 0;
+
+  // Process both arrays from left to right.
   for (let i = 0; i < n; i++) {
-    const x = A[i];
-    const y = B[i];
+    // Add A[i]; if this is its second appearance, it is now common.
+    if (++seen[A[i]] === 2) common++;
 
-    // If x is new in A, register it and check if it's already in B
-    if (!seenA[x]) {
-      seenA[x] = true;
-      if (seenB[x]) commonCount++;
-    }
+    // Add B[i]; if this is its second appearance, it is now common.
+    if (++seen[B[i]] === 2) common++;
 
-    // If x and y differ, handle y separately
-    if (x !== y) {
-      if (!seenB[y]) {
-        seenB[y] = true;
-        if (seenA[y]) commonCount++;
-      }
-      // If x and y are the same, avoid double increments
-    } else {
-      if (!seenB[x]) {
-        seenB[x] = true;
-        if (seenA[x]) commonCount++;
-      }
-    }
-
-    // Assign current count to result
-    result[i] = commonCount;
+    // Save current common count for prefix i.
+    ans[i] = common;
   }
-  return result;
+
+  // Return prefix common array.
+  return ans;
 }
