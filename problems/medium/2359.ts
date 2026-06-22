@@ -36,7 +36,7 @@ edges[i] != i
 function closestMeetingNodeCommented(
   edges: number[],
   node1: number,
-  node2: number
+  node2: number,
 ): number {
   // Store the total number of nodes in the graph
   const n = edges.length;

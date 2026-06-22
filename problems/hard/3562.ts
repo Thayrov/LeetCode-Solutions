@@ -62,109 +62,115 @@ The input graph hierarchy is guaranteed to have no cycles.
 </> Typescript code:
 */
 
-function maxProfitCommented(n: number, present: number[], future: number[], hierarchy: number[][], budget: number): number {
-    // Convert edge list to adjacency list for tree traversal.
-    // Adjust 1-based indices to 0-based.
-    const adj: number[][] = Array.from({ length: n }, () => []);
-    for (const [u, v] of hierarchy) {
-        adj[u - 1].push(v - 1);
-    }
-    
-    // Use a safe negative number for "impossible" states to avoid overflow issues during addition.
-    const INF = -1e9;
+function maxProfitCommented(
+  n: number,
+  present: number[],
+  future: number[],
+  hierarchy: number[][],
+  budget: number,
+): number {
+  // Convert edge list to adjacency list for tree traversal.
+  // Adjust 1-based indices to 0-based.
+  const adj: number[][] = Array.from({ length: n }, () => []);
+  for (const [u, v] of hierarchy) {
+    adj[u - 1].push(v - 1);
+  }
 
-    // Helper to merge two knapsack DP arrays.
-    // Using 'any' type for the arrays to bypass TypeScript 'ArrayBuffer' vs 'ArrayBufferLike' compilation errors
-    // while still using Int32Array at runtime for performance.
-    function merge(curr: any, child: any): any {
-        const next = new Int32Array(budget + 1).fill(INF);
-        
-        // Knapsack-style combination: iterate through all budget splits.
-        for (let i = 0; i <= budget; i++) {
-            if (curr[i] === INF) continue;
-            
-            const limit = budget - i;
-            for (let j = 0; j <= limit; j++) {
-                if (child[j] === INF) continue;
-                
-                const totalCost = i + j;
-                const totalProfit = curr[i] + child[j];
-                
-                if (totalProfit > next[totalCost]) {
-                    next[totalCost] = totalProfit;
-                }
-            }
-        }
-        return next;
-    }
+  // Use a safe negative number for "impossible" states to avoid overflow issues during addition.
+  const INF = -1e9;
 
-    function dfs(u: number): { noBuy: any, buy: any } {
-        // aggNoBuy: Max profit from subtree 'u' assuming 'u' DOES NOT buy.
-        // aggBuy: Max profit from subtree 'u' assuming 'u' DOES buy.
-        // Typed as 'any' to ensure compatibility with the return type of 'merge'.
-        let aggNoBuy: any = new Int32Array(budget + 1).fill(INF);
-        let aggBuy: any = new Int32Array(budget + 1).fill(INF);
-        
-        // Base case: cost 0 is profit 0.
-        aggNoBuy[0] = 0;
-        aggBuy[0] = 0;
+  // Helper to merge two knapsack DP arrays.
+  // Using 'any' type for the arrays to bypass TypeScript 'ArrayBuffer' vs 'ArrayBufferLike' compilation errors
+  // while still using Int32Array at runtime for performance.
+  function merge(curr: any, child: any): any {
+    const next = new Int32Array(budget + 1).fill(INF);
 
-        // Post-order traversal: process children first.
-        for (const v of adj[u]) {
-            const childRes = dfs(v);
-            // Merge child's results into current accumulated results.
-            aggNoBuy = merge(aggNoBuy, childRes.noBuy);
-            aggBuy = merge(aggBuy, childRes.buy);
-        }
-
-        // --- Calculate dpNoBuy (Parent of u didn't buy) ---
-        // Option 1: u doesn't buy (inherit aggNoBuy)
-        const dpNoBuy = new Int32Array(aggNoBuy); 
-        
-        // Option 2: u buys at FULL price (since parent didn't buy).
-        // If u buys, children must have satisfied the condition "parent of child (u) bought" -> aggBuy.
-        const costFull = present[u];
-        const profitFull = future[u] - costFull;
-        if (costFull <= budget) {
-            for (let i = 0; i <= budget - costFull; i++) {
-                if (aggBuy[i] !== INF) {
-                    const newProfit = aggBuy[i] + profitFull;
-                    if (newProfit > dpNoBuy[i + costFull]) {
-                        dpNoBuy[i + costFull] = newProfit;
-                    }
-                }
-            }
-        }
-
-        // --- Calculate dpBuy (Parent of u bought) ---
-        // Option 1: u doesn't buy (inherit aggNoBuy - discount availability doesn't matter if not buying)
-        const dpBuy = new Int32Array(aggNoBuy); 
-        
-        // Option 2: u buys at DISCOUNTED price (since parent bought).
-        const costDisc = present[u] >> 1; // floor(price / 2)
-        const profitDisc = future[u] - costDisc;
-        if (costDisc <= budget) {
-            for (let i = 0; i <= budget - costDisc; i++) {
-                if (aggBuy[i] !== INF) {
-                    const newProfit = aggBuy[i] + profitDisc;
-                    if (newProfit > dpBuy[i + costDisc]) {
-                        dpBuy[i + costDisc] = newProfit;
-                    }
-                }
-            }
-        }
-
-        return { noBuy: dpNoBuy, buy: dpBuy };
-    }
-
-    // Solve starting from CEO (index 0). 
-    // The CEO has no boss, so we take the "noBuy" scenario (no parent bought).
-    const result = dfs(0);
-    
-    // Find the max profit possible within the budget.
-    let ans = 0;
+    // Knapsack-style combination: iterate through all budget splits.
     for (let i = 0; i <= budget; i++) {
-        if (result.noBuy[i] > ans) ans = result.noBuy[i];
+      if (curr[i] === INF) continue;
+
+      const limit = budget - i;
+      for (let j = 0; j <= limit; j++) {
+        if (child[j] === INF) continue;
+
+        const totalCost = i + j;
+        const totalProfit = curr[i] + child[j];
+
+        if (totalProfit > next[totalCost]) {
+          next[totalCost] = totalProfit;
+        }
+      }
     }
-    return ans;
-};
+    return next;
+  }
+
+  function dfs(u: number): { noBuy: any; buy: any } {
+    // aggNoBuy: Max profit from subtree 'u' assuming 'u' DOES NOT buy.
+    // aggBuy: Max profit from subtree 'u' assuming 'u' DOES buy.
+    // Typed as 'any' to ensure compatibility with the return type of 'merge'.
+    let aggNoBuy: any = new Int32Array(budget + 1).fill(INF);
+    let aggBuy: any = new Int32Array(budget + 1).fill(INF);
+
+    // Base case: cost 0 is profit 0.
+    aggNoBuy[0] = 0;
+    aggBuy[0] = 0;
+
+    // Post-order traversal: process children first.
+    for (const v of adj[u]) {
+      const childRes = dfs(v);
+      // Merge child's results into current accumulated results.
+      aggNoBuy = merge(aggNoBuy, childRes.noBuy);
+      aggBuy = merge(aggBuy, childRes.buy);
+    }
+
+    // --- Calculate dpNoBuy (Parent of u didn't buy) ---
+    // Option 1: u doesn't buy (inherit aggNoBuy)
+    const dpNoBuy = new Int32Array(aggNoBuy);
+
+    // Option 2: u buys at FULL price (since parent didn't buy).
+    // If u buys, children must have satisfied the condition "parent of child (u) bought" -> aggBuy.
+    const costFull = present[u];
+    const profitFull = future[u] - costFull;
+    if (costFull <= budget) {
+      for (let i = 0; i <= budget - costFull; i++) {
+        if (aggBuy[i] !== INF) {
+          const newProfit = aggBuy[i] + profitFull;
+          if (newProfit > dpNoBuy[i + costFull]) {
+            dpNoBuy[i + costFull] = newProfit;
+          }
+        }
+      }
+    }
+
+    // --- Calculate dpBuy (Parent of u bought) ---
+    // Option 1: u doesn't buy (inherit aggNoBuy - discount availability doesn't matter if not buying)
+    const dpBuy = new Int32Array(aggNoBuy);
+
+    // Option 2: u buys at DISCOUNTED price (since parent bought).
+    const costDisc = present[u] >> 1; // floor(price / 2)
+    const profitDisc = future[u] - costDisc;
+    if (costDisc <= budget) {
+      for (let i = 0; i <= budget - costDisc; i++) {
+        if (aggBuy[i] !== INF) {
+          const newProfit = aggBuy[i] + profitDisc;
+          if (newProfit > dpBuy[i + costDisc]) {
+            dpBuy[i + costDisc] = newProfit;
+          }
+        }
+      }
+    }
+
+    return { noBuy: dpNoBuy, buy: dpBuy };
+  }
+
+  // Solve starting from CEO (index 0).
+  // The CEO has no boss, so we take the "noBuy" scenario (no parent bought).
+  const result = dfs(0);
+
+  // Find the max profit possible within the budget.
+  let ans = 0;
+  for (let i = 0; i <= budget; i++) {
+    if (result.noBuy[i] > ans) ans = result.noBuy[i];
+  }
+  return ans;
+}

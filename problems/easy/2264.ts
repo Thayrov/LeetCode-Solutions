@@ -34,22 +34,22 @@ num only consists of digits.
 */
 
 function largestGoodInteger(num: string): string {
-    // Track the highest digit found in any valid 3-same-digit sequence
-    let maxDigit = '';
-    
-    // Iterate through all possible starting positions for 3-character substrings
-    for (let i = 0; i <= num.length - 3; i++) {
-        // Check if current position and next two positions have the same digit
-        if (num[i] === num[i + 1] && num[i] === num[i + 2]) {
-            // If this digit is larger than our current maximum, update maxDigit
-            // String comparison works for single digits since '9' > '8' > ... > '0'
-            if (num[i] > maxDigit) {
-                maxDigit = num[i];
-            }
-        }
+  // Track the highest digit found in any valid 3-same-digit sequence
+  let maxDigit = "";
+
+  // Iterate through all possible starting positions for 3-character substrings
+  for (let i = 0; i <= num.length - 3; i++) {
+    // Check if current position and next two positions have the same digit
+    if (num[i] === num[i + 1] && num[i] === num[i + 2]) {
+      // If this digit is larger than our current maximum, update maxDigit
+      // String comparison works for single digits since '9' > '8' > ... > '0'
+      if (num[i] > maxDigit) {
+        maxDigit = num[i];
+      }
     }
-    
-    // If we found at least one valid sequence, return it repeated 3 times
-    // Otherwise return empty string
-    return maxDigit ? maxDigit.repeat(3) : '';
+  }
+
+  // If we found at least one valid sequence, return it repeated 3 times
+  // Otherwise return empty string
+  return maxDigit ? maxDigit.repeat(3) : "";
 }

@@ -92,7 +92,7 @@ function countBalancedPermutations(num: string): number {
 
   // dp[e][s]: weighted count of ways to fill e even slots summing to s
   const dp: bigint[][] = Array.from({ length: E + 1 }, () =>
-    Array(halfSum + 1).fill(0n)
+    Array(halfSum + 1).fill(0n),
   );
   dp[0][0] = 1n; // base case
 
@@ -102,7 +102,7 @@ function countBalancedPermutations(num: string): number {
     if (f === 0) continue;
     // Next DP layer
     const next: bigint[][] = Array.from({ length: E + 1 }, () =>
-      Array(halfSum + 1).fill(0n)
+      Array(halfSum + 1).fill(0n),
     );
     // Iterate current DP states
     for (let e = 0; e <= E; e++) {

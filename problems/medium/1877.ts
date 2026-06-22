@@ -30,26 +30,26 @@ n is even.
 */
 
 function minPairSum(nums: number[]): number {
-    // Sort the array in ascending order to allow pairing smallest with largest (O(n log n))
-    nums.sort((a, b) => a - b);
-    
-    // Initialize a variable to track the highest sum encountered among the pairs
-    let maxPairSum = 0;
-    
-    // Cache length for minor performance gain in the loop
-    const n = nums.length;
-    
-    // Iterate only through half the array to form n/2 pairs
-    for (let i = 0; i < n / 2; i++) {
-        // Calculate the sum of the i-th smallest and the i-th largest elements
-        const currentSum = nums[i] + nums[n - 1 - i];
-        
-        // Update maxPairSum if the current pair's sum is greater (faster than Math.max)
-        if (currentSum > maxPairSum) {
-            maxPairSum = currentSum;
-        }
+  // Sort the array in ascending order to allow pairing smallest with largest (O(n log n))
+  nums.sort((a, b) => a - b);
+
+  // Initialize a variable to track the highest sum encountered among the pairs
+  let maxPairSum = 0;
+
+  // Cache length for minor performance gain in the loop
+  const n = nums.length;
+
+  // Iterate only through half the array to form n/2 pairs
+  for (let i = 0; i < n / 2; i++) {
+    // Calculate the sum of the i-th smallest and the i-th largest elements
+    const currentSum = nums[i] + nums[n - 1 - i];
+
+    // Update maxPairSum if the current pair's sum is greater (faster than Math.max)
+    if (currentSum > maxPairSum) {
+      maxPairSum = currentSum;
     }
-    
-    // Return the lowest possible maximum pair sum found through optimal pairing
-    return maxPairSum;
+  }
+
+  // Return the lowest possible maximum pair sum found through optimal pairing
+  return maxPairSum;
 }

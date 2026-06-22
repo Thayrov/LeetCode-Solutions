@@ -23,28 +23,28 @@ Each node's value is either 0 or 1.
 */
 
 class ListNode {
-    val: number
-    next: ListNode | null
-    constructor(val?: number, next?: ListNode | null) {
-        this.val = (val===undefined ? 0 : val)
-        this.next = (next===undefined ? null : next)
-    }
+  val: number;
+  next: ListNode | null;
+  constructor(val?: number, next?: ListNode | null) {
+    this.val = val === undefined ? 0 : val;
+    this.next = next === undefined ? null : next;
+  }
 }
 
 function getDecimalValue(head: ListNode | null): number {
-    // Initialize result to store the decimal value
-    let result = 0;
+  // Initialize result to store the decimal value
+  let result = 0;
 
-    // Traverse the linked list from head to tail
-    while (head) {
-        // Left shift result by 1 bit (multiply by 2) and OR with current node value
-        // This efficiently builds the binary number: (result * 2) + head.val
-        result = (result << 1) | head.val;
+  // Traverse the linked list from head to tail
+  while (head) {
+    // Left shift result by 1 bit (multiply by 2) and OR with current node value
+    // This efficiently builds the binary number: (result * 2) + head.val
+    result = (result << 1) | head.val;
 
-        // Move to the next node
-        head = head.next;
-    }
+    // Move to the next node
+    head = head.next;
+  }
 
-    // Return the final decimal value
-    return result;
-};
+  // Return the final decimal value
+  return result;
+}

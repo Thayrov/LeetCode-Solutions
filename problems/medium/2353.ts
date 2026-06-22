@@ -48,112 +48,113 @@ At most 2 * 10^4 calls in total will be made to changeRating and highestRated.
 */
 
 class FoodRatings {
-    // Map from food name -> cuisine
-    private foodToCuisine: Map<string, string>
-    // Map from food name -> its current rating
-    private foodToRating: Map<string, number>
-    // Map from cuisine -> max-heap of [rating, food]
-    private cuisineToHeap: Map<string, [number, string][]>
+  // Map from food name -> cuisine
+  private foodToCuisine: Map<string, string>;
+  // Map from food name -> its current rating
+  private foodToRating: Map<string, number>;
+  // Map from cuisine -> max-heap of [rating, food]
+  private cuisineToHeap: Map<string, [number, string][]>;
 
-    constructor(foods: string[], cuisines: string[], ratings: number[]) {
-        this.foodToCuisine = new Map()
-        this.foodToRating = new Map()
-        this.cuisineToHeap = new Map()
+  constructor(foods: string[], cuisines: string[], ratings: number[]) {
+    this.foodToCuisine = new Map();
+    this.foodToRating = new Map();
+    this.cuisineToHeap = new Map();
 
-        // Initialize structures with given arrays
-        for (let i = 0; i < foods.length; i++) {
-            const food = foods[i]
-            const cuisine = cuisines[i]
-            const rating = ratings[i]
+    // Initialize structures with given arrays
+    for (let i = 0; i < foods.length; i++) {
+      const food = foods[i];
+      const cuisine = cuisines[i];
+      const rating = ratings[i];
 
-            // Register mapping of food to its cuisine
-            this.foodToCuisine.set(food, cuisine)
-            // Register mapping of food to its rating
-            this.foodToRating.set(food, rating)
+      // Register mapping of food to its cuisine
+      this.foodToCuisine.set(food, cuisine);
+      // Register mapping of food to its rating
+      this.foodToRating.set(food, rating);
 
-            // Ensure cuisine has its own heap initialized
-            if (!this.cuisineToHeap.has(cuisine)) {
-                this.cuisineToHeap.set(cuisine, [])
-            }
+      // Ensure cuisine has its own heap initialized
+      if (!this.cuisineToHeap.has(cuisine)) {
+        this.cuisineToHeap.set(cuisine, []);
+      }
 
-            // Push the initial (rating, food) into cuisine's heap
-            this.pushHeap(this.cuisineToHeap.get(cuisine)!, [rating, food])
-        }
+      // Push the initial (rating, food) into cuisine's heap
+      this.pushHeap(this.cuisineToHeap.get(cuisine)!, [rating, food]);
     }
+  }
 
-    // Update the rating of a given food
-    changeRating(food: string, newRating: number): void {
-        const cuisine = this.foodToCuisine.get(food)! // Get cuisine of the food
-        this.foodToRating.set(food, newRating) // Update its rating in map
-        // Push new entry into the cuisine's heap
-        // (old values remain but are lazily removed when encountered)
-        this.pushHeap(this.cuisineToHeap.get(cuisine)!, [newRating, food])
+  // Update the rating of a given food
+  changeRating(food: string, newRating: number): void {
+    const cuisine = this.foodToCuisine.get(food)!; // Get cuisine of the food
+    this.foodToRating.set(food, newRating); // Update its rating in map
+    // Push new entry into the cuisine's heap
+    // (old values remain but are lazily removed when encountered)
+    this.pushHeap(this.cuisineToHeap.get(cuisine)!, [newRating, food]);
+  }
+
+  // Get the highest rated food for a given cuisine
+  highestRated(cuisine: string): string {
+    const heap = this.cuisineToHeap.get(cuisine)!;
+    while (true) {
+      const [rating, food] = heap[0];
+      // Validate heap's top entry against latest rating
+      if (this.foodToRating.get(food)! === rating) {
+        return food; // Valid entry found at top
+      }
+      // If outdated rating, remove it and retry
+      this.popHeap(heap);
     }
+  }
 
-    // Get the highest rated food for a given cuisine
-    highestRated(cuisine: string): string {
-        const heap = this.cuisineToHeap.get(cuisine)!
-        while (true) {
-            const [rating, food] = heap[0]
-            // Validate heap's top entry against latest rating
-            if (this.foodToRating.get(food)! === rating) {
-                return food // Valid entry found at top
-            }
-            // If outdated rating, remove it and retry
-            this.popHeap(heap)
-        }
+  // Insert new entry into heap and bubble up
+  private pushHeap(heap: [number, string][], item: [number, string]) {
+    heap.push(item);
+    let i = heap.length - 1;
+    while (i > 0) {
+      const parent = Math.floor((i - 1) / 2);
+      if (this.compare(heap[i], heap[parent]) > 0) {
+        // Swap with parent if child is "better"
+        [heap[parent], heap[i]] = [heap[i], heap[parent]];
+        i = parent;
+      } else break;
     }
+  }
 
-    // Insert new entry into heap and bubble up
-    private pushHeap(heap: [number, string][], item: [number, string]) {
-        heap.push(item)
-        let i = heap.length - 1
-        while (i > 0) {
-            const parent = Math.floor((i - 1) / 2)
-            if (this.compare(heap[i], heap[parent]) > 0) {
-                // Swap with parent if child is "better"
-                ;[heap[parent], heap[i]] = [heap[i], heap[parent]]
-                i = parent
-            } else break
-        }
+  // Remove root element (top) and bubble down
+  private popHeap(heap: [number, string][]) {
+    if (heap.length === 1) {
+      heap.pop();
+      return;
     }
+    // Replace root with last element, then bubble down
+    heap[0] = heap.pop()!;
+    let i = 0;
+    while (true) {
+      let left = 2 * i + 1,
+        right = 2 * i + 2,
+        best = i;
 
-    // Remove root element (top) and bubble down
-    private popHeap(heap: [number, string][]) {
-        if (heap.length === 1) {
-            heap.pop()
-            return
-        }
-        // Replace root with last element, then bubble down
-        heap[0] = heap.pop()!
-        let i = 0
-        while (true) {
-            let left = 2 * i + 1,
-                right = 2 * i + 2,
-                best = i
-
-            // Compare left child
-            if (left < heap.length && this.compare(heap[left], heap[best]) > 0) {
-                best = left
-            }
-            // Compare right child
-            if (right < heap.length && this.compare(heap[right], heap[best]) > 0) {
-                best = right
-            }
-            if (best === i) break // Already satisfies heap property
-            ;[heap[i], heap[best]] = [heap[best], heap[i]]
-            i = best
-        }
+      // Compare left child
+      if (left < heap.length && this.compare(heap[left], heap[best]) > 0) {
+        best = left;
+      }
+      // Compare right child
+      if (right < heap.length && this.compare(heap[right], heap[best]) > 0) {
+        best = right;
+      }
+      if (best === i)
+        break; // Already satisfies heap property
+      [heap[i], heap[best]] = [heap[best], heap[i]];
+      i = best;
     }
+  }
 
-    // Comparator: higher rating first; if tie, lexicographically smaller food
-    private compare(a: [number, string], b: [number, string]): number {
-        if (a[0] !== b[0]) {
-            return a[0] - b[0] // Larger rating = "better"
-        }
-        // If ratings equal, smaller string wins
-        return b[1].localeCompare(a[1])
+  // Comparator: higher rating first; if tie, lexicographically smaller food
+  private compare(a: [number, string], b: [number, string]): number {
+    if (a[0] !== b[0]) {
+      return a[0] - b[0]; // Larger rating = "better"
     }
+    // If ratings equal, smaller string wins
+    return b[1].localeCompare(a[1]);
+  }
 }
 
 /**

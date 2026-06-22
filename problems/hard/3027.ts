@@ -41,34 +41,34 @@ All points[i] are distinct.
 */
 
 function numberOfPairs(points: number[][]): number {
-    const n = points.length; // Store array length for efficiency
-    let count = 0; // Counter for valid Alice-Bob pairs
-    
-    // Sort points: first by x-coordinate ascending, then by y-coordinate descending
-    // This ensures Alice (left) comes before Bob (right) and handles y-ties properly
-    points.sort((a, b) => a[0] === b[0] ? b[1] - a[1] : a[0] - b[0]);
-    
-    // Iterate through each point as potential Alice position
-    for (let i = 0; i < n; i++) {
-        const [ax, ay] = points[i]; // Alice's coordinates (upper-left corner)
-        let maxY = -Infinity; // Track highest y-coordinate of valid Bob positions
-        
-        // Check all points to the right as potential Bob positions
-        for (let j = i + 1; j < n; j++) {
-            const [bx, by] = points[j]; // Bob's coordinates (lower-right corner)
-            
-            // Skip if Bob's y is above Alice's y (invalid rectangle)
-            if (by > ay) continue;
-            
-            // If Bob's y is higher than any previous valid Bob at this x-range,
-            // then no point exists between Alice and Bob that would interfere
-            if (by > maxY) {
-                count++; // Valid Alice-Bob pair found
-                maxY = by; // Update maximum y-coordinate for blocking future pairs
-            }
-            // If by <= maxY, there's already a point that would block this rectangle
-        }
+  const n = points.length; // Store array length for efficiency
+  let count = 0; // Counter for valid Alice-Bob pairs
+
+  // Sort points: first by x-coordinate ascending, then by y-coordinate descending
+  // This ensures Alice (left) comes before Bob (right) and handles y-ties properly
+  points.sort((a, b) => (a[0] === b[0] ? b[1] - a[1] : a[0] - b[0]));
+
+  // Iterate through each point as potential Alice position
+  for (let i = 0; i < n; i++) {
+    const [ax, ay] = points[i]; // Alice's coordinates (upper-left corner)
+    let maxY = -Infinity; // Track highest y-coordinate of valid Bob positions
+
+    // Check all points to the right as potential Bob positions
+    for (let j = i + 1; j < n; j++) {
+      const [bx, by] = points[j]; // Bob's coordinates (lower-right corner)
+
+      // Skip if Bob's y is above Alice's y (invalid rectangle)
+      if (by > ay) continue;
+
+      // If Bob's y is higher than any previous valid Bob at this x-range,
+      // then no point exists between Alice and Bob that would interfere
+      if (by > maxY) {
+        count++; // Valid Alice-Bob pair found
+        maxY = by; // Update maximum y-coordinate for blocking future pairs
+      }
+      // If by <= maxY, there's already a point that would block this rectangle
     }
-    
-    return count; // Return total count of valid pairs
+  }
+
+  return count; // Return total count of valid pairs
 }

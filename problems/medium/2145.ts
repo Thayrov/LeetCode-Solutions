@@ -46,7 +46,7 @@ n == differences.length
 function numberOfArrays(
   differences: number[],
   lower: number,
-  upper: number
+  upper: number,
 ): number {
   // Track the running sum of differences and its extremal values
   let minPrefix = 0; // Lowest prefix sum seen so far

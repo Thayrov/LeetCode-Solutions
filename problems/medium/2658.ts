@@ -35,34 +35,34 @@ function findMaxFish(grid: number[][]): number {
   // Get the dimensions of the grid
   const m = grid.length;
   const n = grid[0].length;
-  
+
   // Initialize the maximum number of fish to 0
   let maxFish = 0;
 
   // Define a depth-first search (DFS) function to explore the grid
   const dfs = (r: number, c: number): number => {
-      // If the current cell is out of bounds or is land (0), return 0
-      if (r < 0 || r >= m || c < 0 || c >= n || grid[r][c] === 0) return 0;
-      
-      // Store the number of fish in the current cell
-      const fish = grid[r][c];
-      
-      // Mark the current cell as visited by setting it to 0
-      grid[r][c] = 0;
-      
-      // Recursively explore all four adjacent cells and sum the fish
-      return fish + dfs(r + 1, c) + dfs(r - 1, c) + dfs(r, c + 1) + dfs(r, c - 1);
+    // If the current cell is out of bounds or is land (0), return 0
+    if (r < 0 || r >= m || c < 0 || c >= n || grid[r][c] === 0) return 0;
+
+    // Store the number of fish in the current cell
+    const fish = grid[r][c];
+
+    // Mark the current cell as visited by setting it to 0
+    grid[r][c] = 0;
+
+    // Recursively explore all four adjacent cells and sum the fish
+    return fish + dfs(r + 1, c) + dfs(r - 1, c) + dfs(r, c + 1) + dfs(r, c - 1);
   };
 
   // Iterate over each cell in the grid
   for (let i = 0; i < m; i++) {
-      for (let j = 0; j < n; j++) {
-          // If the cell is a water cell (contains fish), start DFS from it
-          if (grid[i][j] > 0) {
-              // Update the maximum number of fish found so far
-              maxFish = Math.max(maxFish, dfs(i, j));
-          }
+    for (let j = 0; j < n; j++) {
+      // If the cell is a water cell (contains fish), start DFS from it
+      if (grid[i][j] > 0) {
+        // Update the maximum number of fish found so far
+        maxFish = Math.max(maxFish, dfs(i, j));
       }
+    }
   }
 
   // Return the maximum number of fish that can be caught

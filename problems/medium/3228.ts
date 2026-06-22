@@ -70,41 +70,40 @@ s[i] is either '0' or '1'.
  * End: return totalOps (4). This matches the example.
  */
 function maxOperations(s: string): number {
-    // Total operations performed
-    let totalOps = 0;
-    
-    // Running count of '1's in the current "moving" block
-    let onesCount = 0;
-    
-    // Flag to track if we are currently in a block of '1's
-    // This ensures we only add operations for the *first* '0' after a '1' block.
-    let inOnesBlock = false;
+  // Total operations performed
+  let totalOps = 0;
 
-    // Iterate through the string character by character
-    for (let i = 0; i < s.length; i++) {
-        
-        // If the character is '1'
-        if (s[i] === '1') {
-            // Add it to our count of '1's
-            onesCount++;
-            // Set the flag, as we are now (or still) in a block of '1's
-            inOnesBlock = true;
-        } 
-        // If the character is '0'
-        else {
-            // Check if this '0' immediately follows a block of '1's
-            if (inOnesBlock) {
-                // If so, this '0' "unlocks" `onesCount` operations.
-                // Each '1' in the block will eventually have to move.
-                totalOps += onesCount;
-                
-                // Reset the flag. Any subsequent '0's are part of the same
-                // "gap" and don't trigger new operations.
-                inOnesBlock = false;
-            }
-        }
+  // Running count of '1's in the current "moving" block
+  let onesCount = 0;
+
+  // Flag to track if we are currently in a block of '1's
+  // This ensures we only add operations for the *first* '0' after a '1' block.
+  let inOnesBlock = false;
+
+  // Iterate through the string character by character
+  for (let i = 0; i < s.length; i++) {
+    // If the character is '1'
+    if (s[i] === "1") {
+      // Add it to our count of '1's
+      onesCount++;
+      // Set the flag, as we are now (or still) in a block of '1's
+      inOnesBlock = true;
     }
+    // If the character is '0'
+    else {
+      // Check if this '0' immediately follows a block of '1's
+      if (inOnesBlock) {
+        // If so, this '0' "unlocks" `onesCount` operations.
+        // Each '1' in the block will eventually have to move.
+        totalOps += onesCount;
 
-    // Return the total accumulated operations
-    return totalOps;
-};
+        // Reset the flag. Any subsequent '0's are part of the same
+        // "gap" and don't trigger new operations.
+        inOnesBlock = false;
+      }
+    }
+  }
+
+  // Return the total accumulated operations
+  return totalOps;
+}

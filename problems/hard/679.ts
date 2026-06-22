@@ -28,46 +28,47 @@ cards.length == 4
 */
 
 function judgePoint24(cards: number[]): boolean {
-    // Define epsilon for floating-point comparison to handle precision issues
-    const EPS = 1e-6;
-    
-    // Recursive function that tries to solve the 24-game with given numbers
-    function solve(nums: number[]): boolean {
-        // Base case: if only one number left, check if it equals 24 (within epsilon)
-        if (nums.length === 1) return Math.abs(nums[0] - 24) < EPS;
-        
-        // Try all pairs of numbers in the current array
-        for (let i = 0; i < nums.length; i++) {
-            for (let j = i + 1; j < nums.length; j++) {
-                // Extract the two numbers to combine
-                const a = nums[i], b = nums[j];
-                
-                // Create array with remaining numbers (excluding indices i and j)
-                const remaining = nums.filter((_, k) => k !== i && k !== j);
-                
-                // Generate all possible results from combining a and b with different operations
-                const candidates = [
-                    a + b,    // Addition (commutative)
-                    a - b,    // Subtraction a - b
-                    b - a,    // Subtraction b - a (non-commutative)
-                    a * b,    // Multiplication (commutative)
-                    // Division operations with zero-division protection
-                    ...(Math.abs(b) > EPS ? [a / b] : []),  // a / b if b != 0
-                    ...(Math.abs(a) > EPS ? [b / a] : [])   // b / a if a != 0
-                ];
-                
-                // Try each possible result by recursively solving with the new number set
-                for (const candidate of candidates) {
-                    // If any recursive call succeeds, we found a solution
-                    if (solve([...remaining, candidate])) return true;
-                }
-            }
+  // Define epsilon for floating-point comparison to handle precision issues
+  const EPS = 1e-6;
+
+  // Recursive function that tries to solve the 24-game with given numbers
+  function solve(nums: number[]): boolean {
+    // Base case: if only one number left, check if it equals 24 (within epsilon)
+    if (nums.length === 1) return Math.abs(nums[0] - 24) < EPS;
+
+    // Try all pairs of numbers in the current array
+    for (let i = 0; i < nums.length; i++) {
+      for (let j = i + 1; j < nums.length; j++) {
+        // Extract the two numbers to combine
+        const a = nums[i],
+          b = nums[j];
+
+        // Create array with remaining numbers (excluding indices i and j)
+        const remaining = nums.filter((_, k) => k !== i && k !== j);
+
+        // Generate all possible results from combining a and b with different operations
+        const candidates = [
+          a + b, // Addition (commutative)
+          a - b, // Subtraction a - b
+          b - a, // Subtraction b - a (non-commutative)
+          a * b, // Multiplication (commutative)
+          // Division operations with zero-division protection
+          ...(Math.abs(b) > EPS ? [a / b] : []), // a / b if b != 0
+          ...(Math.abs(a) > EPS ? [b / a] : []), // b / a if a != 0
+        ];
+
+        // Try each possible result by recursively solving with the new number set
+        for (const candidate of candidates) {
+          // If any recursive call succeeds, we found a solution
+          if (solve([...remaining, candidate])) return true;
         }
-        
-        // No valid combination found with current numbers
-        return false;
+      }
     }
-    
-    // Start the recursive solving process with the initial cards
-    return solve(cards);
+
+    // No valid combination found with current numbers
+    return false;
+  }
+
+  // Start the recursive solving process with the initial cards
+  return solve(cards);
 }

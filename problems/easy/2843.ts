@@ -33,10 +33,14 @@ function countSymmetricIntegers(low: number, high: number): number {
     let digits: number; // Variable to hold the number of digits in x
 
     // Determine the digit count based on x's value.
-    if (x < 10) digits = 1; // x is a single-digit number.
-    else if (x < 100) digits = 2; // x is a two-digit number.
-    else if (x < 1000) digits = 3; // x is a three-digit number.
-    else if (x < 10000) digits = 4; // x is a four-digit number.
+    if (x < 10)
+      digits = 1; // x is a single-digit number.
+    else if (x < 100)
+      digits = 2; // x is a two-digit number.
+    else if (x < 1000)
+      digits = 3; // x is a three-digit number.
+    else if (x < 10000)
+      digits = 4; // x is a four-digit number.
     else digits = 5; // x is a five-digit number (only 10000 in this constraint).
 
     // Skip processing if x has an odd number of digits, as it cannot be symmetric.

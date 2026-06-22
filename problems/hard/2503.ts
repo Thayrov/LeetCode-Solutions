@@ -66,7 +66,7 @@ function maxPoints(grid: number[][], queries: number[]): number[] {
 
   // DSU 'union' function which merges two components.
   function union(x: number, y: number) {
-    (x = find(x)), (y = find(y));
+    ((x = find(x)), (y = find(y)));
     if (x === y) return;
     // Union by size to maintain shallow trees.
     if (size[x] < size[y]) {

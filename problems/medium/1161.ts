@@ -38,48 +38,48 @@ The number of nodes in the tree is in the range [1, 10^4].
  * }
  */
 
- function maxLevelSum(root: TreeNode | null): number {
-     // Return 0 if the tree is empty (though constraints say at least 1 node)
-     if (!root) return 0;
- 
-     // Initialize maxSum to -Infinity to handle trees with only negative values
-     let maxSum = -Infinity;
-     // Track the level with the maximum sum found so far
-     let maxLevel = 1;
-     // Current depth tracker
-     let currentLevel = 1;
-     // BFS Queue: starting with the root node
-     let queue = [root];
- 
-     while (queue.length > 0) {
-         // Accumulator for the values of all nodes at the current level
-         let levelSum = 0;
-         // Temporary storage for the nodes of the next level to avoid shifting the main queue
-         const nextQueue: TreeNode[] = [];
-         const len = queue.length;
- 
-         // Process all nodes currently in the queue (all nodes at the same depth)
-         for (let i = 0; i < len; i++) {
-             const node = queue[i];
-             // Add node value to the level total
-             levelSum += node.val;
-             
-             // If children exist, push them into the buffer for the next iteration
-             if (node.left) nextQueue.push(node.left);
-             if (node.right) nextQueue.push(node.right);
-         }
- 
-         // If current level's sum is strictly greater, update maxSum and record the level
-         // (Strictly greater handles the "smallest level" requirement if sums are equal)
-         if (levelSum > maxSum) {
-             maxSum = levelSum;
-             maxLevel = currentLevel;
-         }
- 
-         // Replace processed level with the next level and increment level counter
-         queue = nextQueue;
-         currentLevel++;
-     }
- 
-     return maxLevel;
- };
+function maxLevelSum(root: TreeNode | null): number {
+  // Return 0 if the tree is empty (though constraints say at least 1 node)
+  if (!root) return 0;
+
+  // Initialize maxSum to -Infinity to handle trees with only negative values
+  let maxSum = -Infinity;
+  // Track the level with the maximum sum found so far
+  let maxLevel = 1;
+  // Current depth tracker
+  let currentLevel = 1;
+  // BFS Queue: starting with the root node
+  let queue = [root];
+
+  while (queue.length > 0) {
+    // Accumulator for the values of all nodes at the current level
+    let levelSum = 0;
+    // Temporary storage for the nodes of the next level to avoid shifting the main queue
+    const nextQueue: TreeNode[] = [];
+    const len = queue.length;
+
+    // Process all nodes currently in the queue (all nodes at the same depth)
+    for (let i = 0; i < len; i++) {
+      const node = queue[i];
+      // Add node value to the level total
+      levelSum += node.val;
+
+      // If children exist, push them into the buffer for the next iteration
+      if (node.left) nextQueue.push(node.left);
+      if (node.right) nextQueue.push(node.right);
+    }
+
+    // If current level's sum is strictly greater, update maxSum and record the level
+    // (Strictly greater handles the "smallest level" requirement if sums are equal)
+    if (levelSum > maxSum) {
+      maxSum = levelSum;
+      maxLevel = currentLevel;
+    }
+
+    // Replace processed level with the next level and increment level counter
+    queue = nextQueue;
+    currentLevel++;
+  }
+
+  return maxLevel;
+}

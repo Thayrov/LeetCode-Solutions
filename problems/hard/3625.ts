@@ -44,110 +44,110 @@ All points are pairwise distinct.
  * - (Strict + 2*Para) - Para = Strict + Para.
  */
 function countTrapezoidsCommented(points: number[][]): number {
-    const n = points.length;
-    if (n < 4) return 0;
+  const n = points.length;
+  if (n < 4) return 0;
 
-    const gcd = (a: number, b: number): number => {
-        while (b !== 0) {
-            let temp = b;
-            b = a % b;
-            a = temp;
-        }
-        return a;
-    };
-
-    // Maps to count segments on specific infinite lines
-    // lineGroups: "slope:intercept" -> count of segments
-    const lineGroups = new Map<string, number>(); 
-    // slopeToLines: "slope" -> list of "slope:intercept" keys
-    const slopeToLines = new Map<string, string[]>();
-
-    // Maps for parallelogram detection (Diagonals logic)
-    // midTotal: "midX:midY" -> total number of segments centered here
-    const midTotal = new Map<string, number>();
-    // midSlope: "midX:midY|slope" -> number of segments centered here with specific slope
-    const midSlope = new Map<string, number>();
-
-    // O(N^2) Iteration
-    for (let i = 0; i < n; i++) {
-        const [x1, y1] = points[i];
-        for (let j = i + 1; j < n; j++) {
-            const [x2, y2] = points[j];
-
-            // 1. Geometry Math
-            let dy = y1 - y2;
-            let dx = x1 - x2;
-            const g = gcd(Math.abs(dy), Math.abs(dx));
-            dy /= g;
-            dx /= g;
-
-            // Normalize vector direction
-            if (dx < 0 || (dx === 0 && dy < 0)) {
-                dx = -dx;
-                dy = -dy;
-            }
-
-            const slopeKey = `${dx}:${dy}`;
-            
-            // Cross product represents the intercept C in Ax + By + C = 0
-            const cross = dx * y1 - dy * x1;
-            const lineKey = `${slopeKey}:${cross}`;
-
-            // 2. Populate Line/Slope Data
-            if (!lineGroups.has(lineKey)) {
-                lineGroups.set(lineKey, 0);
-                if (!slopeToLines.has(slopeKey)) {
-                    slopeToLines.set(slopeKey, []);
-                }
-                slopeToLines.get(slopeKey)!.push(lineKey);
-            }
-            lineGroups.set(lineKey, lineGroups.get(lineKey)! + 1);
-
-            // 3. Populate Midpoint Data (Midpoint * 2 to avoid floats)
-            const midKey = `${x1 + x2}:${y1 + y2}`;
-            midTotal.set(midKey, (midTotal.get(midKey) || 0) + 1);
-            
-            // Track slope at this midpoint to detect collinear diagonals later
-            const midSlopeKey = `${midKey}|${slopeKey}`;
-            midSlope.set(midSlopeKey, (midSlope.get(midSlopeKey) || 0) + 1);
-        }
+  const gcd = (a: number, b: number): number => {
+    while (b !== 0) {
+      let temp = b;
+      b = a % b;
+      a = temp;
     }
+    return a;
+  };
 
-    // Calculate 'trapezoids' count (includes double-counted parallelograms)
-    // Logic: Sum of products of counts of parallel lines
-    let trapezoids = 0;
-    for (const lines of slopeToLines.values()) {
-        // Need at least 2 distinct lines with same slope
-        if (lines.length < 2) continue;
-        
-        let sum = 0;
-        let sqSum = 0;
-        for (const lineKey of lines) {
-            const count = lineGroups.get(lineKey)!;
-            sum += count;
-            sqSum += count * count;
+  // Maps to count segments on specific infinite lines
+  // lineGroups: "slope:intercept" -> count of segments
+  const lineGroups = new Map<string, number>();
+  // slopeToLines: "slope" -> list of "slope:intercept" keys
+  const slopeToLines = new Map<string, string[]>();
+
+  // Maps for parallelogram detection (Diagonals logic)
+  // midTotal: "midX:midY" -> total number of segments centered here
+  const midTotal = new Map<string, number>();
+  // midSlope: "midX:midY|slope" -> number of segments centered here with specific slope
+  const midSlope = new Map<string, number>();
+
+  // O(N^2) Iteration
+  for (let i = 0; i < n; i++) {
+    const [x1, y1] = points[i];
+    for (let j = i + 1; j < n; j++) {
+      const [x2, y2] = points[j];
+
+      // 1. Geometry Math
+      let dy = y1 - y2;
+      let dx = x1 - x2;
+      const g = gcd(Math.abs(dy), Math.abs(dx));
+      dy /= g;
+      dx /= g;
+
+      // Normalize vector direction
+      if (dx < 0 || (dx === 0 && dy < 0)) {
+        dx = -dx;
+        dy = -dy;
+      }
+
+      const slopeKey = `${dx}:${dy}`;
+
+      // Cross product represents the intercept C in Ax + By + C = 0
+      const cross = dx * y1 - dy * x1;
+      const lineKey = `${slopeKey}:${cross}`;
+
+      // 2. Populate Line/Slope Data
+      if (!lineGroups.has(lineKey)) {
+        lineGroups.set(lineKey, 0);
+        if (!slopeToLines.has(slopeKey)) {
+          slopeToLines.set(slopeKey, []);
         }
-        // Algebra shortcut for Sum(a[i] * a[j]) for distinct i, j
-        trapezoids += (sum * sum - sqSum) / 2;
-    }
+        slopeToLines.get(slopeKey)!.push(lineKey);
+      }
+      lineGroups.set(lineKey, lineGroups.get(lineKey)! + 1);
 
-    // Calculate actual parallelograms via Diagonals
-    let parallelograms = 0;
-    
-    // Step A: Calculate all pairs of segments sharing a midpoint
-    for (const total of midTotal.values()) {
-        if (total < 2) continue;
-        parallelograms += (total * (total - 1)) / 2;
-    }
+      // 3. Populate Midpoint Data (Midpoint * 2 to avoid floats)
+      const midKey = `${x1 + x2}:${y1 + y2}`;
+      midTotal.set(midKey, (midTotal.get(midKey) || 0) + 1);
 
-    // Step B: Remove pairs that share midpoint AND slope (Collinear points)
-    // These are degenerate quads (4 points on a line), not parallelograms.
-    for (const count of midSlope.values()) {
-        if (count > 1) {
-            parallelograms -= (count * (count - 1)) / 2;
-        }
+      // Track slope at this midpoint to detect collinear diagonals later
+      const midSlopeKey = `${midKey}|${slopeKey}`;
+      midSlope.set(midSlopeKey, (midSlope.get(midSlopeKey) || 0) + 1);
     }
+  }
 
-    // Final result: (Strict + 2*Para) - Para = Strict + Para
-    return trapezoids - parallelograms;
+  // Calculate 'trapezoids' count (includes double-counted parallelograms)
+  // Logic: Sum of products of counts of parallel lines
+  let trapezoids = 0;
+  for (const lines of slopeToLines.values()) {
+    // Need at least 2 distinct lines with same slope
+    if (lines.length < 2) continue;
+
+    let sum = 0;
+    let sqSum = 0;
+    for (const lineKey of lines) {
+      const count = lineGroups.get(lineKey)!;
+      sum += count;
+      sqSum += count * count;
+    }
+    // Algebra shortcut for Sum(a[i] * a[j]) for distinct i, j
+    trapezoids += (sum * sum - sqSum) / 2;
+  }
+
+  // Calculate actual parallelograms via Diagonals
+  let parallelograms = 0;
+
+  // Step A: Calculate all pairs of segments sharing a midpoint
+  for (const total of midTotal.values()) {
+    if (total < 2) continue;
+    parallelograms += (total * (total - 1)) / 2;
+  }
+
+  // Step B: Remove pairs that share midpoint AND slope (Collinear points)
+  // These are degenerate quads (4 points on a line), not parallelograms.
+  for (const count of midSlope.values()) {
+    if (count > 1) {
+      parallelograms -= (count * (count - 1)) / 2;
+    }
+  }
+
+  // Final result: (Strict + 2*Para) - Para = Strict + Para
+  return trapezoids - parallelograms;
 }

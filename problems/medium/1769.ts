@@ -40,8 +40,8 @@ function minOperations(boxes: string): number[] {
 
   // Populate prefix sums
   for (let i = 0; i < n; i++) {
-    prefixCounts[i + 1] = prefixCounts[i] + (boxes[i] === '1' ? 1 : 0);
-    prefixSumPos[i + 1] = prefixSumPos[i] + (boxes[i] === '1' ? i : 0);
+    prefixCounts[i + 1] = prefixCounts[i] + (boxes[i] === "1" ? 1 : 0);
+    prefixSumPos[i + 1] = prefixSumPos[i] + (boxes[i] === "1" ? i : 0);
   }
 
   // Calculate the cost for each index i

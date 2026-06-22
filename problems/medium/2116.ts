@@ -49,8 +49,8 @@ function canBeValid(s: string, locked: string): boolean {
   // Forward pass to ensure we never get more ')' than '('
   for (let i = 0; i < s.length; i++) {
     // If locked, character is fixed; update counts accordingly
-    if (locked[i] === '1') {
-      if (s[i] === '(') {
+    if (locked[i] === "1") {
+      if (s[i] === "(") {
         minOp++;
         maxOp++;
       } else {

@@ -91,8 +91,8 @@ class TaskManager {
       // Verify that the entry is current (not removed/outdated)
       if (
         !this.taskMap.has(taskId) ||
-        (this.taskMap.get(taskId)![0] !== userId ||
-          this.taskMap.get(taskId)![1] !== -negPriority)
+        this.taskMap.get(taskId)![0] !== userId ||
+        this.taskMap.get(taskId)![1] !== -negPriority
       )
         continue;
       // Remove the task from the map since it's executed
@@ -128,7 +128,8 @@ class TaskManager {
       const p = (i - 1) >> 1; // parent index
       if (
         this.heap[p][0] < this.heap[i][0] ||
-        (this.heap[p][0] === this.heap[i][0] && this.heap[p][1] < this.heap[i][1])
+        (this.heap[p][0] === this.heap[i][0] &&
+          this.heap[p][1] < this.heap[i][1])
       )
         break;
       [this.heap[p], this.heap[i]] = [this.heap[i], this.heap[p]];

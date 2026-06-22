@@ -49,7 +49,7 @@ function maxFreeTime(
   eventTime: number,
   k: number,
   startTime: number[],
-  endTime: number[]
+  endTime: number[],
 ): number {
   const n = startTime.length;
 

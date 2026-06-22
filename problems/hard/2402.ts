@@ -117,7 +117,7 @@ class MyMinPriorityQueue<T> {
       nodeIndex > 0 &&
       this.comparator(
         this.heap[nodeIndex],
-        this.heap[this.getParentIndex(nodeIndex)]
+        this.heap[this.getParentIndex(nodeIndex)],
       ) < 0
     ) {
       this.swap(nodeIndex, this.getParentIndex(nodeIndex));
@@ -138,7 +138,7 @@ class MyMinPriorityQueue<T> {
         rightChildIndex < this.heap.length &&
         this.comparator(
           this.heap[rightChildIndex],
-          this.heap[smallerChildIndex]
+          this.heap[smallerChildIndex],
         ) < 0
       ) {
         smallerChildIndex = rightChildIndex;

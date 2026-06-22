@@ -40,7 +40,7 @@ s1, s2, and baseStr consist of lowercase English letters.
 function smallestEquivalentString(
   s1: string,
   s2: string,
-  baseStr: string
+  baseStr: string,
 ): string {
   // Initialize parent array for Union-Find data structure
   // Each character (a-z) starts as its own parent (0-25)

@@ -40,7 +40,7 @@ function numberOfPowerfulInt(
   start: number,
   finish: number,
   limit: number,
-  s: string
+  s: string,
 ): number {
   // Parse the given suffix string into an integer.
   const suffix = parseInt(s);

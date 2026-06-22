@@ -29,22 +29,22 @@ Constraints:
 */
 
 function flowerGame(n: number, m: number): number {
-    // Alice wins when total flowers (x + y) is odd
-    // This happens when exactly one of x or y is odd
-    
-    // Count odd numbers in range [1, n]: ceil(n/2) = (n + 1) >> 1
-    // Count even numbers in range [1, n]: floor(n/2) = n >> 1
-    // Count odd numbers in range [1, m]: ceil(m/2) = (m + 1) >> 1  
-    // Count even numbers in range [1, m]: floor(m/2) = m >> 1
-    
-    // Case 1: x is odd, y is even
-    // Number of such pairs = (odd count in [1,n]) * (even count in [1,m])
-    const oddX_evenY = ((n + 1) >> 1) * (m >> 1);
-    
-    // Case 2: x is even, y is odd  
-    // Number of such pairs = (even count in [1,n]) * (odd count in [1,m])
-    const evenX_oddY = (n >> 1) * ((m + 1) >> 1);
-    
-    // Total winning pairs for Alice
-    return oddX_evenY + evenX_oddY;
+  // Alice wins when total flowers (x + y) is odd
+  // This happens when exactly one of x or y is odd
+
+  // Count odd numbers in range [1, n]: ceil(n/2) = (n + 1) >> 1
+  // Count even numbers in range [1, n]: floor(n/2) = n >> 1
+  // Count odd numbers in range [1, m]: ceil(m/2) = (m + 1) >> 1
+  // Count even numbers in range [1, m]: floor(m/2) = m >> 1
+
+  // Case 1: x is odd, y is even
+  // Number of such pairs = (odd count in [1,n]) * (even count in [1,m])
+  const oddX_evenY = ((n + 1) >> 1) * (m >> 1);
+
+  // Case 2: x is even, y is odd
+  // Number of such pairs = (even count in [1,n]) * (odd count in [1,m])
+  const evenX_oddY = (n >> 1) * ((m + 1) >> 1);
+
+  // Total winning pairs for Alice
+  return oddX_evenY + evenX_oddY;
 }

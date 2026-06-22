@@ -36,7 +36,7 @@ function clearDigits(s: string): string {
   // Loop through each character in the input string.
   for (let ch of s) {
     // Check if the current character is a digit.
-    if (ch >= '0' && ch <= '9') {
+    if (ch >= "0" && ch <= "9") {
       // When a digit is found, remove the latest non-digit (closest on the left)
       // from the stack.
       stack.pop();
@@ -46,5 +46,5 @@ function clearDigits(s: string): string {
     }
   }
   // Concatenate the remaining characters in the stack into the final string.
-  return stack.join('');
+  return stack.join("");
 }

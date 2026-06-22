@@ -30,7 +30,9 @@ function shortestCommonSupersequence(str1: string, str2: string): string {
     n = str2.length;
 
   // Create a 2D array 'dp' of dimensions (m+1) x (n+1) to store LCS lengths.
-  const dp: number[][] = Array.from({length: m + 1}, () => new Array(n + 1).fill(0));
+  const dp: number[][] = Array.from({ length: m + 1 }, () =>
+    new Array(n + 1).fill(0),
+  );
 
   // Fill the dp table using dynamic programming to compute the longest common subsequence (LCS) length.
   for (let i = 1; i <= m; i++) {
@@ -64,7 +66,7 @@ function shortestCommonSupersequence(str1: string, str2: string): string {
   lcs.reverse();
 
   // Merge both strings using the LCS as a guide to build the shortest common supersequence.
-  let ans = '';
+  let ans = "";
   i = 0;
   j = 0;
   // For every character in the LCS, add the non-matching parts from both strings before adding the LCS character.

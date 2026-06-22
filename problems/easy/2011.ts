@@ -43,18 +43,18 @@ operations[i] will be either "++X", "X++", "--X", or "X--".
 */
 
 function finalValueAfterOperations(operations: string[]): number {
-    // Initialize variable X to 0 as per problem statement
-    let x = 0;
-    
-    // Iterate through each operation in the input array
-    for (let i = 0; i < operations.length; i++) {
-        // Check character at index 1 (second character) of the operation string
-        // All increment operations (++X, X++) have '+' at index 1
-        // All decrement operations (--X, X--) have '-' at index 1
-        // Add 1 if increment, subtract 1 if decrement
-        x += operations[i][1] === '+' ? 1 : -1;
-    }
-    
-    // Return the final value of X after all operations
-    return x;
+  // Initialize variable X to 0 as per problem statement
+  let x = 0;
+
+  // Iterate through each operation in the input array
+  for (let i = 0; i < operations.length; i++) {
+    // Check character at index 1 (second character) of the operation string
+    // All increment operations (++X, X++) have '+' at index 1
+    // All decrement operations (--X, X--) have '-' at index 1
+    // Add 1 if increment, subtract 1 if decrement
+    x += operations[i][1] === "+" ? 1 : -1;
+  }
+
+  // Return the final value of X after all operations
+  return x;
 }

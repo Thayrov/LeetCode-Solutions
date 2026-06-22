@@ -40,77 +40,77 @@ Constraints:
 */
 
 function maxPower(stations: number[], r: number, k: number): number {
-    const n = stations.length;
-    // Store initial power for each city
-    const power = new Array(n).fill(0);
-    
-    // Calculate initial power for city 0 using range [0, min(n-1, r)]
-    let sum = 0;
-    for (let j = 0; j <= Math.min(n - 1, r); j++) {
-        sum += stations[j];
+  const n = stations.length;
+  // Store initial power for each city
+  const power = new Array(n).fill(0);
+
+  // Calculate initial power for city 0 using range [0, min(n-1, r)]
+  let sum = 0;
+  for (let j = 0; j <= Math.min(n - 1, r); j++) {
+    sum += stations[j];
+  }
+  power[0] = sum;
+
+  // Calculate initial power for remaining cities using sliding window
+  for (let i = 1; i < n; i++) {
+    // Remove station leaving the window on the left
+    if (i - r - 1 >= 0) sum -= stations[i - r - 1];
+    // Add station entering the window on the right
+    if (i + r < n) sum += stations[i + r];
+    power[i] = sum;
+  }
+
+  // Check if we can achieve minPower with k additional stations
+  const canAchieve = (minPower: number): boolean => {
+    // Track number of stations added at each position
+    const added = new Array(n).fill(0);
+    let used = 0;
+    // Running sum of added stations affecting current city
+    let addedSum = 0;
+
+    // Process each city from left to right
+    for (let i = 0; i < n; i++) {
+      // Update sliding window of added stations for city i
+      if (i > 0) {
+        const leftOut = i - r - 1;
+        const rightIn = i + r;
+        // Remove added stations leaving window on left
+        if (leftOut >= 0) addedSum -= added[leftOut];
+        // Add stations entering window on right
+        if (rightIn < n) addedSum += added[rightIn];
+      }
+
+      // Calculate current total power (original + added)
+      const current = power[i] + addedSum;
+
+      // If below target, add stations
+      if (current < minPower) {
+        const need = minPower - current;
+        used += need;
+        // Check budget constraint
+        if (used > k) return false;
+        // Place stations at rightmost position to maximize future coverage
+        const pos = Math.min(i + r, n - 1);
+        added[pos] += need;
+        // Update running sum (pos is always in current city's range)
+        addedSum += need;
+      }
     }
-    power[0] = sum;
-    
-    // Calculate initial power for remaining cities using sliding window
-    for (let i = 1; i < n; i++) {
-        // Remove station leaving the window on the left
-        if (i - r - 1 >= 0) sum -= stations[i - r - 1];
-        // Add station entering the window on the right
-        if (i + r < n) sum += stations[i + r];
-        power[i] = sum;
+    return true;
+  };
+
+  // Binary search for maximum achievable minimum power
+  let left = Math.min(...power);
+  let right = left + k;
+
+  while (left < right) {
+    const mid = Math.floor((left + right + 1) / 2);
+    if (canAchieve(mid)) {
+      left = mid;
+    } else {
+      right = mid - 1;
     }
-    
-    // Check if we can achieve minPower with k additional stations
-    const canAchieve = (minPower: number): boolean => {
-        // Track number of stations added at each position
-        const added = new Array(n).fill(0);
-        let used = 0;
-        // Running sum of added stations affecting current city
-        let addedSum = 0;
-        
-        // Process each city from left to right
-        for (let i = 0; i < n; i++) {
-            // Update sliding window of added stations for city i
-            if (i > 0) {
-                const leftOut = i - r - 1;
-                const rightIn = i + r;
-                // Remove added stations leaving window on left
-                if (leftOut >= 0) addedSum -= added[leftOut];
-                // Add stations entering window on right
-                if (rightIn < n) addedSum += added[rightIn];
-            }
-            
-            // Calculate current total power (original + added)
-            const current = power[i] + addedSum;
-            
-            // If below target, add stations
-            if (current < minPower) {
-                const need = minPower - current;
-                used += need;
-                // Check budget constraint
-                if (used > k) return false;
-                // Place stations at rightmost position to maximize future coverage
-                const pos = Math.min(i + r, n - 1);
-                added[pos] += need;
-                // Update running sum (pos is always in current city's range)
-                addedSum += need;
-            }
-        }
-        return true;
-    };
-    
-    // Binary search for maximum achievable minimum power
-    let left = Math.min(...power);
-    let right = left + k;
-    
-    while (left < right) {
-        const mid = Math.floor((left + right + 1) / 2);
-        if (canAchieve(mid)) {
-            left = mid;
-        } else {
-            right = mid - 1;
-        }
-    }
-    
-    return left;
+  }
+
+  return left;
 }

@@ -49,57 +49,57 @@ s consists of digits from 0 to 9 only.
 */
 
 function findLexSmallestString(s: string, a: number, b: number): string {
-    // Store the length of the string for efficient access
-    const n = s.length;
-    
-    // Set to track all unique strings we've seen to avoid cycles
-    const visited = new Set<string>();
-    
-    // Track the lexicographically smallest string found
-    let min = s;
-    
-    // BFS queue initialized with the starting string
-    const queue: string[] = [s];
-    
-    // Mark the starting string as visited
-    visited.add(s);
-    
-    // Process all reachable states using BFS
-    while (queue.length > 0) {
-        // Get the next string to process from the queue
-        const curr = queue.shift()!;
-        
-        // Update minimum if current string is lexicographically smaller
-        if (curr < min) min = curr;
-        
-        // Operation 1: Add 'a' to all odd indices
-        // Convert string to array for modification
-        const arr = curr.split('');
-        // Iterate through all odd indices (1, 3, 5, ...)
-        for (let i = 1; i < n; i += 2) {
-            // Add 'a' to the digit and take modulo 10 to handle wraparound
-            arr[i] = String((+arr[i] + a) % 10);
-        }
-        // Convert array back to string
-        const added = arr.join('');
-        
-        // If this state hasn't been visited, add to queue and mark visited
-        if (!visited.has(added)) {
-            visited.add(added);
-            queue.push(added);
-        }
-        
-        // Operation 2: Rotate string to the right by 'b' positions
-        // Take last 'b' characters and prepend to first 'n-b' characters
-        const rotated = curr.slice(-b) + curr.slice(0, -b);
-        
-        // If this state hasn't been visited, add to queue and mark visited
-        if (!visited.has(rotated)) {
-            visited.add(rotated);
-            queue.push(rotated);
-        }
+  // Store the length of the string for efficient access
+  const n = s.length;
+
+  // Set to track all unique strings we've seen to avoid cycles
+  const visited = new Set<string>();
+
+  // Track the lexicographically smallest string found
+  let min = s;
+
+  // BFS queue initialized with the starting string
+  const queue: string[] = [s];
+
+  // Mark the starting string as visited
+  visited.add(s);
+
+  // Process all reachable states using BFS
+  while (queue.length > 0) {
+    // Get the next string to process from the queue
+    const curr = queue.shift()!;
+
+    // Update minimum if current string is lexicographically smaller
+    if (curr < min) min = curr;
+
+    // Operation 1: Add 'a' to all odd indices
+    // Convert string to array for modification
+    const arr = curr.split("");
+    // Iterate through all odd indices (1, 3, 5, ...)
+    for (let i = 1; i < n; i += 2) {
+      // Add 'a' to the digit and take modulo 10 to handle wraparound
+      arr[i] = String((+arr[i] + a) % 10);
     }
-    
-    // Return the lexicographically smallest string found
-    return min;
+    // Convert array back to string
+    const added = arr.join("");
+
+    // If this state hasn't been visited, add to queue and mark visited
+    if (!visited.has(added)) {
+      visited.add(added);
+      queue.push(added);
+    }
+
+    // Operation 2: Rotate string to the right by 'b' positions
+    // Take last 'b' characters and prepend to first 'n-b' characters
+    const rotated = curr.slice(-b) + curr.slice(0, -b);
+
+    // If this state hasn't been visited, add to queue and mark visited
+    if (!visited.has(rotated)) {
+      visited.add(rotated);
+      queue.push(rotated);
+    }
+  }
+
+  // Return the lexicographically smallest string found
+  return min;
 }

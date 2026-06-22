@@ -1,4 +1,3 @@
-
 /* 
 2872. Maximum Number of K-Divisible Components
 
@@ -41,13 +40,18 @@ The input is generated such that edges represents a valid tree.
 </> Typescript Code:
 */
 
-function maxKDivisibleComponents(n: number, edges: number[][], values: number[], k: number): number {
+function maxKDivisibleComponents(
+  n: number,
+  edges: number[][],
+  values: number[],
+  k: number,
+): number {
   // Create adjacency list for the tree
   const adj: number[][] = Array.from({ length: n }, () => []);
   // Fill adjacency list with bidirectional edges
   for (const [a, b] of edges) {
-      adj[a].push(b);
-      adj[b].push(a);
+    adj[a].push(b);
+    adj[b].push(a);
   }
   // Track visited nodes to avoid revisiting
   const visited = new Array<boolean>(n).fill(false);
@@ -55,28 +59,28 @@ function maxKDivisibleComponents(n: number, edges: number[][], values: number[],
   let count = 0;
   // Depth-first search function
   const dfs = (u: number): number => {
-      // Mark current node as visited
-      visited[u] = true;
-      // Take current node's value mod k
-      let sum = values[u] % k;
-      // Traverse adjacent nodes
-      for (const v of adj[u]) {
-          // If neighbor not visited, recurse
-          if (!visited[v]) {
-              // Add subtree result (mod k) to sum
-              sum = (sum + dfs(v)) % k;
-          }
+    // Mark current node as visited
+    visited[u] = true;
+    // Take current node's value mod k
+    let sum = values[u] % k;
+    // Traverse adjacent nodes
+    for (const v of adj[u]) {
+      // If neighbor not visited, recurse
+      if (!visited[v]) {
+        // Add subtree result (mod k) to sum
+        sum = (sum + dfs(v)) % k;
       }
-      // If total sum is divisible by k, increment count and reset sum
-      if (sum === 0) {
-          count++;
-          return 0;
-      }
-      // Return sum mod k to parent call
-      return sum;
+    }
+    // If total sum is divisible by k, increment count and reset sum
+    if (sum === 0) {
+      count++;
+      return 0;
+    }
+    // Return sum mod k to parent call
+    return sum;
   };
   // Initiate DFS from node 0
   dfs(0);
   // Return the count of k-divisible components
   return count;
-};
+}

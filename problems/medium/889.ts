@@ -39,7 +39,10 @@ It is guaranteed that preorder and postorder are the preorder traversal and post
  * }
  */
 
-function constructFromPrePost(preorder: number[], postorder: number[]): TreeNode | null {
+function constructFromPrePost(
+  preorder: number[],
+  postorder: number[],
+): TreeNode | null {
   // Helper function for building the tree with subarray boundaries
   function build(
     preStart: number,
@@ -63,9 +66,19 @@ function constructFromPrePost(preorder: number[], postorder: number[]): TreeNode
     // Calculate the number of nodes in the left subtree based on postorder index found
     let leftSize = leftRootIndex - postStart + 1;
     // Recursively construct the left subtree using updated boundaries
-    root.left = build(preStart + 1, preStart + leftSize, postStart, leftRootIndex);
+    root.left = build(
+      preStart + 1,
+      preStart + leftSize,
+      postStart,
+      leftRootIndex,
+    );
     // Recursively construct the right subtree using the remaining nodes (excluding root)
-    root.right = build(preStart + leftSize + 1, preEnd, leftRootIndex + 1, postEnd - 1);
+    root.right = build(
+      preStart + leftSize + 1,
+      preEnd,
+      leftRootIndex + 1,
+      postEnd - 1,
+    );
     // Return the constructed root node
     return root;
   }

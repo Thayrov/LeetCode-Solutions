@@ -30,28 +30,28 @@ Constraints:
 */
 
 function subarrayBitwiseORs(arr: number[]): number {
-    // Set to store all unique bitwise OR values found across all subarrays
-    const result = new Set<number>();
-    // Set to track unique OR values for subarrays ending at current position
-    let current = new Set<number>();
-    
-    // Process each element in the array
-    for (const num of arr) {
-        // Create new set starting with current element (single element subarray)
-        const next = new Set<number>([num]);
-        // For each OR value from previous position, combine with current element
-        for (const val of current) {
-            // Add the OR of previous subarray value with current element
-            next.add(val | num);
-        }
-        // Update current set to contain all OR values ending at this position
-        current = next;
-        // Add all OR values ending at current position to global result set
-        for (const val of current) {
-            result.add(val);
-        }
+  // Set to store all unique bitwise OR values found across all subarrays
+  const result = new Set<number>();
+  // Set to track unique OR values for subarrays ending at current position
+  let current = new Set<number>();
+
+  // Process each element in the array
+  for (const num of arr) {
+    // Create new set starting with current element (single element subarray)
+    const next = new Set<number>([num]);
+    // For each OR value from previous position, combine with current element
+    for (const val of current) {
+      // Add the OR of previous subarray value with current element
+      next.add(val | num);
     }
-    
-    // Return count of unique OR values across all subarrays
-    return result.size;
+    // Update current set to contain all OR values ending at this position
+    current = next;
+    // Add all OR values ending at current position to global result set
+    for (const val of current) {
+      result.add(val);
+    }
+  }
+
+  // Return count of unique OR values across all subarrays
+  return result.size;
 }

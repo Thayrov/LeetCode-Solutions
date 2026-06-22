@@ -43,15 +43,15 @@ Constraints:
 */
 
 function findClosest(x: number, y: number, z: number): number {
-    // Calculate the absolute distance from Person 1 (at position x) to Person 3 (at position z)
-    const d1 = Math.abs(x - z);
-    
-    // Calculate the absolute distance from Person 2 (at position y) to Person 3 (at position z)
-    const d2 = Math.abs(y - z);
-    
-    // Use ternary operator chain to determine winner:
-    // If Person 1's distance is shorter, return 1
-    // If Person 2's distance is shorter, return 2
-    // If distances are equal, return 0 (tie)
-    return d1 < d2 ? 1 : d2 < d1 ? 2 : 0;
+  // Calculate the absolute distance from Person 1 (at position x) to Person 3 (at position z)
+  const d1 = Math.abs(x - z);
+
+  // Calculate the absolute distance from Person 2 (at position y) to Person 3 (at position z)
+  const d2 = Math.abs(y - z);
+
+  // Use ternary operator chain to determine winner:
+  // If Person 1's distance is shorter, return 1
+  // If Person 2's distance is shorter, return 2
+  // If distances are equal, return 0 (tie)
+  return d1 < d2 ? 1 : d2 < d1 ? 2 : 0;
 }

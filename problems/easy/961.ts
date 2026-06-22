@@ -29,24 +29,24 @@ nums contains n + 1 unique elements and one of them is repeated exactly n times.
 */
 
 function repeatedNTimes(nums: number[]): number {
-    // Initialize a Set to store unique numbers encountered; Sets provide O(1) lookup time.
-    const seen = new Set<number>();
-    
-    // Iterate through the array using a standard for-loop for maximum execution speed.
-    for (let i = 0; i < nums.length; i++) {
-        // Current number being evaluated in the iteration.
-        const num = nums[i];
-        
-        // If the Set already contains the current number, it is the N-repeated element.
-        // Since there are N+1 unique elements in 2N total, the first duplicate found is the answer.
-        if (seen.has(num)) {
-            return num;
-        }
-        
-        // If not seen before, add the number to the Set and continue searching.
-        seen.add(num);
+  // Initialize a Set to store unique numbers encountered; Sets provide O(1) lookup time.
+  const seen = new Set<number>();
+
+  // Iterate through the array using a standard for-loop for maximum execution speed.
+  for (let i = 0; i < nums.length; i++) {
+    // Current number being evaluated in the iteration.
+    const num = nums[i];
+
+    // If the Set already contains the current number, it is the N-repeated element.
+    // Since there are N+1 unique elements in 2N total, the first duplicate found is the answer.
+    if (seen.has(num)) {
+      return num;
     }
-    
-    // Fallback return, though constraints guarantee a solution will be found within the loop.
-    return -1;
+
+    // If not seen before, add the number to the Set and continue searching.
+    seen.add(num);
+  }
+
+  // Fallback return, though constraints guarantee a solution will be found within the loop.
+  return -1;
 }

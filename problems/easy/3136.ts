@@ -39,38 +39,45 @@ word consists of English uppercase and lowercase letters, digits, '@', '#', and 
 */
 
 function isValid(word: string): boolean {
-    // Early exit if length is less than 3 characters
-    if (word.length < 3) return false;
+  // Early exit if length is less than 3 characters
+  if (word.length < 3) return false;
 
-    // Track if we've found at least one vowel and one consonant
-    let hasVowel = false, hasConsonant = false;
+  // Track if we've found at least one vowel and one consonant
+  let hasVowel = false,
+    hasConsonant = false;
 
-    // Single pass through the string to check all conditions
-    for (let i = 0; i < word.length; i++) {
-        // Get character code for faster comparisons than string operations
-        const c = word.charCodeAt(i);
+  // Single pass through the string to check all conditions
+  for (let i = 0; i < word.length; i++) {
+    // Get character code for faster comparisons than string operations
+    const c = word.charCodeAt(i);
 
-        // Check if character is a digit (0-9: ASCII 48-57)
-        if (c >= 48 && c <= 57) continue;
+    // Check if character is a digit (0-9: ASCII 48-57)
+    if (c >= 48 && c <= 57) continue;
 
-        // Check if character is a letter (A-Z: 65-90, a-z: 97-122)
-        if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122)) {
-            // Convert to lowercase using bitwise OR with 32 (faster than toLowerCase)
-            const lower = c | 32;
+    // Check if character is a letter (A-Z: 65-90, a-z: 97-122)
+    if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122)) {
+      // Convert to lowercase using bitwise OR with 32 (faster than toLowerCase)
+      const lower = c | 32;
 
-            // Check if lowercase character is a vowel (a=97, e=101, i=105, o=111, u=117)
-            if (lower === 97 || lower === 101 || lower === 105 || lower === 111 || lower === 117) {
-                hasVowel = true;
-            } else {
-                // If it's a letter but not a vowel, it's a consonant
-                hasConsonant = true;
-            }
-        } else {
-            // Character is not alphanumeric, so word is invalid
-            return false;
-        }
+      // Check if lowercase character is a vowel (a=97, e=101, i=105, o=111, u=117)
+      if (
+        lower === 97 ||
+        lower === 101 ||
+        lower === 105 ||
+        lower === 111 ||
+        lower === 117
+      ) {
+        hasVowel = true;
+      } else {
+        // If it's a letter but not a vowel, it's a consonant
+        hasConsonant = true;
+      }
+    } else {
+      // Character is not alphanumeric, so word is invalid
+      return false;
     }
+  }
 
-    // Word is valid only if it has both vowels and consonants
-    return hasVowel && hasConsonant;
+  // Word is valid only if it has both vowels and consonants
+  return hasVowel && hasConsonant;
 }

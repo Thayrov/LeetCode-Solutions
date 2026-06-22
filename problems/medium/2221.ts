@@ -29,19 +29,19 @@ Constraints:
 */
 
 function triangularSum(nums: number[]): number {
-    // Initialize length variable to track current array size
-    let n = nums.length;
-    
-    // Continue process until only one element remains
-    while (n > 1) {
-        // Iterate through current array up to second-to-last element
-        for (let i = 0; i < n - 1; i++) {
-            // Calculate sum of adjacent elements, apply modulo 10, store in-place at current position
-            nums[i] = (nums[i] + nums[i + 1]) % 10;
-        }
-        // Decrement length to reflect the reduced array size (in-place modification eliminates last element)
-        n--;
+  // Initialize length variable to track current array size
+  let n = nums.length;
+
+  // Continue process until only one element remains
+  while (n > 1) {
+    // Iterate through current array up to second-to-last element
+    for (let i = 0; i < n - 1; i++) {
+      // Calculate sum of adjacent elements, apply modulo 10, store in-place at current position
+      nums[i] = (nums[i] + nums[i + 1]) % 10;
     }
-    // Return the single remaining element at index 0
-    return nums[0];
+    // Decrement length to reflect the reduced array size (in-place modification eliminates last element)
+    n--;
+  }
+  // Return the single remaining element at index 0
+  return nums[0];
 }

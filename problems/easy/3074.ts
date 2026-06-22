@@ -28,27 +28,27 @@ The input is generated such that it's possible to redistribute packs of apples i
 */
 
 function minimumBoxes(apple: number[], capacity: number[]): number {
-    // Initialize a counter to store the sum of all apples across all packs
-    let totalApples = 0;
-    // Iterate through the apple array to calculate the total inventory
-    for (let i = 0; i < apple.length; i++) {
-        totalApples += apple[i];
-    }
+  // Initialize a counter to store the sum of all apples across all packs
+  let totalApples = 0;
+  // Iterate through the apple array to calculate the total inventory
+  for (let i = 0; i < apple.length; i++) {
+    totalApples += apple[i];
+  }
 
-    // Sort the capacity array in descending order (highest to lowest) 
-    // to apply a greedy approach, picking the largest boxes first
-    capacity.sort((a, b) => b - a);
+  // Sort the capacity array in descending order (highest to lowest)
+  // to apply a greedy approach, picking the largest boxes first
+  capacity.sort((a, b) => b - a);
 
-    // Track the count of boxes selected
-    let boxesUsed = 0;
-    // Continue adding boxes until their combined capacity meets or exceeds totalApples
-    while (totalApples > 0) {
-        // Subtract the capacity of the current largest available box from the remaining total
-        totalApples -= capacity[boxesUsed];
-        // Increment the box counter
-        boxesUsed++;
-    }
+  // Track the count of boxes selected
+  let boxesUsed = 0;
+  // Continue adding boxes until their combined capacity meets or exceeds totalApples
+  while (totalApples > 0) {
+    // Subtract the capacity of the current largest available box from the remaining total
+    totalApples -= capacity[boxesUsed];
+    // Increment the box counter
+    boxesUsed++;
+  }
 
-    // Return the minimum count of boxes required to fit all apples
-    return boxesUsed;
+  // Return the minimum count of boxes required to fit all apples
+  return boxesUsed;
 }

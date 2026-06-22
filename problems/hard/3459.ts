@@ -46,76 +46,106 @@ grid[i][j] is either 0, 1 or 2.
 */
 
 function lenOfVDiagonal(grid: number[][]): number {
-    // Get grid dimensions for boundary checking
-    const n = grid.length, m = grid[0].length;
+  // Get grid dimensions for boundary checking
+  const n = grid.length,
+    m = grid[0].length;
 
-    // Define 4 diagonal directions: bottom-right, bottom-left, top-right, top-left
-    const dirs = [[1,1], [1,-1], [-1,1], [-1,-1]];
+  // Define 4 diagonal directions: bottom-right, bottom-left, top-right, top-left
+  const dirs = [
+    [1, 1],
+    [1, -1],
+    [-1, 1],
+    [-1, -1],
+  ];
 
-    // Map each direction to its 90-degree clockwise turn
-    // 0->1, 1->3, 2->0, 3->2 (indices correspond to dirs array)
-    const clockwise = [1, 3, 0, 2];
+  // Map each direction to its 90-degree clockwise turn
+  // 0->1, 1->3, 2->0, 3->2 (indices correspond to dirs array)
+  const clockwise = [1, 3, 0, 2];
 
-    // Pattern sequence after starting with 1: alternates between 2 and 0
-    const pattern = [2, 0];
+  // Pattern sequence after starting with 1: alternates between 2 and 0
+  const pattern = [2, 0];
 
-    // Track maximum V-shaped diagonal length found
-    let maxLen = 0;
+  // Track maximum V-shaped diagonal length found
+  let maxLen = 0;
 
-    // Iterate through every cell in the grid
-    for (let i = 0; i < n; i++) {
-        for (let j = 0; j < m; j++) {
-            // Only start from cells containing 1 (valid starting points)
-            if (grid[i][j] === 1) {
-                // Try each of the 4 diagonal directions
-                for (let d = 0; d < 4; d++) {
-                    // Get direction vector for current diagonal
-                    const [dx, dy] = dirs[d];
+  // Iterate through every cell in the grid
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < m; j++) {
+      // Only start from cells containing 1 (valid starting points)
+      if (grid[i][j] === 1) {
+        // Try each of the 4 diagonal directions
+        for (let d = 0; d < 4; d++) {
+          // Get direction vector for current diagonal
+          const [dx, dy] = dirs[d];
 
-                    // Initialize position, length, and pattern index
-                    let x = i, y = j, len = 1, idx = 0;
+          // Initialize position, length, and pattern index
+          let x = i,
+            y = j,
+            len = 1,
+            idx = 0;
 
-                    // Extend in current direction as far as possible
-                    while (true) {
-                        // Move to next position in diagonal
-                        x += dx; y += dy;
+          // Extend in current direction as far as possible
+          while (true) {
+            // Move to next position in diagonal
+            x += dx;
+            y += dy;
 
-                        // Check bounds and pattern match
-                        if (x < 0 || x >= n || y < 0 || y >= m || grid[x][y] !== pattern[idx]) break;
+            // Check bounds and pattern match
+            if (
+              x < 0 ||
+              x >= n ||
+              y < 0 ||
+              y >= m ||
+              grid[x][y] !== pattern[idx]
+            )
+              break;
 
-                        // Valid extension: increment length and toggle pattern index
-                        len++; idx = 1 - idx;
+            // Valid extension: increment length and toggle pattern index
+            len++;
+            idx = 1 - idx;
 
-                        // At each valid position, try making a 90-degree clockwise turn
-                        const nd = clockwise[d];
-                        const [ndx, ndy] = dirs[nd];
+            // At each valid position, try making a 90-degree clockwise turn
+            const nd = clockwise[d];
+            const [ndx, ndy] = dirs[nd];
 
-                        // Initialize new direction exploration from current position
-                        let nx = x, ny = y, nlen = len, nidx = idx;
+            // Initialize new direction exploration from current position
+            let nx = x,
+              ny = y,
+              nlen = len,
+              nidx = idx;
 
-                        // Extend in new direction after the turn
-                        while (true) {
-                            // Move to next position in new diagonal direction
-                            nx += ndx; ny += ndy;
+            // Extend in new direction after the turn
+            while (true) {
+              // Move to next position in new diagonal direction
+              nx += ndx;
+              ny += ndy;
 
-                            // Check bounds and pattern match for new direction
-                            if (nx < 0 || nx >= n || ny < 0 || ny >= m || grid[nx][ny] !== pattern[nidx]) break;
+              // Check bounds and pattern match for new direction
+              if (
+                nx < 0 ||
+                nx >= n ||
+                ny < 0 ||
+                ny >= m ||
+                grid[nx][ny] !== pattern[nidx]
+              )
+                break;
 
-                            // Valid extension in new direction
-                            nlen++; nidx = 1 - nidx;
-                        }
-
-                        // Update maximum length with V-shaped segment (original + turn)
-                        maxLen = Math.max(maxLen, nlen);
-                    }
-
-                    // Update maximum length with straight segment (no turn)
-                    maxLen = Math.max(maxLen, len);
-                }
+              // Valid extension in new direction
+              nlen++;
+              nidx = 1 - nidx;
             }
-        }
-    }
 
-    // Return the length of the longest V-shaped diagonal segment found
-    return maxLen;
+            // Update maximum length with V-shaped segment (original + turn)
+            maxLen = Math.max(maxLen, nlen);
+          }
+
+          // Update maximum length with straight segment (no turn)
+          maxLen = Math.max(maxLen, len);
+        }
+      }
+    }
+  }
+
+  // Return the length of the longest V-shaped diagonal segment found
+  return maxLen;
 }

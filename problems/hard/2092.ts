@@ -50,7 +50,11 @@ xi != yi
 </> Typescript Code:
 */
 
-function findAllPeople(n: number, meetings: number[][], firstPerson: number): number[] {
+function findAllPeople(
+  n: number,
+  meetings: number[][],
+  firstPerson: number,
+): number[] {
   // Sorts the meetings array based on the meeting time in ascending order.
   meetings.sort((a, b) => a[2] - b[2]);
 
@@ -86,7 +90,7 @@ function findAllPeople(n: number, meetings: number[][], firstPerson: number): nu
       // Recursively find the root parent and update the parent of the current node to point directly to the root.
       const maybeParent = parents.get(node1);
       if (maybeParent === undefined) {
-        throw new Error('Parent not found in the map. This should not happen.');
+        throw new Error("Parent not found in the map. This should not happen.");
       }
       const parent = walk(maybeParent);
       parents.set(node1, parent);
@@ -154,7 +158,7 @@ function findAllPeople(n: number, meetings: number[][], firstPerson: number): nu
 
     // For each group, if any node knows the secret, all nodes in the group learn the secret.
     groups.forEach((nodes, _) => {
-      if (nodes.some(node => knowSecret.has(node))) {
+      if (nodes.some((node) => knowSecret.has(node))) {
         for (const node of nodes) {
           knowSecret.add(node);
         }

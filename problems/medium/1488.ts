@@ -46,67 +46,69 @@ Constraints:
 */
 
 function avoidFlood(rains: number[]): number[] {
-    // Initialize result array with same length as input
-    const ans: number[] = new Array(rains.length);
-    
-    // Map to track which lakes are full and when they were last filled (lake -> day index)
-    const full: Map<number, number> = new Map();
-    
-    // Array to store indices of dry days (when rains[i] == 0) in sorted order
-    const dryDays: number[] = [];
-    
-    // Process each day sequentially
-    for (let i = 0; i < rains.length; i++) {
-        // Case 1: It's raining on a lake (rains[i] > 0)
-        if (rains[i] > 0) {
-            const lake = rains[i];
-            
-            // Check if this lake is already full
-            if (full.has(lake)) {
-                // Get the day when this lake was last filled
-                const lastRain = full.get(lake)!;
-                
-                // Binary search to find the earliest dry day after lastRain
-                let left = 0, right = dryDays.length - 1, pos = -1;
-                while (left <= right) {
-                    // Use unsigned right shift for faster integer division
-                    const mid = (left + right) >>> 1;
-                    
-                    // Check if this dry day is after the last rain
-                    if (dryDays[mid] > lastRain) {
-                        pos = mid; // Potential answer, search for earlier one
-                        right = mid - 1;
-                    } else {
-                        left = mid + 1; // Need later dry day
-                    }
-                }
-                
-                // No dry day available between lastRain and now -> flood inevitable
-                if (pos === -1) return [];
-                
-                // Use this dry day to dry the lake
-                ans[dryDays[pos]] = lake;
-                
-                // Remove this dry day from available pool
-                dryDays.splice(pos, 1);
-            }
-            
-            // Mark this lake as full and record when it was filled
-            full.set(lake, i);
-            
-            // On rainy days, answer is always -1
-            ans[i] = -1;
-        } 
-        // Case 2: No rain, we can choose to dry a lake (rains[i] == 0)
-        else {
-            // Add this day to available dry days (maintains sorted order since i increases)
-            dryDays.push(i);
-            
-            // Placeholder value (will be overwritten if we need to dry a specific lake)
-            ans[i] = 1;
+  // Initialize result array with same length as input
+  const ans: number[] = new Array(rains.length);
+
+  // Map to track which lakes are full and when they were last filled (lake -> day index)
+  const full: Map<number, number> = new Map();
+
+  // Array to store indices of dry days (when rains[i] == 0) in sorted order
+  const dryDays: number[] = [];
+
+  // Process each day sequentially
+  for (let i = 0; i < rains.length; i++) {
+    // Case 1: It's raining on a lake (rains[i] > 0)
+    if (rains[i] > 0) {
+      const lake = rains[i];
+
+      // Check if this lake is already full
+      if (full.has(lake)) {
+        // Get the day when this lake was last filled
+        const lastRain = full.get(lake)!;
+
+        // Binary search to find the earliest dry day after lastRain
+        let left = 0,
+          right = dryDays.length - 1,
+          pos = -1;
+        while (left <= right) {
+          // Use unsigned right shift for faster integer division
+          const mid = (left + right) >>> 1;
+
+          // Check if this dry day is after the last rain
+          if (dryDays[mid] > lastRain) {
+            pos = mid; // Potential answer, search for earlier one
+            right = mid - 1;
+          } else {
+            left = mid + 1; // Need later dry day
+          }
         }
+
+        // No dry day available between lastRain and now -> flood inevitable
+        if (pos === -1) return [];
+
+        // Use this dry day to dry the lake
+        ans[dryDays[pos]] = lake;
+
+        // Remove this dry day from available pool
+        dryDays.splice(pos, 1);
+      }
+
+      // Mark this lake as full and record when it was filled
+      full.set(lake, i);
+
+      // On rainy days, answer is always -1
+      ans[i] = -1;
     }
-    
-    // Successfully avoided all floods
-    return ans;
+    // Case 2: No rain, we can choose to dry a lake (rains[i] == 0)
+    else {
+      // Add this day to available dry days (maintains sorted order since i increases)
+      dryDays.push(i);
+
+      // Placeholder value (will be overwritten if we need to dry a specific lake)
+      ans[i] = 1;
+    }
+  }
+
+  // Successfully avoided all floods
+  return ans;
 }

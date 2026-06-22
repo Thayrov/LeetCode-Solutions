@@ -30,23 +30,23 @@ Constraints:
 */
 
 function minimumOneBitOperations(n: number): number {
-    // Initialize result to accumulate the inverse Gray code value
-    let result = 0;
-    
-    // Process each bit of n from most significant to least significant
-    // This loop continues until all bits have been processed (n becomes 0)
-    while (n > 0) {
-        // XOR current result with n to compute the inverse Gray code
-        // This is the key insight: minimum operations follows inverse Gray code pattern
-        // Each iteration contributes the current bit pattern to the final result
-        result ^= n;
-        
-        // Right shift n by 1 to process the next bit position
-        // This effectively moves to the next less significant bit
-        n >>= 1;
-    }
-    
-    // Return the computed result which represents the minimum number of operations
-    // The inverse Gray code directly gives us the answer to this problem
-    return result;
+  // Initialize result to accumulate the inverse Gray code value
+  let result = 0;
+
+  // Process each bit of n from most significant to least significant
+  // This loop continues until all bits have been processed (n becomes 0)
+  while (n > 0) {
+    // XOR current result with n to compute the inverse Gray code
+    // This is the key insight: minimum operations follows inverse Gray code pattern
+    // Each iteration contributes the current bit pattern to the final result
+    result ^= n;
+
+    // Right shift n by 1 to process the next bit position
+    // This effectively moves to the next less significant bit
+    n >>= 1;
+  }
+
+  // Return the computed result which represents the minimum number of operations
+  // The inverse Gray code directly gives us the answer to this problem
+  return result;
 }

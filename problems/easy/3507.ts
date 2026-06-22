@@ -29,39 +29,39 @@ Constraints:
 */
 
 function minimumPairRemoval(nums: number[]): number {
-    // Initialize a counter to track the number of merge operations performed
-    let ops = 0;
+  // Initialize a counter to track the number of merge operations performed
+  let ops = 0;
 
-    // Continue the simulation until the non-decreasing condition is met
-    while (true) {
-        let isSorted = true;
-        // Check if the current array is non-decreasing (nums[i] <= nums[i+1])
-        for (let i = 0; i < nums.length - 1; i++) {
-            if (nums[i] > nums[i + 1]) {
-                isSorted = false;
-                break;
-            }
-        }
-        // If the array is sorted, return the total count of operations
-        if (isSorted) return ops;
-
-        // Variables to track the minimum pair sum and its leftmost index
-        let minSum = Infinity;
-        let idx = -1;
-
-        // Iterate through all adjacent pairs to find the smallest sum
-        for (let i = 0; i < nums.length - 1; i++) {
-            const sum = nums[i] + nums[i + 1];
-            // Update if a strictly smaller sum is found (ensures leftmost choice)
-            if (sum < minSum) {
-                minSum = sum;
-                idx = i;
-            }
-        }
-        
-        // Remove the two elements at idx and replace them with their combined sum
-        nums.splice(idx, 2, minSum);
-        // Increment the operation count for the performed merge
-        ops++;
+  // Continue the simulation until the non-decreasing condition is met
+  while (true) {
+    let isSorted = true;
+    // Check if the current array is non-decreasing (nums[i] <= nums[i+1])
+    for (let i = 0; i < nums.length - 1; i++) {
+      if (nums[i] > nums[i + 1]) {
+        isSorted = false;
+        break;
+      }
     }
+    // If the array is sorted, return the total count of operations
+    if (isSorted) return ops;
+
+    // Variables to track the minimum pair sum and its leftmost index
+    let minSum = Infinity;
+    let idx = -1;
+
+    // Iterate through all adjacent pairs to find the smallest sum
+    for (let i = 0; i < nums.length - 1; i++) {
+      const sum = nums[i] + nums[i + 1];
+      // Update if a strictly smaller sum is found (ensures leftmost choice)
+      if (sum < minSum) {
+        minSum = sum;
+        idx = i;
+      }
+    }
+
+    // Remove the two elements at idx and replace them with their combined sum
+    nums.splice(idx, 2, minSum);
+    // Increment the operation count for the performed merge
+    ops++;
+  }
 }

@@ -33,45 +33,45 @@ corridor[i] is either 'S' or 'P'.
 */
 
 function numberOfWays(corridor: string): number {
-    // Modulo constant as defined by the problem
-    const MOD = 1_000_000_007;
-    
-    // Result accumulator, starts at 1 (multiplicative identity)
-    let res = 1;
-    
-    // Counter for the total number of seats encountered
-    let seats = 0;
-    
-    // Tracks the index of the previously found seat
-    let prevSeatIdx = -1;
+  // Modulo constant as defined by the problem
+  const MOD = 1_000_000_007;
 
-    // Iterate through the corridor string once (Linear Time O(N))
-    for (let i = 0; i < corridor.length; i++) {
-        // Check if current character is a Seat
-        if (corridor[i] === 'S') {
-            seats++;
+  // Result accumulator, starts at 1 (multiplicative identity)
+  let res = 1;
 
-            // Logic: A valid section must contain exactly 2 seats.
-            // Dividers can only be placed between the end of one pair 
-            // and the start of the next pair.
-            // This condition checks if we are at the start of a NEW pair (3rd, 5th, 7th seat, etc.)
-            if (seats > 2 && seats % 2 === 1) {
-                // The number of ways to place a divider between the previous pair and this new pair
-                // is equal to the number of indices between them (the gap length).
-                // Gap length = current_index (start of new pair) - prev_index (end of old pair).
-                // We multiply this count into our result modulo 10^9 + 7.
-                // Note: JS Numbers are safe up to 9e15, and our max product is roughly 1e14, so BigInt is not strictly needed.
-                res = (res * (i - prevSeatIdx)) % MOD;
-            }
+  // Counter for the total number of seats encountered
+  let seats = 0;
 
-            // Update the previous seat index to the current one for the next iteration
-            prevSeatIdx = i;
-        }
+  // Tracks the index of the previously found seat
+  let prevSeatIdx = -1;
+
+  // Iterate through the corridor string once (Linear Time O(N))
+  for (let i = 0; i < corridor.length; i++) {
+    // Check if current character is a Seat
+    if (corridor[i] === "S") {
+      seats++;
+
+      // Logic: A valid section must contain exactly 2 seats.
+      // Dividers can only be placed between the end of one pair
+      // and the start of the next pair.
+      // This condition checks if we are at the start of a NEW pair (3rd, 5th, 7th seat, etc.)
+      if (seats > 2 && seats % 2 === 1) {
+        // The number of ways to place a divider between the previous pair and this new pair
+        // is equal to the number of indices between them (the gap length).
+        // Gap length = current_index (start of new pair) - prev_index (end of old pair).
+        // We multiply this count into our result modulo 10^9 + 7.
+        // Note: JS Numbers are safe up to 9e15, and our max product is roughly 1e14, so BigInt is not strictly needed.
+        res = (res * (i - prevSeatIdx)) % MOD;
+      }
+
+      // Update the previous seat index to the current one for the next iteration
+      prevSeatIdx = i;
     }
+  }
 
-    // Edge Case Check:
-    // 1. We must have at least one pair of seats (seats > 0).
-    // 2. The total number of seats must be even (seats % 2 === 0).
-    // If either fails, no valid division is possible, return 0.
-    return (seats > 0 && seats % 2 === 0) ? res : 0;
-};
+  // Edge Case Check:
+  // 1. We must have at least one pair of seats (seats > 0).
+  // 2. The total number of seats must be even (seats % 2 === 0).
+  // If either fails, no valid division is possible, return 0.
+  return seats > 0 && seats % 2 === 0 ? res : 0;
+}

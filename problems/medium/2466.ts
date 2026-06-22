@@ -31,7 +31,12 @@ Constraints:
 </> Typescript Code:
 */
 
-function countGoodStrings(low: number, high: number, zero: number, one: number): number {
+function countGoodStrings(
+  low: number,
+  high: number,
+  zero: number,
+  one: number,
+): number {
   // Define modulo to prevent large number overflow
   const MOD = 1000000007;
   // Prepare a DP array where dp[i] holds how many ways to form a string of length i

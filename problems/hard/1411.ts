@@ -21,27 +21,27 @@ n == grid.length
 */
 
 function numOfWays(n: number): number {
-    // Define the modulo constant to prevent integer overflow as per problem constraints
-    const MOD = 1000000007;
-    
-    // Initial state for n = 1: 
-    // There are 6 ways to paint a row with 2 colors (ABA) and 6 ways with 3 colors (ABC).
-    let aba = 6; 
-    let abc = 6;
+  // Define the modulo constant to prevent integer overflow as per problem constraints
+  const MOD = 1000000007;
 
-    // Iterate from the second row up to n
-    for (let i = 1; i < n; i++) {
-        // Cache current values to calculate transitions for the next row
-        const prevAba = aba;
-        const prevAbc = abc;
+  // Initial state for n = 1:
+  // There are 6 ways to paint a row with 2 colors (ABA) and 6 ways with 3 colors (ABC).
+  let aba = 6;
+  let abc = 6;
 
-        // Pattern transition logic:
-        // Each ABA row at i-1 can produce 3 ABA and 2 ABC patterns at row i.
-        // Each ABC row at i-1 can produce 2 ABA and 2 ABC patterns at row i.
-        aba = (3 * prevAba + 2 * prevAbc) % MOD;
-        abc = (2 * prevAba + 2 * prevAbc) % MOD;
-    }
+  // Iterate from the second row up to n
+  for (let i = 1; i < n; i++) {
+    // Cache current values to calculate transitions for the next row
+    const prevAba = aba;
+    const prevAbc = abc;
 
-    // The total ways is the sum of both pattern types for the n-th row
-    return (aba + abc) % MOD;
+    // Pattern transition logic:
+    // Each ABA row at i-1 can produce 3 ABA and 2 ABC patterns at row i.
+    // Each ABC row at i-1 can produce 2 ABA and 2 ABC patterns at row i.
+    aba = (3 * prevAba + 2 * prevAbc) % MOD;
+    abc = (2 * prevAba + 2 * prevAbc) % MOD;
+  }
+
+  // The total ways is the sum of both pattern types for the n-th row
+  return (aba + abc) % MOD;
 }

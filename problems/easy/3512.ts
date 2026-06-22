@@ -34,20 +34,20 @@ Constraints:
 */
 
 function minOperations(nums: number[], k: number): number {
-    // Initialize sum accumulator to calculate total of all array elements
-    let sum = 0;
-    
-    // Iterate through each element in the nums array
-    for (let i = 0; i < nums.length; i++) {
-        // Add current element to running sum
-        sum += nums[i];
-    }
-    
-    // Calculate remainder when sum is divided by k (this tells us how far we are from divisibility)
-    const remainder = sum % k;
-    
-    // If remainder is 0, sum is already divisible by k, so return 0 operations
-    // Otherwise, we need exactly 'remainder' operations to reduce sum to be divisible by k
-    // Each operation decrements by 1, so we need 'remainder' decrements to reach next lower multiple of k
-    return remainder === 0 ? 0 : remainder;
+  // Initialize sum accumulator to calculate total of all array elements
+  let sum = 0;
+
+  // Iterate through each element in the nums array
+  for (let i = 0; i < nums.length; i++) {
+    // Add current element to running sum
+    sum += nums[i];
+  }
+
+  // Calculate remainder when sum is divided by k (this tells us how far we are from divisibility)
+  const remainder = sum % k;
+
+  // If remainder is 0, sum is already divisible by k, so return 0 operations
+  // Otherwise, we need exactly 'remainder' operations to reduce sum to be divisible by k
+  // Each operation decrements by 1, so we need 'remainder' decrements to reach next lower multiple of k
+  return remainder === 0 ? 0 : remainder;
 }

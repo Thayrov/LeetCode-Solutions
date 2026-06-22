@@ -46,11 +46,17 @@ function continuousSubarrays(nums: number[]): number {
   // Iterate through the array
   for (let right = 0; right < n; right++) {
     // Remove elements greater than current from minDeque
-    while (minDeque.length && nums[right] < nums[minDeque[minDeque.length - 1]]) {
+    while (
+      minDeque.length &&
+      nums[right] < nums[minDeque[minDeque.length - 1]]
+    ) {
       minDeque.pop();
     }
     // Remove elements smaller than current from maxDeque
-    while (maxDeque.length && nums[right] > nums[maxDeque[maxDeque.length - 1]]) {
+    while (
+      maxDeque.length &&
+      nums[right] > nums[maxDeque[maxDeque.length - 1]]
+    ) {
       maxDeque.pop();
     }
     // Add current index to deques

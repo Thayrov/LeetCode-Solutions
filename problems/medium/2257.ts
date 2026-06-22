@@ -36,7 +36,7 @@ function countUnguarded(
   m: number,
   n: number,
   guards: number[][],
-  walls: number[][]
+  walls: number[][],
 ): number {
   // Create a set to store positions of walls and guards
   const blocked = new Set<string>();

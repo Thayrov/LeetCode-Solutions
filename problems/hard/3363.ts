@@ -38,64 +38,64 @@ Constraints:
 */
 
 function maxCollectedFruits(fruits: number[][]): number {
-    const n = fruits.length;
-    
-    // Child 1 from (0,0): Always takes diagonal path (0,0) -> (1,1) -> ... -> (n-1,n-1)
-    // This is the only way to reach (n-1,n-1) in exactly n-1 moves with the given constraints
-    let diagonalSum = 0;
-    for (let i = 0; i < n; i++) {
-        diagonalSum += fruits[i][i];
+  const n = fruits.length;
+
+  // Child 1 from (0,0): Always takes diagonal path (0,0) -> (1,1) -> ... -> (n-1,n-1)
+  // This is the only way to reach (n-1,n-1) in exactly n-1 moves with the given constraints
+  let diagonalSum = 0;
+  for (let i = 0; i < n; i++) {
+    diagonalSum += fruits[i][i];
+  }
+
+  // Initialize DP table for Child 2 with -infinity (unreachable states)
+  const inf = 1 << 29;
+  const dp2 = Array.from({ length: n }, () => Array(n).fill(-inf));
+
+  // Child 2 starts at (0, n-1)
+  dp2[0][n - 1] = fruits[0][n - 1];
+
+  // DP for Child 2: Fill positions where j > i (above diagonal)
+  // Child 2 can only be in positions above the diagonal since Child 1 occupies diagonal
+  for (let i = 1; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      // Child 2 can come from: (i-1,j-1), (i-1,j), or (i-1,j+1)
+      // Corresponding to moves: down-left, down, down-right
+
+      // From (i-1, j) - moving down
+      dp2[i][j] = Math.max(dp2[i - 1][j], dp2[i - 1][j - 1]) + fruits[i][j];
+
+      // From (i-1, j+1) - moving down-left (if j+1 is valid)
+      if (j + 1 < n) {
+        dp2[i][j] = Math.max(dp2[i][j], dp2[i - 1][j + 1] + fruits[i][j]);
+      }
     }
-    
-    // Initialize DP table for Child 2 with -infinity (unreachable states)
-    const inf = 1 << 29;
-    const dp2 = Array.from({ length: n }, () => Array(n).fill(-inf));
-    
-    // Child 2 starts at (0, n-1)
-    dp2[0][n - 1] = fruits[0][n - 1];
-    
-    // DP for Child 2: Fill positions where j > i (above diagonal)
-    // Child 2 can only be in positions above the diagonal since Child 1 occupies diagonal
-    for (let i = 1; i < n; i++) {
-        for (let j = i + 1; j < n; j++) {
-            // Child 2 can come from: (i-1,j-1), (i-1,j), or (i-1,j+1)
-            // Corresponding to moves: down-left, down, down-right
-            
-            // From (i-1, j) - moving down
-            dp2[i][j] = Math.max(dp2[i - 1][j], dp2[i - 1][j - 1]) + fruits[i][j];
-            
-            // From (i-1, j+1) - moving down-left (if j+1 is valid)
-            if (j + 1 < n) {
-                dp2[i][j] = Math.max(dp2[i][j], dp2[i - 1][j + 1] + fruits[i][j]);
-            }
-        }
+  }
+
+  // Initialize DP table for Child 3 with -infinity (unreachable states)
+  const dp3 = Array.from({ length: n }, () => Array(n).fill(-inf));
+
+  // Child 3 starts at (n-1, 0)
+  dp3[n - 1][0] = fruits[n - 1][0];
+
+  // DP for Child 3: Fill positions where i > j (below diagonal)
+  // Child 3 can only be in positions below the diagonal since Child 1 occupies diagonal
+  for (let j = 1; j < n; j++) {
+    for (let i = j + 1; i < n; i++) {
+      // Child 3 can come from: (i-1,j-1), (i,j-1), or (i+1,j-1)
+      // Corresponding to moves: up-right, right, down-right
+
+      // From (i, j-1) - moving right
+      dp3[i][j] = Math.max(dp3[i][j - 1], dp3[i - 1][j - 1]) + fruits[i][j];
+
+      // From (i+1, j-1) - moving up-right (if i+1 is valid)
+      if (i + 1 < n) {
+        dp3[i][j] = Math.max(dp3[i][j], dp3[i + 1][j - 1] + fruits[i][j]);
+      }
     }
-    
-    // Initialize DP table for Child 3 with -infinity (unreachable states)  
-    const dp3 = Array.from({ length: n }, () => Array(n).fill(-inf));
-    
-    // Child 3 starts at (n-1, 0)
-    dp3[n - 1][0] = fruits[n - 1][0];
-    
-    // DP for Child 3: Fill positions where i > j (below diagonal)
-    // Child 3 can only be in positions below the diagonal since Child 1 occupies diagonal
-    for (let j = 1; j < n; j++) {
-        for (let i = j + 1; i < n; i++) {
-            // Child 3 can come from: (i-1,j-1), (i,j-1), or (i+1,j-1)
-            // Corresponding to moves: up-right, right, down-right
-            
-            // From (i, j-1) - moving right
-            dp3[i][j] = Math.max(dp3[i][j - 1], dp3[i - 1][j - 1]) + fruits[i][j];
-            
-            // From (i+1, j-1) - moving up-right (if i+1 is valid)
-            if (i + 1 < n) {
-                dp3[i][j] = Math.max(dp3[i][j], dp3[i + 1][j - 1] + fruits[i][j]);
-            }
-        }
-    }
-    
-    // Final result: diagonal sum + Child 2's path ending at (n-2,n-1) + Child 3's path ending at (n-1,n-2)
-    // We use (n-2,n-1) and (n-1,n-2) instead of (n-1,n-1) because Child 1 already collected from (n-1,n-1)
-    // and we want Children 2 and 3 to reach positions adjacent to the final destination
-    return diagonalSum + dp2[n - 2][n - 1] + dp3[n - 1][n - 2];
+  }
+
+  // Final result: diagonal sum + Child 2's path ending at (n-2,n-1) + Child 3's path ending at (n-1,n-2)
+  // We use (n-2,n-1) and (n-1,n-2) instead of (n-1,n-1) because Child 1 already collected from (n-1,n-1)
+  // and we want Children 2 and 3 to reach positions adjacent to the final destination
+  return diagonalSum + dp2[n - 2][n - 1] + dp3[n - 1][n - 2];
 }

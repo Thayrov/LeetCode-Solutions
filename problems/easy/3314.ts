@@ -32,36 +32,36 @@ nums[i] is a prime number.
 */
 
 function minBitwiseArray(nums: number[]): number[] {
-    // Get the length of the input array for iteration
-    const n = nums.length;
-    // Use Int32Array for better performance and memory efficiency in numerical constraints
-    const ans = new Int32Array(n);
+  // Get the length of the input array for iteration
+  const n = nums.length;
+  // Use Int32Array for better performance and memory efficiency in numerical constraints
+  const ans = new Int32Array(n);
 
-    for (let i = 0; i < n; i++) {
-        const num = nums[i];
+  for (let i = 0; i < n; i++) {
+    const num = nums[i];
 
-        // The only even prime is 2 (binary 10). 
-        // x OR (x+1) for any x will never produce 2.
-        if (num === 2) {
-            ans[i] = -1;
-            continue;
-        }
-
-        // We need to find the length of the trailing sequence of 1s in the binary representation.
-        // The minimal x is found by changing the last 1 in that sequence to a 0.
-        let bit = 0;
-        // Shift bits to the right and check if the LSB is 1
-        while (((num >> bit) & 1) === 1) {
-            bit++;
-        }
-
-        // Flip the bit at position (bit - 1) from 1 to 0 using XOR with a bitmask.
-        // Example: num = 7 (111), bit = 3 (first 0 at pos 3), bit-1 = 2. 7 ^ (1 << 1) = 111 ^ 010 = 101 (5) NO.
-        // Wait, correction: shift bit until the first 0, then the 1 to the right of it is the target.
-        // Correct logic: 111 (7) -> bit becomes 3. 1 << (3-1) is 4. 7 ^ 4 = 3 (011). 3 OR 4 = 7.
-        ans[i] = num ^ (1 << (bit - 1));
+    // The only even prime is 2 (binary 10).
+    // x OR (x+1) for any x will never produce 2.
+    if (num === 2) {
+      ans[i] = -1;
+      continue;
     }
-    
-    // Convert TypedArray back to standard array as per return type requirement
-    return Array.from(ans);
-};
+
+    // We need to find the length of the trailing sequence of 1s in the binary representation.
+    // The minimal x is found by changing the last 1 in that sequence to a 0.
+    let bit = 0;
+    // Shift bits to the right and check if the LSB is 1
+    while (((num >> bit) & 1) === 1) {
+      bit++;
+    }
+
+    // Flip the bit at position (bit - 1) from 1 to 0 using XOR with a bitmask.
+    // Example: num = 7 (111), bit = 3 (first 0 at pos 3), bit-1 = 2. 7 ^ (1 << 1) = 111 ^ 010 = 101 (5) NO.
+    // Wait, correction: shift bit until the first 0, then the 1 to the right of it is the target.
+    // Correct logic: 111 (7) -> bit becomes 3. 1 << (3-1) is 4. 7 ^ 4 = 3 (011). 3 OR 4 = 7.
+    ans[i] = num ^ (1 << (bit - 1));
+  }
+
+  // Convert TypedArray back to standard array as per return type requirement
+  return Array.from(ans);
+}

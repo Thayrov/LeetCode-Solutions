@@ -46,27 +46,27 @@ strs[i] consists of lowercase English letters.
 */
 
 function minDeletionSize(strs: string[]): number {
-    // Initialize a counter to track how many columns are not lexicographically sorted
-    let deletions = 0;
-    // Cache the number of rows (strings) and columns (string length) for performance
-    const rowCount = strs.length;
-    const colCount = strs[0].length;
+  // Initialize a counter to track how many columns are not lexicographically sorted
+  let deletions = 0;
+  // Cache the number of rows (strings) and columns (string length) for performance
+  const rowCount = strs.length;
+  const colCount = strs[0].length;
 
-    // Iterate through each column index first (Column-major order)
-    for (let col = 0; col < colCount; col++) {
-        // Compare the character at the current row with the character in the previous row
-        for (let row = 1; row < rowCount; row++) {
-            // Use charCodeAt for faster numerical comparison instead of string comparison
-            // If the current character is 'smaller' than the previous one, the column is unsorted
-            if (strs[row].charCodeAt(col) < strs[row - 1].charCodeAt(col)) {
-                // Increment our deletion count
-                deletions++;
-                // Optimization: Stop checking the rest of this column and move to the next column
-                break;
-            }
-        }
+  // Iterate through each column index first (Column-major order)
+  for (let col = 0; col < colCount; col++) {
+    // Compare the character at the current row with the character in the previous row
+    for (let row = 1; row < rowCount; row++) {
+      // Use charCodeAt for faster numerical comparison instead of string comparison
+      // If the current character is 'smaller' than the previous one, the column is unsorted
+      if (strs[row].charCodeAt(col) < strs[row - 1].charCodeAt(col)) {
+        // Increment our deletion count
+        deletions++;
+        // Optimization: Stop checking the rest of this column and move to the next column
+        break;
+      }
     }
+  }
 
-    // Return the total number of columns identified as unsorted
-    return deletions;
+  // Return the total number of columns identified as unsorted
+  return deletions;
 }

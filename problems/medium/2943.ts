@@ -37,38 +37,44 @@ All values in vBars are distinct.
 </> Typescript code:
 */
 
-function maximizeSquareHoleArea(n: number, m: number, hBars: number[], vBars: number[]): number {
-    /**
-     * Helper function to find the maximum number of consecutive bars.
-     * A gap's length is (number of consecutive bars + 1).
-     */
-    const getMaxGap = (bars: number[]): number => {
-        // Sort bars numerically to easily identify consecutive sequences
-        bars.sort((a, b) => a - b);
-        
-        // maxLen tracks the longest consecutive sequence found, currentLen tracks the current streak
-        let maxLen = 1, currentLen = 1;
-        
-        for (let i = 1; i < bars.length; i++) {
-            // If the current bar is exactly 1 unit away from the previous, increment the streak
-            if (bars[i] === bars[i - 1] + 1) {
-                currentLen++;
-            } else {
-                // Otherwise, update maxLen and reset the current streak counter
-                maxLen = maxLen > currentLen ? maxLen : currentLen;
-                currentLen = 1;
-            }
-        }
-        // Final check to see if the last streak was the longest
-        maxLen = maxLen > currentLen ? maxLen : currentLen;
-        
-        // The side length of the gap is the number of consecutive bars plus one
-        return maxLen + 1;
-    };
+function maximizeSquareHoleArea(
+  n: number,
+  m: number,
+  hBars: number[],
+  vBars: number[],
+): number {
+  /**
+   * Helper function to find the maximum number of consecutive bars.
+   * A gap's length is (number of consecutive bars + 1).
+   */
+  const getMaxGap = (bars: number[]): number => {
+    // Sort bars numerically to easily identify consecutive sequences
+    bars.sort((a, b) => a - b);
 
-    // The side of the square hole is the smaller of the two maximum gaps available
-    const side = Math.min(getMaxGap(hBars), getMaxGap(vBars));
-    
-    // Return the area of the largest square
-    return side * side;
+    // maxLen tracks the longest consecutive sequence found, currentLen tracks the current streak
+    let maxLen = 1,
+      currentLen = 1;
+
+    for (let i = 1; i < bars.length; i++) {
+      // If the current bar is exactly 1 unit away from the previous, increment the streak
+      if (bars[i] === bars[i - 1] + 1) {
+        currentLen++;
+      } else {
+        // Otherwise, update maxLen and reset the current streak counter
+        maxLen = maxLen > currentLen ? maxLen : currentLen;
+        currentLen = 1;
+      }
+    }
+    // Final check to see if the last streak was the longest
+    maxLen = maxLen > currentLen ? maxLen : currentLen;
+
+    // The side length of the gap is the number of consecutive bars plus one
+    return maxLen + 1;
+  };
+
+  // The side of the square hole is the smaller of the two maximum gaps available
+  const side = Math.min(getMaxGap(hBars), getMaxGap(vBars));
+
+  // Return the area of the largest square
+  return side * side;
 }

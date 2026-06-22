@@ -41,61 +41,61 @@ idi is unique.
 
 // Defines the function that returns the tallest achievable building height.
 function maxBuilding(n: number, restrictions: number[][]): number {
-    // Adds the mandatory restriction that building 1 has height 0.
-    restrictions.push([1, 0]);
+  // Adds the mandatory restriction that building 1 has height 0.
+  restrictions.push([1, 0]);
 
-    // Sorts restrictions by building position.
-    restrictions.sort((a, b) => a[0] - b[0]);
+  // Sorts restrictions by building position.
+  restrictions.sort((a, b) => a[0] - b[0]);
 
-    // Propagates maximum allowed heights from left to right.
-    for (let i = 1; i < restrictions.length; i++) {
-        // Calculates the distance from the previous restricted building.
-        const distance = restrictions[i][0] - restrictions[i - 1][0];
+  // Propagates maximum allowed heights from left to right.
+  for (let i = 1; i < restrictions.length; i++) {
+    // Calculates the distance from the previous restricted building.
+    const distance = restrictions[i][0] - restrictions[i - 1][0];
 
-        // Tightens the current restriction using the adjacent-height rule.
-        restrictions[i][1] = Math.min(
-            // Keeps the explicitly specified maximum when it is smaller.
-            restrictions[i][1],
-            // Limits growth to one height unit per building from the left.
-            restrictions[i - 1][1] + distance
-        );
-    }
+    // Tightens the current restriction using the adjacent-height rule.
+    restrictions[i][1] = Math.min(
+      // Keeps the explicitly specified maximum when it is smaller.
+      restrictions[i][1],
+      // Limits growth to one height unit per building from the left.
+      restrictions[i - 1][1] + distance,
+    );
+  }
 
-    // Propagates maximum allowed heights from right to left.
-    for (let i = restrictions.length - 2; i >= 0; i--) {
-        // Calculates the distance to the next restricted building.
-        const distance = restrictions[i + 1][0] - restrictions[i][0];
+  // Propagates maximum allowed heights from right to left.
+  for (let i = restrictions.length - 2; i >= 0; i--) {
+    // Calculates the distance to the next restricted building.
+    const distance = restrictions[i + 1][0] - restrictions[i][0];
 
-        // Tightens the current restriction using the right-side limit.
-        restrictions[i][1] = Math.min(
-            // Keeps the current maximum when it is smaller.
-            restrictions[i][1],
-            // Limits growth to one height unit per building from the right.
-            restrictions[i + 1][1] + distance
-        );
-    }
+    // Tightens the current restriction using the right-side limit.
+    restrictions[i][1] = Math.min(
+      // Keeps the current maximum when it is smaller.
+      restrictions[i][1],
+      // Limits growth to one height unit per building from the right.
+      restrictions[i + 1][1] + distance,
+    );
+  }
 
-    // Stores the greatest reachable height found so far.
-    let maximum = 0;
+  // Stores the greatest reachable height found so far.
+  let maximum = 0;
 
-    // Examines every interval between consecutive restrictions.
-    for (let i = 1; i < restrictions.length; i++) {
-        // Calculates the number of steps between both restricted buildings.
-        const distance = restrictions[i][0] - restrictions[i - 1][0];
+  // Examines every interval between consecutive restrictions.
+  for (let i = 1; i < restrictions.length; i++) {
+    // Calculates the number of steps between both restricted buildings.
+    const distance = restrictions[i][0] - restrictions[i - 1][0];
 
-        // Calculates the highest integer point where both height slopes meet.
-        const peak = Math.floor(
-            // Combines both endpoint heights and the available distance.
-            (restrictions[i - 1][1] + restrictions[i][1] + distance) / 2
-        );
+    // Calculates the highest integer point where both height slopes meet.
+    const peak = Math.floor(
+      // Combines both endpoint heights and the available distance.
+      (restrictions[i - 1][1] + restrictions[i][1] + distance) / 2,
+    );
 
-        // Updates the global maximum with the interval's peak.
-        maximum = Math.max(maximum, peak);
-    }
+    // Updates the global maximum with the interval's peak.
+    maximum = Math.max(maximum, peak);
+  }
 
-    // Retrieves the rightmost restricted building.
-    const last = restrictions[restrictions.length - 1];
+  // Retrieves the rightmost restricted building.
+  const last = restrictions[restrictions.length - 1];
 
-    // Compares interval peaks with unrestricted growth after the final restriction.
-    return Math.max(maximum, last[1] + n - last[0]);
+  // Compares interval peaks with unrestricted growth after the final restriction.
+  return Math.max(maximum, last[1] + n - last[0]);
 }

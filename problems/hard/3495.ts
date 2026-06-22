@@ -45,41 +45,41 @@ queries[i] == [l, r]
 */
 
 function minOperations(queries: number[][]): number {
-    // Calculate sum of costs for range [l, r] using mathematical pattern
-    const getRangeSum = (l: number, r: number): number => {
-        let totalCost = 0; // Initialize total cost for the range
-        let cost = 1; // Current cost level (numbers needing 'cost' operations)
-        let start = 1; // Start of current cost level range
-        
-        // Process each cost level until we exceed the right boundary
-        while (start <= r) {
-            // End of current cost level: 4^cost - 1 (using bit shift: 1 << (2*cost) = 4^cost)
-            const end = Math.min(r, (1 << (2 * cost)) - 1);
-            
-            // If this cost level overlaps with our query range [l, r]
-            if (end >= l) {
-                const rangeStart = Math.max(l, start); // Effective start within [l, r]
-                const rangeEnd = end; // Effective end within [l, r]
-                const count = rangeEnd - rangeStart + 1; // Count of numbers in this cost level
-                totalCost += count * cost; // Add contribution of this cost level
-            }
-            
-            // Move to next cost level: start becomes 4^cost
-            start = (1 << (2 * cost));
-            cost++; // Increment cost for next level
-        }
-        
-        return totalCost; // Return total cost for range [l, r]
-    };
-    
-    let totalResult = 0; // Initialize sum of results for all queries
-    
-    // Process each query [l, r]
-    for (const [l, r] of queries) {
-        const totalCost = getRangeSum(l, r); // Calculate total cost for this range
-        // Since each operation processes 2 numbers, use ceiling division
-        totalResult += Math.floor((totalCost + 1) / 2);
+  // Calculate sum of costs for range [l, r] using mathematical pattern
+  const getRangeSum = (l: number, r: number): number => {
+    let totalCost = 0; // Initialize total cost for the range
+    let cost = 1; // Current cost level (numbers needing 'cost' operations)
+    let start = 1; // Start of current cost level range
+
+    // Process each cost level until we exceed the right boundary
+    while (start <= r) {
+      // End of current cost level: 4^cost - 1 (using bit shift: 1 << (2*cost) = 4^cost)
+      const end = Math.min(r, (1 << (2 * cost)) - 1);
+
+      // If this cost level overlaps with our query range [l, r]
+      if (end >= l) {
+        const rangeStart = Math.max(l, start); // Effective start within [l, r]
+        const rangeEnd = end; // Effective end within [l, r]
+        const count = rangeEnd - rangeStart + 1; // Count of numbers in this cost level
+        totalCost += count * cost; // Add contribution of this cost level
+      }
+
+      // Move to next cost level: start becomes 4^cost
+      start = 1 << (2 * cost);
+      cost++; // Increment cost for next level
     }
-    
-    return totalResult; // Return sum of minimum operations for all queries
+
+    return totalCost; // Return total cost for range [l, r]
+  };
+
+  let totalResult = 0; // Initialize sum of results for all queries
+
+  // Process each query [l, r]
+  for (const [l, r] of queries) {
+    const totalCost = getRangeSum(l, r); // Calculate total cost for this range
+    // Since each operation processes 2 numbers, use ceiling division
+    totalResult += Math.floor((totalCost + 1) / 2);
+  }
+
+  return totalResult; // Return sum of minimum operations for all queries
 }

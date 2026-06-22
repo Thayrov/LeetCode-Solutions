@@ -81,7 +81,10 @@ class MinHeap {
       const parent = Math.floor((index - 1) / 2);
       if (this.heap[parent] <= this.heap[index]) break;
       // Swap with parent if current is smaller than parent
-      [this.heap[parent], this.heap[index]] = [this.heap[index], this.heap[parent]];
+      [this.heap[parent], this.heap[index]] = [
+        this.heap[index],
+        this.heap[parent],
+      ];
       index = parent;
     }
   }
@@ -99,7 +102,10 @@ class MinHeap {
       // If no child is smaller, then done
       if (smallest === index) break;
       // Swap with the smallest child and continue
-      [this.heap[index], this.heap[smallest]] = [this.heap[smallest], this.heap[index]];
+      [this.heap[index], this.heap[smallest]] = [
+        this.heap[smallest],
+        this.heap[index],
+      ];
       index = smallest;
     }
   }

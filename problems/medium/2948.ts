@@ -40,7 +40,10 @@ Constraints:
 </> Typescript Code:
 */
 
-function lexicographicallySmallestArray(nums: number[], limit: number): number[] {
+function lexicographicallySmallestArray(
+  nums: number[],
+  limit: number,
+): number[] {
   // n holds the size of the array
   const n = nums.length;
   // parent and rank arrays for union-find
@@ -78,7 +81,7 @@ function lexicographicallySmallestArray(nums: number[], limit: number): number[]
   }
   // sort indices and place them back with sorted values
   for (const [r, inds] of groups.entries()) {
-    const vals = inds.map(i => nums[i]).sort((a, b) => a - b);
+    const vals = inds.map((i) => nums[i]).sort((a, b) => a - b);
     inds.sort((a, b) => a - b);
     for (let k = 0; k < inds.length; k++) nums[inds[k]] = vals[k];
   }

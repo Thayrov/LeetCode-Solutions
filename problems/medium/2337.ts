@@ -44,9 +44,9 @@ function canChange(start: string, target: string): boolean {
   // Loop until both pointers reach the end of their strings
   while (i < n || j < n) {
     // Move pointer i to the next non-'_' character in start
-    while (i < n && start[i] === '_') i++;
+    while (i < n && start[i] === "_") i++;
     // Move pointer j to the next non-'_' character in target
-    while (j < n && target[j] === '_') j++;
+    while (j < n && target[j] === "_") j++;
     // If both pointers are at the end, strings can be transformed
     if (i === n && j === n) return true;
     // If one string ends before the other, transformation is impossible
@@ -54,9 +54,9 @@ function canChange(start: string, target: string): boolean {
     // If the characters at current positions are different, return false
     if (start[i] !== target[j]) return false;
     // If the character is 'L' and it moves to the right, return false
-    if (start[i] === 'L' && i < j) return false;
+    if (start[i] === "L" && i < j) return false;
     // If the character is 'R' and it moves to the left, return false
-    if (start[i] === 'R' && i > j) return false;
+    if (start[i] === "R" && i > j) return false;
     // Move both pointers to the next character
     i++;
     j++;

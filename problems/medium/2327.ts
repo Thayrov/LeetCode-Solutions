@@ -33,46 +33,46 @@ Constraints:
 */
 
 function peopleAwareOfSecret(n: number, delay: number, forget: number): number {
-    // Define the modulo constant as required by the problem
-    const MOD = 1000000007;
-    
-    // dp[i] represents the number of new people who discover the secret on day i
-    const dp = new Array(n + 1).fill(0);
-    
-    // On day 1, exactly 1 person discovers the secret
-    dp[1] = 1;
-    
-    // Track the number of people currently sharing the secret
-    // This is a running sum that gets updated as people start/stop sharing
-    let sharing = 0;
-    
-    // Process each day from day 2 to day n
-    for (let day = 2; day <= n; day++) {
-        // Add people who start sharing today (discovered 'delay' days ago)
-        if (day > delay) {
-            sharing = (sharing + dp[day - delay]) % MOD;
-        }
-        
-        // Remove people who stop sharing today (discovered 'forget' days ago)
-        // They forget the secret, so they stop sharing
-        if (day > forget) {
-            sharing = (sharing - dp[day - forget] + MOD) % MOD;
-        }
-        
-        // The number of new people discovering the secret today equals
-        // the number of people currently sharing
-        dp[day] = sharing;
+  // Define the modulo constant as required by the problem
+  const MOD = 1000000007;
+
+  // dp[i] represents the number of new people who discover the secret on day i
+  const dp = new Array(n + 1).fill(0);
+
+  // On day 1, exactly 1 person discovers the secret
+  dp[1] = 1;
+
+  // Track the number of people currently sharing the secret
+  // This is a running sum that gets updated as people start/stop sharing
+  let sharing = 0;
+
+  // Process each day from day 2 to day n
+  for (let day = 2; day <= n; day++) {
+    // Add people who start sharing today (discovered 'delay' days ago)
+    if (day > delay) {
+      sharing = (sharing + dp[day - delay]) % MOD;
     }
-    
-    // Calculate the final result: sum of people who still remember the secret
-    // These are people who discovered the secret in the last 'forget-1' days
-    let result = 0;
-    
-    // Start from the earliest day where people still remember
-    // and sum up to day n
-    for (let i = Math.max(1, n - forget + 1); i <= n; i++) {
-        result = (result + dp[i]) % MOD;
+
+    // Remove people who stop sharing today (discovered 'forget' days ago)
+    // They forget the secret, so they stop sharing
+    if (day > forget) {
+      sharing = (sharing - dp[day - forget] + MOD) % MOD;
     }
-    
-    return result;
+
+    // The number of new people discovering the secret today equals
+    // the number of people currently sharing
+    dp[day] = sharing;
+  }
+
+  // Calculate the final result: sum of people who still remember the secret
+  // These are people who discovered the secret in the last 'forget-1' days
+  let result = 0;
+
+  // Start from the earliest day where people still remember
+  // and sum up to day n
+  for (let i = Math.max(1, n - forget + 1); i <= n; i++) {
+    result = (result + dp[i]) % MOD;
+  }
+
+  return result;
 }

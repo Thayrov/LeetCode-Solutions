@@ -47,7 +47,7 @@ The input is generated such that edges represent a valid tree.
 function maximumValueSum(
   nums: number[],
   k: number,
-  _edges: number[][]
+  _edges: number[][],
 ): number {
   // 1. baseSum collects the sum of the original array; we will add the optimal gain to it.
   let baseSum = 0;

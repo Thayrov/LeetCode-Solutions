@@ -40,35 +40,35 @@ customers consists only of characters 'Y' and 'N'.
 */
 
 function bestClosingTime(customers: string): number {
-    // Stores the lowest relative penalty encountered so far
-    let minPenalty = 0;
-    // Tracks the penalty score as we iterate through each hour
-    let currentPenalty = 0;
-    // Stores the index of the hour that resulted in the minimum penalty
-    let bestHour = 0;
+  // Stores the lowest relative penalty encountered so far
+  let minPenalty = 0;
+  // Tracks the penalty score as we iterate through each hour
+  let currentPenalty = 0;
+  // Stores the index of the hour that resulted in the minimum penalty
+  let bestHour = 0;
 
-    // Iterate through the customer log once (O(n) complexity)
-    for (let i = 0; i < customers.length; i++) {
-        // If a customer arrives ('Y') while we are open, the penalty 
-        // decreases compared to if we had closed before this hour.
-        if (customers[i] === 'Y') {
-            currentPenalty--;
-        } 
-        // If no customer arrives ('N') while we are open, 
-        // we incur a penalty for being open unnecessarily.
-        else {
-            currentPenalty++;
-        }
-
-        // If the current configuration is strictly better than our previous best,
-        // update minPenalty and mark this hour (i + 1) as the new best closing time.
-        // We use '<' instead of '<=' to ensure we return the EARLIEST hour.
-        if (currentPenalty < minPenalty) {
-            minPenalty = currentPenalty;
-            bestHour = i + 1;
-        }
+  // Iterate through the customer log once (O(n) complexity)
+  for (let i = 0; i < customers.length; i++) {
+    // If a customer arrives ('Y') while we are open, the penalty
+    // decreases compared to if we had closed before this hour.
+    if (customers[i] === "Y") {
+      currentPenalty--;
+    }
+    // If no customer arrives ('N') while we are open,
+    // we incur a penalty for being open unnecessarily.
+    else {
+      currentPenalty++;
     }
 
-    // Return the optimal hour to close the shop
-    return bestHour;
+    // If the current configuration is strictly better than our previous best,
+    // update minPenalty and mark this hour (i + 1) as the new best closing time.
+    // We use '<' instead of '<=' to ensure we return the EARLIEST hour.
+    if (currentPenalty < minPenalty) {
+      minPenalty = currentPenalty;
+      bestHour = i + 1;
+    }
+  }
+
+  // Return the optimal hour to close the shop
+  return bestHour;
 }

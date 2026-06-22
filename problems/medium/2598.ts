@@ -32,37 +32,37 @@ Constraints:
 */
 
 function findSmallestInteger(nums: number[], value: number): number {
-    // Map to store frequency of each remainder when divided by value
-    const freq = new Map<number, number>();
-    
-    // Process each number to determine which remainder class it belongs to
-    for (const num of nums) {
-        // Calculate proper modulo (handle negative numbers correctly)
-        // JavaScript's % can return negative, so we add value and mod again
-        const mod = ((num % value) + value) % value;
-        
-        // Increment the frequency count for this remainder
-        freq.set(mod, (freq.get(mod) || 0) + 1);
-    }
-    
-    // Start searching for MEX from 0
-    let mex = 0;
-    
-    // Continue until we find a number we cannot form
-    while (true) {
-        // Determine which remainder class this MEX candidate needs
-        const remainder = mex % value;
-        
-        // Check if we have any numbers that can be transformed to this remainder
-        const count = freq.get(remainder) || 0;
-        
-        // If no numbers available for this remainder, we found the MEX
-        if (count === 0) return mex;
-        
-        // Use one number from this remainder class (decrement its frequency)
-        freq.set(remainder, count - 1);
-        
-        // Move to next candidate
-        mex++;
-    }
+  // Map to store frequency of each remainder when divided by value
+  const freq = new Map<number, number>();
+
+  // Process each number to determine which remainder class it belongs to
+  for (const num of nums) {
+    // Calculate proper modulo (handle negative numbers correctly)
+    // JavaScript's % can return negative, so we add value and mod again
+    const mod = ((num % value) + value) % value;
+
+    // Increment the frequency count for this remainder
+    freq.set(mod, (freq.get(mod) || 0) + 1);
+  }
+
+  // Start searching for MEX from 0
+  let mex = 0;
+
+  // Continue until we find a number we cannot form
+  while (true) {
+    // Determine which remainder class this MEX candidate needs
+    const remainder = mex % value;
+
+    // Check if we have any numbers that can be transformed to this remainder
+    const count = freq.get(remainder) || 0;
+
+    // If no numbers available for this remainder, we found the MEX
+    if (count === 0) return mex;
+
+    // Use one number from this remainder class (decrement its frequency)
+    freq.set(remainder, count - 1);
+
+    // Move to next candidate
+    mex++;
+  }
 }

@@ -27,59 +27,60 @@ n == grid[i].length
 */
 
 function largestMagicSquare(grid: number[][]): number {
-    const m = grid.length, n = grid[0].length;
-    // Pre-allocate prefix sum arrays for rows, columns, and both diagonals to allow O(1) sum retrieval
-    const rowSum = Array.from({ length: m }, () => new Int32Array(n + 1));
-    const colSum = Array.from({ length: m + 1 }, () => new Int32Array(n));
-    const diag = Array.from({ length: m + 1 }, () => new Int32Array(n + 1));
-    const antiDiag = Array.from({ length: m + 1 }, () => new Int32Array(n + 1));
+  const m = grid.length,
+    n = grid[0].length;
+  // Pre-allocate prefix sum arrays for rows, columns, and both diagonals to allow O(1) sum retrieval
+  const rowSum = Array.from({ length: m }, () => new Int32Array(n + 1));
+  const colSum = Array.from({ length: m + 1 }, () => new Int32Array(n));
+  const diag = Array.from({ length: m + 1 }, () => new Int32Array(n + 1));
+  const antiDiag = Array.from({ length: m + 1 }, () => new Int32Array(n + 1));
 
-    // Fill prefix sum tables
-    for (let i = 0; i < m; i++) {
-        for (let j = 0; j < n; j++) {
-            rowSum[i][j + 1] = rowSum[i][j] + grid[i][j];
-            colSum[i + 1][j] = colSum[i][j] + grid[i][j];
-            diag[i + 1][j + 1] = diag[i][j] + grid[i][j];
-            // Anti-diagonal prefix sum (top-right to bottom-left)
-            antiDiag[i + 1][j] = antiDiag[i][j + 1] + grid[i][j];
-        }
+  // Fill prefix sum tables
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      rowSum[i][j + 1] = rowSum[i][j] + grid[i][j];
+      colSum[i + 1][j] = colSum[i][j] + grid[i][j];
+      diag[i + 1][j + 1] = diag[i][j] + grid[i][j];
+      // Anti-diagonal prefix sum (top-right to bottom-left)
+      antiDiag[i + 1][j] = antiDiag[i][j + 1] + grid[i][j];
     }
+  }
 
-    // Iterate side length k from largest possible down to 2
-    for (let k = Math.min(m, n); k > 1; k--) {
-        // Iterate through all possible top-left corners (i, j)
-        for (let i = 0; i <= m - k; i++) {
-            for (let j = 0; j <= n - k; j++) {
-                // Determine the target sum from the first row of this k x k subgrid
-                const target = rowSum[i][j + k] - rowSum[i][j];
-                let isMagic = true;
+  // Iterate side length k from largest possible down to 2
+  for (let k = Math.min(m, n); k > 1; k--) {
+    // Iterate through all possible top-left corners (i, j)
+    for (let i = 0; i <= m - k; i++) {
+      for (let j = 0; j <= n - k; j++) {
+        // Determine the target sum from the first row of this k x k subgrid
+        const target = rowSum[i][j + k] - rowSum[i][j];
+        let isMagic = true;
 
-                // Check primary diagonal sum
-                if (diag[i + k][j + k] - diag[i][j] !== target) continue;
-                // Check anti-diagonal sum
-                if (antiDiag[i + k][j] - antiDiag[i][j + k] !== target) continue;
+        // Check primary diagonal sum
+        if (diag[i + k][j + k] - diag[i][j] !== target) continue;
+        // Check anti-diagonal sum
+        if (antiDiag[i + k][j] - antiDiag[i][j + k] !== target) continue;
 
-                // Verify all remaining row sums in the subgrid
-                for (let r = i + 1; r < i + k; r++) {
-                    if (rowSum[r][j + k] - rowSum[r][j] !== target) {
-                        isMagic = false;
-                        break;
-                    }
-                }
-                if (!isMagic) continue;
-
-                // Verify all column sums in the subgrid
-                for (let c = j; c < j + k; c++) {
-                    if (colSum[i + k][c] - colSum[i][c] !== target) {
-                        isMagic = false;
-                        break;
-                    }
-                }
-                // If all checks pass, we found the largest magic square
-                if (isMagic) return k;
-            }
+        // Verify all remaining row sums in the subgrid
+        for (let r = i + 1; r < i + k; r++) {
+          if (rowSum[r][j + k] - rowSum[r][j] !== target) {
+            isMagic = false;
+            break;
+          }
         }
+        if (!isMagic) continue;
+
+        // Verify all column sums in the subgrid
+        for (let c = j; c < j + k; c++) {
+          if (colSum[i + k][c] - colSum[i][c] !== target) {
+            isMagic = false;
+            break;
+          }
+        }
+        // If all checks pass, we found the largest magic square
+        if (isMagic) return k;
+      }
     }
-    // Default return 1 as every 1x1 is a magic square
-    return 1;
+  }
+  // Default return 1 as every 1x1 is a magic square
+  return 1;
 }

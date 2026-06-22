@@ -45,7 +45,7 @@ function minCost(grid: number[][]): number {
   const m = grid.length,
     n = grid[0].length;
   // Initialize distances to Infinity
-  const dist = Array.from({length: m}, () => new Array(n).fill(Infinity));
+  const dist = Array.from({ length: m }, () => new Array(n).fill(Infinity));
   // Starting cell has zero cost
   dist[0][0] = 0;
   // Define the directions for each sign: right, left, down, up

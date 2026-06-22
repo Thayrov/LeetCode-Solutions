@@ -49,7 +49,7 @@ function maxTaskAssign(
   tasks: number[],
   workers: number[],
   pills: number,
-  strength: number
+  strength: number,
 ): number {
   // Sort task requirements and worker strengths in ascending order
   tasks.sort((a, b) => a - b);

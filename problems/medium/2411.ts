@@ -36,28 +36,31 @@ n == nums.length
 */
 
 function smallestSubarrays(nums: number[]): number[] {
-    // Store the length of input array
-    const n = nums.length;
-    // Initialize result array to store minimum subarray lengths
-    const result = new Array(n);
-    // Track the last position where each bit (0-31) was set to 1
-    const lastPos = new Array(32).fill(-1);
-    
-    // Process array from right to left to maintain bit positions
-    for (let i = n - 1; i >= 0; i--) {
-        // Check each of the 32 possible bits in a 32-bit integer
-        for (let bit = 0; bit < 32; bit++) {
-            // If the current bit is set in nums[i]
-            if ((nums[i] >> bit) & 1) {
-                // Update the last position where this bit was seen
-                lastPos[bit] = i;
-            }
-        }
-        // Calculate minimum subarray length: max distance to any set bit + 1
-        // Ensure at least length 1 (single element subarray)
-        result[i] = Math.max(1, Math.max(...lastPos.map(pos => pos === -1 ? 0 : pos - i + 1)));
+  // Store the length of input array
+  const n = nums.length;
+  // Initialize result array to store minimum subarray lengths
+  const result = new Array(n);
+  // Track the last position where each bit (0-31) was set to 1
+  const lastPos = new Array(32).fill(-1);
+
+  // Process array from right to left to maintain bit positions
+  for (let i = n - 1; i >= 0; i--) {
+    // Check each of the 32 possible bits in a 32-bit integer
+    for (let bit = 0; bit < 32; bit++) {
+      // If the current bit is set in nums[i]
+      if ((nums[i] >> bit) & 1) {
+        // Update the last position where this bit was seen
+        lastPos[bit] = i;
+      }
     }
-    
-    // Return array of minimum subarray lengths for each starting position
-    return result;
-};
+    // Calculate minimum subarray length: max distance to any set bit + 1
+    // Ensure at least length 1 (single element subarray)
+    result[i] = Math.max(
+      1,
+      Math.max(...lastPos.map((pos) => (pos === -1 ? 0 : pos - i + 1))),
+    );
+  }
+
+  // Return array of minimum subarray lengths for each starting position
+  return result;
+}

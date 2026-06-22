@@ -27,38 +27,38 @@ nums[i] is either 0 or 1.
 */
 
 function longestSubarray(nums: number[]): number {
-    // Initialize the left pointer of the sliding window.
-    let left = 0;
-    // Initialize a counter for the number of zeros within the current window.
-    let zeroCount = 0;
-    // Initialize a variable to store the maximum length found so far.
-    let maxLength = 0;
+  // Initialize the left pointer of the sliding window.
+  let left = 0;
+  // Initialize a counter for the number of zeros within the current window.
+  let zeroCount = 0;
+  // Initialize a variable to store the maximum length found so far.
+  let maxLength = 0;
 
-    // Iterate through the array with the right pointer to expand the window.
-    for (let right = 0; right < nums.length; right++) {
-        // If the current element is a zero, increment the zero counter.
-        if (nums[right] === 0) {
-            zeroCount++;
-        }
-
-        // This loop shrinks the window from the left if it contains more than one zero.
-        // A valid window for this problem can have at most one zero (the one to be deleted).
-        while (zeroCount > 1) {
-            // If the element at the left pointer is a zero, decrement the counter as it's being removed from the window.
-            if (nums[left] === 0) {
-                zeroCount--;
-            }
-            // Move the left pointer to the right, effectively shrinking the window.
-            left++;
-        }
-
-        // After ensuring the window is valid (<= 1 zero), calculate its length.
-        // The length of the subarray of 1s is the window size (right - left + 1) minus the number of zeros (1).
-        // This simplifies to `right - left`. This formula also works if there are no zeros in the window,
-        // as we must delete one element anyway, so the length would be `(right - left + 1) - 1`.
-        maxLength = Math.max(maxLength, right - left);
+  // Iterate through the array with the right pointer to expand the window.
+  for (let right = 0; right < nums.length; right++) {
+    // If the current element is a zero, increment the zero counter.
+    if (nums[right] === 0) {
+      zeroCount++;
     }
 
-    // Return the maximum length found throughout the iteration.
-    return maxLength;
-};
+    // This loop shrinks the window from the left if it contains more than one zero.
+    // A valid window for this problem can have at most one zero (the one to be deleted).
+    while (zeroCount > 1) {
+      // If the element at the left pointer is a zero, decrement the counter as it's being removed from the window.
+      if (nums[left] === 0) {
+        zeroCount--;
+      }
+      // Move the left pointer to the right, effectively shrinking the window.
+      left++;
+    }
+
+    // After ensuring the window is valid (<= 1 zero), calculate its length.
+    // The length of the subarray of 1s is the window size (right - left + 1) minus the number of zeros (1).
+    // This simplifies to `right - left`. This formula also works if there are no zeros in the window,
+    // as we must delete one element anyway, so the length would be `(right - left + 1) - 1`.
+    maxLength = Math.max(maxLength, right - left);
+  }
+
+  // Return the maximum length found throughout the iteration.
+  return maxLength;
+}

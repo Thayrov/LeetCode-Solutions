@@ -1,4 +1,3 @@
-
 /* 
 85. Maximal Rectangle
 
@@ -40,7 +39,7 @@ function maximalRectangle(matrix: string[][]): number {
   for (let i = 0; i < matrix.length; i++) {
     for (let j = 0; j < matrix[0].length; j++) {
       // Only consider '1's for calculating area
-      if (matrix[i][j] === '1') {
+      if (matrix[i][j] === "1") {
         // Update DP value: either start a new row or add to the existing sequence of '1's
         dp[i][j] = j === 0 ? 1 : dp[i][j - 1] + 1;
         let width = dp[i][j];

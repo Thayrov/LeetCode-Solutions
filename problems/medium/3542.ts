@@ -39,34 +39,34 @@ Constraints:
 */
 
 function minOperations(nums: number[]): number {
-    // Counter for total operations needed
-    let ops = 0;
-    
-    // Monotonic stack to track "active layers" of values
-    // Stack maintains values in ascending order from bottom to top
-    let stack: number[] = [];
-    
-    // Process each element in the array
-    for (let num of nums) {
-        // Pop all values greater than current from stack
-        // This represents "closing" those layers
-        while (stack.length > 0 && stack[stack.length - 1] > num) {
-            stack.pop();
-        }
-        
-        // If stack is empty or current value is greater than top
-        // We need to start a new operation layer (if value is non-zero)
-        if (stack.length === 0 || stack[stack.length - 1] < num) {
-            if (num > 0) {
-                // Increment operation count for this new layer
-                ops++;
-                // Push current value to stack
-                stack.push(num);
-            }
-        }
-        // If num equals stack top, we're continuing the same layer (no new operation)
-        // If num is 0, it acts as a boundary (no operation needed)
+  // Counter for total operations needed
+  let ops = 0;
+
+  // Monotonic stack to track "active layers" of values
+  // Stack maintains values in ascending order from bottom to top
+  let stack: number[] = [];
+
+  // Process each element in the array
+  for (let num of nums) {
+    // Pop all values greater than current from stack
+    // This represents "closing" those layers
+    while (stack.length > 0 && stack[stack.length - 1] > num) {
+      stack.pop();
     }
-    
-    return ops;
+
+    // If stack is empty or current value is greater than top
+    // We need to start a new operation layer (if value is non-zero)
+    if (stack.length === 0 || stack[stack.length - 1] < num) {
+      if (num > 0) {
+        // Increment operation count for this new layer
+        ops++;
+        // Push current value to stack
+        stack.push(num);
+      }
+    }
+    // If num equals stack top, we're continuing the same layer (no new operation)
+    // If num is 0, it acts as a boundary (no operation needed)
+  }
+
+  return ops;
 }

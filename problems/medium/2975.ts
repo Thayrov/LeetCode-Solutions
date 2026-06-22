@@ -28,39 +28,44 @@ hFences and vFences are unique.
 </> Typescript code:
 */
 
-function maximizeSquareArea(m: number, n: number, hFences: number[], vFences: number[]): number {
-    // Define the modulo constant using BigInt for large area calculations
-    const MOD = 1000000007n;
-    // Add the implicit boundary fences at the start (1) and end (m or n) of the field
-    hFences.push(1, m);
-    vFences.push(1, n);
-    // Sort fences numerically to calculate distances between any two fences easily
-    hFences.sort((a, b) => a - b);
-    vFences.sort((a, b) => a - b);
+function maximizeSquareArea(
+  m: number,
+  n: number,
+  hFences: number[],
+  vFences: number[],
+): number {
+  // Define the modulo constant using BigInt for large area calculations
+  const MOD = 1000000007n;
+  // Add the implicit boundary fences at the start (1) and end (m or n) of the field
+  hFences.push(1, m);
+  vFences.push(1, n);
+  // Sort fences numerically to calculate distances between any two fences easily
+  hFences.sort((a, b) => a - b);
+  vFences.sort((a, b) => a - b);
 
-    // Use a Set to store all possible unique horizontal distances (side lengths)
-    const hGaps = new Set<number>();
-    for (let i = 0; i < hFences.length; i++) {
-        for (let j = i + 1; j < hFences.length; j++) {
-            // Calculate distance between every pair of horizontal fences
-            hGaps.add(hFences[j] - hFences[i]);
-        }
+  // Use a Set to store all possible unique horizontal distances (side lengths)
+  const hGaps = new Set<number>();
+  for (let i = 0; i < hFences.length; i++) {
+    for (let j = i + 1; j < hFences.length; j++) {
+      // Calculate distance between every pair of horizontal fences
+      hGaps.add(hFences[j] - hFences[i]);
     }
+  }
 
-    // Initialize maxSide as -1 (using BigInt for consistent comparison/calculation)
-    let maxSide = -1n;
-    for (let i = 0; i < vFences.length; i++) {
-        for (let j = i + 1; j < vFences.length; j++) {
-            // Calculate distance between every pair of vertical fences
-            const gap = vFences[j] - vFences[i];
-            // If this vertical distance exists in horizontal gaps, it's a potential square
-            if (hGaps.has(gap)) {
-                // Update maxSide if the current gap is larger than the previous maximum
-                if (BigInt(gap) > maxSide) maxSide = BigInt(gap);
-            }
-        }
+  // Initialize maxSide as -1 (using BigInt for consistent comparison/calculation)
+  let maxSide = -1n;
+  for (let i = 0; i < vFences.length; i++) {
+    for (let j = i + 1; j < vFences.length; j++) {
+      // Calculate distance between every pair of vertical fences
+      const gap = vFences[j] - vFences[i];
+      // If this vertical distance exists in horizontal gaps, it's a potential square
+      if (hGaps.has(gap)) {
+        // Update maxSide if the current gap is larger than the previous maximum
+        if (BigInt(gap) > maxSide) maxSide = BigInt(gap);
+      }
     }
+  }
 
-    // If no common gap was found, return -1; otherwise return (side^2) % MOD
-    return maxSide === -1n ? -1 : Number((maxSide * maxSide) % MOD);
+  // If no common gap was found, return -1; otherwise return (side^2) % MOD
+  return maxSide === -1n ? -1 : Number((maxSide * maxSide) % MOD);
 }

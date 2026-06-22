@@ -27,28 +27,28 @@ Constraints:
 */
 
 function numberOfWays(n: number, x: number): number {
-    // Define the modulo constant as specified in the problem
-    const MOD = 1000000007;
-    
-    // Initialize DP array where dp[i] represents the number of ways to form sum i
-    const dp = new Array(n + 1).fill(0);
-    
-    // Base case: there's exactly one way to form sum 0 (using no numbers)
-    dp[0] = 1;
-    
-    // Iterate through all possible base numbers i where i^x <= n
-    for (let i = 1; Math.pow(i, x) <= n; i++) {
-        // Calculate the power of current base number
-        const power = Math.pow(i, x);
-        
-        // Iterate backwards through all possible sums to avoid using the same number twice
-        for (let j = n; j >= power; j--) {
-            // Update dp[j] by adding the number of ways to form (j - power)
-            // This represents including the current power in our sum
-            dp[j] = (dp[j] + dp[j - power]) % MOD;
-        }
+  // Define the modulo constant as specified in the problem
+  const MOD = 1000000007;
+
+  // Initialize DP array where dp[i] represents the number of ways to form sum i
+  const dp = new Array(n + 1).fill(0);
+
+  // Base case: there's exactly one way to form sum 0 (using no numbers)
+  dp[0] = 1;
+
+  // Iterate through all possible base numbers i where i^x <= n
+  for (let i = 1; Math.pow(i, x) <= n; i++) {
+    // Calculate the power of current base number
+    const power = Math.pow(i, x);
+
+    // Iterate backwards through all possible sums to avoid using the same number twice
+    for (let j = n; j >= power; j--) {
+      // Update dp[j] by adding the number of ways to form (j - power)
+      // This represents including the current power in our sum
+      dp[j] = (dp[j] + dp[j - power]) % MOD;
     }
-    
-    // Return the number of ways to form exactly sum n
-    return dp[n];
+  }
+
+  // Return the number of ways to form exactly sum n
+  return dp[n];
 }

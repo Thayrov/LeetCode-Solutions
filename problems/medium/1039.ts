@@ -31,38 +31,41 @@ n == values.length
 */
 
 function minScoreTriangulation(values: number[]): number {
-    // Store the number of vertices in the polygon
-    const n = values.length;
-    
-    // Initialize DP table where dp[i][j] represents the minimum score
-    // to triangulate the polygon segment from vertex i to vertex j
-    const dp: number[][] = Array.from({ length: n }, () => Array(n).fill(0));
-    
-    // Iterate over all possible polygon segment lengths starting from 3 (minimum triangle)
-    // len represents the number of vertices in the current segment
-    for (let len = 3; len <= n; len++) {
-        // For each length, try all possible starting positions
-        // i is the starting vertex of the segment
-        for (let i = 0; i + len - 1 < n; i++) {
-            // j is the ending vertex of the segment (i + len - 1)
-            const j = i + len - 1;
-            
-            // Initialize with infinity to find minimum
-            dp[i][j] = Infinity;
-            
-            // Try all possible middle vertices k that form a triangle with i and j
-            // k must be between i and j (exclusive)
-            for (let k = i + 1; k < j; k++) {
-                // Calculate the score for this triangulation:
-                // - dp[i][k]: minimum score for left sub-polygon from i to k
-                // - dp[k][j]: minimum score for right sub-polygon from k to j
-                // - values[i] * values[k] * values[j]: score of triangle formed by vertices i, k, j
-                // Update dp[i][j] with the minimum score found
-                dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k][j] + values[i] * values[k] * values[j]);
-            }
-        }
+  // Store the number of vertices in the polygon
+  const n = values.length;
+
+  // Initialize DP table where dp[i][j] represents the minimum score
+  // to triangulate the polygon segment from vertex i to vertex j
+  const dp: number[][] = Array.from({ length: n }, () => Array(n).fill(0));
+
+  // Iterate over all possible polygon segment lengths starting from 3 (minimum triangle)
+  // len represents the number of vertices in the current segment
+  for (let len = 3; len <= n; len++) {
+    // For each length, try all possible starting positions
+    // i is the starting vertex of the segment
+    for (let i = 0; i + len - 1 < n; i++) {
+      // j is the ending vertex of the segment (i + len - 1)
+      const j = i + len - 1;
+
+      // Initialize with infinity to find minimum
+      dp[i][j] = Infinity;
+
+      // Try all possible middle vertices k that form a triangle with i and j
+      // k must be between i and j (exclusive)
+      for (let k = i + 1; k < j; k++) {
+        // Calculate the score for this triangulation:
+        // - dp[i][k]: minimum score for left sub-polygon from i to k
+        // - dp[k][j]: minimum score for right sub-polygon from k to j
+        // - values[i] * values[k] * values[j]: score of triangle formed by vertices i, k, j
+        // Update dp[i][j] with the minimum score found
+        dp[i][j] = Math.min(
+          dp[i][j],
+          dp[i][k] + dp[k][j] + values[i] * values[k] * values[j],
+        );
+      }
     }
-    
-    // Return the minimum score for triangulating the entire polygon (from vertex 0 to n-1)
-    return dp[0][n - 1];
+  }
+
+  // Return the minimum score for triangulating the entire polygon (from vertex 0 to n-1)
+  return dp[0][n - 1];
 }

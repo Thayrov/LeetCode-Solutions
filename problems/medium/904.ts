@@ -33,40 +33,40 @@ Constraints:
 */
 
 function totalFruit(fruits: number[]): number {
-    // Initialize the maximum number of fruits we can collect
-    let maxFruits = 0;
-    // Initialize the left pointer of the sliding window
-    let left = 0;
-    // Initialize the count of distinct fruit types in the current window
-    let distinctCount = 0;
-    // Create an array to keep track of the count of each fruit type in the current window
-    const fruitCount = new Array(fruits.length).fill(0);
+  // Initialize the maximum number of fruits we can collect
+  let maxFruits = 0;
+  // Initialize the left pointer of the sliding window
+  let left = 0;
+  // Initialize the count of distinct fruit types in the current window
+  let distinctCount = 0;
+  // Create an array to keep track of the count of each fruit type in the current window
+  const fruitCount = new Array(fruits.length).fill(0);
 
-    // Iterate through the fruits with the right pointer
-    for (let right = 0; right < fruits.length; right++) {
-        // If the current fruit type is not in the window, increment the distinct count
-        if (fruitCount[fruits[right]] === 0) {
-            distinctCount++;
-        }
-        // Increment the count of the current fruit type
-        fruitCount[fruits[right]]++;
+  // Iterate through the fruits with the right pointer
+  for (let right = 0; right < fruits.length; right++) {
+    // If the current fruit type is not in the window, increment the distinct count
+    if (fruitCount[fruits[right]] === 0) {
+      distinctCount++;
+    }
+    // Increment the count of the current fruit type
+    fruitCount[fruits[right]]++;
 
-        // If we have more than 2 types of fruits in our window, shrink it from the left
-        while (distinctCount > 2) {
-            // Decrement the count of the fruit at the left pointer
-            fruitCount[fruits[left]]--;
-            // If the count becomes 0, decrement the distinct count
-            if (fruitCount[fruits[left]] === 0) {
-                distinctCount--;
-            }
-            // Move the left pointer to the right
-            left++;
-        }
-
-        // Update the maximum number of fruits we can collect
-        maxFruits = Math.max(maxFruits, right - left + 1);
+    // If we have more than 2 types of fruits in our window, shrink it from the left
+    while (distinctCount > 2) {
+      // Decrement the count of the fruit at the left pointer
+      fruitCount[fruits[left]]--;
+      // If the count becomes 0, decrement the distinct count
+      if (fruitCount[fruits[left]] === 0) {
+        distinctCount--;
+      }
+      // Move the left pointer to the right
+      left++;
     }
 
-    // Return the maximum number of fruits we can collect
-    return maxFruits;
+    // Update the maximum number of fruits we can collect
+    maxFruits = Math.max(maxFruits, right - left + 1);
+  }
+
+  // Return the maximum number of fruits we can collect
+  return maxFruits;
 }

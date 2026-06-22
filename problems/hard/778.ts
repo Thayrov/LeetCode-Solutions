@@ -32,93 +32,99 @@ Each value grid[i][j] is unique.
 */
 
 function swimInWater(grid: number[][]): number {
-    // Store grid dimension for constant-time access
-    const n = grid.length;
-    // Use Uint8Array for memory efficiency and faster access than boolean[]
-    const visited = new Uint8Array(n * n);
-    // Min-heap storing [time, position] tuples where position = row * n + col
-    const heap: [number, number][] = [[grid[0][0], 0]];
-    
-    // Process cells in order of increasing maximum elevation
-    while (heap.length) {
-        // Extract minimum element (manual heap pop for performance)
-        const [time, pos] = heap[0];
-        heap[0] = heap[heap.length - 1];
-        heap.pop();
-        // Restore heap property after removal
-        if (heap.length) siftDown(heap, 0);
-        
-        // If we reached destination, return the maximum elevation encountered
-        if (pos === n * n - 1) return time;
-        // Skip if already visited (may have duplicates in heap)
-        if (visited[pos]) continue;
-        // Mark current position as visited
-        visited[pos] = 1;
-        
-        // Decode 1D position to 2D coordinates using division and modulo
-        const r = pos / n | 0;  // Bitwise OR for fast floor operation
-        const c = pos % n;
-        
-        // Explore all 4 adjacent directions (right, down, left, up)
-        for (const [dr, dc] of [[0,1],[1,0],[0,-1],[-1,0]]) {
-            const nr = r + dr, nc = c + dc;
-            // Check if neighbor is within grid bounds
-            if (nr >= 0 && nr < n && nc >= 0 && nc < n) {
-                // Encode 2D coordinates back to 1D position
-                const npos = nr * n + nc;
-                // Only process unvisited neighbors
-                if (!visited[npos]) {
-                    // Add neighbor with updated time (max of current time and neighbor elevation)
-                    heap.push([Math.max(time, grid[nr][nc]), npos]);
-                    // Maintain min-heap property by bubbling up
-                    siftUp(heap, heap.length - 1);
-                }
-            }
+  // Store grid dimension for constant-time access
+  const n = grid.length;
+  // Use Uint8Array for memory efficiency and faster access than boolean[]
+  const visited = new Uint8Array(n * n);
+  // Min-heap storing [time, position] tuples where position = row * n + col
+  const heap: [number, number][] = [[grid[0][0], 0]];
+
+  // Process cells in order of increasing maximum elevation
+  while (heap.length) {
+    // Extract minimum element (manual heap pop for performance)
+    const [time, pos] = heap[0];
+    heap[0] = heap[heap.length - 1];
+    heap.pop();
+    // Restore heap property after removal
+    if (heap.length) siftDown(heap, 0);
+
+    // If we reached destination, return the maximum elevation encountered
+    if (pos === n * n - 1) return time;
+    // Skip if already visited (may have duplicates in heap)
+    if (visited[pos]) continue;
+    // Mark current position as visited
+    visited[pos] = 1;
+
+    // Decode 1D position to 2D coordinates using division and modulo
+    const r = (pos / n) | 0; // Bitwise OR for fast floor operation
+    const c = pos % n;
+
+    // Explore all 4 adjacent directions (right, down, left, up)
+    for (const [dr, dc] of [
+      [0, 1],
+      [1, 0],
+      [0, -1],
+      [-1, 0],
+    ]) {
+      const nr = r + dr,
+        nc = c + dc;
+      // Check if neighbor is within grid bounds
+      if (nr >= 0 && nr < n && nc >= 0 && nc < n) {
+        // Encode 2D coordinates back to 1D position
+        const npos = nr * n + nc;
+        // Only process unvisited neighbors
+        if (!visited[npos]) {
+          // Add neighbor with updated time (max of current time and neighbor elevation)
+          heap.push([Math.max(time, grid[nr][nc]), npos]);
+          // Maintain min-heap property by bubbling up
+          siftUp(heap, heap.length - 1);
         }
+      }
     }
-    // Should never reach here given problem constraints
-    return -1;
+  }
+  // Should never reach here given problem constraints
+  return -1;
 }
 
 // Bubble up element at index i to maintain min-heap property
 function siftUp(heap: [number, number][], i: number): void {
-    // Store current item for comparison
-    const item = heap[i];
-    // Continue while not at root and parent is larger
-    while (i > 0) {
-        // Calculate parent index using bit shift (faster than division by 2)
-        const p = (i - 1) >> 1;
-        // If parent is smaller or equal, heap property satisfied
-        if (heap[p][0] <= item[0]) break;
-        // Move parent down
-        heap[i] = heap[p];
-        i = p;
-    }
-    // Place item in its final position
-    heap[i] = item;
+  // Store current item for comparison
+  const item = heap[i];
+  // Continue while not at root and parent is larger
+  while (i > 0) {
+    // Calculate parent index using bit shift (faster than division by 2)
+    const p = (i - 1) >> 1;
+    // If parent is smaller or equal, heap property satisfied
+    if (heap[p][0] <= item[0]) break;
+    // Move parent down
+    heap[i] = heap[p];
+    i = p;
+  }
+  // Place item in its final position
+  heap[i] = item;
 }
 
 // Bubble down element at index i to maintain min-heap property
 function siftDown(heap: [number, number][], i: number): void {
-    // Store current item for comparison
-    const item = heap[i];
-    const len = heap.length;
-    // Only need to check up to halfway point (nodes with children)
-    const half = len >> 1;
-    
-    // Continue while current node has at least one child
-    while (i < half) {
-        // Calculate left child index using bit shift (faster than multiplication by 2)
-        let min = (i << 1) + 1;
-        const right = min + 1;
-        // Choose smaller of two children
-        if (right < len && heap[right][0] < heap[min][0]) min = right;
-        // If current item is smaller than both children, heap property satisfied
-        if (item[0] <= heap[min][0]) break;
-        // Move smaller child up
-        heap[i] = heap[min];
-        i = min;
-    }
-    // Place item in its final position
-    heap[i] = item;
+  // Store current item for comparison
+  const item = heap[i];
+  const len = heap.length;
+  // Only need to check up to halfway point (nodes with children)
+  const half = len >> 1;
+
+  // Continue while current node has at least one child
+  while (i < half) {
+    // Calculate left child index using bit shift (faster than multiplication by 2)
+    let min = (i << 1) + 1;
+    const right = min + 1;
+    // Choose smaller of two children
+    if (right < len && heap[right][0] < heap[min][0]) min = right;
+    // If current item is smaller than both children, heap property satisfied
+    if (item[0] <= heap[min][0]) break;
+    // Move smaller child up
+    heap[i] = heap[min];
+    i = min;
+  }
+  // Place item in its final position
+  heap[i] = item;
 }

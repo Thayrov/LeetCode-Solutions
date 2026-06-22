@@ -47,7 +47,7 @@ function punishmentNumber(n: number): number {
       if (index === s.length) return currentSum === target;
 
       // Composite key for memoization.
-      const key = index + '-' + currentSum;
+      const key = index + "-" + currentSum;
       if (memo.has(key)) return memo.get(key)!;
 
       let num = 0;

@@ -32,16 +32,16 @@ Constraints:
 */
 
 function minimumDifference(nums: number[], k: number): number {
-    // Sort array to group close values together
-    nums.sort((a, b) => a - b);
-    // Initialize with largest possible difference
-    let minDiff = Infinity;
-    // Slide window of size k across sorted array
-    for (let i = 0; i <= nums.length - k; i++) {
-        // Current window's highest - lowest = nums[i + k - 1] - nums[i]
-        const currentDiff = nums[i + k - 1] - nums[i];
-        // Update minimum difference found
-        minDiff = Math.min(minDiff, currentDiff);
-    }
-    return minDiff;
+  // Sort array to group close values together
+  nums.sort((a, b) => a - b);
+  // Initialize with largest possible difference
+  let minDiff = Infinity;
+  // Slide window of size k across sorted array
+  for (let i = 0; i <= nums.length - k; i++) {
+    // Current window's highest - lowest = nums[i + k - 1] - nums[i]
+    const currentDiff = nums[i + k - 1] - nums[i];
+    // Update minimum difference found
+    minDiff = Math.min(minDiff, currentDiff);
+  }
+  return minDiff;
 }

@@ -48,32 +48,32 @@ Note: This question is the same as 1123: https://leetcode.com/problems/lowest-co
  */
 
 function subtreeWithAllDeepest(root: TreeNode | null): TreeNode | null {
-    // Define a recursive function that returns a tuple: [LCA_Candidate, Max_Depth]
-    const dfs = (node: TreeNode | null): [TreeNode | null, number] => {
-        // Base case: If node is null, depth is 0 and no candidate exists
-        if (!node) return [null, 0];
+  // Define a recursive function that returns a tuple: [LCA_Candidate, Max_Depth]
+  const dfs = (node: TreeNode | null): [TreeNode | null, number] => {
+    // Base case: If node is null, depth is 0 and no candidate exists
+    if (!node) return [null, 0];
 
-        // Recursively find the deepest nodes in the left and right subtrees
-        const [leftNode, leftDepth] = dfs(node.left);
-        const [rightNode, rightDepth] = dfs(node.right);
+    // Recursively find the deepest nodes in the left and right subtrees
+    const [leftNode, leftDepth] = dfs(node.left);
+    const [rightNode, rightDepth] = dfs(node.right);
 
-        // Case 1: Left subtree is deeper. The deepest nodes are all on the left.
-        // We propagate the left subtree's candidate and increment the depth.
-        if (leftDepth > rightDepth) {
-            return [leftNode, leftDepth + 1];
-        }
-        
-        // Case 2: Right subtree is deeper. The deepest nodes are all on the right.
-        // We propagate the right subtree's candidate and increment the depth.
-        if (rightDepth > leftDepth) {
-            return [rightNode, rightDepth + 1];
-        }
+    // Case 1: Left subtree is deeper. The deepest nodes are all on the left.
+    // We propagate the left subtree's candidate and increment the depth.
+    if (leftDepth > rightDepth) {
+      return [leftNode, leftDepth + 1];
+    }
 
-        // Case 3: Both subtrees have the same depth.
-        // This means the current node is the LCA for all deepest nodes found so far.
-        return [node, leftDepth + 1];
-    };
+    // Case 2: Right subtree is deeper. The deepest nodes are all on the right.
+    // We propagate the right subtree's candidate and increment the depth.
+    if (rightDepth > leftDepth) {
+      return [rightNode, rightDepth + 1];
+    }
 
-    // Execute the DFS and return the first element of the tuple (the node)
-    return dfs(root)[0];
+    // Case 3: Both subtrees have the same depth.
+    // This means the current node is the LCA for all deepest nodes found so far.
+    return [node, leftDepth + 1];
+  };
+
+  // Execute the DFS and return the first element of the tuple (the node)
+  return dfs(root)[0];
 }

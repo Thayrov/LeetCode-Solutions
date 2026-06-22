@@ -33,23 +33,23 @@ Constraints:
 */
 
 function minNumberOperations(target: number[]): number {
-    // Initialize operations with the first element's value
-    // We always need target[0] operations to build the first element from 0
-    let ops = target[0];
-    
-    // Iterate through the array starting from index 1
-    // We compare each element with its predecessor to find incremental costs
-    for (let i = 1; i < target.length; i++) {
-        // If current element is greater than previous, we need additional operations
-        // The difference represents new operations needed beyond what we already have
-        if (target[i] > target[i - 1]) {
-            // Add only the positive difference (the increase in height)
-            // When target[i] <= target[i-1], we don't add anything because
-            // we can reuse operations from the left side (the subarray can extend back)
-            ops += target[i] - target[i - 1];
-        }
+  // Initialize operations with the first element's value
+  // We always need target[0] operations to build the first element from 0
+  let ops = target[0];
+
+  // Iterate through the array starting from index 1
+  // We compare each element with its predecessor to find incremental costs
+  for (let i = 1; i < target.length; i++) {
+    // If current element is greater than previous, we need additional operations
+    // The difference represents new operations needed beyond what we already have
+    if (target[i] > target[i - 1]) {
+      // Add only the positive difference (the increase in height)
+      // When target[i] <= target[i-1], we don't add anything because
+      // we can reuse operations from the left side (the subarray can extend back)
+      ops += target[i] - target[i - 1];
     }
-    
-    // Return the total minimum number of operations required
-    return ops;
+  }
+
+  // Return the total minimum number of operations required
+  return ops;
 }

@@ -36,26 +36,26 @@ function areaOfMaxDiagonal(dimensions: number[][]): number {
 
   // Iterate through each rectangle's dimensions in the input array.
   for (const dimension of dimensions) {
-      // Destructure the length and width for clarity.
-      const length = dimension[0];
-      const width = dimension[1];
-      
-      // Calculate the square of the current rectangle's diagonal length using the Pythagorean theorem (a^2 + b^2 = c^2).
-      const currentDiagonalSquared = length * length + width * width;
+    // Destructure the length and width for clarity.
+    const length = dimension[0];
+    const width = dimension[1];
 
-      // Check if the current diagonal is longer than the max diagonal found so far.
-      if (currentDiagonalSquared > maxDiagonalSquared) {
-          // If it is, update the max diagonal to this new value.
-          maxDiagonalSquared = currentDiagonalSquared;
-          // And update the max area to the area of the current rectangle.
-          maxArea = length * width;
-      } else if (currentDiagonalSquared === maxDiagonalSquared) {
-          // If the current diagonal is equal to the max diagonal, it's a tie.
-          // The problem requires us to choose the rectangle with the maximum area in case of a tie.
-          maxArea = Math.max(maxArea, length * width);
-      }
+    // Calculate the square of the current rectangle's diagonal length using the Pythagorean theorem (a^2 + b^2 = c^2).
+    const currentDiagonalSquared = length * length + width * width;
+
+    // Check if the current diagonal is longer than the max diagonal found so far.
+    if (currentDiagonalSquared > maxDiagonalSquared) {
+      // If it is, update the max diagonal to this new value.
+      maxDiagonalSquared = currentDiagonalSquared;
+      // And update the max area to the area of the current rectangle.
+      maxArea = length * width;
+    } else if (currentDiagonalSquared === maxDiagonalSquared) {
+      // If the current diagonal is equal to the max diagonal, it's a tie.
+      // The problem requires us to choose the rectangle with the maximum area in case of a tie.
+      maxArea = Math.max(maxArea, length * width);
+    }
   }
 
   // After checking all rectangles, return the final maximum area.
   return maxArea;
-};
+}

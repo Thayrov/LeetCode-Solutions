@@ -45,7 +45,7 @@ endTime[i] <= startTime[i + 1] where i lies in the range [0, n - 2].
 function maxFreeTime(
   eventTime: number,
   startTime: number[],
-  endTime: number[]
+  endTime: number[],
 ): number {
   // Get the number of meetings.
   const n = startTime.length;

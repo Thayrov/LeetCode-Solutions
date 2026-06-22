@@ -39,90 +39,95 @@ At most 10^4 calls will be made to each function transfer, deposit, withdraw.
 */
 
 class Bank {
-    // Use 'private' to encapsulate the bank's internal ledger.
-    // This array will store the balances. It's 0-indexed.
-    private balances: number[];
-    
-    // Store the total number of accounts for quick O(1) boundary checks.
-    private n: number;
+  // Use 'private' to encapsulate the bank's internal ledger.
+  // This array will store the balances. It's 0-indexed.
+  private balances: number[];
 
-    constructor(balance: number[]) {
-        // Store the initial balance array directly.
-        // balance[i] corresponds to account (i + 1).
-        this.balances = balance;
-        
-        // Cache the number of accounts (n) from the array's length.
-        this.n = balance.length;
+  // Store the total number of accounts for quick O(1) boundary checks.
+  private n: number;
+
+  constructor(balance: number[]) {
+    // Store the initial balance array directly.
+    // balance[i] corresponds to account (i + 1).
+    this.balances = balance;
+
+    // Cache the number of accounts (n) from the array's length.
+    this.n = balance.length;
+  }
+
+  transfer(account1: number, account2: number, money: number): boolean {
+    // Validate both account numbers.
+    // Check if 'account1' (from) or 'account2' (to) are outside the valid range [1, n].
+    if (
+      account1 < 1 ||
+      account1 > this.n ||
+      account2 < 1 ||
+      account2 > this.n
+    ) {
+      // If either account is invalid, the transaction fails.
+      return false;
     }
 
-    transfer(account1: number, account2: number, money: number): boolean {
-        // Validate both account numbers.
-        // Check if 'account1' (from) or 'account2' (to) are outside the valid range [1, n].
-        if (account1 < 1 || account1 > this.n || account2 < 1 || account2 > this.n) {
-            // If either account is invalid, the transaction fails.
-            return false;
-        }
-        
-        // Convert the 1-indexed 'account1' to its 0-indexed array position.
-        const index1 = account1 - 1;
-        
-        // Check for sufficient funds in the 'from' account.
-        if (this.balances[index1] < money) {
-            // If funds are insufficient, the transaction fails.
-            return false;
-        }
-        
-        // Convert the 1-indexed 'account2' to its 0-indexed array position.
-        const index2 = account2 - 1;
-        
-        // Perform the transaction: subtract from 'account1'.
-        this.balances[index1] -= money;
-        // And add to 'account2'.
-        this.balances[index2] += money;
-        
-        // Return true to indicate a successful transfer.
-        return true;
+    // Convert the 1-indexed 'account1' to its 0-indexed array position.
+    const index1 = account1 - 1;
+
+    // Check for sufficient funds in the 'from' account.
+    if (this.balances[index1] < money) {
+      // If funds are insufficient, the transaction fails.
+      return false;
     }
 
-    deposit(account: number, money: number): boolean {
-        // Validate the account number.
-        // Check if 'account' is outside the valid range [1, n].
-        if (account < 1 || account > this.n) {
-            // If the account is invalid, the transaction fails.
-            return false;
-        }
-        
-        // Convert the 1-indexed 'account' to its 0-indexed array position
-        // and add the money directly to its balance.
-        this.balances[account - 1] += money;
-        
-        // Return true to indicate a successful deposit.
-        return true;
+    // Convert the 1-indexed 'account2' to its 0-indexed array position.
+    const index2 = account2 - 1;
+
+    // Perform the transaction: subtract from 'account1'.
+    this.balances[index1] -= money;
+    // And add to 'account2'.
+    this.balances[index2] += money;
+
+    // Return true to indicate a successful transfer.
+    return true;
+  }
+
+  deposit(account: number, money: number): boolean {
+    // Validate the account number.
+    // Check if 'account' is outside the valid range [1, n].
+    if (account < 1 || account > this.n) {
+      // If the account is invalid, the transaction fails.
+      return false;
     }
 
-    withdraw(account: number, money: number): boolean {
-        // Validate the account number.
-        // Check if 'account' is outside the valid range [1, n].
-        if (account < 1 || account > this.n) {
-            // If the account is invalid, the transaction fails.
-            return false;
-        }
-        
-        // Convert the 1-indexed 'account' to its 0-indexed array position.
-        const index = account - 1;
-        
-        // Check for sufficient funds in the account.
-        if (this.balances[index] < money) {
-            // If funds are insufficient, the transaction fails.
-            return false;
-        }
-        
-        // Perform the withdrawal by subtracting the money.
-        this.balances[index] -= money;
-        
-        // Return true to indicate a successful withdrawal.
-        return true;
+    // Convert the 1-indexed 'account' to its 0-indexed array position
+    // and add the money directly to its balance.
+    this.balances[account - 1] += money;
+
+    // Return true to indicate a successful deposit.
+    return true;
+  }
+
+  withdraw(account: number, money: number): boolean {
+    // Validate the account number.
+    // Check if 'account' is outside the valid range [1, n].
+    if (account < 1 || account > this.n) {
+      // If the account is invalid, the transaction fails.
+      return false;
     }
+
+    // Convert the 1-indexed 'account' to its 0-indexed array position.
+    const index = account - 1;
+
+    // Check for sufficient funds in the account.
+    if (this.balances[index] < money) {
+      // If funds are insufficient, the transaction fails.
+      return false;
+    }
+
+    // Perform the withdrawal by subtracting the money.
+    this.balances[index] -= money;
+
+    // Return true to indicate a successful withdrawal.
+    return true;
+  }
 }
 
 /**

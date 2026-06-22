@@ -35,9 +35,12 @@ There are no repeated roads among the queries.
 </> Typescript Code:
 */
 
-function shortestDistanceAfterQueries(n: number, queries: number[][]): number[] {
+function shortestDistanceAfterQueries(
+  n: number,
+  queries: number[][],
+): number[] {
   const answer: number[] = []; // Initialize the answer array.
-  const adj: number[][] = Array.from({length: n}, () => []); // Create adjacency list for the graph.
+  const adj: number[][] = Array.from({ length: n }, () => []); // Create adjacency list for the graph.
 
   // Add initial edges from city i to city i+1.
   for (let i = 0; i < n - 1; i++) {

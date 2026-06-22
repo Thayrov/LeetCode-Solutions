@@ -34,29 +34,29 @@ Constraints:
 */
 
 function zeroFilledSubarray(nums: number[]): number {
-    // Initialize total count of zero-filled subarrays
-    let result = 0;
-    
-    // Track current sequence length of consecutive zeros
-    let consecutiveZeros = 0;
-    
-    // Iterate through each number in the array
-    for (const num of nums) {
-        // If current number is zero, extend the consecutive sequence
-        if (num === 0) {
-            consecutiveZeros++;
-        } else {
-            // Non-zero encountered: calculate subarrays from current sequence
-            // Formula: n consecutive zeros generate n*(n+1)/2 subarrays
-            // Using Math.floor to handle potential floating point precision issues
-            result += Math.floor(consecutiveZeros * (consecutiveZeros + 1) / 2);
-            
-            // Reset consecutive zero counter for next potential sequence
-            consecutiveZeros = 0;
-        }
+  // Initialize total count of zero-filled subarrays
+  let result = 0;
+
+  // Track current sequence length of consecutive zeros
+  let consecutiveZeros = 0;
+
+  // Iterate through each number in the array
+  for (const num of nums) {
+    // If current number is zero, extend the consecutive sequence
+    if (num === 0) {
+      consecutiveZeros++;
+    } else {
+      // Non-zero encountered: calculate subarrays from current sequence
+      // Formula: n consecutive zeros generate n*(n+1)/2 subarrays
+      // Using Math.floor to handle potential floating point precision issues
+      result += Math.floor((consecutiveZeros * (consecutiveZeros + 1)) / 2);
+
+      // Reset consecutive zero counter for next potential sequence
+      consecutiveZeros = 0;
     }
-    
-    // Handle final sequence if array ends with zeros
-    // Add subarrays from the last consecutive zero sequence
-    return result + Math.floor(consecutiveZeros * (consecutiveZeros + 1) / 2);
+  }
+
+  // Handle final sequence if array ends with zeros
+  // Add subarrays from the last consecutive zero sequence
+  return result + Math.floor((consecutiveZeros * (consecutiveZeros + 1)) / 2);
 }

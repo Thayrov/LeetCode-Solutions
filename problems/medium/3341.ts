@@ -45,7 +45,7 @@ function minTimeToReach(moveTime: number[][]): number {
   const dist: number[][] = Array.from(
     // Distance matrix.
     { length: n }, // n rows.
-    () => Array(m).fill(Infinity) // m cols, init to Infinity.
+    () => Array(m).fill(Infinity), // m cols, init to Infinity.
   );
   const heap: [number, number, number][] = []; // Min-heap: [time, row, col].
 

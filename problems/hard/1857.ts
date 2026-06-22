@@ -35,7 +35,7 @@ function largestPathValue(colors: string, edges: number[][]): number {
   const n = colors.length;
 
   // Adjacency list to represent the graph. adj[u] contains a list of nodes v such that there's an edge u -> v.
-  const adj: number[][] = Array.from({length: n}, () => []);
+  const adj: number[][] = Array.from({ length: n }, () => []);
   // Array to store the in-degree of each node. inDegree[i] is the number of incoming edges to node i.
   const inDegree: number[] = Array(n).fill(0);
 
@@ -46,7 +46,7 @@ function largestPathValue(colors: string, edges: number[][]): number {
   }
 
   // dp[i][j] will store the maximum count of color j (0-25) on any path ending at node i.
-  const dp: number[][] = Array.from({length: n}, () => Array(26).fill(0));
+  const dp: number[][] = Array.from({ length: n }, () => Array(26).fill(0));
 
   // Queue for Kahn's algorithm (topological sort). Stores nodes with an in-degree of 0.
   const queue: number[] = [];
@@ -54,7 +54,7 @@ function largestPathValue(colors: string, edges: number[][]): number {
   let qHead = 0;
 
   // Cache the charCode of 'a' for efficient conversion of colors to indices (0-25).
-  const aCharCode = 'a'.charCodeAt(0);
+  const aCharCode = "a".charCodeAt(0);
 
   // Initialize the queue with all nodes that have an in-degree of 0 (source nodes).
   for (let i = 0; i < n; i++) {

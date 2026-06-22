@@ -40,25 +40,25 @@ s consists of only digits.
 */
 
 function hasSameDigits(s: string): boolean {
-    // Convert string to array of numbers for efficient in-place modification
-    let arr = s.split('').map(Number);
-    
-    // Track current length instead of resizing array (optimization)
-    let len = arr.length;
-    
-    // Continue until we have exactly 2 digits
-    while (len > 2) {
-        // For each consecutive pair, compute (digit[i] + digit[i+1]) % 10
-        // Store result at index i, effectively shifting results left
-        for (let i = 0; i < len - 1; i++) {
-            arr[i] = (arr[i] + arr[i + 1]) % 10;
-        }
-        
-        // Decrease length since we have one fewer digit after each operation
-        // The last element becomes irrelevant (not deleted, just ignored)
-        len--;
+  // Convert string to array of numbers for efficient in-place modification
+  let arr = s.split("").map(Number);
+
+  // Track current length instead of resizing array (optimization)
+  let len = arr.length;
+
+  // Continue until we have exactly 2 digits
+  while (len > 2) {
+    // For each consecutive pair, compute (digit[i] + digit[i+1]) % 10
+    // Store result at index i, effectively shifting results left
+    for (let i = 0; i < len - 1; i++) {
+      arr[i] = (arr[i] + arr[i + 1]) % 10;
     }
-    
-    // Check if the final two digits (at indices 0 and 1) are equal
-    return arr[0] === arr[1];
+
+    // Decrease length since we have one fewer digit after each operation
+    // The last element becomes irrelevant (not deleted, just ignored)
+    len--;
+  }
+
+  // Check if the final two digits (at indices 0 and 1) are equal
+  return arr[0] === arr[1];
 }

@@ -38,53 +38,53 @@ There is at least one element i where nums[i] == 0.
 */
 
 function countValidSelections(nums: number[]): number {
-    // Initialize counter for valid selections
-    let count = 0;
-    // Store array length for efficiency
-    const n = nums.length;
-    
-    // Iterate through all possible starting positions
-    for (let start = 0; start < n; start++) {
-        // Only consider positions where the element is 0
-        if (nums[start] !== 0) continue;
-        
-        // Try both directions: -1 for left, 1 for right
-        for (let dir = -1; dir <= 1; dir += 2) {
-            // Create a copy of the array for this simulation
-            const arr = [...nums];
-            // Set current position to starting position
-            let curr = start;
-            // Set initial movement direction
-            let direction = dir;
-            // Calculate sum of all elements to determine max steps needed
-            const sum = arr.reduce((a, b) => a + b, 0);
-            // Track steps to detect infinite loops
-            let steps = 0;
-            // Maximum steps: sum of elements * array length * 2 (for back-and-forth movement)
-            const maxSteps = sum * n * 2;
-            
-            // Continue simulation while within bounds and under step limit
-            while (curr >= 0 && curr < n && steps < maxSteps) {
-                // If current element is 0, just move in current direction
-                if (arr[curr] === 0) {
-                    curr += direction;
-                } else {
-                    // If current element is positive, decrement it
-                    arr[curr]--;
-                    // Reverse direction
-                    direction = -direction;
-                    // Move in the new direction
-                    curr += direction;
-                }
-                // Increment step counter
-                steps++;
-            }
-            
-            // Check if all elements became 0; if so, this is a valid selection
-            if (arr.every(v => v === 0)) count++;
+  // Initialize counter for valid selections
+  let count = 0;
+  // Store array length for efficiency
+  const n = nums.length;
+
+  // Iterate through all possible starting positions
+  for (let start = 0; start < n; start++) {
+    // Only consider positions where the element is 0
+    if (nums[start] !== 0) continue;
+
+    // Try both directions: -1 for left, 1 for right
+    for (let dir = -1; dir <= 1; dir += 2) {
+      // Create a copy of the array for this simulation
+      const arr = [...nums];
+      // Set current position to starting position
+      let curr = start;
+      // Set initial movement direction
+      let direction = dir;
+      // Calculate sum of all elements to determine max steps needed
+      const sum = arr.reduce((a, b) => a + b, 0);
+      // Track steps to detect infinite loops
+      let steps = 0;
+      // Maximum steps: sum of elements * array length * 2 (for back-and-forth movement)
+      const maxSteps = sum * n * 2;
+
+      // Continue simulation while within bounds and under step limit
+      while (curr >= 0 && curr < n && steps < maxSteps) {
+        // If current element is 0, just move in current direction
+        if (arr[curr] === 0) {
+          curr += direction;
+        } else {
+          // If current element is positive, decrement it
+          arr[curr]--;
+          // Reverse direction
+          direction = -direction;
+          // Move in the new direction
+          curr += direction;
         }
+        // Increment step counter
+        steps++;
+      }
+
+      // Check if all elements became 0; if so, this is a valid selection
+      if (arr.every((v) => v === 0)) count++;
     }
-    
-    // Return total count of valid selections
-    return count;
+  }
+
+  // Return total count of valid selections
+  return count;
 }

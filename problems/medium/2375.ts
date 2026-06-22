@@ -36,7 +36,7 @@ pattern consists of only the letters 'I' and 'D'.
 
 function smallestNumber(pattern: string): string {
   // Initialize an empty string to accumulate the final result.
-  let result = '';
+  let result = "";
   // Create a stack to temporarily store numbers.
   let stack: number[] = [];
   // Iterate from 0 to the length of pattern (inclusive) to cover all digits.
@@ -45,7 +45,7 @@ function smallestNumber(pattern: string): string {
     stack.push(i + 1);
     // If we've reached the end of the pattern or the current pattern character is 'I',
     // it's time to pop all numbers from the stack.
-    if (i === pattern.length || pattern[i] === 'I') {
+    if (i === pattern.length || pattern[i] === "I") {
       // Pop all numbers from the stack and append them to the result.
       while (stack.length) {
         result += stack.pop();

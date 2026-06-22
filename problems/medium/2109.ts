@@ -48,7 +48,7 @@ function addSpaces(s: string, spaces: number[]): string {
     // Check if the current position matches a space index
     if (spaceIndex < m && i === spaces[spaceIndex]) {
       // Add a space to the result array
-      result.push(' ');
+      result.push(" ");
       // Move to the next index in the spaces array
       spaceIndex++;
     }
@@ -56,5 +56,5 @@ function addSpaces(s: string, spaces: number[]): string {
     result.push(s[i]);
   }
   // Join the array into a string and return
-  return result.join('');
+  return result.join("");
 }

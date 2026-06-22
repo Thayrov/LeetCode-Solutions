@@ -31,29 +31,29 @@ Constraints:
 */
 
 function countOperations(num1: number, num2: number): number {
-    // Initialize operation counter
-    let ops = 0;
-    
-    // Continue until one of the numbers becomes zero
-    while (num1 > 0 && num2 > 0) {
-        // If num1 is greater than or equal to num2
-        if (num1 >= num2) {
-            // Calculate how many times we can subtract num2 from num1
-            // This is equivalent to doing multiple individual subtractions at once
-            ops += Math.floor(num1 / num2);
-            
-            // Update num1 to the remainder after all those subtractions
-            // This is what would be left after subtracting num2 multiple times
-            num1 %= num2;
-        } else {
-            // If num2 is greater, calculate how many times we can subtract num1 from num2
-            ops += Math.floor(num2 / num1);
-            
-            // Update num2 to the remainder after all those subtractions
-            num2 %= num1;
-        }
+  // Initialize operation counter
+  let ops = 0;
+
+  // Continue until one of the numbers becomes zero
+  while (num1 > 0 && num2 > 0) {
+    // If num1 is greater than or equal to num2
+    if (num1 >= num2) {
+      // Calculate how many times we can subtract num2 from num1
+      // This is equivalent to doing multiple individual subtractions at once
+      ops += Math.floor(num1 / num2);
+
+      // Update num1 to the remainder after all those subtractions
+      // This is what would be left after subtracting num2 multiple times
+      num1 %= num2;
+    } else {
+      // If num2 is greater, calculate how many times we can subtract num1 from num2
+      ops += Math.floor(num2 / num1);
+
+      // Update num2 to the remainder after all those subtractions
+      num2 %= num1;
     }
-    
-    // Return the total number of operations performed
-    return ops;
+  }
+
+  // Return the total number of operations performed
+  return ops;
 }

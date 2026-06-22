@@ -24,22 +24,24 @@ n == height.length
 */
 
 function maxArea(height: number[]): number {
-    // Initialize left pointer at start, right pointer at end
-    let l = 0, r = height.length - 1, max = 0;
-    
-    // Two-pointer approach: move pointers inward until they meet
-    while (l < r) {
-        // Determine container height (min of two lines) and move the shorter pointer inward
-        // This is optimal because moving the taller pointer can only decrease area
-        const h = height[l] < height[r] ? height[l++] : height[r--];
-        
-        // Calculate area: height * width (after pointer moved, so add 1 back)
-        const area = h * (r - l + 1);
-        
-        // Update maximum area if current area is larger
-        if (area > max) max = area;
-    }
-    
-    // Return the maximum area found
-    return max;
+  // Initialize left pointer at start, right pointer at end
+  let l = 0,
+    r = height.length - 1,
+    max = 0;
+
+  // Two-pointer approach: move pointers inward until they meet
+  while (l < r) {
+    // Determine container height (min of two lines) and move the shorter pointer inward
+    // This is optimal because moving the taller pointer can only decrease area
+    const h = height[l] < height[r] ? height[l++] : height[r--];
+
+    // Calculate area: height * width (after pointer moved, so add 1 back)
+    const area = h * (r - l + 1);
+
+    // Update maximum area if current area is larger
+    if (area > max) max = area;
+  }
+
+  // Return the maximum area found
+  return max;
 }

@@ -41,95 +41,98 @@ n == heights[r].length
 */
 
 function pacificAtlantic(heights: number[][]): number[][] {
-    // Store grid dimensions for constant-time access
-    const m = heights.length, n = heights[0].length;
-    
-    // Use Uint8Array for memory-efficient boolean storage (1 byte per cell)
-    const pacific = new Uint8Array(m * n);
-    const atlantic = new Uint8Array(m * n);
-    
-    // BFS helper function to mark all cells reachable from ocean borders
-    const bfs = (visited: Uint8Array, starts: number[]) => {
-        // Queue pointers for efficient BFS without shift() overhead
-        let qStart = 0, qEnd = starts.length;
-        // Copy starting positions into queue
-        const queue = starts.slice();
-        
-        // Process all reachable cells
-        while (qStart < qEnd) {
-            // Dequeue current cell index
-            const idx = queue[qStart++];
-            // Convert 1D index to 2D coordinates using bitwise OR for faster integer division
-            const r = (idx / n) | 0, c = idx % n;
-            // Get current cell height
-            const h = heights[r][c];
-            
-            // Check north neighbor: water flows FROM cells with height >= current
-            if (r > 0 && !visited[idx - n] && heights[r - 1][c] >= h) {
-                visited[idx - n] = 1;
-                queue[qEnd++] = idx - n;
-            }
-            // Check south neighbor
-            if (r < m - 1 && !visited[idx + n] && heights[r + 1][c] >= h) {
-                visited[idx + n] = 1;
-                queue[qEnd++] = idx + n;
-            }
-            // Check west neighbor
-            if (c > 0 && !visited[idx - 1] && heights[r][c - 1] >= h) {
-                visited[idx - 1] = 1;
-                queue[qEnd++] = idx - 1;
-            }
-            // Check east neighbor
-            if (c < n - 1 && !visited[idx + 1] && heights[r][c + 1] >= h) {
-                visited[idx + 1] = 1;
-                queue[qEnd++] = idx + 1;
-            }
-        }
-    };
-    
-    // Arrays to hold starting positions for each ocean
-    const pacificStarts: number[] = [];
-    const atlanticStarts: number[] = [];
-    
-    // Initialize left edge (Pacific) and right edge (Atlantic)
-    for (let i = 0; i < m; i++) {
-        // Left edge touches Pacific Ocean
-        pacificStarts.push(i * n);
-        pacific[i * n] = 1;
-        // Right edge touches Atlantic Ocean
-        atlanticStarts.push(i * n + n - 1);
-        atlantic[i * n + n - 1] = 1;
+  // Store grid dimensions for constant-time access
+  const m = heights.length,
+    n = heights[0].length;
+
+  // Use Uint8Array for memory-efficient boolean storage (1 byte per cell)
+  const pacific = new Uint8Array(m * n);
+  const atlantic = new Uint8Array(m * n);
+
+  // BFS helper function to mark all cells reachable from ocean borders
+  const bfs = (visited: Uint8Array, starts: number[]) => {
+    // Queue pointers for efficient BFS without shift() overhead
+    let qStart = 0,
+      qEnd = starts.length;
+    // Copy starting positions into queue
+    const queue = starts.slice();
+
+    // Process all reachable cells
+    while (qStart < qEnd) {
+      // Dequeue current cell index
+      const idx = queue[qStart++];
+      // Convert 1D index to 2D coordinates using bitwise OR for faster integer division
+      const r = (idx / n) | 0,
+        c = idx % n;
+      // Get current cell height
+      const h = heights[r][c];
+
+      // Check north neighbor: water flows FROM cells with height >= current
+      if (r > 0 && !visited[idx - n] && heights[r - 1][c] >= h) {
+        visited[idx - n] = 1;
+        queue[qEnd++] = idx - n;
+      }
+      // Check south neighbor
+      if (r < m - 1 && !visited[idx + n] && heights[r + 1][c] >= h) {
+        visited[idx + n] = 1;
+        queue[qEnd++] = idx + n;
+      }
+      // Check west neighbor
+      if (c > 0 && !visited[idx - 1] && heights[r][c - 1] >= h) {
+        visited[idx - 1] = 1;
+        queue[qEnd++] = idx - 1;
+      }
+      // Check east neighbor
+      if (c < n - 1 && !visited[idx + 1] && heights[r][c + 1] >= h) {
+        visited[idx + 1] = 1;
+        queue[qEnd++] = idx + 1;
+      }
     }
-    
-    // Initialize top edge (Pacific) and bottom edge (Atlantic)
-    for (let j = 0; j < n; j++) {
-        // Top edge touches Pacific - skip corners already added
-        if (!pacific[j]) {
-            pacificStarts.push(j);
-            pacific[j] = 1;
-        }
-        // Bottom edge touches Atlantic - skip corners already added
-        const bottomIdx = (m - 1) * n + j;
-        if (!atlantic[bottomIdx]) {
-            atlanticStarts.push(bottomIdx);
-            atlantic[bottomIdx] = 1;
-        }
+  };
+
+  // Arrays to hold starting positions for each ocean
+  const pacificStarts: number[] = [];
+  const atlanticStarts: number[] = [];
+
+  // Initialize left edge (Pacific) and right edge (Atlantic)
+  for (let i = 0; i < m; i++) {
+    // Left edge touches Pacific Ocean
+    pacificStarts.push(i * n);
+    pacific[i * n] = 1;
+    // Right edge touches Atlantic Ocean
+    atlanticStarts.push(i * n + n - 1);
+    atlantic[i * n + n - 1] = 1;
+  }
+
+  // Initialize top edge (Pacific) and bottom edge (Atlantic)
+  for (let j = 0; j < n; j++) {
+    // Top edge touches Pacific - skip corners already added
+    if (!pacific[j]) {
+      pacificStarts.push(j);
+      pacific[j] = 1;
     }
-    
-    // Run BFS from Pacific Ocean borders to mark all reachable cells
-    bfs(pacific, pacificStarts);
-    // Run BFS from Atlantic Ocean borders to mark all reachable cells
-    bfs(atlantic, atlanticStarts);
-    
-    // Collect cells that can reach both oceans
-    const result: number[][] = [];
-    for (let i = 0; i < m * n; i++) {
-        // Cell must be reachable from both Pacific and Atlantic
-        if (pacific[i] && atlantic[i]) {
-            // Convert 1D index back to 2D coordinates for result
-            result.push([(i / n) | 0, i % n]);
-        }
+    // Bottom edge touches Atlantic - skip corners already added
+    const bottomIdx = (m - 1) * n + j;
+    if (!atlantic[bottomIdx]) {
+      atlanticStarts.push(bottomIdx);
+      atlantic[bottomIdx] = 1;
     }
-    
-    return result;
+  }
+
+  // Run BFS from Pacific Ocean borders to mark all reachable cells
+  bfs(pacific, pacificStarts);
+  // Run BFS from Atlantic Ocean borders to mark all reachable cells
+  bfs(atlantic, atlanticStarts);
+
+  // Collect cells that can reach both oceans
+  const result: number[][] = [];
+  for (let i = 0; i < m * n; i++) {
+    // Cell must be reachable from both Pacific and Atlantic
+    if (pacific[i] && atlantic[i]) {
+      // Convert 1D index back to 2D coordinates for result
+      result.push([(i / n) | 0, i % n]);
+    }
+  }
+
+  return result;
 }

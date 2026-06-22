@@ -23,38 +23,43 @@ Constraints:
 */
 
 function maxSideLength(mat: number[][], threshold: number): number {
-    const m = mat.length; // Get row count
-    const n = mat[0].length; // Get column count
-    // Initialize 2D Prefix Sum array with 0s; Int32Array is faster for arithmetic
-    const pref = Array.from({ length: m + 1 }, () => new Int32Array(n + 1));
+  const m = mat.length; // Get row count
+  const n = mat[0].length; // Get column count
+  // Initialize 2D Prefix Sum array with 0s; Int32Array is faster for arithmetic
+  const pref = Array.from({ length: m + 1 }, () => new Int32Array(n + 1));
 
-    // Fill the Prefix Sum table: Each cell contains the sum of the rectangle from (0,0) to (i,j)
-    for (let i = 1; i <= m; i++) {
-        for (let j = 1; j <= n; j++) {
-            // Addition of current element + neighbors - diagonal (inclusion-exclusion principle)
-            pref[i][j] = mat[i - 1][j - 1] + pref[i - 1][j] + pref[i][j - 1] - pref[i - 1][j - 1];
-        }
+  // Fill the Prefix Sum table: Each cell contains the sum of the rectangle from (0,0) to (i,j)
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      // Addition of current element + neighbors - diagonal (inclusion-exclusion principle)
+      pref[i][j] =
+        mat[i - 1][j - 1] +
+        pref[i - 1][j] +
+        pref[i][j - 1] -
+        pref[i - 1][j - 1];
     }
+  }
 
-    let res = 0; // Variable to store the max side length found
-    for (let i = 1; i <= m; i++) {
-        for (let j = 1; j <= n; j++) {
-            // While a square of size 'res + 1' fits within the remaining matrix bounds
-            while (i + res <= m && j + res <= n) {
-                const ni = i + res; // Bottom-right row index
-                const nj = j + res; // Bottom-right column index
-                // Calculate sub-rectangle sum in O(1) using the precomputed table
-                const sum = pref[ni][nj] - pref[i - 1][nj] - pref[ni][j - 1] + pref[i - 1][j - 1];
-                
-                // If sum is within threshold, increment side length and check for even larger squares
-                if (sum <= threshold) {
-                    res++;
-                } else {
-                    // If sum exceeds threshold, the current (i,j) cannot start a larger square
-                    break;
-                }
-            }
+  let res = 0; // Variable to store the max side length found
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      // While a square of size 'res + 1' fits within the remaining matrix bounds
+      while (i + res <= m && j + res <= n) {
+        const ni = i + res; // Bottom-right row index
+        const nj = j + res; // Bottom-right column index
+        // Calculate sub-rectangle sum in O(1) using the precomputed table
+        const sum =
+          pref[ni][nj] - pref[i - 1][nj] - pref[ni][j - 1] + pref[i - 1][j - 1];
+
+        // If sum is within threshold, increment side length and check for even larger squares
+        if (sum <= threshold) {
+          res++;
+        } else {
+          // If sum exceeds threshold, the current (i,j) cannot start a larger square
+          break;
         }
+      }
     }
-    return res; // Final maximum side length
+  }
+  return res; // Final maximum side length
 }

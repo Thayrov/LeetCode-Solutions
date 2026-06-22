@@ -43,5 +43,9 @@ function areAlmostEqual(s1: string, s2: string): boolean {
     }
   }
   // Return true if exactly two differences exist and swapping these characters makes the strings equal.
-  return diff.length === 2 && s1[diff[0]] === s2[diff[1]] && s1[diff[1]] === s2[diff[0]];
+  return (
+    diff.length === 2 &&
+    s1[diff[0]] === s2[diff[1]] &&
+    s1[diff[1]] === s2[diff[0]]
+  );
 }

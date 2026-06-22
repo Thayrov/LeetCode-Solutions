@@ -36,7 +36,7 @@ function lenLongestFibSubseq(arr: number[]): number {
   }
   // Initialize a 2D DP array with every pair set to 2.
   // dp[i][j] represents the length of the Fibonacci-like sequence ending with arr[i] and arr[j]
-  const dp: number[][] = Array.from({length: n}, () => new Array(n).fill(2));
+  const dp: number[][] = Array.from({ length: n }, () => new Array(n).fill(2));
   // Initialize maxLen to track the maximum sequence length found.
   let maxLen = 0;
   // Iterate over pairs of indices (i, j) with i < j.

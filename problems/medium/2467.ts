@@ -56,9 +56,13 @@ amount[i] is an even integer in the range [-10^4, 10^4].
 
 // Each function calculates the maximum net income for Alice in the tree-based game.
 // First, we build the tree's adjacency list.
-function mostProfitablePath(edges: number[][], bob: number, amount: number[]): number {
+function mostProfitablePath(
+  edges: number[][],
+  bob: number,
+  amount: number[],
+): number {
   const n = amount.length; // Total number of nodes
-  const graph: number[][] = Array.from({length: n}, () => []); // Initialize the graph
+  const graph: number[][] = Array.from({ length: n }, () => []); // Initialize the graph
   for (const [u, v] of edges) {
     // For undirected tree, fill both directions
     graph[u].push(v);
@@ -90,7 +94,8 @@ function mostProfitablePath(edges: number[][], bob: number, amount: number[]): n
   function dfsAlice(node: number, parent: number, t: number): number {
     let curr = 0;
     // Compare Alice's arrival time with Bob's arrival time at the node.
-    if (t < bobTime[node]) curr = amount[node]; // Alice gets full amount if she arrives before Bob.
+    if (t < bobTime[node])
+      curr = amount[node]; // Alice gets full amount if she arrives before Bob.
     else if (t === bobTime[node]) curr = amount[node] / 2; // They share the amount if arriving simultaneously.
     // If Bob arrives earlier, Alice gains nothing at this node.
 

@@ -33,48 +33,50 @@ Constraints:
 */
 
 function maximumLength(nums: number[]): number {
-    // Store array length for efficient access
-    const n = nums.length;
+  // Store array length for efficient access
+  const n = nums.length;
 
-    // Count total even and odd numbers for same-parity subsequences
-    let evenCount = 0, oddCount = 0;
+  // Count total even and odd numbers for same-parity subsequences
+  let evenCount = 0,
+    oddCount = 0;
 
-    // Count even and odd numbers in single pass
-    for (let i = 0; i < n; i++) {
-        // Use bitwise AND for fast parity check (odd if lowest bit is 1)
-        if (nums[i] & 1) oddCount++;
-        else evenCount++;
+  // Count even and odd numbers in single pass
+  for (let i = 0; i < n; i++) {
+    // Use bitwise AND for fast parity check (odd if lowest bit is 1)
+    if (nums[i] & 1) oddCount++;
+    else evenCount++;
+  }
+
+  // Track maximum length of alternating subsequences
+  let maxAlternating = 1;
+
+  // Dynamic programming variables for alternating patterns
+  // evenToOdd: length of subsequence ending with odd number (last transition even->odd)
+  // oddToEven: length of subsequence ending with even number (last transition odd->even)
+  let evenToOdd = 0,
+    oddToEven = 0;
+
+  // Single pass to find longest alternating subsequence
+  for (let i = 0; i < n; i++) {
+    const isOdd = nums[i] & 1;
+
+    if (isOdd) {
+      // Current number is odd, extend even->odd pattern
+      // Take previous oddToEven length and add current odd number
+      evenToOdd = oddToEven + 1;
+    } else {
+      // Current number is even, extend odd->even pattern
+      // Take previous evenToOdd length and add current even number
+      oddToEven = evenToOdd + 1;
     }
 
-    // Track maximum length of alternating subsequences
-    let maxAlternating = 1;
+    // Update maximum alternating length found so far
+    maxAlternating = Math.max(maxAlternating, evenToOdd, oddToEven);
+  }
 
-    // Dynamic programming variables for alternating patterns
-    // evenToOdd: length of subsequence ending with odd number (last transition even->odd)
-    // oddToEven: length of subsequence ending with even number (last transition odd->even)
-    let evenToOdd = 0, oddToEven = 0;
-
-    // Single pass to find longest alternating subsequence
-    for (let i = 0; i < n; i++) {
-        const isOdd = nums[i] & 1;
-
-        if (isOdd) {
-            // Current number is odd, extend even->odd pattern
-            // Take previous oddToEven length and add current odd number
-            evenToOdd = oddToEven + 1;
-        } else {
-            // Current number is even, extend odd->even pattern
-            // Take previous evenToOdd length and add current even number
-            oddToEven = evenToOdd + 1;
-        }
-
-        // Update maximum alternating length found so far
-        maxAlternating = Math.max(maxAlternating, evenToOdd, oddToEven);
-    }
-
-    // Return maximum of all possible valid subsequence lengths:
-    // - All even numbers (adjacent sums are even)
-    // - All odd numbers (adjacent sums are even)
-    // - Longest alternating pattern (adjacent sums are odd)
-    return Math.max(evenCount, oddCount, maxAlternating);
+  // Return maximum of all possible valid subsequence lengths:
+  // - All even numbers (adjacent sums are even)
+  // - All odd numbers (adjacent sums are even)
+  // - Longest alternating pattern (adjacent sums are odd)
+  return Math.max(evenCount, oddCount, maxAlternating);
 }

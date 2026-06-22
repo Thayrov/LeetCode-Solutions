@@ -29,16 +29,16 @@ Follow up: Could you do this using only O(n) extra space, where n is the total n
 */
 
 function minimumTotal(triangle: number[][]): number {
-    // Start from the second-to-last row and work our way up
-    // This eliminates the need for boundary checks since we always have two valid paths below
-    for (let i = triangle.length - 2; i >= 0; i--) {
-        // For each element in the current row
-        for (let j = 0; j < triangle[i].length; j++) {
-            // Add the minimum of the two possible paths from the row below
-            // From position (i,j) we can go to (i+1,j) or (i+1,j+1)
-            triangle[i][j] += Math.min(triangle[i + 1][j], triangle[i + 1][j + 1]);
-        }
+  // Start from the second-to-last row and work our way up
+  // This eliminates the need for boundary checks since we always have two valid paths below
+  for (let i = triangle.length - 2; i >= 0; i--) {
+    // For each element in the current row
+    for (let j = 0; j < triangle[i].length; j++) {
+      // Add the minimum of the two possible paths from the row below
+      // From position (i,j) we can go to (i+1,j) or (i+1,j+1)
+      triangle[i][j] += Math.min(triangle[i + 1][j], triangle[i + 1][j + 1]);
     }
-    // The top element now contains the minimum path sum
-    return triangle[0][0];
+  }
+  // The top element now contains the minimum path sum
+  return triangle[0][0];
 }

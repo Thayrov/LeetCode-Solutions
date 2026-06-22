@@ -33,36 +33,36 @@ Constraints:
 */
 
 function maxRunTime(n: number, batteries: number[]): number {
-    // Binary search bounds: minimum time is 0, maximum is total power divided by n computers
-    // This represents the theoretical maximum if we could perfectly distribute all battery power
-    let left = 0;
-    let right = Math.floor(batteries.reduce((sum, b) => sum + b, 0) / n);
-    
-    // Binary search to find the maximum runtime where all n computers can run simultaneously
-    while (left < right) {
-        // Use (left + right + 1) / 2 to avoid infinite loop in upper bound binary search
-        let mid = Math.floor((left + right + 1) / 2);
-        
-        // Calculate total usable power if we try to run for 'mid' minutes
-        // For each battery, we can use at most 'mid' minutes of its power
-        let totalPower = 0;
-        for (let battery of batteries) {
-            // If battery > mid, we can only use 'mid' minutes from it for one computer
-            // If battery <= mid, we can use all of it and distribute across computers
-            totalPower += Math.min(battery, mid);
-        }
-        
-        // Check if total usable power is sufficient to run n computers for mid minutes
-        // We need n * mid total minutes of power
-        if (totalPower >= n * mid) {
-            // If we have enough power, try a longer runtime
-            left = mid;
-        } else {
-            // If we don't have enough power, try a shorter runtime
-            right = mid - 1;
-        }
+  // Binary search bounds: minimum time is 0, maximum is total power divided by n computers
+  // This represents the theoretical maximum if we could perfectly distribute all battery power
+  let left = 0;
+  let right = Math.floor(batteries.reduce((sum, b) => sum + b, 0) / n);
+
+  // Binary search to find the maximum runtime where all n computers can run simultaneously
+  while (left < right) {
+    // Use (left + right + 1) / 2 to avoid infinite loop in upper bound binary search
+    let mid = Math.floor((left + right + 1) / 2);
+
+    // Calculate total usable power if we try to run for 'mid' minutes
+    // For each battery, we can use at most 'mid' minutes of its power
+    let totalPower = 0;
+    for (let battery of batteries) {
+      // If battery > mid, we can only use 'mid' minutes from it for one computer
+      // If battery <= mid, we can use all of it and distribute across computers
+      totalPower += Math.min(battery, mid);
     }
-    
-    // Return the maximum valid runtime found
-    return left;
+
+    // Check if total usable power is sufficient to run n computers for mid minutes
+    // We need n * mid total minutes of power
+    if (totalPower >= n * mid) {
+      // If we have enough power, try a longer runtime
+      left = mid;
+    } else {
+      // If we don't have enough power, try a shorter runtime
+      right = mid - 1;
+    }
+  }
+
+  // Return the maximum valid runtime found
+  return left;
 }

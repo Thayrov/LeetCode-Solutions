@@ -52,7 +52,7 @@ function recoverFromPreorder(traversal: string): TreeNode | null {
     let dashCount = 0;
     let tempPos = pos;
     // While the current character is a dash, count and move forward.
-    while (tempPos < n && traversal[tempPos] === '-') {
+    while (tempPos < n && traversal[tempPos] === "-") {
       dashCount++;
       tempPos++;
     }
@@ -63,7 +63,7 @@ function recoverFromPreorder(traversal: string): TreeNode | null {
     // Mark the starting index of the node's value.
     let start = pos;
     // Move the position forward until a dash or end of string is found.
-    while (pos < n && traversal[pos] !== '-') pos++;
+    while (pos < n && traversal[pos] !== "-") pos++;
     // Parse the numeric value for this node.
     const value = parseInt(traversal.substring(start, pos));
     // Create a new tree node with the parsed value.

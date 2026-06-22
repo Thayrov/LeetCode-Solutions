@@ -62,7 +62,11 @@ function reverseOddLevels(root: TreeNode | null): TreeNode | null {
   return root;
 }
 
-function reverseLevels(left: TreeNode | null, right: TreeNode | null, level: number) {
+function reverseLevels(
+  left: TreeNode | null,
+  right: TreeNode | null,
+  level: number,
+) {
   // If either node is null, we've reached the end of the tree
   if (!left || !right) return;
   // If the current level is odd

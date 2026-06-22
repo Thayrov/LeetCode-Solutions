@@ -35,7 +35,7 @@ function countGoodTriplets(
   arr: number[],
   a: number,
   b: number,
-  c: number
+  c: number,
 ): number {
   // Initialize the counter to accumulate the number of valid triplets.
   let count = 0;

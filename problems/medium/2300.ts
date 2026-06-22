@@ -33,44 +33,49 @@ m == potions.length
 </> Typescript code:
 */
 
-function successfulPairs(spells: number[], potions: number[], success: number): number[] {
-    // Sort potions array in ascending order to enable binary search
-    potions.sort((a, b) => a - b);
-    
-    // Store potions length for quick access and to avoid repeated property lookups
-    const m = potions.length;
-    
-    // Pre-allocate result array with exact size needed for better performance
-    const result = new Array(spells.length);
-    
-    // Iterate through each spell to find its successful pairs
-    for (let i = 0; i < spells.length; i++) {
-        // Calculate minimum potion strength needed: spell * potion >= success
-        // Using Math.ceil ensures we get the smallest integer that satisfies the condition
-        const minPotion = Math.ceil(success / spells[i]);
-        
-        // Initialize binary search boundaries
-        let left = 0, right = m;
-        
-        // Binary search to find the first potion >= minPotion
-        while (left < right) {
-            // Use unsigned right shift for faster integer division by 2
-            const mid = (left + right) >>> 1;
-            
-            // If current potion is too weak, search in right half
-            if (potions[mid] < minPotion) {
-                left = mid + 1;
-            } else {
-                // Current potion is strong enough, search in left half to find first valid potion
-                right = mid;
-            }
-        }
-        
-        // All potions from index 'left' to end are successful pairs
-        // Count = total potions - index of first valid potion
-        result[i] = m - left;
+function successfulPairs(
+  spells: number[],
+  potions: number[],
+  success: number,
+): number[] {
+  // Sort potions array in ascending order to enable binary search
+  potions.sort((a, b) => a - b);
+
+  // Store potions length for quick access and to avoid repeated property lookups
+  const m = potions.length;
+
+  // Pre-allocate result array with exact size needed for better performance
+  const result = new Array(spells.length);
+
+  // Iterate through each spell to find its successful pairs
+  for (let i = 0; i < spells.length; i++) {
+    // Calculate minimum potion strength needed: spell * potion >= success
+    // Using Math.ceil ensures we get the smallest integer that satisfies the condition
+    const minPotion = Math.ceil(success / spells[i]);
+
+    // Initialize binary search boundaries
+    let left = 0,
+      right = m;
+
+    // Binary search to find the first potion >= minPotion
+    while (left < right) {
+      // Use unsigned right shift for faster integer division by 2
+      const mid = (left + right) >>> 1;
+
+      // If current potion is too weak, search in right half
+      if (potions[mid] < minPotion) {
+        left = mid + 1;
+      } else {
+        // Current potion is strong enough, search in left half to find first valid potion
+        right = mid;
+      }
     }
-    
-    // Return array containing count of successful pairs for each spell
-    return result;
+
+    // All potions from index 'left' to end are successful pairs
+    // Count = total potions - index of first valid potion
+    result[i] = m - left;
+  }
+
+  // Return array containing count of successful pairs for each spell
+  return result;
 }

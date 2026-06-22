@@ -25,27 +25,25 @@ Constraints:
 */
 
 function minimumOperations(nums: number[]): number {
-    // Initialize a counter to track the total number of operations needed.
-    let count = 0;
+  // Initialize a counter to track the total number of operations needed.
+  let count = 0;
 
-    // Iterate through the array using a standard for-loop.
-    // Caching 'len' (nums.length) prevents accessing the property on every iteration, 
-    // providing a micro-optimization for performance.
-    for (let i = 0, len = nums.length; i < len; ++i) {
-        
-        // Check the remainder of the current number when divided by 3.
-        // Logic:
-        // 1. If nums[i] % 3 == 0, it is already divisible. Operations needed: 0.
-        // 2. If nums[i] % 3 == 1, we subtract 1. Operations needed: 1.
-        // 3. If nums[i] % 3 == 2, we add 1. Operations needed: 1.
-        // Therefore, any non-zero remainder (truthy value in JS/TS) implies exactly 1 operation.
-        if (nums[i] % 3) {
-            
-            // If the remainder is not 0, increment the operation count.
-            count++;
-        }
+  // Iterate through the array using a standard for-loop.
+  // Caching 'len' (nums.length) prevents accessing the property on every iteration,
+  // providing a micro-optimization for performance.
+  for (let i = 0, len = nums.length; i < len; ++i) {
+    // Check the remainder of the current number when divided by 3.
+    // Logic:
+    // 1. If nums[i] % 3 == 0, it is already divisible. Operations needed: 0.
+    // 2. If nums[i] % 3 == 1, we subtract 1. Operations needed: 1.
+    // 3. If nums[i] % 3 == 2, we add 1. Operations needed: 1.
+    // Therefore, any non-zero remainder (truthy value in JS/TS) implies exactly 1 operation.
+    if (nums[i] % 3) {
+      // If the remainder is not 0, increment the operation count.
+      count++;
     }
+  }
 
-    // Return the total count of numbers that required an operation.
-    return count;
+  // Return the total count of numbers that required an operation.
+  return count;
 }

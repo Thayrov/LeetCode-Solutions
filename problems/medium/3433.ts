@@ -55,60 +55,60 @@ It is guaranteed that the user id referenced in the OFFLINE event is online at t
 */
 
 function countMentions(numberOfUsers: number, events: string[][]): number[] {
-    // Initialize an array to track mention counts for each user, starting at 0.
-    const mentions = new Array(numberOfUsers).fill(0);
-    
-    // Initialize an array to track when a user will be back online.
-    // 0 implies they are currently online (since timestamps are >= 1).
-    const onlineUntil = new Array(numberOfUsers).fill(0);
+  // Initialize an array to track mention counts for each user, starting at 0.
+  const mentions = new Array(numberOfUsers).fill(0);
 
-    // Sort events to process them chronologically.
-    events.sort((a, b) => {
-        // Primary sort key: Timestamp (parsed from string to number).
-        const timeDiff = Number(a[1]) - Number(b[1]);
-        if (timeDiff !== 0) return timeDiff;
-        
-        // Secondary sort key: Event Type.
-        // If timestamps are equal, "OFFLINE" events must be processed BEFORE "MESSAGE" events.
-        // This ensures correct status (offline) is active when the message is processed.
-        return a[0] === "OFFLINE" ? -1 : 1;
-    });
+  // Initialize an array to track when a user will be back online.
+  // 0 implies they are currently online (since timestamps are >= 1).
+  const onlineUntil = new Array(numberOfUsers).fill(0);
 
-    // Iterate through the sorted events.
-    for (const [type, timeStr, content] of events) {
-        const timestamp = Number(timeStr);
+  // Sort events to process them chronologically.
+  events.sort((a, b) => {
+    // Primary sort key: Timestamp (parsed from string to number).
+    const timeDiff = Number(a[1]) - Number(b[1]);
+    if (timeDiff !== 0) return timeDiff;
 
-        if (type === "OFFLINE") {
-            // "OFFLINE" event: The content field is the userId.
-            // The user remains offline for 60 units. They are back online at timestamp + 60.
-            const id = Number(content);
-            onlineUntil[id] = timestamp + 60;
-        } else {
-            // "MESSAGE" event: The content field is the mention string.
-            if (content === "ALL") {
-                // "ALL": Increment count for every user regardless of status.
-                for (let i = 0; i < numberOfUsers; i++) {
-                    mentions[i]++;
-                }
-            } else if (content === "HERE") {
-                // "HERE": Increment count only for ONLINE users.
-                for (let i = 0; i < numberOfUsers; i++) {
-                    // A user is online if the current timestamp is >= the time they are set to return.
-                    if (onlineUntil[i] <= timestamp) {
-                        mentions[i]++;
-                    }
-                }
-            } else {
-                // Specific IDs (e.g., "id0 id1"): Space-separated list.
-                const tokens = content.split(' ');
-                for (const token of tokens) {
-                    // Parse ID by slicing off "id" prefix (first 2 chars).
-                    const id = Number(token.slice(2));
-                    mentions[id]++;
-                }
-            }
+    // Secondary sort key: Event Type.
+    // If timestamps are equal, "OFFLINE" events must be processed BEFORE "MESSAGE" events.
+    // This ensures correct status (offline) is active when the message is processed.
+    return a[0] === "OFFLINE" ? -1 : 1;
+  });
+
+  // Iterate through the sorted events.
+  for (const [type, timeStr, content] of events) {
+    const timestamp = Number(timeStr);
+
+    if (type === "OFFLINE") {
+      // "OFFLINE" event: The content field is the userId.
+      // The user remains offline for 60 units. They are back online at timestamp + 60.
+      const id = Number(content);
+      onlineUntil[id] = timestamp + 60;
+    } else {
+      // "MESSAGE" event: The content field is the mention string.
+      if (content === "ALL") {
+        // "ALL": Increment count for every user regardless of status.
+        for (let i = 0; i < numberOfUsers; i++) {
+          mentions[i]++;
         }
+      } else if (content === "HERE") {
+        // "HERE": Increment count only for ONLINE users.
+        for (let i = 0; i < numberOfUsers; i++) {
+          // A user is online if the current timestamp is >= the time they are set to return.
+          if (onlineUntil[i] <= timestamp) {
+            mentions[i]++;
+          }
+        }
+      } else {
+        // Specific IDs (e.g., "id0 id1"): Space-separated list.
+        const tokens = content.split(" ");
+        for (const token of tokens) {
+          // Parse ID by slicing off "id" prefix (first 2 chars).
+          const id = Number(token.slice(2));
+          mentions[id]++;
+        }
+      }
     }
+  }
 
-    return mentions;
+  return mentions;
 }

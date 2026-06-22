@@ -33,69 +33,74 @@ languages[i] contains only unique values
 </> Typescript code:
 */
 
-function minimumTeachings(n: number, languages: number[][], friendships: number[][]): number {
-    // Convert each user's language array into a Set for efficient O(1) average time lookups.
-    const languageSets: Set<number>[] = languages.map(langs => new Set(langs));
+function minimumTeachings(
+  n: number,
+  languages: number[][],
+  friendships: number[][],
+): number {
+  // Convert each user's language array into a Set for efficient O(1) average time lookups.
+  const languageSets: Set<number>[] = languages.map((langs) => new Set(langs));
 
-    // A Set to store the 0-indexed IDs of users who are in at least one friendship where they can't communicate.
-    const problematicUsers = new Set<number>();
+  // A Set to store the 0-indexed IDs of users who are in at least one friendship where they can't communicate.
+  const problematicUsers = new Set<number>();
 
-    // Iterate through all friendships to find the ones that cannot communicate.
-    for (const friendship of friendships) {
-        // User IDs are 1-based, so subtract 1 for 0-based array indexing.
-        const u = friendship[0] - 1;
-        const v = friendship[1] - 1;
+  // Iterate through all friendships to find the ones that cannot communicate.
+  for (const friendship of friendships) {
+    // User IDs are 1-based, so subtract 1 for 0-based array indexing.
+    const u = friendship[0] - 1;
+    const v = friendship[1] - 1;
 
-        // Get the language sets for the two users in the friendship.
-        const setU = languageSets[u];
-        const setV = languageSets[v];
+    // Get the language sets for the two users in the friendship.
+    const setU = languageSets[u];
+    const setV = languageSets[v];
 
-        let canCommunicate = false;
-        // Optimization: iterate over the smaller set and check for existence in the larger set.
-        const [smallerSet, largerSet] = setU.size < setV.size ? [setU, setV] : [setV, setU];
+    let canCommunicate = false;
+    // Optimization: iterate over the smaller set and check for existence in the larger set.
+    const [smallerSet, largerSet] =
+      setU.size < setV.size ? [setU, setV] : [setV, setU];
 
-        // Check if there is any common language.
-        for (const lang of smallerSet) {
-            if (largerSet.has(lang)) {
-                canCommunicate = true; // Found a common language.
-                break; // No need to check further for this pair.
-            }
-        }
-
-        // If no common language was found, they can't communicate.
-        if (!canCommunicate) {
-            // Add both users to the set of problematic users.
-            problematicUsers.add(u);
-            problematicUsers.add(v);
-        }
+    // Check if there is any common language.
+    for (const lang of smallerSet) {
+      if (largerSet.has(lang)) {
+        canCommunicate = true; // Found a common language.
+        break; // No need to check further for this pair.
+      }
     }
 
-    // If the set is empty, all friends can already communicate, so no teaching is needed.
-    if (problematicUsers.size === 0) {
-        return 0;
+    // If no common language was found, they can't communicate.
+    if (!canCommunicate) {
+      // Add both users to the set of problematic users.
+      problematicUsers.add(u);
+      problematicUsers.add(v);
     }
+  }
 
-    // Create a frequency map to count how many problematic users speak each language.
-    const langFrequency = new Array(n + 1).fill(0);
-    
-    // Populate the frequency map.
-    for (const user of problematicUsers) {
-        // For each language the user knows...
-        for (const lang of languageSets[user]) {
-            // ...increment the count for that language.
-            langFrequency[lang]++;
-        }
+  // If the set is empty, all friends can already communicate, so no teaching is needed.
+  if (problematicUsers.size === 0) {
+    return 0;
+  }
+
+  // Create a frequency map to count how many problematic users speak each language.
+  const langFrequency = new Array(n + 1).fill(0);
+
+  // Populate the frequency map.
+  for (const user of problematicUsers) {
+    // For each language the user knows...
+    for (const lang of languageSets[user]) {
+      // ...increment the count for that language.
+      langFrequency[lang]++;
     }
+  }
 
-    // Find the language that is most common among the problematic users.
-    let maxFreq = 0;
-    for (let i = 1; i <= n; i++) {
-        if (langFrequency[i] > maxFreq) {
-            maxFreq = langFrequency[i];
-        }
+  // Find the language that is most common among the problematic users.
+  let maxFreq = 0;
+  for (let i = 1; i <= n; i++) {
+    if (langFrequency[i] > maxFreq) {
+      maxFreq = langFrequency[i];
     }
+  }
 
-    // The minimum number of users to teach is the total number of problematic users
-    // minus the number of them who already know the most common language (maxFreq).
-    return problematicUsers.size - maxFreq;
+  // The minimum number of users to teach is the total number of problematic users
+  // minus the number of them who already know the most common language (maxFreq).
+  return problematicUsers.size - maxFreq;
 }

@@ -34,28 +34,28 @@ Constraints:
 */
 
 function removeAnagrams(words: string[]): string[] {
-    // Initialize result array with the first word (never removed per problem constraints)
-    const result: string[] = [words[0]];
-    
-    // Store sorted version of first word to compare with subsequent words
-    let prevSorted = words[0].split('').sort().join('');
-    
-    // Iterate through remaining words starting from index 1
-    for (let i = 1; i < words.length; i++) {
-        // Create sorted version of current word to compare with previous
-        const currSorted = words[i].split('').sort().join('');
-        
-        // If current word is NOT an anagram of previous, keep it
-        if (currSorted !== prevSorted) {
-            // Add current word to result array
-            result.push(words[i]);
-            
-            // Update prevSorted to current word's sorted version for next iteration
-            prevSorted = currSorted;
-        }
-        // If current word IS an anagram of previous, skip it (implicit removal)
+  // Initialize result array with the first word (never removed per problem constraints)
+  const result: string[] = [words[0]];
+
+  // Store sorted version of first word to compare with subsequent words
+  let prevSorted = words[0].split("").sort().join("");
+
+  // Iterate through remaining words starting from index 1
+  for (let i = 1; i < words.length; i++) {
+    // Create sorted version of current word to compare with previous
+    const currSorted = words[i].split("").sort().join("");
+
+    // If current word is NOT an anagram of previous, keep it
+    if (currSorted !== prevSorted) {
+      // Add current word to result array
+      result.push(words[i]);
+
+      // Update prevSorted to current word's sorted version for next iteration
+      prevSorted = currSorted;
     }
-    
-    // Return array with all consecutive anagrams removed
-    return result;
+    // If current word IS an anagram of previous, skip it (implicit removal)
+  }
+
+  // Return array with all consecutive anagrams removed
+  return result;
 }

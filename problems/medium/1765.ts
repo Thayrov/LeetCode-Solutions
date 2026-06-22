@@ -42,7 +42,7 @@ function highestPeak(isWater: number[][]): number[][] {
     n = isWater[0].length;
 
   // Initialize the height matrix with -1 (unvisited)
-  const height: number[][] = Array.from({length: m}, () => Array(n).fill(-1));
+  const height: number[][] = Array.from({ length: m }, () => Array(n).fill(-1));
 
   // Queue to perform BFS, starting with water cells
   const queue: [number, number][] = [];

@@ -32,7 +32,7 @@ function trapRainWater(heightMap: number[][]): number {
     n = heightMap[0].length;
 
   // Visited matrix to keep track of cells already processed
-  const visited = Array.from({length: m}, () => Array(n).fill(false));
+  const visited = Array.from({ length: m }, () => Array(n).fill(false));
 
   // Min-heap (priority queue) to always pick the lowest boundary
   const minHeap: [number, number, number][] = [];

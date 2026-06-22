@@ -40,7 +40,7 @@ function minimumRecolors(blocks: string, k: number): number {
 
   // Count white blocks in the initial window (first k elements)
   for (let i = 0; i < k; i++) {
-    if (blocks[i] === 'W') whiteCount++; // Increment if current block is white
+    if (blocks[i] === "W") whiteCount++; // Increment if current block is white
   }
 
   // Set initial minimum operations as the white count in the first window
@@ -49,10 +49,10 @@ function minimumRecolors(blocks: string, k: number): number {
   // Slide the window across the string, starting from index k
   for (let i = k; i < blocks.length; i++) {
     // Add new block to window: if it's white, increment count
-    if (blocks[i] === 'W') whiteCount++;
+    if (blocks[i] === "W") whiteCount++;
 
     // Remove block from start of previous window: if it was white, decrement count
-    if (blocks[i - k] === 'W') whiteCount--;
+    if (blocks[i - k] === "W") whiteCount--;
 
     // Update minimum operations if current window requires fewer recolors
     minOperations = Math.min(minOperations, whiteCount);

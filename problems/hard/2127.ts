@@ -52,92 +52,98 @@ function maximumInvitations(favorite: number[]): number {
 
   // Detect cycles and mark their lengths using a path tracking approach
   for (let i = 0; i < n; i++) {
-      if (visited[i] !== 0) continue;
-      let current = i;
-      const path: number[] = [];
-      while (true) {
-          if (visited[current] === 1) { // Found a cycle
-              const startIdx = path.indexOf(current);
-              if (startIdx !== -1) {
-                  const cycle = path.slice(startIdx);
-                  const cycleLen = cycle.length;
-                  for (const node of cycle) cycleLengths[node] = cycleLen; // Mark cycle length
-                  for (const node of cycle) visited[node] = 2; // Mark as visited
-                  for (let j = 0; j < startIdx; j++) visited[path[j]] = 2; // Mark non-cycle nodes
-              } else {
-                  for (const node of path) visited[node] = 2;
-              }
-              break;
-          } else if (visited[current] === 2) { // Part of another cycle or tree
-              for (const node of path) visited[node] = 2;
-              break;
-          } else { // Continue traversing
-              visited[current] = 1;
-              path.push(current);
-              current = favorite[current];
-          }
+    if (visited[i] !== 0) continue;
+    let current = i;
+    const path: number[] = [];
+    while (true) {
+      if (visited[current] === 1) {
+        // Found a cycle
+        const startIdx = path.indexOf(current);
+        if (startIdx !== -1) {
+          const cycle = path.slice(startIdx);
+          const cycleLen = cycle.length;
+          for (const node of cycle) cycleLengths[node] = cycleLen; // Mark cycle length
+          for (const node of cycle) visited[node] = 2; // Mark as visited
+          for (let j = 0; j < startIdx; j++) visited[path[j]] = 2; // Mark non-cycle nodes
+        } else {
+          for (const node of path) visited[node] = 2;
+        }
+        break;
+      } else if (visited[current] === 2) {
+        // Part of another cycle or tree
+        for (const node of path) visited[node] = 2;
+        break;
+      } else {
+        // Continue traversing
+        visited[current] = 1;
+        path.push(current);
+        current = favorite[current];
       }
+    }
   }
 
   // Compute depth and root for each node to determine their distance and connection to cycles
   const depth = new Array(n).fill(-1);
   const root = new Array(n).fill(-1);
   for (let i = 0; i < n; i++) {
-      if (cycleLengths[i] > 0) { // Initialize cycle nodes with depth 0 and root as themselves
-          depth[i] = 0;
-          root[i] = i;
-      }
+    if (cycleLengths[i] > 0) {
+      // Initialize cycle nodes with depth 0 and root as themselves
+      depth[i] = 0;
+      root[i] = i;
+    }
   }
 
   // Iteratively compute depth and root for non-cycle nodes by tracing paths to cycles
   for (let i = 0; i < n; i++) {
-      if (depth[i] === -1) {
-          const pathNodes: number[] = [];
-          let current: number = i;
-          while (depth[current] === -1 && cycleLengths[current] === 0) {
-              pathNodes.push(current);
-              current = favorite[current];
-          }
-          if (depth[current] !== -1 || cycleLengths[current] > 0) {
-              let currentDepth = depth[current] + 1; // Start depth from the cycle node
-              const currentRoot = root[current]; // Root is the cycle node
-              // Backtrack to set depth and root for each node in the path
-              for (let j = pathNodes.length - 1; j >= 0; j--) {
-                  const node = pathNodes[j];
-                  depth[node] = currentDepth;
-                  root[node] = currentRoot;
-                  currentDepth++;
-              }
-          }
+    if (depth[i] === -1) {
+      const pathNodes: number[] = [];
+      let current: number = i;
+      while (depth[current] === -1 && cycleLengths[current] === 0) {
+        pathNodes.push(current);
+        current = favorite[current];
       }
+      if (depth[current] !== -1 || cycleLengths[current] > 0) {
+        let currentDepth = depth[current] + 1; // Start depth from the cycle node
+        const currentRoot = root[current]; // Root is the cycle node
+        // Backtrack to set depth and root for each node in the path
+        for (let j = pathNodes.length - 1; j >= 0; j--) {
+          const node = pathNodes[j];
+          depth[node] = currentDepth;
+          root[node] = currentRoot;
+          currentDepth++;
+        }
+      }
+    }
   }
 
   // Compute maximum depth for each cycle node's tree
   const maxDepthMap = new Map<number, number>();
   for (let i = 0; i < n; i++) {
-      if (cycleLengths[i] > 0) maxDepthMap.set(i, 0); // Initialize cycle nodes with depth 0
+    if (cycleLengths[i] > 0) maxDepthMap.set(i, 0); // Initialize cycle nodes with depth 0
   }
   for (let i = 0; i < n; i++) {
-      const r = root[i];
-      if (r !== -1 && cycleLengths[r] > 0) { // Update max depth for each root
-          maxDepthMap.set(r, Math.max(maxDepthMap.get(r) || 0, depth[i]));
-      }
+    const r = root[i];
+    if (r !== -1 && cycleLengths[r] > 0) {
+      // Update max depth for each root
+      maxDepthMap.set(r, Math.max(maxDepthMap.get(r) || 0, depth[i]));
+    }
   }
 
   let maxCycle = 0; // Largest cycle length
   let mutualSum = 0; // Sum of contributions from mutual pairs
   const processed = new Set<number>(); // Track processed mutual pairs
   for (let i = 0; i < n; i++) {
-      if (cycleLengths[i] === 2 && !processed.has(i)) { // Check for mutual pairs (cycle length 2)
-          const j = favorite[i];
-          if (favorite[j] === i) {
-              processed.add(i).add(j); // Mark both as processed
-              const maxA = maxDepthMap.get(i) || 0; // Max depth for first in pair
-              const maxB = maxDepthMap.get(j) || 0; // Max depth for second in pair
-              mutualSum += 2 + maxA + maxB; // Add mutual pair and their chains
-          }
+    if (cycleLengths[i] === 2 && !processed.has(i)) {
+      // Check for mutual pairs (cycle length 2)
+      const j = favorite[i];
+      if (favorite[j] === i) {
+        processed.add(i).add(j); // Mark both as processed
+        const maxA = maxDepthMap.get(i) || 0; // Max depth for first in pair
+        const maxB = maxDepthMap.get(j) || 0; // Max depth for second in pair
+        mutualSum += 2 + maxA + maxB; // Add mutual pair and their chains
       }
-      maxCycle = Math.max(maxCycle, cycleLengths[i]); // Track largest cycle
+    }
+    maxCycle = Math.max(maxCycle, cycleLengths[i]); // Track largest cycle
   }
 
   // Return the maximum of the largest cycle or mutual pairs' contributions

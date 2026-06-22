@@ -34,37 +34,37 @@ directions[i] is either 'L', 'R', or 'S'.
 */
 
 function countCollisions(directions: string): number {
-    // Initialize pointers for the left and right ends of the road.
-    let l = 0;
-    let r = directions.length - 1;
-    let collisions = 0;
+  // Initialize pointers for the left and right ends of the road.
+  let l = 0;
+  let r = directions.length - 1;
+  let collisions = 0;
 
-    // Optimization: Skip all cars on the far left moving Left ('L').
-    // These cars will never collide as they are moving away from all others into open space.
-    // We increment 'l' to narrow the "danger zone".
-    while (l <= r && directions[l] === 'L') {
-        l++;
+  // Optimization: Skip all cars on the far left moving Left ('L').
+  // These cars will never collide as they are moving away from all others into open space.
+  // We increment 'l' to narrow the "danger zone".
+  while (l <= r && directions[l] === "L") {
+    l++;
+  }
+
+  // Optimization: Skip all cars on the far right moving Right ('R').
+  // These cars will never collide as they are moving away from all others.
+  // We decrement 'r' to narrow the "danger zone".
+  while (r >= l && directions[r] === "R") {
+    r--;
+  }
+
+  // Iterate through the remaining substring (the "danger zone").
+  // Logic: In this trimmed segment, the left boundary is a stationary car or a car moving Right,
+  // and the right boundary is a stationary car or a car moving Left.
+  // Therefore, ANY moving car ('L' or 'R') inside this segment is guaranteed to eventually
+  // hit a wall or another car, contributing to the collision count.
+  for (let i = l; i <= r; i++) {
+    // If the car is not Stationary ('S'), it is a moving car trapped in the danger zone.
+    // It adds 1 to the collision score (physically, it stops and becomes 'S' upon impact).
+    if (directions[i] !== "S") {
+      collisions++;
     }
+  }
 
-    // Optimization: Skip all cars on the far right moving Right ('R').
-    // These cars will never collide as they are moving away from all others.
-    // We decrement 'r' to narrow the "danger zone".
-    while (r >= l && directions[r] === 'R') {
-        r--;
-    }
-
-    // Iterate through the remaining substring (the "danger zone").
-    // Logic: In this trimmed segment, the left boundary is a stationary car or a car moving Right,
-    // and the right boundary is a stationary car or a car moving Left.
-    // Therefore, ANY moving car ('L' or 'R') inside this segment is guaranteed to eventually 
-    // hit a wall or another car, contributing to the collision count.
-    for (let i = l; i <= r; i++) {
-        // If the car is not Stationary ('S'), it is a moving car trapped in the danger zone.
-        // It adds 1 to the collision score (physically, it stops and becomes 'S' upon impact).
-        if (directions[i] !== 'S') {
-            collisions++;
-        }
-    }
-
-    return collisions;
+  return collisions;
 }

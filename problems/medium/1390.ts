@@ -28,41 +28,41 @@ Constraints:
 */
 
 function sumFourDivisors(nums: number[]): number {
-    // Stores the cumulative sum of divisors for all valid numbers in the array
-    let totalSum = 0;
+  // Stores the cumulative sum of divisors for all valid numbers in the array
+  let totalSum = 0;
 
-    // Iterate through each number in the input array
-    for (let i = 0; i < nums.length; i++) {
-        const num = nums[i];
-        let count = 0;
-        let currentSum = 0;
-        // Optimization: only iterate up to the square root of the number
-        const sqrt = Math.sqrt(num);
+  // Iterate through each number in the input array
+  for (let i = 0; i < nums.length; i++) {
+    const num = nums[i];
+    let count = 0;
+    let currentSum = 0;
+    // Optimization: only iterate up to the square root of the number
+    const sqrt = Math.sqrt(num);
 
-        for (let d = 1; d <= sqrt; d++) {
-            // Check if 'd' is a divisor of 'num'
-            if (num % d === 0) {
-                // Case: The divisor is the square root (e.g., 4 for 16)
-                if (d * d === num) {
-                    count += 1;
-                    currentSum += d;
-                } 
-                // Case: 'd' and 'num/d' are two distinct divisors
-                else {
-                    count += 2;
-                    currentSum += (d + num / d);
-                }
-            }
-            // Optimization: If divisors exceed 4, stop checking this number immediately
-            if (count > 4) break;
+    for (let d = 1; d <= sqrt; d++) {
+      // Check if 'd' is a divisor of 'num'
+      if (num % d === 0) {
+        // Case: The divisor is the square root (e.g., 4 for 16)
+        if (d * d === num) {
+          count += 1;
+          currentSum += d;
         }
-
-        // If the number has exactly four divisors, add their sum to the total
-        if (count === 4) {
-            totalSum += currentSum;
+        // Case: 'd' and 'num/d' are two distinct divisors
+        else {
+          count += 2;
+          currentSum += d + num / d;
         }
+      }
+      // Optimization: If divisors exceed 4, stop checking this number immediately
+      if (count > 4) break;
     }
 
-    // Return the final accumulated sum
-    return totalSum;
+    // If the number has exactly four divisors, add their sum to the total
+    if (count === 4) {
+      totalSum += currentSum;
+    }
+  }
+
+  // Return the final accumulated sum
+  return totalSum;
 }

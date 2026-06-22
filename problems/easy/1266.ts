@@ -32,31 +32,31 @@ points[i].length == 2
 */
 
 function minTimeToVisitAllPoints(points: number[][]): number {
-    // Initialize a counter to accumulate the total time spent traveling between all points
-    let totalTime = 0;
-    // Cache the length of the array to avoid repeated property access in the loop
-    const n = points.length;
+  // Initialize a counter to accumulate the total time spent traveling between all points
+  let totalTime = 0;
+  // Cache the length of the array to avoid repeated property access in the loop
+  const n = points.length;
 
-    // Iterate through the points up to the second to last element
-    for (let i = 0; i < n - 1; i++) {
-        // Access current point and the next destination point in the sequence
-        const p1 = points[i];
-        const p2 = points[i + 1];
-        
-        // Calculate the absolute difference in the X coordinates (horizontal distance)
-        // Manual ternary is slightly faster than Math.abs in some JS engines
-        const dx = p2[0] - p1[0];
-        const absX = dx < 0 ? -dx : dx;
-        
-        // Calculate the absolute difference in the Y coordinates (vertical distance)
-        const dy = p2[1] - p1[1];
-        const absY = dy < 0 ? -dy : dy;
-        
-        // The time to move between two points diagonally/orthogonally is the max of the two differences
-        // This is known as the Chebyshev distance
-        totalTime += absX > absY ? absX : absY;
-    }
+  // Iterate through the points up to the second to last element
+  for (let i = 0; i < n - 1; i++) {
+    // Access current point and the next destination point in the sequence
+    const p1 = points[i];
+    const p2 = points[i + 1];
 
-    // Return the final accumulated time
-    return totalTime;
+    // Calculate the absolute difference in the X coordinates (horizontal distance)
+    // Manual ternary is slightly faster than Math.abs in some JS engines
+    const dx = p2[0] - p1[0];
+    const absX = dx < 0 ? -dx : dx;
+
+    // Calculate the absolute difference in the Y coordinates (vertical distance)
+    const dy = p2[1] - p1[1];
+    const absY = dy < 0 ? -dy : dy;
+
+    // The time to move between two points diagonally/orthogonally is the max of the two differences
+    // This is known as the Chebyshev distance
+    totalTime += absX > absY ? absX : absY;
+  }
+
+  // Return the final accumulated time
+  return totalTime;
 }

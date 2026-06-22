@@ -41,7 +41,7 @@ Constraints:
 function earliestAndLatest(
   n: number,
   firstPlayer: number,
-  secondPlayer: number
+  secondPlayer: number,
 ): number[] {
   // Memoization map using bitmask + round as key for optimal caching
   const memo = new Map<string, number[]>();

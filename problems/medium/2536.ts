@@ -29,46 +29,46 @@ Constraints:
 */
 
 function rangeAddQueries(n: number, queries: number[][]): number[][] {
-    // Create a 2D difference array with extra row and column to handle boundaries
-    // Size (n+1) x (n+1) allows us to mark boundaries without index checks
-    const diff = Array.from({ length: n + 1 }, () => Array(n + 1).fill(0));
-    
-    // Process each query using 2D difference array technique
-    // This marks the corners of each rectangle instead of updating every cell
-    for (const [r1, c1, r2, c2] of queries) {
-        // Mark top-left corner: increment starts here
-        diff[r1][c1]++;
-        // Mark boundary after right edge: decrement to stop horizontal spread
-        diff[r1][c2 + 1]--;
-        // Mark boundary after bottom edge: decrement to stop vertical spread
-        diff[r2 + 1][c1]--;
-        // Mark bottom-right boundary corner: increment to cancel double-decrement
-        diff[r2 + 1][c2 + 1]++;
+  // Create a 2D difference array with extra row and column to handle boundaries
+  // Size (n+1) x (n+1) allows us to mark boundaries without index checks
+  const diff = Array.from({ length: n + 1 }, () => Array(n + 1).fill(0));
+
+  // Process each query using 2D difference array technique
+  // This marks the corners of each rectangle instead of updating every cell
+  for (const [r1, c1, r2, c2] of queries) {
+    // Mark top-left corner: increment starts here
+    diff[r1][c1]++;
+    // Mark boundary after right edge: decrement to stop horizontal spread
+    diff[r1][c2 + 1]--;
+    // Mark boundary after bottom edge: decrement to stop vertical spread
+    diff[r2 + 1][c1]--;
+    // Mark bottom-right boundary corner: increment to cancel double-decrement
+    diff[r2 + 1][c2 + 1]++;
+  }
+
+  // First pass: compute prefix sum horizontally (left to right)
+  // This propagates the increments/decrements across each row
+  for (let i = 0; i < n; i++) {
+    for (let j = 1; j < n; j++) {
+      diff[i][j] += diff[i][j - 1];
     }
-    
-    // First pass: compute prefix sum horizontally (left to right)
-    // This propagates the increments/decrements across each row
-    for (let i = 0; i < n; i++) {
-        for (let j = 1; j < n; j++) {
-            diff[i][j] += diff[i][j - 1];
-        }
+  }
+
+  // Second pass: compute prefix sum vertically (top to bottom)
+  // This propagates the values down each column to get final result
+  for (let j = 0; j < n; j++) {
+    for (let i = 1; i < n; i++) {
+      diff[i][j] += diff[i - 1][j];
     }
-    
-    // Second pass: compute prefix sum vertically (top to bottom)
-    // This propagates the values down each column to get final result
-    for (let j = 0; j < n; j++) {
-        for (let i = 1; i < n; i++) {
-            diff[i][j] += diff[i - 1][j];
-        }
-    }
-    
-    // Remove the extra row used for boundary marking
-    diff.pop();
-    // Remove the extra column from each remaining row
-    for (let i = 0; i < n; i++) {
-        diff[i].pop();
-    }
-    
-    // Return the final n x n matrix with all queries applied
-    return diff;
+  }
+
+  // Remove the extra row used for boundary marking
+  diff.pop();
+  // Remove the extra column from each remaining row
+  for (let i = 0; i < n; i++) {
+    diff[i].pop();
+  }
+
+  // Return the final n x n matrix with all queries applied
+  return diff;
 }

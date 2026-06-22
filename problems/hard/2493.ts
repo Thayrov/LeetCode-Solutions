@@ -41,7 +41,7 @@ There is at most one edge between any pair of vertices.
 
 function magnificentSets(n: number, edges: number[][]): number {
   // 1) Build adjacency list from 1..n
-  const adj: number[][] = Array.from({length: n + 1}, () => []);
+  const adj: number[][] = Array.from({ length: n + 1 }, () => []);
   for (const [u, v] of edges) {
     adj[u].push(v);
     adj[v].push(u);

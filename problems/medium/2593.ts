@@ -40,7 +40,9 @@ function findScore(nums: number[]): number {
   // Get the length of the array
   const n = nums.length;
   // Create pairs of [value, index]
-  const indexValuePairs = nums.map((val, idx) => [val, idx] as [number, number]);
+  const indexValuePairs = nums.map(
+    (val, idx) => [val, idx] as [number, number],
+  );
   // Sort the pairs by value, then by index
   indexValuePairs.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
   // Initialize a marked array to track marked elements

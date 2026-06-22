@@ -32,44 +32,44 @@ Constraints:
 */
 
 function maxSum(nums: number[]): number {
-    // The problem allows deleting any elements, which means we can form any
-    // subsequence of the original array. The "subarray" constraint becomes trivial
-    // because we can choose our subsequence to be the target unique-element sequence itself.
-    // Thus, the problem is to find the maximum sum of a unique-element subsequence.
+  // The problem allows deleting any elements, which means we can form any
+  // subsequence of the original array. The "subarray" constraint becomes trivial
+  // because we can choose our subsequence to be the target unique-element sequence itself.
+  // Thus, the problem is to find the maximum sum of a unique-element subsequence.
 
-    // Step 1: Find all unique numbers in the input array.
-    // A Set is a perfect data structure for this as it automatically handles uniqueness.
-    const uniqueNums = new Set(nums);
+  // Step 1: Find all unique numbers in the input array.
+  // A Set is a perfect data structure for this as it automatically handles uniqueness.
+  const uniqueNums = new Set(nums);
 
-    // Step 2: Calculate the sum of all unique positive numbers.
-    // To maximize the sum, we should take all unique numbers that are positive.
-    let positiveSum = 0;
-    // This flag will track if we encounter any positive numbers.
-    let hasPositive = false;
+  // Step 2: Calculate the sum of all unique positive numbers.
+  // To maximize the sum, we should take all unique numbers that are positive.
+  let positiveSum = 0;
+  // This flag will track if we encounter any positive numbers.
+  let hasPositive = false;
 
-    // Iterate over each unique number found in the array.
-    for (const num of uniqueNums) {
-        // Check if the current number is positive.
-        if (num > 0) {
-            // If it is, add it to our running sum of positive numbers.
-            positiveSum += num;
-            // Mark that we have found at least one positive number.
-            hasPositive = true;
-        }
+  // Iterate over each unique number found in the array.
+  for (const num of uniqueNums) {
+    // Check if the current number is positive.
+    if (num > 0) {
+      // If it is, add it to our running sum of positive numbers.
+      positiveSum += num;
+      // Mark that we have found at least one positive number.
+      hasPositive = true;
     }
+  }
 
-    // Step 3: Determine the final result.
-    // If we found at least one unique positive number...
-    if (hasPositive) {
-        // ...the maximum possible sum is the sum of all unique positive numbers.
-        // Including any negative or zero values would only decrease or not change this sum.
-        return positiveSum;
-    }
+  // Step 3: Determine the final result.
+  // If we found at least one unique positive number...
+  if (hasPositive) {
+    // ...the maximum possible sum is the sum of all unique positive numbers.
+    // Including any negative or zero values would only decrease or not change this sum.
+    return positiveSum;
+  }
 
-    // If `hasPositive` is false, it means all unique numbers are zero or negative.
-    // To get the maximum sum in this case, we should form a subsequence with the single
-    // largest value (e.g., for unique numbers {-5, -2, 0}, the max sum is 0).
-    // The input `nums` is guaranteed to be non-empty, so `uniqueNums` is also non-empty.
-    // We use the spread syntax to pass all unique numbers to `Math.max`.
-    return Math.max(...uniqueNums);
+  // If `hasPositive` is false, it means all unique numbers are zero or negative.
+  // To get the maximum sum in this case, we should form a subsequence with the single
+  // largest value (e.g., for unique numbers {-5, -2, 0}, the max sum is 0).
+  // The input `nums` is guaranteed to be non-empty, so `uniqueNums` is also non-empty.
+  // We use the spread syntax to pass all unique numbers to `Math.max`.
+  return Math.max(...uniqueNums);
 }

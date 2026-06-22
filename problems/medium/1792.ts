@@ -80,7 +80,10 @@ function maxAverageRatio(classes: number[][], extraStudents: number): number {
     siftUp(idx: number) {
       let parent = Math.floor((idx - 1) / 2);
       while (idx > 0 && this.heap[idx].delta > this.heap[parent].delta) {
-        [this.heap[idx], this.heap[parent]] = [this.heap[parent], this.heap[idx]]; // Swap nodes
+        [this.heap[idx], this.heap[parent]] = [
+          this.heap[parent],
+          this.heap[idx],
+        ]; // Swap nodes
         idx = parent;
         parent = Math.floor((idx - 1) / 2);
       }
@@ -95,11 +98,17 @@ function maxAverageRatio(classes: number[][], extraStudents: number): number {
         if (left < length && this.heap[left].delta > this.heap[largest].delta) {
           largest = left;
         }
-        if (right < length && this.heap[right].delta > this.heap[largest].delta) {
+        if (
+          right < length &&
+          this.heap[right].delta > this.heap[largest].delta
+        ) {
           largest = right;
         }
         if (largest !== idx) {
-          [this.heap[idx], this.heap[largest]] = [this.heap[largest], this.heap[idx]]; // Swap nodes
+          [this.heap[idx], this.heap[largest]] = [
+            this.heap[largest],
+            this.heap[idx],
+          ]; // Swap nodes
           idx = largest;
         } else {
           break;
@@ -109,7 +118,7 @@ function maxAverageRatio(classes: number[][], extraStudents: number): number {
   }
 
   // Initialize the max heap with the initial classes
-  let heap = new MaxHeap(classes.map(c => new ClassNode(c[0], c[1])));
+  let heap = new MaxHeap(classes.map((c) => new ClassNode(c[0], c[1])));
   // Distribute the extra students
   for (let i = 0; i < extraStudents; i++) {
     let node = heap.extractMax(); // Get the class with max delta

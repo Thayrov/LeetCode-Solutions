@@ -43,7 +43,7 @@ s consists of only lowercase English letters.
 function countPalindromicSubsequence(s: string): number {
   // Store the length of the string and create a 2D array 'prefix' to hold counts for each character
   const n = s.length;
-  const prefix = Array.from({length: 26}, () => new Array(n + 1).fill(0));
+  const prefix = Array.from({ length: 26 }, () => new Array(n + 1).fill(0));
 
   // Build prefix sums: prefix[c][i+1] indicates how many times character c appeared up to position i
   for (let i = 0; i < n; i++) {

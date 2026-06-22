@@ -43,8 +43,7 @@ The test cases are generated such that the values in the final array are less th
 
 function replaceNonCoprimes(nums: number[]): number[] {
   // Helper function to compute GCD using Euclidean algorithm
-  const gcd = (a: number, b: number): number =>
-    b === 0 ? a : gcd(b, a % b);
+  const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
 
   // Helper function to compute LCM using relation lcm(a, b) = (a / gcd(a, b)) * b
   const lcm = (a: number, b: number): number => (a / gcd(a, b)) * b;
@@ -58,10 +57,7 @@ function replaceNonCoprimes(nums: number[]): number[] {
     let curr = num;
 
     // While the stack isn’t empty and the top element shares a GCD > 1 with curr
-    while (
-      stack.length > 0 &&
-      gcd(stack[stack.length - 1], curr) > 1
-    ) {
+    while (stack.length > 0 && gcd(stack[stack.length - 1], curr) > 1) {
       // Pop the stack’s top and merge it with curr into their LCM
       curr = lcm(stack.pop()!, curr);
     }

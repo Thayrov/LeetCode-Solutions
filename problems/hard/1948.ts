@@ -50,95 +50,95 @@ For any folder not at the root level, its parent folder will also be in the inpu
 */
 
 function deleteDuplicateFolder(paths: string[][]): string[][] {
-    // Create a trie (prefix tree) to represent the folder structure
-    // Each node is a Map where keys are folder names and values are child nodes
-    const trie = new Map<string, Map<string, any>>();
+  // Create a trie (prefix tree) to represent the folder structure
+  // Each node is a Map where keys are folder names and values are child nodes
+  const trie = new Map<string, Map<string, any>>();
 
-    // Build the trie from all input paths
-    for (const path of paths) {
-        let node = trie; // Start from root
-        // Traverse/create the path in the trie
-        for (const folder of path) {
-            // If folder doesn't exist at current level, create it
-            if (!node.has(folder)) {
-                node.set(folder, new Map());
-            }
-            // Move to the child node
-            node = node.get(folder)!;
-        }
+  // Build the trie from all input paths
+  for (const path of paths) {
+    let node = trie; // Start from root
+    // Traverse/create the path in the trie
+    for (const folder of path) {
+      // If folder doesn't exist at current level, create it
+      if (!node.has(folder)) {
+        node.set(folder, new Map());
+      }
+      // Move to the child node
+      node = node.get(folder)!;
+    }
+  }
+
+  // Map to store computed signatures for each node
+  const signatures = new Map<Map<string, any>, string>();
+  // Map from signature string to list of nodes with that signature
+  const sigToNodes = new Map<string, Map<string, any>[]>();
+
+  // DFS function to generate signatures using post-order traversal
+  function dfs(node: Map<string, any>): string {
+    // Collect all child signatures with their folder names
+    const childSigs: string[] = [];
+    for (const [name, child] of node) {
+      // Recursively get child signature and prepend folder name
+      childSigs.push(name + dfs(child));
+    }
+    // Sort child signatures to ensure consistent ordering for identical structures
+    childSigs.sort();
+    // Build final signature by wrapping sorted children in parentheses
+    const sig = "(" + childSigs.join("") + ")";
+
+    // Store the signature for this node
+    signatures.set(node, sig);
+
+    // Only track non-empty signatures (folders with children)
+    if (sig !== "()") {
+      // Group nodes by their signature
+      if (!sigToNodes.has(sig)) {
+        sigToNodes.set(sig, []);
+      }
+      sigToNodes.get(sig)!.push(node);
     }
 
-    // Map to store computed signatures for each node
-    const signatures = new Map<Map<string, any>, string>();
-    // Map from signature string to list of nodes with that signature
-    const sigToNodes = new Map<string, Map<string, any>[]>();
+    return sig;
+  }
 
-    // DFS function to generate signatures using post-order traversal
-    function dfs(node: Map<string, any>): string {
-        // Collect all child signatures with their folder names
-        const childSigs: string[] = [];
-        for (const [name, child] of node) {
-            // Recursively get child signature and prepend folder name
-            childSigs.push(name + dfs(child));
-        }
-        // Sort child signatures to ensure consistent ordering for identical structures
-        childSigs.sort();
-        // Build final signature by wrapping sorted children in parentheses
-        const sig = "(" + childSigs.join("") + ")";
+  // Generate signatures for all nodes starting from root
+  dfs(trie);
 
-        // Store the signature for this node
-        signatures.set(node, sig);
-
-        // Only track non-empty signatures (folders with children)
-        if (sig !== "()") {
-            // Group nodes by their signature
-            if (!sigToNodes.has(sig)) {
-                sigToNodes.set(sig, []);
-            }
-            sigToNodes.get(sig)!.push(node);
-        }
-
-        return sig;
+  // Mark nodes for deletion if their signature appears more than once
+  const toDelete = new Set<Map<string, any>>();
+  for (const [sig, nodes] of sigToNodes) {
+    // If multiple nodes have the same signature, they're duplicates
+    if (nodes.length > 1) {
+      for (const node of nodes) {
+        toDelete.add(node);
+      }
     }
+  }
 
-    // Generate signatures for all nodes starting from root
-    dfs(trie);
+  // Array to store the final result paths
+  const result: string[][] = [];
 
-    // Mark nodes for deletion if their signature appears more than once
-    const toDelete = new Set<Map<string, any>>();
-    for (const [sig, nodes] of sigToNodes) {
-        // If multiple nodes have the same signature, they're duplicates
-        if (nodes.length > 1) {
-            for (const node of nodes) {
-                toDelete.add(node);
-            }
-        }
+  // Collect all remaining paths using DFS, skipping deleted nodes
+  function collect(node: Map<string, any>, path: string[]): void {
+    // Traverse all children
+    for (const [name, child] of node) {
+      // Only process children that are not marked for deletion
+      if (!toDelete.has(child)) {
+        // Add current folder to path
+        path.push(name);
+        // Recursively collect from this child
+        collect(child, path);
+        // Backtrack - remove current folder from path
+        path.pop();
+      }
     }
-
-    // Array to store the final result paths
-    const result: string[][] = [];
-
-    // Collect all remaining paths using DFS, skipping deleted nodes
-    function collect(node: Map<string, any>, path: string[]): void {
-        // Traverse all children
-        for (const [name, child] of node) {
-            // Only process children that are not marked for deletion
-            if (!toDelete.has(child)) {
-                // Add current folder to path
-                path.push(name);
-                // Recursively collect from this child
-                collect(child, path);
-                // Backtrack - remove current folder from path
-                path.pop();
-            }
-        }
-        // Add current path to result if it's not empty (exclude root)
-        if (path.length > 0) {
-            result.push([...path]);
-        }
+    // Add current path to result if it's not empty (exclude root)
+    if (path.length > 0) {
+      result.push([...path]);
     }
+  }
 
-    // Start collection from root with empty path
-    collect(trie, []);
-    return result;
+  // Start collection from root with empty path
+  collect(trie, []);
+  return result;
 }

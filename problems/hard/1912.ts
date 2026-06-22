@@ -48,169 +48,169 @@ type Entry = [number, number, number];
 // Custom MinHeap data structure (binary heap)
 // Supports push/pop/peek in O(log n)
 class MyHeap {
-    private data: Entry[] = [];
-    private cmp: (a: Entry, b: Entry) => number;
+  private data: Entry[] = [];
+  private cmp: (a: Entry, b: Entry) => number;
 
-    constructor(cmp: (a: Entry, b: Entry) => number) {
-        // Pass a comparator function for sorting entries in the heap
-        this.cmp = cmp;
-    }
+  constructor(cmp: (a: Entry, b: Entry) => number) {
+    // Pass a comparator function for sorting entries in the heap
+    this.cmp = cmp;
+  }
 
-    // Insert a new element
-    push(x: Entry) {
-        this.data.push(x);
-        this.bubbleUp(this.data.length - 1);
-    }
+  // Insert a new element
+  push(x: Entry) {
+    this.data.push(x);
+    this.bubbleUp(this.data.length - 1);
+  }
 
-    // Remove and return the smallest element
-    pop(): Entry | undefined {
-        if (this.data.length === 0) return;
-        const res = this.data[0]; // root (min element)
-        const last = this.data.pop()!; // pop last element
-        if (this.data.length > 0) {
-            this.data[0] = last;     // move last to root
-            this.bubbleDown(0);      // re-heapify downward
-        }
-        return res;
+  // Remove and return the smallest element
+  pop(): Entry | undefined {
+    if (this.data.length === 0) return;
+    const res = this.data[0]; // root (min element)
+    const last = this.data.pop()!; // pop last element
+    if (this.data.length > 0) {
+      this.data[0] = last; // move last to root
+      this.bubbleDown(0); // re-heapify downward
     }
+    return res;
+  }
 
-    // Look at the smallest element without removing
-    peek(): Entry | undefined {
-        return this.data[0];
-    }
+  // Look at the smallest element without removing
+  peek(): Entry | undefined {
+    return this.data[0];
+  }
 
-    // Fix heap upwards from index i
-    private bubbleUp(i: number) {
-        while (i > 0) {
-            const p = (i - 1) >> 1; // parent index
-            if (this.cmp(this.data[i], this.data[p]) < 0) {
-                // swap if child < parent
-                [this.data[i], this.data[p]] = [this.data[p], this.data[i]];
-                i = p;
-            } else break;
-        }
+  // Fix heap upwards from index i
+  private bubbleUp(i: number) {
+    while (i > 0) {
+      const p = (i - 1) >> 1; // parent index
+      if (this.cmp(this.data[i], this.data[p]) < 0) {
+        // swap if child < parent
+        [this.data[i], this.data[p]] = [this.data[p], this.data[i]];
+        i = p;
+      } else break;
     }
+  }
 
-    // Fix heap downwards from index i
-    private bubbleDown(i: number) {
-        const n = this.data.length;
-        while (true) {
-            let small = i;
-            const l = i * 2 + 1, r = i * 2 + 2; // children
-            if (l < n && this.cmp(this.data[l], this.data[small]) < 0) small = l;
-            if (r < n && this.cmp(this.data[r], this.data[small]) < 0) small = r;
-            if (small !== i) {
-                [this.data[i], this.data[small]] = [this.data[small], this.data[i]];
-                i = small;
-            } else break;
-        }
+  // Fix heap downwards from index i
+  private bubbleDown(i: number) {
+    const n = this.data.length;
+    while (true) {
+      let small = i;
+      const l = i * 2 + 1,
+        r = i * 2 + 2; // children
+      if (l < n && this.cmp(this.data[l], this.data[small]) < 0) small = l;
+      if (r < n && this.cmp(this.data[r], this.data[small]) < 0) small = r;
+      if (small !== i) {
+        [this.data[i], this.data[small]] = [this.data[small], this.data[i]];
+        i = small;
+      } else break;
     }
+  }
 }
 
 // Main MovieRentingSystem class
 class MovieRentingSystem {
-    // Maps each [shop,movie] key -> price
-    private priceMap: Map<string, number> = new Map();
-    // For each movie -> a minHeap of available shops sorted by [price, shop]
-    private available: Map<number, MyHeap> = new Map();
-    // Global minHeap of rented movies sorted by [price, shop, movie]
-    private rentedHeap: MyHeap;
-    // Active sets: track currently available keys and currently rented keys
-    private availSet: Set<string> = new Set();
-    private rentedSet: Set<string> = new Set();
+  // Maps each [shop,movie] key -> price
+  private priceMap: Map<string, number> = new Map();
+  // For each movie -> a minHeap of available shops sorted by [price, shop]
+  private available: Map<number, MyHeap> = new Map();
+  // Global minHeap of rented movies sorted by [price, shop, movie]
+  private rentedHeap: MyHeap;
+  // Active sets: track currently available keys and currently rented keys
+  private availSet: Set<string> = new Set();
+  private rentedSet: Set<string> = new Set();
 
-    constructor(n: number, entries: number[][]) {
-        // Comparator for rentedHeap → first by price, then shop, then movie
-        this.rentedHeap = new MyHeap((a, b) =>
-            a[0] === b[0]
-                ? a[1] === b[1]
-                    ? a[2] - b[2] // tie: smaller movie id
-                    : a[1] - b[1] // tie: smaller shop id
-                : a[0] - b[0]     // lowest price first
+  constructor(n: number, entries: number[][]) {
+    // Comparator for rentedHeap → first by price, then shop, then movie
+    this.rentedHeap = new MyHeap(
+      (a, b) =>
+        a[0] === b[0]
+          ? a[1] === b[1]
+            ? a[2] - b[2] // tie: smaller movie id
+            : a[1] - b[1] // tie: smaller shop id
+          : a[0] - b[0], // lowest price first
+    );
+
+    // Load all initial entries
+    for (const [shop, movie, price] of entries) {
+      const key = `${shop},${movie}`;
+      this.priceMap.set(key, price);
+
+      // If no heap exists for this movie, create one
+      if (!this.available.has(movie)) {
+        this.available.set(
+          movie,
+          new MyHeap((a, b) => (a[0] === b[0] ? a[1] - b[1] : a[0] - b[0])), // sort by price, then shop
         );
-
-        // Load all initial entries
-        for (const [shop, movie, price] of entries) {
-            const key = `${shop},${movie}`;
-            this.priceMap.set(key, price);
-
-            // If no heap exists for this movie, create one
-            if (!this.available.has(movie)) {
-                this.available.set(
-                    movie,
-                    new MyHeap((a, b) =>
-                        a[0] === b[0] ? a[1] - b[1] : a[0] - b[0]
-                    ) // sort by price, then shop
-                );
-            }
-            // Push entry into the per-movie available heap
-            this.available.get(movie)!.push([price, shop, movie]);
-            // Mark as available
-            this.availSet.add(key);
-        }
+      }
+      // Push entry into the per-movie available heap
+      this.available.get(movie)!.push([price, shop, movie]);
+      // Mark as available
+      this.availSet.add(key);
     }
+  }
 
-    // Search top 5 cheapest shops for a given movie
-    search(movie: number): number[] {
-        if (!this.available.has(movie)) return [];
-        const heap = this.available.get(movie)!;
-        const res: number[] = [];
-        const temp: Entry[] = [];
-        const seen = new Set<string>(); // ensure no duplicates this call
+  // Search top 5 cheapest shops for a given movie
+  search(movie: number): number[] {
+    if (!this.available.has(movie)) return [];
+    const heap = this.available.get(movie)!;
+    const res: number[] = [];
+    const temp: Entry[] = [];
+    const seen = new Set<string>(); // ensure no duplicates this call
 
-        // Extract up to 5 valid unique entries
-        while (res.length < 5 && heap.peek()) {
-            const [price, shop, mov] = heap.pop()!;
-            const key = `${shop},${mov}`;
-            if (this.availSet.has(key) && !seen.has(key)) {
-                res.push(shop);               // record shop result
-                seen.add(key);                // mark as seen
-                temp.push([price, shop, mov]); // keep for restoration
-            }
-            // stale or duplicate entries are discarded
-        }
-        // Restore the valid entries popped
-        for (const e of temp) heap.push(e);
-        return res;
+    // Extract up to 5 valid unique entries
+    while (res.length < 5 && heap.peek()) {
+      const [price, shop, mov] = heap.pop()!;
+      const key = `${shop},${mov}`;
+      if (this.availSet.has(key) && !seen.has(key)) {
+        res.push(shop); // record shop result
+        seen.add(key); // mark as seen
+        temp.push([price, shop, mov]); // keep for restoration
+      }
+      // stale or duplicate entries are discarded
     }
+    // Restore the valid entries popped
+    for (const e of temp) heap.push(e);
+    return res;
+  }
 
-    // Rent a movie: remove from available, add to rented
-    rent(shop: number, movie: number): void {
-        const key = `${shop},${movie}`;
-        this.availSet.delete(key); // no longer available
-        this.rentedSet.add(key);   // now rented
-        this.rentedHeap.push([this.priceMap.get(key)!, shop, movie]); // enter rented heap
+  // Rent a movie: remove from available, add to rented
+  rent(shop: number, movie: number): void {
+    const key = `${shop},${movie}`;
+    this.availSet.delete(key); // no longer available
+    this.rentedSet.add(key); // now rented
+    this.rentedHeap.push([this.priceMap.get(key)!, shop, movie]); // enter rented heap
+  }
+
+  // Drop returns a rented movie: remove from rented, re-add to available
+  drop(shop: number, movie: number): void {
+    const key = `${shop},${movie}`;
+    this.rentedSet.delete(key); // no longer rented
+    this.availSet.add(key); // back to available
+    // push back into that movie's heap
+    this.available.get(movie)!.push([this.priceMap.get(key)!, shop, movie]);
+  }
+
+  // Report top 5 rented movies globally
+  report(): number[][] {
+    const res: number[][] = [];
+    const temp: Entry[] = [];
+    const seen = new Set<string>();
+
+    // Extract up to 5 valid unique rented entries
+    while (res.length < 5 && this.rentedHeap.peek()) {
+      const [price, shop, mov] = this.rentedHeap.pop()!;
+      const key = `${shop},${mov}`;
+      if (this.rentedSet.has(key) && !seen.has(key)) {
+        res.push([shop, mov]); // add to answer
+        seen.add(key); // avoid duplication
+        temp.push([price, shop, mov]); // restore later
+      }
     }
-
-    // Drop returns a rented movie: remove from rented, re-add to available
-    drop(shop: number, movie: number): void {
-        const key = `${shop},${movie}`;
-        this.rentedSet.delete(key); // no longer rented
-        this.availSet.add(key);     // back to available
-        // push back into that movie's heap
-        this.available.get(movie)!.push([this.priceMap.get(key)!, shop, movie]);
-    }
-
-    // Report top 5 rented movies globally
-    report(): number[][] {
-        const res: number[][] = [];
-        const temp: Entry[] = [];
-        const seen = new Set<string>();
-
-        // Extract up to 5 valid unique rented entries
-        while (res.length < 5 && this.rentedHeap.peek()) {
-            const [price, shop, mov] = this.rentedHeap.pop()!;
-            const key = `${shop},${mov}`;
-            if (this.rentedSet.has(key) && !seen.has(key)) {
-                res.push([shop, mov]); // add to answer
-                seen.add(key);         // avoid duplication
-                temp.push([price, shop, mov]); // restore later
-            }
-        }
-        // Restore valid entries
-        for (const e of temp) this.rentedHeap.push(e);
-        return res;
-    }
+    // Restore valid entries
+    for (const e of temp) this.rentedHeap.push(e);
+    return res;
+  }
 }
 
 /**

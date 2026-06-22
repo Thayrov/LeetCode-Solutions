@@ -67,7 +67,10 @@ class ProductOfNumbers {
     if (k >= this.products.length) return 0;
     // Compute the product for the last k numbers by dividing the cumulative product
     // up to the last number by the cumulative product before the last k numbers.
-    return this.products[this.products.length - 1] / this.products[this.products.length - k - 1];
+    return (
+      this.products[this.products.length - 1] /
+      this.products[this.products.length - k - 1]
+    );
   }
 }
 

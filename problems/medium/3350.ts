@@ -31,39 +31,39 @@ Constraints:
 */
 
 function maxIncreasingSubarrays(nums: number[]): number {
-    // Store the length of the strictly increasing subarray starting at each index
-    const n = nums.length;
-    const lengths = new Array(n).fill(1);
-    
-    // Build lengths array from right to left
-    // lengths[i] = length of strictly increasing subarray starting at index i
-    for (let i = n - 2; i >= 0; i--) {
-        // If current element is less than next, extend the increasing sequence
-        if (nums[i] < nums[i + 1]) {
-            lengths[i] = lengths[i + 1] + 1;
-        }
-        // Otherwise, lengths[i] remains 1 (single element subarray)
+  // Store the length of the strictly increasing subarray starting at each index
+  const n = nums.length;
+  const lengths = new Array(n).fill(1);
+
+  // Build lengths array from right to left
+  // lengths[i] = length of strictly increasing subarray starting at index i
+  for (let i = n - 2; i >= 0; i--) {
+    // If current element is less than next, extend the increasing sequence
+    if (nums[i] < nums[i + 1]) {
+      lengths[i] = lengths[i + 1] + 1;
     }
-    
-    // Track the maximum k value found
-    let maxK = 0;
-    
-    // Check each position as a potential starting point
-    for (let i = 0; i < n; i++) {
-        const currentLen = lengths[i];
-        
-        // Case 1: Split a single increasing subarray into two equal parts
-        // Maximum k from splitting is floor(currentLen / 2)
-        maxK = Math.max(maxK, Math.floor(currentLen / 2));
-        
-        // Case 2: Two different adjacent increasing subarrays
-        // Next subarray starts right after current one ends
-        const nextStart = i + currentLen;
-        if (nextStart < n) {
-            // k is limited by the minimum of the two adjacent subarray lengths
-            maxK = Math.max(maxK, Math.min(currentLen, lengths[nextStart]));
-        }
+    // Otherwise, lengths[i] remains 1 (single element subarray)
+  }
+
+  // Track the maximum k value found
+  let maxK = 0;
+
+  // Check each position as a potential starting point
+  for (let i = 0; i < n; i++) {
+    const currentLen = lengths[i];
+
+    // Case 1: Split a single increasing subarray into two equal parts
+    // Maximum k from splitting is floor(currentLen / 2)
+    maxK = Math.max(maxK, Math.floor(currentLen / 2));
+
+    // Case 2: Two different adjacent increasing subarrays
+    // Next subarray starts right after current one ends
+    const nextStart = i + currentLen;
+    if (nextStart < n) {
+      // k is limited by the minimum of the two adjacent subarray lengths
+      maxK = Math.max(maxK, Math.min(currentLen, lengths[nextStart]));
     }
-    
-    return maxK;
+  }
+
+  return maxK;
 }

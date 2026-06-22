@@ -45,7 +45,7 @@ function shiftingLetters(s: string, shifts: number[][]): string {
   // Prefix sum variable to track net shifts at each position
   let sum = 0;
   // Convert string to an array for efficient modification
-  const arr = s.split('');
+  const arr = s.split("");
   // Apply prefix shifts to each character
   for (let i = 0; i < n; i++) {
     // Add the current delta and wrap within 26
@@ -56,5 +56,5 @@ function shiftingLetters(s: string, shifts: number[][]): string {
     arr[i] = String.fromCharCode(shifted + 97);
   }
   // Return the transformed string
-  return arr.join('');
+  return arr.join("");
 }

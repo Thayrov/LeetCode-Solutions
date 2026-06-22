@@ -30,7 +30,10 @@ Note: This question is the same as 445: Assign Cookies.
 </> Typescript code:
 */
 
-function matchPlayersAndTrainers(players: number[], trainers: number[]): number {
+function matchPlayersAndTrainers(
+  players: number[],
+  trainers: number[],
+): number {
   // Sort players in ascending order to process from weakest to strongest
   players.sort((a, b) => a - b);
   // Sort trainers in ascending order to process from lowest to highest capacity

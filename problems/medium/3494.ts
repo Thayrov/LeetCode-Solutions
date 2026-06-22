@@ -39,42 +39,42 @@ m == mana.length
 */
 
 function minTime(skill: number[], mana: number[]): number {
-    // Store dimensions for optimization
-    const n = skill.length;
-    const m = mana.length;
-    
-    // Track when each wizard finishes their current work
-    const wizardDone = new Array(n).fill(0);
-    
-    // Precompute cumulative skill sums for O(1) access
-    // cumSkill[i] = sum of skill[0] through skill[i-1]
-    const cumSkill = new Array(n);
-    cumSkill[0] = 0;
-    for (let i = 1; i < n; i++) {
-        cumSkill[i] = cumSkill[i - 1] + skill[i - 1];
+  // Store dimensions for optimization
+  const n = skill.length;
+  const m = mana.length;
+
+  // Track when each wizard finishes their current work
+  const wizardDone = new Array(n).fill(0);
+
+  // Precompute cumulative skill sums for O(1) access
+  // cumSkill[i] = sum of skill[0] through skill[i-1]
+  const cumSkill = new Array(n);
+  cumSkill[0] = 0;
+  for (let i = 1; i < n; i++) {
+    cumSkill[i] = cumSkill[i - 1] + skill[i - 1];
+  }
+
+  // Process each potion in order
+  for (let j = 0; j < m; j++) {
+    // Find the minimum start time for this potion
+    // The potion arrives at wizard i at time: start + cumSkill[i] * mana[j]
+    // Wizard i must be free at that time, so: start + cumSkill[i] * mana[j] >= wizardDone[i]
+    // Therefore: start >= wizardDone[i] - cumSkill[i] * mana[j]
+    let minStart = 0;
+    for (let i = 0; i < n; i++) {
+      // Calculate the minimum start time needed to ensure wizard i is free when potion arrives
+      minStart = Math.max(minStart, wizardDone[i] - cumSkill[i] * mana[j]);
     }
-    
-    // Process each potion in order
-    for (let j = 0; j < m; j++) {
-        // Find the minimum start time for this potion
-        // The potion arrives at wizard i at time: start + cumSkill[i] * mana[j]
-        // Wizard i must be free at that time, so: start + cumSkill[i] * mana[j] >= wizardDone[i]
-        // Therefore: start >= wizardDone[i] - cumSkill[i] * mana[j]
-        let minStart = 0;
-        for (let i = 0; i < n; i++) {
-            // Calculate the minimum start time needed to ensure wizard i is free when potion arrives
-            minStart = Math.max(minStart, wizardDone[i] - cumSkill[i] * mana[j]);
-        }
-        
-        // Update when each wizard will be done with this potion
-        // Wizard i receives potion at: minStart + cumSkill[i] * mana[j]
-        // Wizard i finishes at: minStart + cumSkill[i] * mana[j] + skill[i] * mana[j]
-        // Which simplifies to: minStart + (cumSkill[i] + skill[i]) * mana[j]
-        for (let i = 0; i < n; i++) {
-            wizardDone[i] = minStart + (cumSkill[i] + skill[i]) * mana[j];
-        }
+
+    // Update when each wizard will be done with this potion
+    // Wizard i receives potion at: minStart + cumSkill[i] * mana[j]
+    // Wizard i finishes at: minStart + cumSkill[i] * mana[j] + skill[i] * mana[j]
+    // Which simplifies to: minStart + (cumSkill[i] + skill[i]) * mana[j]
+    for (let i = 0; i < n; i++) {
+      wizardDone[i] = minStart + (cumSkill[i] + skill[i]) * mana[j];
     }
-    
-    // The answer is when the last wizard finishes the last potion
-    return wizardDone[n - 1];
+  }
+
+  // The answer is when the last wizard finishes the last potion
+  return wizardDone[n - 1];
 }

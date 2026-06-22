@@ -43,7 +43,7 @@ words[i] consists of lowercase English letters.
 
 function getWordsInLongestSubsequence(
   words: string[],
-  groups: number[]
+  groups: number[],
 ): string[] {
   // define function
   const n = words.length; // number of words

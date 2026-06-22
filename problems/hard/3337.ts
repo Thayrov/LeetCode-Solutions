@@ -54,7 +54,7 @@ nums.length == 26
 function lengthAfterTransformations(
   s: string,
   t: number,
-  nums: number[]
+  nums: number[],
 ): number {
   const MOD = 1000000007n; // use BigInt modulo for exact arithmetic
   const n = 26; // alphabet size
@@ -89,7 +89,7 @@ function lengthAfterTransformations(
   function matPow(mat: bigint[][], exp: number): bigint[][] {
     let result: bigint[][] = // identity matrix I_n
       Array.from({ length: n }, (_, i) =>
-        Array.from({ length: n }, (_, j) => (i === j ? 1n : 0n))
+        Array.from({ length: n }, (_, j) => (i === j ? 1n : 0n)),
       );
     let base = mat; // base = M
     while (exp > 0) {

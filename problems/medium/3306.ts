@@ -39,7 +39,7 @@ function countOfSubstrings(word: string, k: number): number {
   const n = word.length;
   // Helper function to check if a character is a vowel.
   const isVowel = (ch: string) =>
-    ch === 'a' || ch === 'e' || ch === 'i' || ch === 'o' || ch === 'u';
+    ch === "a" || ch === "e" || ch === "i" || ch === "o" || ch === "u";
 
   // Build prefix array, where prefix[i] records the count of consonants in word[0..i-1].
   const prefix = new Array(n + 1).fill(0);
@@ -70,7 +70,13 @@ function countOfSubstrings(word: string, k: number): number {
 
   let ans = 0;
   // lastOcc will store the last occurrence index of each vowel.
-  const lastOcc: {[v: string]: number} = {a: -1, e: -1, i: -1, o: -1, u: -1};
+  const lastOcc: { [v: string]: number } = {
+    a: -1,
+    e: -1,
+    i: -1,
+    o: -1,
+    u: -1,
+  };
 
   // Iterate j as the right end of the substring.
   for (let j = 0; j < n; j++) {
@@ -79,7 +85,13 @@ function countOfSubstrings(word: string, k: number): number {
     if (isVowel(ch)) lastOcc[ch] = j;
     // Determine the earliest index among all vowels' last occurrences.
     // Only starting indices i <= minLast will yield a substring that contains every vowel.
-    const minLast = Math.min(lastOcc.a, lastOcc.e, lastOcc.i, lastOcc.o, lastOcc.u);
+    const minLast = Math.min(
+      lastOcc.a,
+      lastOcc.e,
+      lastOcc.i,
+      lastOcc.o,
+      lastOcc.u,
+    );
     // If any vowel hasn't been seen, skip.
     if (minLast === -1) continue;
     // For substring word[i...j] to have exactly k consonants, we require:

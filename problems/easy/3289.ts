@@ -32,27 +32,27 @@ The input is generated such that nums contains exactly two repeated elements.
 */
 
 function getSneakyNumbers(nums: number[]): number[] {
-    // Initialize array to store the two duplicate numbers
-    const result: number[] = [];
-    
-    // Set data structure for O(1) lookup to track numbers we've already seen
-    const seen = new Set<number>();
-    
-    // Iterate through the array once - O(n) time complexity
-    for (let i = 0; i < nums.length; i++) {
-        // Check if current number has been encountered before
-        if (seen.has(nums[i])) {
-            // Found a duplicate, add it to result array
-            result.push(nums[i]);
-            
-            // Early return optimization: once we find both duplicates, exit immediately
-            if (result.length === 2) return result;
-        }
-        
-        // Mark this number as seen by adding it to the Set
-        seen.add(nums[i]);
+  // Initialize array to store the two duplicate numbers
+  const result: number[] = [];
+
+  // Set data structure for O(1) lookup to track numbers we've already seen
+  const seen = new Set<number>();
+
+  // Iterate through the array once - O(n) time complexity
+  for (let i = 0; i < nums.length; i++) {
+    // Check if current number has been encountered before
+    if (seen.has(nums[i])) {
+      // Found a duplicate, add it to result array
+      result.push(nums[i]);
+
+      // Early return optimization: once we find both duplicates, exit immediately
+      if (result.length === 2) return result;
     }
-    
-    // Return the result array containing the two sneaky numbers
-    return result;
+
+    // Mark this number as seen by adding it to the Set
+    seen.add(nums[i]);
+  }
+
+  // Return the result array containing the two sneaky numbers
+  return result;
 }

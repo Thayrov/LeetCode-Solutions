@@ -25,74 +25,74 @@ It is guaranteed that the input board has only one solution.
 /**
  Do not return anything, modify board in-place instead.
  */
- function solveSudoku(board: string[][]): void {
-     // Bitmasks to track used numbers in each row, column, and 3x3 box
-     const rows = new Array(9).fill(0);    // Bitmask for each row
-     const cols = new Array(9).fill(0);    // Bitmask for each column  
-     const boxes = new Array(9).fill(0);   // Bitmask for each 3x3 box
-     
-     // Initialize bitmasks by scanning existing numbers on the board
-     for (let i = 0; i < 9; i++) {
-         for (let j = 0; j < 9; j++) {
-             if (board[i][j] !== '.') {
-                 // Convert character digit to integer
-                 const num = parseInt(board[i][j]);
-                 // Create bitmask with bit at position 'num' set to 1
-                 const bit = 1 << num;
-                 // Calculate which 3x3 box this cell belongs to (0-8)
-                 const boxIdx = Math.floor(i / 3) * 3 + Math.floor(j / 3);
-                 // Mark this number as used in row, column, and box
-                 rows[i] |= bit;
-                 cols[j] |= bit;
-                 boxes[boxIdx] |= bit;
-             }
-         }
-     }
-     
-     // Recursive backtracking function to solve the puzzle
-     function solve(): boolean {
-         // Iterate through each cell on the board
-         for (let i = 0; i < 9; i++) {
-             for (let j = 0; j < 9; j++) {
-                 // If we find an empty cell
-                 if (board[i][j] === '.') {
-                     // Calculate which 3x3 box this cell belongs to
-                     const boxIdx = Math.floor(i / 3) * 3 + Math.floor(j / 3);
-                     // Combine all used numbers in this row, column, and box
-                     const used = rows[i] | cols[j] | boxes[boxIdx];
-                     
-                     // Try each number from 1 to 9
-                     for (let num = 1; num <= 9; num++) {
-                         // Create bitmask for current number
-                         const bit = 1 << num;
-                         // Check if this number is already used (bit is not set in used mask)
-                         if (!(used & bit)) {
-                             // Place the number on the board
-                             board[i][j] = num.toString();
-                             // Update bitmasks to mark this number as used
-                             rows[i] |= bit;
-                             cols[j] |= bit;
-                             boxes[boxIdx] |= bit;
-                             
-                             // Recursively try to solve the rest of the puzzle
-                             if (solve()) return true;
-                             
-                             // Backtrack: remove the number and update bitmasks
-                             board[i][j] = '.';
-                             rows[i] &= ~bit;  // Clear the bit using bitwise NOT and AND
-                             cols[j] &= ~bit;
-                             boxes[boxIdx] &= ~bit;
-                         }
-                     }
-                     // If no valid number works for this cell, return false
-                     return false;
-                 }
-             }
-         }
-         // If we've filled all cells successfully, puzzle is solved
-         return true;
-     }
-     
-     // Start the solving process
-     solve();
- }
+function solveSudoku(board: string[][]): void {
+  // Bitmasks to track used numbers in each row, column, and 3x3 box
+  const rows = new Array(9).fill(0); // Bitmask for each row
+  const cols = new Array(9).fill(0); // Bitmask for each column
+  const boxes = new Array(9).fill(0); // Bitmask for each 3x3 box
+
+  // Initialize bitmasks by scanning existing numbers on the board
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (board[i][j] !== ".") {
+        // Convert character digit to integer
+        const num = parseInt(board[i][j]);
+        // Create bitmask with bit at position 'num' set to 1
+        const bit = 1 << num;
+        // Calculate which 3x3 box this cell belongs to (0-8)
+        const boxIdx = Math.floor(i / 3) * 3 + Math.floor(j / 3);
+        // Mark this number as used in row, column, and box
+        rows[i] |= bit;
+        cols[j] |= bit;
+        boxes[boxIdx] |= bit;
+      }
+    }
+  }
+
+  // Recursive backtracking function to solve the puzzle
+  function solve(): boolean {
+    // Iterate through each cell on the board
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        // If we find an empty cell
+        if (board[i][j] === ".") {
+          // Calculate which 3x3 box this cell belongs to
+          const boxIdx = Math.floor(i / 3) * 3 + Math.floor(j / 3);
+          // Combine all used numbers in this row, column, and box
+          const used = rows[i] | cols[j] | boxes[boxIdx];
+
+          // Try each number from 1 to 9
+          for (let num = 1; num <= 9; num++) {
+            // Create bitmask for current number
+            const bit = 1 << num;
+            // Check if this number is already used (bit is not set in used mask)
+            if (!(used & bit)) {
+              // Place the number on the board
+              board[i][j] = num.toString();
+              // Update bitmasks to mark this number as used
+              rows[i] |= bit;
+              cols[j] |= bit;
+              boxes[boxIdx] |= bit;
+
+              // Recursively try to solve the rest of the puzzle
+              if (solve()) return true;
+
+              // Backtrack: remove the number and update bitmasks
+              board[i][j] = ".";
+              rows[i] &= ~bit; // Clear the bit using bitwise NOT and AND
+              cols[j] &= ~bit;
+              boxes[boxIdx] &= ~bit;
+            }
+          }
+          // If no valid number works for this cell, return false
+          return false;
+        }
+      }
+    }
+    // If we've filled all cells successfully, puzzle is solved
+    return true;
+  }
+
+  // Start the solving process
+  solve();
+}

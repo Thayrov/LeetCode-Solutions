@@ -31,60 +31,60 @@ Constraints:
 */
 
 function productQueriesCommented(n: number, queries: number[][]): number[] {
-    // Define the modulo constant as specified in the problem
-    const MOD = 1000000007;
-    
-    // Array to store the exponents of powers of 2 that make up n
-    const exponents: number[] = [];
-    
-    // Bit position counter starting from 2^0
-    let bit = 0;
-    
-    // Extract all set bits from n to find powers of 2
-    while (n > 0) {
-        // Check if the least significant bit is set
-        if (n & 1) exponents.push(bit);
-        // Right shift n by 1 bit (unsigned shift to handle large numbers)
-        n >>>= 1;
-        // Move to the next bit position
-        bit++;
+  // Define the modulo constant as specified in the problem
+  const MOD = 1000000007;
+
+  // Array to store the exponents of powers of 2 that make up n
+  const exponents: number[] = [];
+
+  // Bit position counter starting from 2^0
+  let bit = 0;
+
+  // Extract all set bits from n to find powers of 2
+  while (n > 0) {
+    // Check if the least significant bit is set
+    if (n & 1) exponents.push(bit);
+    // Right shift n by 1 bit (unsigned shift to handle large numbers)
+    n >>>= 1;
+    // Move to the next bit position
+    bit++;
+  }
+
+  // Create prefix sum array for exponents (one extra element for easier range calculation)
+  const prefixSums = new Array(exponents.length + 1).fill(0);
+
+  // Build prefix sums of exponents for O(1) range sum queries
+  for (let i = 0; i < exponents.length; i++) {
+    prefixSums[i + 1] = prefixSums[i] + exponents[i];
+  }
+
+  // Efficient modular exponentiation using BigInt for precision with large exponents
+  function modPow(base: number, exp: number, mod: number): number {
+    // Initialize result to 1 using BigInt for precision
+    let result = 1n;
+    // Convert base to BigInt and ensure it's within modulo range
+    let baseBig = BigInt(base) % BigInt(mod);
+    // Convert exponent to BigInt
+    let expBig = BigInt(exp);
+    // Convert modulo to BigInt for consistent operations
+    const modBig = BigInt(mod);
+
+    // Binary exponentiation loop using BigInt arithmetic
+    while (expBig > 0n) {
+      // If current bit of exponent is set, multiply result by current base
+      if (expBig & 1n) result = (result * baseBig) % modBig;
+      // Square the base for next iteration
+      baseBig = (baseBig * baseBig) % modBig;
+      // Right shift exponent by 1 bit
+      expBig >>= 1n;
     }
-    
-    // Create prefix sum array for exponents (one extra element for easier range calculation)
-    const prefixSums = new Array(exponents.length + 1).fill(0);
-    
-    // Build prefix sums of exponents for O(1) range sum queries
-    for (let i = 0; i < exponents.length; i++) {
-        prefixSums[i + 1] = prefixSums[i] + exponents[i];
-    }
-    
-    // Efficient modular exponentiation using BigInt for precision with large exponents
-    function modPow(base: number, exp: number, mod: number): number {
-        // Initialize result to 1 using BigInt for precision
-        let result = 1n;
-        // Convert base to BigInt and ensure it's within modulo range
-        let baseBig = BigInt(base) % BigInt(mod);
-        // Convert exponent to BigInt
-        let expBig = BigInt(exp);
-        // Convert modulo to BigInt for consistent operations
-        const modBig = BigInt(mod);
-        
-        // Binary exponentiation loop using BigInt arithmetic
-        while (expBig > 0n) {
-            // If current bit of exponent is set, multiply result by current base
-            if (expBig & 1n) result = (result * baseBig) % modBig;
-            // Square the base for next iteration
-            baseBig = (baseBig * baseBig) % modBig;
-            // Right shift exponent by 1 bit
-            expBig >>= 1n;
-        }
-        // Convert back to number (safe since result is mod 10^9+7)
-        return Number(result);
-    }
-    
-    // Process each query and return the result
-    return queries.map(([left, right]) => 
-        // Calculate 2^(sum of exponents in range [left, right])
-        modPow(2, prefixSums[right + 1] - prefixSums[left], MOD)
-    );
+    // Convert back to number (safe since result is mod 10^9+7)
+    return Number(result);
+  }
+
+  // Process each query and return the result
+  return queries.map(([left, right]) =>
+    // Calculate 2^(sum of exponents in range [left, right])
+    modPow(2, prefixSums[right + 1] - prefixSums[left], MOD),
+  );
 }

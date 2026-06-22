@@ -46,7 +46,14 @@ function longestBalanced(nums: number[]): number {
   const tLazy = new Int32Array(2 * SZ);
 
   // Range update function for the segment tree with lazy propagation
-  const update = (v: number, tl: number, tr: number, l: number, r: number, add: number) => {
+  const update = (
+    v: number,
+    tl: number,
+    tr: number,
+    l: number,
+    r: number,
+    add: number,
+  ) => {
     if (l > r) return;
     if (l === tl && r === tr) {
       tMin[v] += add;
@@ -76,7 +83,13 @@ function longestBalanced(nums: number[]): number {
   };
 
   // Initialize an index j in the tree as we sweep through the array
-  const setLeaf = (v: number, tl: number, tr: number, pos: number, val: number) => {
+  const setLeaf = (
+    v: number,
+    tl: number,
+    tr: number,
+    pos: number,
+    val: number,
+  ) => {
     if (tl === tr) {
       tMin[v] = val;
       tMax[v] = val;
@@ -103,7 +116,13 @@ function longestBalanced(nums: number[]): number {
   };
 
   // Find the leftmost index that currently has a value of 0
-  const findFirstZero = (v: number, tl: number, tr: number, l: number, r: number): number => {
+  const findFirstZero = (
+    v: number,
+    tl: number,
+    tr: number,
+    l: number,
+    r: number,
+  ): number => {
     // Optimization: If the target value 0 is not in [min, max], discard this subtree
     if (l > r || tMin[v] > 0 || tMax[v] < 0) return -1;
     if (tl === tr) return tl;

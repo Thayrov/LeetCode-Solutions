@@ -41,7 +41,7 @@ function countPaths(n: number, roads: number[][]): number {
   // Build the graph as an adjacency list; each intersection maps to a list of neighboring intersections and travel times
   const graph: { to: number; time: number }[][] = Array.from(
     { length: n },
-    () => []
+    () => [],
   );
   for (const [u, v, t] of roads) {
     // Add bidirectional roads: from u to v and v to u

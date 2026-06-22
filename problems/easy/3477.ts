@@ -35,28 +35,28 @@ n == fruits.length == baskets.length
 */
 
 function numOfUnplacedFruits(fruits: number[], baskets: number[]): number {
-    // Track which baskets are already used
-    const used = new Array(baskets.length).fill(false);
-    let unplaced = 0;
+  // Track which baskets are already used
+  const used = new Array(baskets.length).fill(false);
+  let unplaced = 0;
 
-    // For each fruit, try to find the leftmost available basket
-    for (const fruit of fruits) {
-        let placed = false;
+  // For each fruit, try to find the leftmost available basket
+  for (const fruit of fruits) {
+    let placed = false;
 
-        // Search from left to right for an available basket with sufficient capacity
-        for (let i = 0; i < baskets.length; i++) {
-            if (!used[i] && baskets[i] >= fruit) {
-                used[i] = true; // Mark basket as used
-                placed = true;
-                break; // Found placement, move to next fruit
-            }
-        }
-
-        // If no suitable basket found, increment unplaced count
-        if (!placed) {
-            unplaced++;
-        }
+    // Search from left to right for an available basket with sufficient capacity
+    for (let i = 0; i < baskets.length; i++) {
+      if (!used[i] && baskets[i] >= fruit) {
+        used[i] = true; // Mark basket as used
+        placed = true;
+        break; // Found placement, move to next fruit
+      }
     }
 
-    return unplaced;
-};
+    // If no suitable basket found, increment unplaced count
+    if (!placed) {
+      unplaced++;
+    }
+  }
+
+  return unplaced;
+}

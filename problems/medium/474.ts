@@ -27,32 +27,35 @@ strs[i] consists only of digits '0' and '1'.
 */
 
 function findMaxForm(strs: string[], m: number, n: number): number {
-    // Initialize 2D DP array where dp[i][j] represents the maximum number of strings
-    // we can form with at most i zeros and j ones
-    const dp: number[][] = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
-    
-    // Iterate through each string in the input array
-    for (const str of strs) {
-        // Count the number of zeros and ones in the current string
-        let zeros = 0, ones = 0;
-        for (const char of str) {
-            if (char === '0') zeros++;
-            else ones++;
-        }
-        
-        // Traverse the DP table backwards to avoid using the same string multiple times
-        // Start from m down to the minimum required zeros for this string
-        for (let i = m; i >= zeros; i--) {
-            // Start from n down to the minimum required ones for this string
-            for (let j = n; j >= ones; j--) {
-                // Update dp[i][j] by taking the maximum of:
-                // 1. Not including the current string: dp[i][j]
-                // 2. Including the current string: dp[i - zeros][j - ones] + 1
-                dp[i][j] = Math.max(dp[i][j], dp[i - zeros][j - ones] + 1);
-            }
-        }
+  // Initialize 2D DP array where dp[i][j] represents the maximum number of strings
+  // we can form with at most i zeros and j ones
+  const dp: number[][] = Array.from({ length: m + 1 }, () =>
+    Array(n + 1).fill(0),
+  );
+
+  // Iterate through each string in the input array
+  for (const str of strs) {
+    // Count the number of zeros and ones in the current string
+    let zeros = 0,
+      ones = 0;
+    for (const char of str) {
+      if (char === "0") zeros++;
+      else ones++;
     }
-    
-    // Return the maximum number of strings that can be formed with m zeros and n ones
-    return dp[m][n];
+
+    // Traverse the DP table backwards to avoid using the same string multiple times
+    // Start from m down to the minimum required zeros for this string
+    for (let i = m; i >= zeros; i--) {
+      // Start from n down to the minimum required ones for this string
+      for (let j = n; j >= ones; j--) {
+        // Update dp[i][j] by taking the maximum of:
+        // 1. Not including the current string: dp[i][j]
+        // 2. Including the current string: dp[i - zeros][j - ones] + 1
+        dp[i][j] = Math.max(dp[i][j], dp[i - zeros][j - ones] + 1);
+      }
+    }
+  }
+
+  // Return the maximum number of strings that can be formed with m zeros and n ones
+  return dp[m][n];
 }

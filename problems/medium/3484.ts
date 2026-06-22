@@ -36,47 +36,47 @@ At most 10^4 calls will be made in total to setCell, resetCell, and getValue.
 */
 
 class Spreadsheet {
-    // Use Map to store only non-zero values, saving memory
-    private cells: Map<string, number> = new Map();
-    
-    // Constructor doesn't need to initialize anything since we use sparse storage
-    constructor(rows: number) {}
-    
-    // Set cell value, delete from map if value is 0 to save memory
-    setCell(cell: string, value: number): void {
-        if (value === 0) {
-            // Remove from map instead of storing 0
-            this.cells.delete(cell);
-        } else {
-            // Store non-zero value
-            this.cells.set(cell, value);
-        }
+  // Use Map to store only non-zero values, saving memory
+  private cells: Map<string, number> = new Map();
+
+  // Constructor doesn't need to initialize anything since we use sparse storage
+  constructor(rows: number) {}
+
+  // Set cell value, delete from map if value is 0 to save memory
+  setCell(cell: string, value: number): void {
+    if (value === 0) {
+      // Remove from map instead of storing 0
+      this.cells.delete(cell);
+    } else {
+      // Store non-zero value
+      this.cells.set(cell, value);
     }
-    
-    // Reset cell by removing it from the map (equivalent to setting to 0)
-    resetCell(cell: string): void {
-        this.cells.delete(cell);
+  }
+
+  // Reset cell by removing it from the map (equivalent to setting to 0)
+  resetCell(cell: string): void {
+    this.cells.delete(cell);
+  }
+
+  // Evaluate formula by parsing the "=X+Y" format
+  getValue(formula: string): number {
+    // Remove '=' and split by '+' to get operands
+    const parts = formula.slice(1).split("+");
+    // Parse and sum both operands
+    return this.parseValue(parts[0]) + this.parseValue(parts[1]);
+  }
+
+  // Parse a token as either a cell reference or integer
+  private parseValue(token: string): number {
+    // Check if first character is a letter (A-Z) using ASCII codes
+    const firstChar = token.charCodeAt(0);
+    if (firstChar >= 65 && firstChar <= 90) {
+      // It's a cell reference, return stored value or 0 if not set
+      return this.cells.get(token) || 0;
     }
-    
-    // Evaluate formula by parsing the "=X+Y" format
-    getValue(formula: string): number {
-        // Remove '=' and split by '+' to get operands
-        const parts = formula.slice(1).split('+');
-        // Parse and sum both operands
-        return this.parseValue(parts[0]) + this.parseValue(parts[1]);
-    }
-    
-    // Parse a token as either a cell reference or integer
-    private parseValue(token: string): number {
-        // Check if first character is a letter (A-Z) using ASCII codes
-        const firstChar = token.charCodeAt(0);
-        if (firstChar >= 65 && firstChar <= 90) {
-            // It's a cell reference, return stored value or 0 if not set
-            return this.cells.get(token) || 0;
-        }
-        // It's a number, parse as integer
-        return parseInt(token, 10);
-    }
+    // It's a number, parse as integer
+    return parseInt(token, 10);
+  }
 }
 /**
  * Your Spreadsheet object will be instantiated and called as such:

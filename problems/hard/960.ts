@@ -33,35 +33,35 @@ strs[i] consists of lowercase English letters.
 */
 
 function minDeletionSize(strs: string[]): number {
-    const n = strs.length; // Number of rows
-    const m = strs[0].length; // Total number of columns
-    // dp[i] stores the maximum number of columns we can keep ending at index i
-    const dp = new Array(m).fill(1);
-    // Track the global maximum number of columns we can keep
-    let maxKeep = 1;
+  const n = strs.length; // Number of rows
+  const m = strs[0].length; // Total number of columns
+  // dp[i] stores the maximum number of columns we can keep ending at index i
+  const dp = new Array(m).fill(1);
+  // Track the global maximum number of columns we can keep
+  let maxKeep = 1;
 
-    // Iterate through each column to determine the max keepable sequence ending there
-    for (let i = 1; i < m; i++) {
-        // Look at all previous columns j to see if j can come before i
-        for (let j = 0; j < i; j++) {
-            let valid = true;
-            // Column j can precede column i ONLY if it doesn't break sorting in ANY row
-            for (let k = 0; k < n; k++) {
-                // If any row has a character at j greater than at i, it's not lexicographical
-                if (strs[k][j] > strs[k][i]) {
-                    valid = false;
-                    break; // Optimization: stop checking rows for this j
-                }
-            }
-            // If valid for all rows, update dp[i] using the LIS logic
-            if (valid) {
-                dp[i] = Math.max(dp[i], dp[j] + 1);
-            }
+  // Iterate through each column to determine the max keepable sequence ending there
+  for (let i = 1; i < m; i++) {
+    // Look at all previous columns j to see if j can come before i
+    for (let j = 0; j < i; j++) {
+      let valid = true;
+      // Column j can precede column i ONLY if it doesn't break sorting in ANY row
+      for (let k = 0; k < n; k++) {
+        // If any row has a character at j greater than at i, it's not lexicographical
+        if (strs[k][j] > strs[k][i]) {
+          valid = false;
+          break; // Optimization: stop checking rows for this j
         }
-        // Update the overall maximum found so far
-        if (dp[i] > maxKeep) maxKeep = dp[i];
+      }
+      // If valid for all rows, update dp[i] using the LIS logic
+      if (valid) {
+        dp[i] = Math.max(dp[i], dp[j] + 1);
+      }
     }
+    // Update the overall maximum found so far
+    if (dp[i] > maxKeep) maxKeep = dp[i];
+  }
 
-    // The result is total columns minus the maximum columns we can keep
-    return m - maxKeep;
+  // The result is total columns minus the maximum columns we can keep
+  return m - maxKeep;
 }

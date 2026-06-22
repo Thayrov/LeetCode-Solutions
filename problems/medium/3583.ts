@@ -53,39 +53,39 @@ Constraints:
  * Prioritizes performance using TypedArrays for O(1) frequency lookups and a single pass logic.
  */
 function specialTriplets(nums: number[]): number {
-    const n = nums.length;
-    const MOD = 1_000_000_007;
-    // Use Uint32Array for better memory performance over standard objects or Maps
-    const right = new Uint32Array(100001); 
-    const left = new Uint32Array(100001);
-    let total = 0;
+  const n = nums.length;
+  const MOD = 1_000_000_007;
+  // Use Uint32Array for better memory performance over standard objects or Maps
+  const right = new Uint32Array(100001);
+  const left = new Uint32Array(100001);
+  let total = 0;
 
-    // Populate the right frequency array with all numbers initially
-    for (let i = 0; i < n; i++) {
-        right[nums[i]]++;
+  // Populate the right frequency array with all numbers initially
+  for (let i = 0; i < n; i++) {
+    right[nums[i]]++;
+  }
+
+  // Iterate through each j which acts as the center of the triplet
+  for (let j = 0; j < n; j++) {
+    const val = nums[j];
+    // Remove current element from right side count as j cannot be k
+    right[val]--;
+
+    const target = val * 2;
+    // Optimization: only check if the doubled value is within range constraints
+    if (target <= 100000) {
+      const countL = left[target]; // Count of i < j where nums[i] = nums[j]*2
+      const countR = right[target]; // Count of k > j where nums[k] = nums[j]*2
+
+      if (countL > 0 && countR > 0) {
+        // Triplets are formed by multiplying left possibilities by right possibilities
+        total = (total + countL * countR) % MOD;
+      }
     }
 
-    // Iterate through each j which acts as the center of the triplet
-    for (let j = 0; j < n; j++) {
-        const val = nums[j];
-        // Remove current element from right side count as j cannot be k
-        right[val]--;
-        
-        const target = val * 2;
-        // Optimization: only check if the doubled value is within range constraints
-        if (target <= 100000) {
-            const countL = left[target]; // Count of i < j where nums[i] = nums[j]*2
-            const countR = right[target]; // Count of k > j where nums[k] = nums[j]*2
-            
-            if (countL > 0 && countR > 0) {
-                // Triplets are formed by multiplying left possibilities by right possibilities
-                total = (total + (countL * countR)) % MOD;
-            }
-        }
-        
-        // Add current element to left side count for future iterations of j
-        left[val]++;
-    }
+    // Add current element to left side count for future iterations of j
+    left[val]++;
+  }
 
-    return total;
+  return total;
 }

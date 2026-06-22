@@ -27,35 +27,35 @@ Constraints:
 */
 
 function maxDistinctElements(nums: number[], k: number): number {
-    // Sort array to process elements in ascending order, enabling greedy assignment
-    nums.sort((a, b) => a - b);
-    
-    // Track the last value we assigned to ensure all elements are distinct
-    let last = -Infinity;
-    
-    // Count of distinct elements we can create
-    let count = 0;
-    
-    // Process each element in sorted order
-    for (let num of nums) {
-        // Calculate the valid range for this element after operation
-        const minVal = num - k;
-        const maxVal = num + k;
-        
-        // Greedily choose the smallest valid value that's greater than last
-        // This maximizes our chances of fitting subsequent elements
-        const target = Math.max(minVal, last + 1);
-        
-        // Check if we can place this element distinctly within its valid range
-        if (target <= maxVal) {
-            // Update last assigned value
-            last = target;
-            // Increment count of distinct elements
-            count++;
-        }
-        // If target > maxVal, we can't make this element distinct, skip it
+  // Sort array to process elements in ascending order, enabling greedy assignment
+  nums.sort((a, b) => a - b);
+
+  // Track the last value we assigned to ensure all elements are distinct
+  let last = -Infinity;
+
+  // Count of distinct elements we can create
+  let count = 0;
+
+  // Process each element in sorted order
+  for (let num of nums) {
+    // Calculate the valid range for this element after operation
+    const minVal = num - k;
+    const maxVal = num + k;
+
+    // Greedily choose the smallest valid value that's greater than last
+    // This maximizes our chances of fitting subsequent elements
+    const target = Math.max(minVal, last + 1);
+
+    // Check if we can place this element distinctly within its valid range
+    if (target <= maxVal) {
+      // Update last assigned value
+      last = target;
+      // Increment count of distinct elements
+      count++;
     }
-    
-    // Return the maximum number of distinct elements achievable
-    return count;
+    // If target > maxVal, we can't make this element distinct, skip it
+  }
+
+  // Return the maximum number of distinct elements achievable
+  return count;
 }

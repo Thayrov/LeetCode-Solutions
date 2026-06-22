@@ -34,54 +34,54 @@ The total area of all the squares will not exceed 10^12.
 */
 
 function separateSquares(squares: number[][]): number {
-    // Initialize variables to track total area and the bounds of our search range
-    let totalArea = 0;
-    let minY = Infinity;
-    let maxY = -Infinity;
+  // Initialize variables to track total area and the bounds of our search range
+  let totalArea = 0;
+  let minY = Infinity;
+  let maxY = -Infinity;
 
-    // Single pass to calculate the total sum of areas and define the min/max Y boundaries
-    for (let i = 0; i < squares.length; i++) {
-        const l = squares[i][2];
-        const y = squares[i][1];
-        totalArea += l * l;
-        if (y < minY) minY = y;
-        if (y + l > maxY) maxY = y + l;
+  // Single pass to calculate the total sum of areas and define the min/max Y boundaries
+  for (let i = 0; i < squares.length; i++) {
+    const l = squares[i][2];
+    const y = squares[i][1];
+    totalArea += l * l;
+    if (y < minY) minY = y;
+    if (y + l > maxY) maxY = y + l;
+  }
+
+  let low = minY;
+  let high = maxY;
+
+  // Binary search on the y-coordinate. 100 iterations ensure precision up to ~10^-20
+  for (let i = 0; i < 100; i++) {
+    const mid = (low + high) / 2;
+    let areaBelow = 0;
+
+    // Calculate the total area currently sitting below the horizontal line at height 'mid'
+    for (let j = 0; j < squares.length; j++) {
+      const y = squares[j][1];
+      const l = squares[j][2];
+
+      if (mid <= y) {
+        // The square is entirely above the line
+        continue;
+      } else if (mid >= y + l) {
+        // The square is entirely below the line
+        areaBelow += l * l;
+      } else {
+        // The line intersects the square; add the partial area (height_diff * width)
+        areaBelow += (mid - y) * l;
+      }
     }
 
-    let low = minY;
-    let high = maxY;
-
-    // Binary search on the y-coordinate. 100 iterations ensure precision up to ~10^-20
-    for (let i = 0; i < 100; i++) {
-        const mid = (low + high) / 2;
-        let areaBelow = 0;
-
-        // Calculate the total area currently sitting below the horizontal line at height 'mid'
-        for (let j = 0; j < squares.length; j++) {
-            const y = squares[j][1];
-            const l = squares[j][2];
-            
-            if (mid <= y) {
-                // The square is entirely above the line
-                continue; 
-            } else if (mid >= y + l) {
-                // The square is entirely below the line
-                areaBelow += l * l;
-            } else {
-                // The line intersects the square; add the partial area (height_diff * width)
-                areaBelow += (mid - y) * l;
-            }
-        }
-
-        // Adjust search range: if area below is less than half, the line must be higher
-        if (areaBelow < totalArea / 2) {
-            low = mid;
-        } else {
-            // Otherwise, the line is either at the correct spot or needs to be lower
-            high = mid;
-        }
+    // Adjust search range: if area below is less than half, the line must be higher
+    if (areaBelow < totalArea / 2) {
+      low = mid;
+    } else {
+      // Otherwise, the line is either at the correct spot or needs to be lower
+      high = mid;
     }
+  }
 
-    // Return the calculated Y coordinate
-    return low;
+  // Return the calculated Y coordinate
+  return low;
 }

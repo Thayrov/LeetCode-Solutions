@@ -40,47 +40,44 @@ Constraints:
 */
 
 function soupServings(n: number): number {
-    // For large n (> 4800), probability approaches 1.0 due to asymmetric operations
-    // This optimization prevents excessive computation for large inputs
-    if (n > 4800) return 1.0;
-    
-    // Memoization map to store calculated probabilities for each state (a,b)
-    const memo = new Map<string, number>();
-    
-    // Recursive function to calculate probability for remaining soup amounts a and b
-    // Working with units of 25ml to reduce state space (divide original amounts by 25)
-    function dp(a: number, b: number): number {
-        // Base case: both soups empty simultaneously - contributes 0.5 to probability
-        if (a <= 0 && b <= 0) return 0.5;
-        // Base case: only soup A is empty - contributes 1.0 to probability
-        if (a <= 0) return 1.0;
-        // Base case: only soup B is empty - contributes 0.0 to probability
-        if (b <= 0) return 0.0;
-        
-        // Create unique key for current state to check memoization
-        const key = `${a},${b}`;
-        // Return cached result if already calculated
-        if (memo.has(key)) return memo.get(key)!;
-        
-        // Calculate probability as weighted average of all four operations
-        // Each operation has 0.25 probability:
-        // Operation 1: pour 4 units from A, 0 from B (100ml A, 0ml B)
-        // Operation 2: pour 3 units from A, 1 from B (75ml A, 25ml B)
-        // Operation 3: pour 2 units from A, 2 from B (50ml A, 50ml B)
-        // Operation 4: pour 1 unit from A, 3 from B (25ml A, 75ml B)
-        const result = 0.25 * (
-            dp(a - 4, b) +
-            dp(a - 3, b - 1) +
-            dp(a - 2, b - 2) +
-            dp(a - 1, b - 3)
-        );
-        
-        // Store result in memoization map before returning
-        memo.set(key, result);
-        return result;
-    }
-    
-    // Start recursion with initial soup amounts converted to 25ml units
-    // Use Math.ceil to handle cases where n is not divisible by 25
-    return dp(Math.ceil(n / 25), Math.ceil(n / 25));
+  // For large n (> 4800), probability approaches 1.0 due to asymmetric operations
+  // This optimization prevents excessive computation for large inputs
+  if (n > 4800) return 1.0;
+
+  // Memoization map to store calculated probabilities for each state (a,b)
+  const memo = new Map<string, number>();
+
+  // Recursive function to calculate probability for remaining soup amounts a and b
+  // Working with units of 25ml to reduce state space (divide original amounts by 25)
+  function dp(a: number, b: number): number {
+    // Base case: both soups empty simultaneously - contributes 0.5 to probability
+    if (a <= 0 && b <= 0) return 0.5;
+    // Base case: only soup A is empty - contributes 1.0 to probability
+    if (a <= 0) return 1.0;
+    // Base case: only soup B is empty - contributes 0.0 to probability
+    if (b <= 0) return 0.0;
+
+    // Create unique key for current state to check memoization
+    const key = `${a},${b}`;
+    // Return cached result if already calculated
+    if (memo.has(key)) return memo.get(key)!;
+
+    // Calculate probability as weighted average of all four operations
+    // Each operation has 0.25 probability:
+    // Operation 1: pour 4 units from A, 0 from B (100ml A, 0ml B)
+    // Operation 2: pour 3 units from A, 1 from B (75ml A, 25ml B)
+    // Operation 3: pour 2 units from A, 2 from B (50ml A, 50ml B)
+    // Operation 4: pour 1 unit from A, 3 from B (25ml A, 75ml B)
+    const result =
+      0.25 *
+      (dp(a - 4, b) + dp(a - 3, b - 1) + dp(a - 2, b - 2) + dp(a - 1, b - 3));
+
+    // Store result in memoization map before returning
+    memo.set(key, result);
+    return result;
+  }
+
+  // Start recursion with initial soup amounts converted to 25ml units
+  // Use Math.ceil to handle cases where n is not divisible by 25
+  return dp(Math.ceil(n / 25), Math.ceil(n / 25));
 }

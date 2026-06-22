@@ -37,35 +37,35 @@ strs[i] consists of lowercase English letters.
 */
 
 function minDeletionSize(strs: string[]): number {
-    const n = strs.length; // Number of strings in the array
-    const m = strs[0].length; // Length of each string (number of columns)
-    let res = 0; // Counter for deleted columns
-    // tracks if pair (strs[i], strs[i+1]) is already lexicographically sorted
-    const isSorted = new Array(n - 1).fill(false);
+  const n = strs.length; // Number of strings in the array
+  const m = strs[0].length; // Length of each string (number of columns)
+  let res = 0; // Counter for deleted columns
+  // tracks if pair (strs[i], strs[i+1]) is already lexicographically sorted
+  const isSorted = new Array(n - 1).fill(false);
 
-    // Iterate through each column greedily
-    for (let j = 0; j < m; j++) {
-        let i = 0;
-        // Check if current column j violates the sorted property for any unsorted pair
-        for (; i < n - 1; i++) {
-            // If the pair isn't sorted yet and current char makes them unsorted...
-            if (!isSorted[i] && strs[i][j] > strs[i + 1][j]) {
-                res++; // Mark this column for deletion
-                break; // Exit loop to avoid redundant checks for this column
-            }
-        }
-
-        // If we reached the end of the loop, the column is valid (not deleted)
-        if (i === n - 1) {
-            // Update the sorted status of pairs based on this valid column
-            for (let k = 0; k < n - 1; k++) {
-                // If current char is strictly less, the whole strings are now sorted
-                if (strs[k][j] < strs[k + 1][j]) {
-                    isSorted[k] = true;
-                }
-            }
-        }
+  // Iterate through each column greedily
+  for (let j = 0; j < m; j++) {
+    let i = 0;
+    // Check if current column j violates the sorted property for any unsorted pair
+    for (; i < n - 1; i++) {
+      // If the pair isn't sorted yet and current char makes them unsorted...
+      if (!isSorted[i] && strs[i][j] > strs[i + 1][j]) {
+        res++; // Mark this column for deletion
+        break; // Exit loop to avoid redundant checks for this column
+      }
     }
-    // Return total number of columns removed
-    return res;
+
+    // If we reached the end of the loop, the column is valid (not deleted)
+    if (i === n - 1) {
+      // Update the sorted status of pairs based on this valid column
+      for (let k = 0; k < n - 1; k++) {
+        // If current char is strictly less, the whole strings are now sorted
+        if (strs[k][j] < strs[k + 1][j]) {
+          isSorted[k] = true;
+        }
+      }
+    }
+  }
+  // Return total number of columns removed
+  return res;
 }

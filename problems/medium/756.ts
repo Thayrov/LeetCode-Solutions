@@ -30,47 +30,50 @@ All the values of allowed are unique.
 </> Typescript code:
 */
 
-function pyramidTransition(commentedBottom: string, commentedAllowed: string[]): boolean {
-    // Pre-process the allowed patterns into a Map for O(1) lookup of top block options
-    const transitions = new Map<string, string[]>();
-    for (const pattern of commentedAllowed) {
-        const base = pattern[0] + pattern[1];
-        if (!transitions.has(base)) transitions.set(base, []);
-        transitions.get(base)!.push(pattern[2]);
+function pyramidTransition(
+  commentedBottom: string,
+  commentedAllowed: string[],
+): boolean {
+  // Pre-process the allowed patterns into a Map for O(1) lookup of top block options
+  const transitions = new Map<string, string[]>();
+  for (const pattern of commentedAllowed) {
+    const base = pattern[0] + pattern[1];
+    if (!transitions.has(base)) transitions.set(base, []);
+    transitions.get(base)!.push(pattern[2]);
+  }
+
+  // Memoization set to track 'next row' configurations that have already failed
+  const failedStates = new Set<string>();
+
+  // Recursive function: 'curr' is the current row, 'next' is the row being built above it
+  function backtrack(curr: string, next: string): boolean {
+    // Base case: If the current row length is 1, we've reached the pyramid peak
+    if (curr.length === 1) return true;
+
+    // If 'next' row construction is finished for this level, move to the next level
+    if (next.length === curr.length - 1) {
+      // If we've seen this row configuration before and it failed, stop early
+      if (failedStates.has(next)) return false;
+      const possible = backtrack(next, "");
+      // If this configuration doesn't lead to a solution, cache it
+      if (!possible) failedStates.add(next);
+      return possible;
     }
 
-    // Memoization set to track 'next row' configurations that have already failed
-    const failedStates = new Set<string>();
+    // Determine the two blocks in the current row to build the next block upon
+    const i = next.length;
+    const pair = curr[i] + curr[i + 1];
+    const candidates = transitions.get(pair) || [];
 
-    // Recursive function: 'curr' is the current row, 'next' is the row being built above it
-    function backtrack(curr: string, next: string): boolean {
-        // Base case: If the current row length is 1, we've reached the pyramid peak
-        if (curr.length === 1) return true;
-
-        // If 'next' row construction is finished for this level, move to the next level
-        if (next.length === curr.length - 1) {
-            // If we've seen this row configuration before and it failed, stop early
-            if (failedStates.has(next)) return false;
-            const possible = backtrack(next, "");
-            // If this configuration doesn't lead to a solution, cache it
-            if (!possible) failedStates.add(next);
-            return possible;
-        }
-
-        // Determine the two blocks in the current row to build the next block upon
-        const i = next.length;
-        const pair = curr[i] + curr[i + 1];
-        const candidates = transitions.get(pair) || [];
-
-        // Try every allowed block that can sit on top of the current pair
-        for (const char of candidates) {
-            // Recursive call to build the rest of the 'next' row
-            if (backtrack(curr, next + char)) return true;
-        }
-
-        return false;
+    // Try every allowed block that can sit on top of the current pair
+    for (const char of candidates) {
+      // Recursive call to build the rest of the 'next' row
+      if (backtrack(curr, next + char)) return true;
     }
 
-    // Kick off the recursion starting from the bottom row
-    return backtrack(commentedBottom, "");
+    return false;
+  }
+
+  // Kick off the recursion starting from the bottom row
+  return backtrack(commentedBottom, "");
 }

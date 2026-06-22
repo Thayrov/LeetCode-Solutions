@@ -37,36 +37,36 @@ The number of nodes in the tree is in the range [2, 5 * 104].
  * }
  */
 
- function maxProduct(root: TreeNode | null): number {
-     // Array to store the sum of every possible subtree encountered during traversal
-     const sums: number[] = [];
-     
-     // Post-order traversal to calculate total sum and populate the sums array
-     const getSum = (node: TreeNode | null): number => {
-         // Base case: null nodes contribute 0 to the sum
-         if (!node) return 0;
-         // Current subtree sum = current value + left child sum + right child sum
-         const subtreeSum = node.val + getSum(node.left) + getSum(node.right);
-         // Store this sum to evaluate it as a potential split point later
-         sums.push(subtreeSum);
-         return subtreeSum;
-     };
- 
-     // Calculate total sum of the entire tree
-     const totalSum = getSum(root);
-     // Use BigInt for product calculation to handle values exceeding 2^53 - 1
-     let maxProd = 0n;
-     const total = BigInt(totalSum);
- 
-     // Iterate through all recorded subtree sums to find the maximum product
-     for (const s of sums) {
-         const currentSum = BigInt(s);
-         // Product = (Sum of Subtree A) * (Total Sum - Sum of Subtree A)
-         const product = currentSum * (total - currentSum);
-         // Update maxProd if the current product is larger
-         if (product > maxProd) maxProd = product;
-     }
- 
-     // Apply modulo 10^9 + 7 as required by the problem constraints
-     return Number(maxProd % 1000000007n);
- }
+function maxProduct(root: TreeNode | null): number {
+  // Array to store the sum of every possible subtree encountered during traversal
+  const sums: number[] = [];
+
+  // Post-order traversal to calculate total sum and populate the sums array
+  const getSum = (node: TreeNode | null): number => {
+    // Base case: null nodes contribute 0 to the sum
+    if (!node) return 0;
+    // Current subtree sum = current value + left child sum + right child sum
+    const subtreeSum = node.val + getSum(node.left) + getSum(node.right);
+    // Store this sum to evaluate it as a potential split point later
+    sums.push(subtreeSum);
+    return subtreeSum;
+  };
+
+  // Calculate total sum of the entire tree
+  const totalSum = getSum(root);
+  // Use BigInt for product calculation to handle values exceeding 2^53 - 1
+  let maxProd = 0n;
+  const total = BigInt(totalSum);
+
+  // Iterate through all recorded subtree sums to find the maximum product
+  for (const s of sums) {
+    const currentSum = BigInt(s);
+    // Product = (Sum of Subtree A) * (Total Sum - Sum of Subtree A)
+    const product = currentSum * (total - currentSum);
+    // Update maxProd if the current product is larger
+    if (product > maxProd) maxProd = product;
+  }
+
+  // Apply modulo 10^9 + 7 as required by the problem constraints
+  return Number(maxProd % 1000000007n);
+}

@@ -32,22 +32,22 @@ function numberOfSubstrings(s: string): number {
   let res = 0,
     left = 0;
   // Create an object to track the frequency of 'a', 'b', and 'c' in the current window
-  const count = {a: 0, b: 0, c: 0};
+  const count = { a: 0, b: 0, c: 0 };
   // Get the length of the input string for further calculations
   const n = s.length;
 
   // Iterate over the string using 'right' as the end pointer of the sliding window
   for (let right = 0; right < n; right++) {
     // Increase the count for the current character in the window
-    count[s[right] as 'a' | 'b' | 'c']++;
+    count[s[right] as "a" | "b" | "c"]++;
 
     // Check if the current window [left, right] contains at least one 'a', 'b', and 'c'
-    while (count['a'] > 0 && count['b'] > 0 && count['c'] > 0) {
+    while (count["a"] > 0 && count["b"] > 0 && count["c"] > 0) {
       // Once valid, every substring starting from 'left' to the rest of the string is valid,
       // so add the count of all possible ending positions from 'right' to 'n-1'
       res += n - right;
       // Shrink the window from the left by decrementing the count of its character
-      count[s[left] as 'a' | 'b' | 'c']--;
+      count[s[left] as "a" | "b" | "c"]--;
       // Move the left pointer forward to attempt a smaller valid window
       left++;
     }

@@ -31,14 +31,14 @@ num consists of only 6 and 9 digits.
 </> Typescript code:
 */
 
-function maximum69Number (num: number): number {
-    // Convert the input number to its string representation to easily manipulate its digits.
-    const numAsString = num.toString();
+function maximum69Number(num: number): number {
+  // Convert the input number to its string representation to easily manipulate its digits.
+  const numAsString = num.toString();
 
-    // Replace the first '6' with a '9'. This works because to maximize the number,
-    // we need to change the leftmost '6', and string.replace() targets the first occurrence.
-    const newNumAsString = numAsString.replace('6', '9');
+  // Replace the first '6' with a '9'. This works because to maximize the number,
+  // we need to change the leftmost '6', and string.replace() targets the first occurrence.
+  const newNumAsString = numAsString.replace("6", "9");
 
-    // Convert the modified string back into a number and return it.
-    return Number(newNumAsString);
-};
+  // Convert the modified string back into a number and return it.
+  return Number(newNumAsString);
+}

@@ -32,12 +32,12 @@ function findDifferentBinaryString(nums: string[]): string {
   // Determine the number of binary strings (and the length of each string)
   const n = nums.length;
   // Initialize an empty string to build our unique binary string
-  let result = '';
+  let result = "";
   // Iterate through each index from 0 to n-1
   for (let i = 0; i < n; i++) {
     // Access the i-th character of the i-th string and flip it:
     // if it's '0', append '1' to result; otherwise, append '0'
-    result += nums[i][i] === '0' ? '1' : '0';
+    result += nums[i][i] === "0" ? "1" : "0";
   }
   // Return the newly constructed string, which by construction is guaranteed not to be in nums
   return result;

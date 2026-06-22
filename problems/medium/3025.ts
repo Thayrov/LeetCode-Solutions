@@ -39,36 +39,41 @@ All points[i] are distinct.
 */
 
 function numberOfPairs(points: number[][]): number {
-    let count = 0; // Initialize counter for valid pairs
-    const n = points.length; // Store array length for performance
-    
-    // Iterate through all possible pairs (i, j) where i is potential upper-left point A
-    for (let i = 0; i < n; i++) {
-        // j represents potential bottom-right point B
-        for (let j = 0; j < n; j++) {
-            // Skip if same point, or if i is not upper-left of j
-            // Upper-left means: i.x <= j.x AND i.y >= j.y
-            if (i === j || points[i][0] > points[j][0] || points[i][1] < points[j][1]) continue;
-            
-            let hasPointInside = false; // Flag to track if rectangle contains other points
-            
-            // Check all other points to see if any lies within the rectangle
-            for (let k = 0; k < n; k++) {
-                if (k === i || k === j) continue; // Skip the pair points themselves
-                
-                // Check if point k is within rectangle bounds (inclusive of borders)
-                // Rectangle bounds: [points[i][0], points[j][0]] x [points[j][1], points[i][1]]
-                if (points[k][0] >= points[i][0] && points[k][0] <= points[j][0] && 
-                    points[k][1] >= points[j][1] && points[k][1] <= points[i][1]) {
-                    hasPointInside = true; // Found a point inside rectangle
-                    break; // Early termination - no need to check remaining points
-                }
-            }
-            
-            // If no points found inside rectangle, increment valid pair count
-            if (!hasPointInside) count++;
+  let count = 0; // Initialize counter for valid pairs
+  const n = points.length; // Store array length for performance
+
+  // Iterate through all possible pairs (i, j) where i is potential upper-left point A
+  for (let i = 0; i < n; i++) {
+    // j represents potential bottom-right point B
+    for (let j = 0; j < n; j++) {
+      // Skip if same point, or if i is not upper-left of j
+      // Upper-left means: i.x <= j.x AND i.y >= j.y
+      if (i === j || points[i][0] > points[j][0] || points[i][1] < points[j][1])
+        continue;
+
+      let hasPointInside = false; // Flag to track if rectangle contains other points
+
+      // Check all other points to see if any lies within the rectangle
+      for (let k = 0; k < n; k++) {
+        if (k === i || k === j) continue; // Skip the pair points themselves
+
+        // Check if point k is within rectangle bounds (inclusive of borders)
+        // Rectangle bounds: [points[i][0], points[j][0]] x [points[j][1], points[i][1]]
+        if (
+          points[k][0] >= points[i][0] &&
+          points[k][0] <= points[j][0] &&
+          points[k][1] >= points[j][1] &&
+          points[k][1] <= points[i][1]
+        ) {
+          hasPointInside = true; // Found a point inside rectangle
+          break; // Early termination - no need to check remaining points
         }
+      }
+
+      // If no points found inside rectangle, increment valid pair count
+      if (!hasPointInside) count++;
     }
-    
-    return count; // Return total number of valid pairs
+  }
+
+  return count; // Return total number of valid pairs
 }

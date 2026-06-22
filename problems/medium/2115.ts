@@ -45,7 +45,7 @@ Each ingredients[i] does not contain any duplicate values.
 function findAllRecipes(
   recipes: string[],
   ingredients: string[][],
-  supplies: string[]
+  supplies: string[],
 ): string[] {
   // Create a set for quick lookup of available supplies.
   const supplySet = new Set(supplies);

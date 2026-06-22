@@ -44,7 +44,7 @@ nums1 and nums2 are sorted.
 function kthSmallestProduct(
   nums1: number[],
   nums2: number[],
-  k: number
+  k: number,
 ): number {
   // This helper function counts how many products of nums1[i] * nums2[j] are less than or equal to 'val'.
   const countLessOrEqual = (val: number): number => {

@@ -47,7 +47,9 @@ function numWays(words: string[], target: string): number {
   // Define the modulo constant
   const mod = 1_000_000_007;
   // Number of words, length of each word, and length of the target
-  const n = words.length, wLen = words[0].length, tLen = target.length;
+  const n = words.length,
+    wLen = words[0].length,
+    tLen = target.length;
   // Create an array freq to count occurrences of each letter in each column
   const freq = Array.from({ length: wLen }, () => Array(26).fill(0));
   // Fill freq with the count of letters for each column
@@ -65,7 +67,8 @@ function numWays(words: string[], target: string): number {
     // Update dp from right to left to avoid using updated results in the same iteration
     for (let i = tLen - 1; i >= 0; i--) {
       // Multiply current ways by the frequency of target[i] in this column
-      dp[i + 1] = (dp[i + 1] + dp[i] * freq[col][target.charCodeAt(i) - 97]) % mod;
+      dp[i + 1] =
+        (dp[i + 1] + dp[i] * freq[col][target.charCodeAt(i) - 97]) % mod;
     }
   }
   // dp[tLen] holds the total number of ways to form the entire target

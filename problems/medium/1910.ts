@@ -63,5 +63,5 @@ function removeOccurrences(s: string, part: string): string {
     }
   }
   // Combine the stack into a final string to return.
-  return stack.join('');
+  return stack.join("");
 }

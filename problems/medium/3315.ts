@@ -32,35 +32,35 @@ nums[i] is a prime number.
 */
 
 function minBitwiseArray(nums: number[]): number[] {
-    const n = nums.length;
-    // Use Int32Array for better performance with large sets of integers
-    const ans = new Int32Array(n);
+  const n = nums.length;
+  // Use Int32Array for better performance with large sets of integers
+  const ans = new Int32Array(n);
 
-    for (let i = 0; i < n; i++) {
-        const num = nums[i];
+  for (let i = 0; i < n; i++) {
+    const num = nums[i];
 
-        // The only even prime is 2. x OR (x+1) is always odd.
-        // Therefore, no x exists such that x OR (x+1) == 2.
-        if (num === 2) {
-            ans[i] = -1;
-            continue;
-        }
-
-        // We need to find the length of the trailing sequence of 1s in binary.
-        // Example: 11 is 1011. Trailing 1s = 2.
-        let t = num;
-        let count = 0;
-        while ((t & 1) === 1) {
-            t >>= 1; // Shift right to check the next bit
-            count++; // Count the consecutive 1s from the right
-        }
-
-        // To minimize ans[i], we flip the leftmost '1' of that trailing block to '0'.
-        // This is done by XORing num with 2^(count-1).
-        // Example: 1011 XOR (1 << (2-1)) = 1011 XOR 0010 = 1001 (9).
-        ans[i] = num ^ (1 << (count - 1));
+    // The only even prime is 2. x OR (x+1) is always odd.
+    // Therefore, no x exists such that x OR (x+1) == 2.
+    if (num === 2) {
+      ans[i] = -1;
+      continue;
     }
 
-    // Convert TypedArray back to standard number array for LeetCode compatibility
-    return Array.from(ans);
+    // We need to find the length of the trailing sequence of 1s in binary.
+    // Example: 11 is 1011. Trailing 1s = 2.
+    let t = num;
+    let count = 0;
+    while ((t & 1) === 1) {
+      t >>= 1; // Shift right to check the next bit
+      count++; // Count the consecutive 1s from the right
+    }
+
+    // To minimize ans[i], we flip the leftmost '1' of that trailing block to '0'.
+    // This is done by XORing num with 2^(count-1).
+    // Example: 1011 XOR (1 << (2-1)) = 1011 XOR 0010 = 1001 (9).
+    ans[i] = num ^ (1 << (count - 1));
+  }
+
+  // Convert TypedArray back to standard number array for LeetCode compatibility
+  return Array.from(ans);
 }

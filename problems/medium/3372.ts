@@ -38,7 +38,11 @@ The input is generated such that edges1 and edges2 represent valid trees.
 </> Typescript code:
 */
 
-function maxTargetNodes(edges1: number[][], edges2: number[][], k: number): number[] {
+function maxTargetNodes(
+  edges1: number[][],
+  edges2: number[][],
+  k: number,
+): number[] {
   // Get the number of nodes in tree 1 (n) and tree 2 (m).
   // For a tree with 'x' edges, it has 'x + 1' nodes.
   const n = edges1.length + 1;
@@ -49,7 +53,7 @@ function maxTargetNodes(edges1: number[][], edges2: number[][], k: number): numb
   // directly connected to node `i`.
   const buildAdj = (edges: number[][], numNodes: number): number[][] => {
     // Initialize an array of empty arrays, one for each node.
-    const adj: number[][] = Array.from({length: numNodes}, () => []);
+    const adj: number[][] = Array.from({ length: numNodes }, () => []);
     // Iterate over each edge [u, v].
     for (const [u, v] of edges) {
       // Add v to u's adjacency list.
@@ -67,7 +71,11 @@ function maxTargetNodes(edges1: number[][], edges2: number[][], k: number): numb
 
   // Helper function to calculate for every node `startNode` in a tree,
   // the count of nodes that are within `maxDist` distance from `startNode`.
-  const calculateCounts = (adj: number[][], numNodes: number, maxDist: number): number[] => {
+  const calculateCounts = (
+    adj: number[][],
+    numNodes: number,
+    maxDist: number,
+  ): number[] => {
     // Initialize an array `counts` to store the calculated counts for each `startNode`.
     // All elements are initialized to 0.
     const counts: number[] = Array(numNodes).fill(0);

@@ -37,43 +37,43 @@ grid.length == grid[i].length == n
 */
 
 function sortMatrix(grid: number[][]): number[][] {
-    const n = grid.length;
-    // Map to store diagonal values grouped by their diagonal index (i - j)
-    const diagonals = new Map<number, number[]>();
-    
-    // Collect all values from each diagonal
-    for (let i = 0; i < n; i++) {
-        for (let j = 0; j < n; j++) {
-            // Diagonal key: i - j (same diagonal has same i - j value)
-            const key = i - j;
-            // Initialize array if first time seeing this diagonal
-            if (!diagonals.has(key)) diagonals.set(key, []);
-            // Add current cell value to its diagonal group
-            diagonals.get(key)!.push(grid[i][j]);
-        }
+  const n = grid.length;
+  // Map to store diagonal values grouped by their diagonal index (i - j)
+  const diagonals = new Map<number, number[]>();
+
+  // Collect all values from each diagonal
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      // Diagonal key: i - j (same diagonal has same i - j value)
+      const key = i - j;
+      // Initialize array if first time seeing this diagonal
+      if (!diagonals.has(key)) diagonals.set(key, []);
+      // Add current cell value to its diagonal group
+      diagonals.get(key)!.push(grid[i][j]);
     }
-    
-    // Sort each diagonal based on its position
-    for (const [key, values] of diagonals) {
-        // key >= 0: bottom-left triangle + main diagonal (non-increasing)
-        // key < 0: top-right triangle (non-decreasing)
-        values.sort(key >= 0 ? (a, b) => b - a : (a, b) => a - b);
+  }
+
+  // Sort each diagonal based on its position
+  for (const [key, values] of diagonals) {
+    // key >= 0: bottom-left triangle + main diagonal (non-increasing)
+    // key < 0: top-right triangle (non-decreasing)
+    values.sort(key >= 0 ? (a, b) => b - a : (a, b) => a - b);
+  }
+
+  // Track current index for each diagonal when placing back values
+  const indices = new Map<number, number>();
+  // Place sorted values back into the grid
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      const key = i - j;
+      // Get current index for this diagonal (0 if first access)
+      const idx = indices.get(key) || 0;
+      // Place the next sorted value from this diagonal
+      grid[i][j] = diagonals.get(key)![idx];
+      // Increment index for next placement from this diagonal
+      indices.set(key, idx + 1);
     }
-    
-    // Track current index for each diagonal when placing back values
-    const indices = new Map<number, number>();
-    // Place sorted values back into the grid
-    for (let i = 0; i < n; i++) {
-        for (let j = 0; j < n; j++) {
-            const key = i - j;
-            // Get current index for this diagonal (0 if first access)
-            const idx = indices.get(key) || 0;
-            // Place the next sorted value from this diagonal
-            grid[i][j] = diagonals.get(key)![idx];
-            // Increment index for next placement from this diagonal
-            indices.set(key, idx + 1);
-        }
-    }
-    
-    return grid;
+  }
+
+  return grid;
 }

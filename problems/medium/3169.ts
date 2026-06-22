@@ -51,7 +51,7 @@ function countDays(days: number, meetings: number[][]): number {
       // Otherwise, update the last merged interval's end day to cover the current meeting as well
       merged[merged.length - 1][1] = Math.max(
         merged[merged.length - 1][1],
-        meeting[1]
+        meeting[1],
       );
     }
   }

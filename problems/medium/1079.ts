@@ -27,7 +27,7 @@ tiles consists of uppercase English letters.
 
 function numTilePossibilities(tiles: string): number {
   // Create a frequency object to count occurrences of each character in tiles
-  const freq: {[key: string]: number} = {};
+  const freq: { [key: string]: number } = {};
   // Populate the frequency table for each character in the input string
   for (const c of tiles) {
     freq[c] = (freq[c] || 0) + 1;

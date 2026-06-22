@@ -33,19 +33,19 @@ s consists only of lowercase English letters.
 */
 
 function doesAliceWin(s: string): boolean {
-    // Iterate through each character in the string
-    for (let i = 0; i < s.length; i++) {
-        // Get the current character
-        const c = s[i];
-        // Check if the current character is a vowel using explicit comparisons for maximum performance
-        if (c === 'a' || c === 'e' || c === 'i' || c === 'o' || c === 'u') {
-            // If we find any vowel, Alice can always win by optimal play
-            // She can always make the first move (taking a single vowel = odd count)
-            // and with optimal strategy, having any vowels gives Alice the advantage
-            return true;
-        }
+  // Iterate through each character in the string
+  for (let i = 0; i < s.length; i++) {
+    // Get the current character
+    const c = s[i];
+    // Check if the current character is a vowel using explicit comparisons for maximum performance
+    if (c === "a" || c === "e" || c === "i" || c === "o" || c === "u") {
+      // If we find any vowel, Alice can always win by optimal play
+      // She can always make the first move (taking a single vowel = odd count)
+      // and with optimal strategy, having any vowels gives Alice the advantage
+      return true;
     }
-    // If no vowels are found, Alice cannot make any move on her turn
-    // since she needs substrings with odd vowel counts (minimum 1 vowel)
-    return false;
+  }
+  // If no vowels are found, Alice cannot make any move on her turn
+  // since she needs substrings with odd vowel counts (minimum 1 vowel)
+  return false;
 }

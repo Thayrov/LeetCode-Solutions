@@ -36,7 +36,7 @@ sum(words[i].length) <= 3 * 10^5
 
 function vowelStrings(words: string[], queries: number[][]): number[] {
   // Create a set of vowels for quick membership checking
-  const v = new Set(['a', 'e', 'i', 'o', 'u']);
+  const v = new Set(["a", "e", "i", "o", "u"]);
   // Prepare an array to mark words starting and ending with a vowel
   const valid = Array(words.length);
   // Populate valid array with 1 if the word starts and ends with a vowel, else 0

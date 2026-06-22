@@ -40,42 +40,45 @@ bottomLeft[i][1] < topRight[i][1]
 </> Typescript code:
 */
 
-function largestSquareArea(bottomLeft: number[][], topRight: number[][]): number {
-    // Initialize maxSide to track the largest square side length found
-    let maxSide = 0;
-    // Cache the length of the input array
-    const n = bottomLeft.length;
+function largestSquareArea(
+  bottomLeft: number[][],
+  topRight: number[][],
+): number {
+  // Initialize maxSide to track the largest square side length found
+  let maxSide = 0;
+  // Cache the length of the input array
+  const n = bottomLeft.length;
 
-    // Outer loop to select the first rectangle in the pair
-    for (let i = 0; i < n; i++) {
-        const b1 = bottomLeft[i];
-        const t1 = topRight[i];
-        // Inner loop to select the second unique rectangle (j > i avoids duplicate pairs)
-        for (let j = i + 1; j < n; j++) {
-            const b2 = bottomLeft[j];
-            const t2 = topRight[j];
+  // Outer loop to select the first rectangle in the pair
+  for (let i = 0; i < n; i++) {
+    const b1 = bottomLeft[i];
+    const t1 = topRight[i];
+    // Inner loop to select the second unique rectangle (j > i avoids duplicate pairs)
+    for (let j = i + 1; j < n; j++) {
+      const b2 = bottomLeft[j];
+      const t2 = topRight[j];
 
-            // Calculate the boundaries of the intersection region
-            // The left edge of intersection is the maximum of the two left edges
-            const interLeft = Math.max(b1[0], b2[0]);
-            // The right edge of intersection is the minimum of the two right edges
-            const interRight = Math.min(t1[0], t2[0]);
-            // The bottom edge of intersection is the maximum of the two bottom edges
-            const interBottom = Math.max(b1[1], b2[1]);
-            // The top edge of intersection is the minimum of the two top edges
-            const interTop = Math.min(t1[1], t2[1]);
+      // Calculate the boundaries of the intersection region
+      // The left edge of intersection is the maximum of the two left edges
+      const interLeft = Math.max(b1[0], b2[0]);
+      // The right edge of intersection is the minimum of the two right edges
+      const interRight = Math.min(t1[0], t2[0]);
+      // The bottom edge of intersection is the maximum of the two bottom edges
+      const interBottom = Math.max(b1[1], b2[1]);
+      // The top edge of intersection is the minimum of the two top edges
+      const interTop = Math.min(t1[1], t2[1]);
 
-            // Check if there is a valid overlapping area (width and height > 0)
-            if (interRight > interLeft && interTop > interBottom) {
-                // The largest square in a rectangle is limited by its shortest dimension
-                const side = Math.min(interRight - interLeft, interTop - interBottom);
-                // Update maxSide if the current square is larger than the previous maximum
-                if (side > maxSide) maxSide = side;
-            }
-        }
+      // Check if there is a valid overlapping area (width and height > 0)
+      if (interRight > interLeft && interTop > interBottom) {
+        // The largest square in a rectangle is limited by its shortest dimension
+        const side = Math.min(interRight - interLeft, interTop - interBottom);
+        // Update maxSide if the current square is larger than the previous maximum
+        if (side > maxSide) maxSide = side;
+      }
     }
+  }
 
-    // Return the area (side squared). Use bigints if results could exceed 2^53 - 1, 
-    // but per constraints (10^7), side^2 fits in a standard number.
-    return maxSide * maxSide;
+  // Return the area (side squared). Use bigints if results could exceed 2^53 - 1,
+  // but per constraints (10^7), side^2 fits in a standard number.
+  return maxSide * maxSide;
 }

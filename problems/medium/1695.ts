@@ -23,37 +23,39 @@ Constraints:
 */
 
 function maximumUniqueSubarray(nums: number[]): number {
-    // Use array instead of Map for O(1) access since nums[i] <= 10^4
-    // Initialize all positions to -1 to indicate "not seen yet"
-    const lastPos = new Array(10001).fill(-1);
+  // Use array instead of Map for O(1) access since nums[i] <= 10^4
+  // Initialize all positions to -1 to indicate "not seen yet"
+  const lastPos = new Array(10001).fill(-1);
 
-    // Track maximum sum found, current window sum, and left boundary of sliding window
-    let maxSum = 0, currentSum = 0, left = 0;
+  // Track maximum sum found, current window sum, and left boundary of sliding window
+  let maxSum = 0,
+    currentSum = 0,
+    left = 0;
 
-    // Expand window by moving right pointer through the array
-    for (let right = 0; right < nums.length; right++) {
-        const num = nums[right];
+  // Expand window by moving right pointer through the array
+  for (let right = 0; right < nums.length; right++) {
+    const num = nums[right];
 
-        // If current number was seen within current window (lastPos[num] >= left)
-        if (lastPos[num] >= left) {
-            // Shrink window from left until we pass the duplicate element
-            // This maintains the unique elements invariant
-            while (left <= lastPos[num]) {
-                currentSum -= nums[left]; // Remove element from current sum
-                left++; // Move left boundary forward
-            }
-        }
-
-        // Update last seen position of current number to current index
-        lastPos[num] = right;
-
-        // Add current number to window sum
-        currentSum += num;
-
-        // Update maximum sum if current window sum is larger
-        maxSum = Math.max(maxSum, currentSum);
+    // If current number was seen within current window (lastPos[num] >= left)
+    if (lastPos[num] >= left) {
+      // Shrink window from left until we pass the duplicate element
+      // This maintains the unique elements invariant
+      while (left <= lastPos[num]) {
+        currentSum -= nums[left]; // Remove element from current sum
+        left++; // Move left boundary forward
+      }
     }
 
-    // Return the maximum sum of any subarray with unique elements
-    return maxSum;
+    // Update last seen position of current number to current index
+    lastPos[num] = right;
+
+    // Add current number to window sum
+    currentSum += num;
+
+    // Update maximum sum if current window sum is larger
+    maxSum = Math.max(maxSum, currentSum);
+  }
+
+  // Return the maximum sum of any subarray with unique elements
+  return maxSum;
 }

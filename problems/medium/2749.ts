@@ -28,26 +28,26 @@ Constraints:
 */
 
 function makeTheIntegerZero(num1: number, num2: number): number {
-    // Try each possible number of operations from 1 to 60
-    for (let k = 1; k <= 60; k++) {
-        // Calculate what sum of 2^i values we need after k operations
-        const target = num1 - k * num2;
-        
-        // Target must be positive (can't make negative numbers from sum of 2^i)
-        if (target > 0) {
-            // Count number of 1-bits in target (minimum operations needed)
-            const popcount = target.toString(2).split('1').length - 1;
-            
-            // Two key conditions:
-            // 1. popcount <= k: we have enough operations to cover all required bits
-            // 2. k <= target: we can't use more operations than the target value
-            //    (since minimum per operation is 2^0 + num2 >= 1 when target > 0)
-            if (popcount <= k && k <= target) {
-                return k;
-            }
-        }
+  // Try each possible number of operations from 1 to 60
+  for (let k = 1; k <= 60; k++) {
+    // Calculate what sum of 2^i values we need after k operations
+    const target = num1 - k * num2;
+
+    // Target must be positive (can't make negative numbers from sum of 2^i)
+    if (target > 0) {
+      // Count number of 1-bits in target (minimum operations needed)
+      const popcount = target.toString(2).split("1").length - 1;
+
+      // Two key conditions:
+      // 1. popcount <= k: we have enough operations to cover all required bits
+      // 2. k <= target: we can't use more operations than the target value
+      //    (since minimum per operation is 2^0 + num2 >= 1 when target > 0)
+      if (popcount <= k && k <= target) {
+        return k;
+      }
     }
-    
-    // No valid solution found
-    return -1;
+  }
+
+  // No valid solution found
+  return -1;
 }

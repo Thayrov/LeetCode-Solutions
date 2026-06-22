@@ -26,31 +26,31 @@ Constraints:
 */
 
 function maximumEnergy(energy: number[], k: number): number {
-    // Store the length of the energy array for boundary checks
-    const n = energy.length;
-    
-    // Initialize max to negative infinity to handle all-negative cases
-    let max = -Infinity;
-    
-    // Iterate through the last k positions (these are potential end points of chains)
-    // We only need to check the last k positions because any chain ending beyond this
-    // would have already been covered by a chain starting from an earlier position
-    for (let i = n - 1; i >= n - k; i--) {
-        // Initialize sum for the current chain starting from position i and going backwards
-        let sum = 0;
-        
-        // Traverse backwards from position i, jumping k steps at a time
-        // This simulates all possible starting points that would end at or after position i
-        for (let j = i; j >= 0; j -= k) {
-            // Add the energy at current position to the cumulative sum
-            sum += energy[j];
-            
-            // Update max if current cumulative sum is greater
-            // We check at each step because any position can be a valid starting point
-            if (sum > max) max = sum;
-        }
+  // Store the length of the energy array for boundary checks
+  const n = energy.length;
+
+  // Initialize max to negative infinity to handle all-negative cases
+  let max = -Infinity;
+
+  // Iterate through the last k positions (these are potential end points of chains)
+  // We only need to check the last k positions because any chain ending beyond this
+  // would have already been covered by a chain starting from an earlier position
+  for (let i = n - 1; i >= n - k; i--) {
+    // Initialize sum for the current chain starting from position i and going backwards
+    let sum = 0;
+
+    // Traverse backwards from position i, jumping k steps at a time
+    // This simulates all possible starting points that would end at or after position i
+    for (let j = i; j >= 0; j -= k) {
+      // Add the energy at current position to the cumulative sum
+      sum += energy[j];
+
+      // Update max if current cumulative sum is greater
+      // We check at each step because any position can be a valid starting point
+      if (sum > max) max = sum;
     }
-    
-    // Return the maximum energy found across all possible starting positions
-    return max;
+  }
+
+  // Return the maximum energy found across all possible starting positions
+  return max;
 }

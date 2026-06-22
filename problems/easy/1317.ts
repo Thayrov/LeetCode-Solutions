@@ -27,33 +27,33 @@ Constraints:
 */
 
 function getNoZeroIntegers(n: number): number[] {
-    // Iterate through all possible values of first integer starting from 1
-    for (let a = 1; a < n; a++) {
-        // Calculate the second integer that makes the sum equal to n
-        const b = n - a;
-        
-        // Check if both integers contain no zero digits
-        if (hasNoZero(a) && hasNoZero(b)) {
-            // Return the first valid pair found (guaranteed to exist per constraints)
-            return [a, b];
-        }
+  // Iterate through all possible values of first integer starting from 1
+  for (let a = 1; a < n; a++) {
+    // Calculate the second integer that makes the sum equal to n
+    const b = n - a;
+
+    // Check if both integers contain no zero digits
+    if (hasNoZero(a) && hasNoZero(b)) {
+      // Return the first valid pair found (guaranteed to exist per constraints)
+      return [a, b];
     }
-    
-    // Fallback return (should never be reached given problem constraints)
-    return [1, n - 1];
+  }
+
+  // Fallback return (should never be reached given problem constraints)
+  return [1, n - 1];
 }
 
 // Helper function to check if a number contains no zero digits
 function hasNoZero(num: number): boolean {
-    // Process each digit of the number from right to left
-    while (num > 0) {
-        // Check if the current rightmost digit is zero
-        if (num % 10 === 0) return false;
-        
-        // Remove the rightmost digit by integer division
-        num = Math.floor(num / 10);
-    }
-    
-    // If we've processed all digits without finding a zero, return true
-    return true;
+  // Process each digit of the number from right to left
+  while (num > 0) {
+    // Check if the current rightmost digit is zero
+    if (num % 10 === 0) return false;
+
+    // Remove the rightmost digit by integer division
+    num = Math.floor(num / 10);
+  }
+
+  // If we've processed all digits without finding a zero, return true
+  return true;
 }

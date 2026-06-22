@@ -28,57 +28,57 @@ Constraints:
 */
 
 function minOperations(nums: number[]): number {
-    // Helper function to calculate greatest common divisor using Euclidean algorithm
-    const gcd = (a: number, b: number): number => b === 0 ? a : gcd(b, a % b);
-    
-    // Store the length of the array for repeated use
-    const n = nums.length;
-    
-    // Count how many 1s already exist in the array
-    let onesCount = 0;
-    
-    // Iterate through array to count existing 1s
-    for (let i = 0; i < n; i++) {
-        if (nums[i] === 1) onesCount++;
+  // Helper function to calculate greatest common divisor using Euclidean algorithm
+  const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
+
+  // Store the length of the array for repeated use
+  const n = nums.length;
+
+  // Count how many 1s already exist in the array
+  let onesCount = 0;
+
+  // Iterate through array to count existing 1s
+  for (let i = 0; i < n; i++) {
+    if (nums[i] === 1) onesCount++;
+  }
+
+  // If we already have 1s, we just need to propagate them to all positions
+  // Each 1 can convert its neighbors, so we need (n - onesCount) operations
+  if (onesCount > 0) return n - onesCount;
+
+  // Calculate GCD of all elements to check if it's possible to create a 1
+  let overallGcd = nums[0];
+  for (let i = 1; i < n; i++) {
+    overallGcd = gcd(overallGcd, nums[i]);
+  }
+
+  // If the GCD of all elements is > 1, we can never create a 1
+  if (overallGcd > 1) return -1;
+
+  // Initialize minimum operations needed to create first 1 to worst case (entire array length)
+  let minOps = n;
+
+  // Try every possible starting position for a subarray
+  for (let i = 0; i < n; i++) {
+    // Initialize current GCD with first element of subarray
+    let currentGcd = nums[i];
+
+    // Extend subarray and calculate running GCD
+    for (let j = i + 1; j < n; j++) {
+      // Update GCD with next element
+      currentGcd = gcd(currentGcd, nums[j]);
+
+      // If we found a subarray with GCD = 1
+      if (currentGcd === 1) {
+        // Update minimum: (j - i) is the length - 1, which equals operations needed
+        minOps = Math.min(minOps, j - i);
+        // No need to extend this subarray further
+        break;
+      }
     }
-    
-    // If we already have 1s, we just need to propagate them to all positions
-    // Each 1 can convert its neighbors, so we need (n - onesCount) operations
-    if (onesCount > 0) return n - onesCount;
-    
-    // Calculate GCD of all elements to check if it's possible to create a 1
-    let overallGcd = nums[0];
-    for (let i = 1; i < n; i++) {
-        overallGcd = gcd(overallGcd, nums[i]);
-    }
-    
-    // If the GCD of all elements is > 1, we can never create a 1
-    if (overallGcd > 1) return -1;
-    
-    // Initialize minimum operations needed to create first 1 to worst case (entire array length)
-    let minOps = n;
-    
-    // Try every possible starting position for a subarray
-    for (let i = 0; i < n; i++) {
-        // Initialize current GCD with first element of subarray
-        let currentGcd = nums[i];
-        
-        // Extend subarray and calculate running GCD
-        for (let j = i + 1; j < n; j++) {
-            // Update GCD with next element
-            currentGcd = gcd(currentGcd, nums[j]);
-            
-            // If we found a subarray with GCD = 1
-            if (currentGcd === 1) {
-                // Update minimum: (j - i) is the length - 1, which equals operations needed
-                minOps = Math.min(minOps, j - i);
-                // No need to extend this subarray further
-                break;
-            }
-        }
-    }
-    
-    // Total operations = operations to create first 1 + operations to propagate it to all elements
-    // To propagate one 1 to n elements, we need (n - 1) operations
-    return minOps + n - 1;
+  }
+
+  // Total operations = operations to create first 1 + operations to propagate it to all elements
+  // To propagate one 1 to n elements, we need (n - 1) operations
+  return minOps + n - 1;
 }

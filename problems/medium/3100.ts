@@ -26,27 +26,27 @@ Constraints:
 */
 
 function maxBottlesDrunk(numBottles: number, numExchange: number): number {
-    // Initialize the total number of bottles we've drunk with the initial full bottles
-    let drunk = numBottles;
-    
-    // After drinking all initial bottles, we have this many empty bottles
-    let empty = numBottles;
-    
-    // Keep exchanging as long as we have enough empty bottles for an exchange
-    while (empty >= numExchange) {
-        // Perform the exchange: give away numExchange empty bottles
-        empty -= numExchange;
-        
-        // Receive 1 full bottle from the exchange, drink it immediately, adding 1 empty
-        empty++;
-        
-        // Increment the count of bottles drunk (we just drank the exchanged bottle)
-        drunk++;
-        
-        // The exchange rate increases by 1 for the next exchange
-        numExchange++;
-    }
-    
-    // Return the total number of bottles drunk throughout the process
-    return drunk;
+  // Initialize the total number of bottles we've drunk with the initial full bottles
+  let drunk = numBottles;
+
+  // After drinking all initial bottles, we have this many empty bottles
+  let empty = numBottles;
+
+  // Keep exchanging as long as we have enough empty bottles for an exchange
+  while (empty >= numExchange) {
+    // Perform the exchange: give away numExchange empty bottles
+    empty -= numExchange;
+
+    // Receive 1 full bottle from the exchange, drink it immediately, adding 1 empty
+    empty++;
+
+    // Increment the count of bottles drunk (we just drank the exchanged bottle)
+    drunk++;
+
+    // The exchange rate increases by 1 for the next exchange
+    numExchange++;
+  }
+
+  // Return the total number of bottles drunk throughout the process
+  return drunk;
 }

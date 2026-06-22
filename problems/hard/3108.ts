@@ -44,7 +44,7 @@ si != ti
 function minimumCost(
   n: number,
   edges: number[][],
-  query: number[][]
+  query: number[][],
 ): number[] {
   // Initialize parent array for DSU using Uint32Array for memory efficiency
   const parent = new Uint32Array(n);

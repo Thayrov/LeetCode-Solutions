@@ -51,7 +51,8 @@ function canMakeSubsequence(str1: string, str2: string): boolean {
     const c1 = str1.charAt(i);
     const c2 = str2.charAt(j);
     // Compute the next character after c1 (cyclically)
-    const nextChar = c1 === 'z' ? 'a' : String.fromCharCode(c1.charCodeAt(0) + 1);
+    const nextChar =
+      c1 === "z" ? "a" : String.fromCharCode(c1.charCodeAt(0) + 1);
     // If c1 or its incremented character matches c2
     if (c1 === c2 || nextChar === c2) {
       // Move to next character in str2

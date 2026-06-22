@@ -47,48 +47,48 @@ k is even
 */
 
 function maxProfit(prices: number[], strategy: number[], k: number): number {
-    const n = prices.length;
-    let baseProfit = 0;
+  const n = prices.length;
+  let baseProfit = 0;
 
-    // Calculate the initial profit without any modifications
-    for (let i = 0; i < n; i++) {
-        baseProfit += strategy[i] * prices[i];
-    }
+  // Calculate the initial profit without any modifications
+  for (let i = 0; i < n; i++) {
+    baseProfit += strategy[i] * prices[i];
+  }
 
-    let currentGain = 0; // Represents the delta added to baseProfit by the modification
-    const halfK = k / 2;
+  let currentGain = 0; // Represents the delta added to baseProfit by the modification
+  const halfK = k / 2;
 
-    // Initialize the sliding window for the first k elements [0...k-1]
-    for (let i = 0; i < k; i++) {
-        // First half (k/2) elements become 0, second half become 1
-        const target = i < halfK ? 0 : 1;
-        // Gain = (New Action - Old Action) * Price
-        currentGain += (target - strategy[i]) * prices[i];
-    }
+  // Initialize the sliding window for the first k elements [0...k-1]
+  for (let i = 0; i < k; i++) {
+    // First half (k/2) elements become 0, second half become 1
+    const target = i < halfK ? 0 : 1;
+    // Gain = (New Action - Old Action) * Price
+    currentGain += (target - strategy[i]) * prices[i];
+  }
 
-    // We track the maximum gain; 0 covers the case where the original is best
-    let maxGain = Math.max(0, currentGain);
+  // We track the maximum gain; 0 covers the case where the original is best
+  let maxGain = Math.max(0, currentGain);
 
-    // Slide the window of size k across the array
-    for (let i = k; i < n; i++) {
-        // The element leaving the window (at the start) was a '0' (Hold)
-        const outIdx = i - k;
-        currentGain -= (0 - strategy[outIdx]) * prices[outIdx];
+  // Slide the window of size k across the array
+  for (let i = k; i < n; i++) {
+    // The element leaving the window (at the start) was a '0' (Hold)
+    const outIdx = i - k;
+    currentGain -= (0 - strategy[outIdx]) * prices[outIdx];
 
-        // The element moving from the 2nd half to the 1st half of the window
-        // It changes from target 1 (Sell) to target 0 (Hold)
-        const midIdx = i - halfK;
-        currentGain -= (1 - strategy[midIdx]) * prices[midIdx]; // Remove old target
-        currentGain += (0 - strategy[midIdx]) * prices[midIdx]; // Add new target
+    // The element moving from the 2nd half to the 1st half of the window
+    // It changes from target 1 (Sell) to target 0 (Hold)
+    const midIdx = i - halfK;
+    currentGain -= (1 - strategy[midIdx]) * prices[midIdx]; // Remove old target
+    currentGain += (0 - strategy[midIdx]) * prices[midIdx]; // Add new target
 
-        // The new element entering the window at the end becomes a '1' (Sell)
-        const inIdx = i;
-        currentGain += (1 - strategy[inIdx]) * prices[inIdx];
+    // The new element entering the window at the end becomes a '1' (Sell)
+    const inIdx = i;
+    currentGain += (1 - strategy[inIdx]) * prices[inIdx];
 
-        // Update global max gain found so far
-        if (currentGain > maxGain) maxGain = currentGain;
-    }
+    // Update global max gain found so far
+    if (currentGain > maxGain) maxGain = currentGain;
+  }
 
-    // Total profit is the original profit plus the best improvement found
-    return baseProfit + maxGain;
+  // Total profit is the original profit plus the best improvement found
+  return baseProfit + maxGain;
 }

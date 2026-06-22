@@ -51,7 +51,7 @@ Constraints:
 function countInterestingSubarrays(
   nums: number[],
   modulo: number,
-  k: number
+  k: number,
 ): number {
   // initialize the total count of interesting subarrays
   let count = 0;

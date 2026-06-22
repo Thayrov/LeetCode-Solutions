@@ -56,7 +56,7 @@ class SegmentTree {
     val: number,
     x: number,
     lx: number,
-    rx: number
+    rx: number,
   ): void {
     // If we've reached a leaf node, update its value.
     if (rx - lx === 1) {
@@ -85,7 +85,7 @@ class SegmentTree {
     r: number,
     x: number,
     lx: number,
-    rx: number
+    rx: number,
   ): number {
     // If the node's range is completely outside the query range, return infinity.
     if (lx >= r || l >= rx) return this.INFINITY;
@@ -171,7 +171,7 @@ function maxDifference(s: string, k: number): number {
           // Query the appropriate tree to find the minimum `diff[j]` that satisfies all conditions.
           const minDiffJ = trees[targetParityA][targetParityB].queryMin(
             0,
-            countB[i] - 2
+            countB[i] - 2,
           );
 
           // If a valid starting point `j` was found...

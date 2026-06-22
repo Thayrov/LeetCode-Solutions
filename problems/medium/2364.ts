@@ -36,22 +36,22 @@ function countBadPairs(nums: number[]): number {
 
   // Iterate over each index in the array to populate the frequency map
   for (let i = 0; i < n; i++) {
-      // Compute the difference for the current index, which transforms the pair condition
-      const key = nums[i] - i;
-      // Update the frequency map: if key exists, increment its value; otherwise, initialize to 1
-      freq.set(key, (freq.get(key) || 0) + 1);
+    // Compute the difference for the current index, which transforms the pair condition
+    const key = nums[i] - i;
+    // Update the frequency map: if key exists, increment its value; otherwise, initialize to 1
+    freq.set(key, (freq.get(key) || 0) + 1);
   }
 
   // Variable to accumulate the count of "good" pairs (where j - i equals nums[j] - nums[i])
   let goodPairs = 0;
   // Iterate over the frequency map values to count pairs with identical differences
   for (const count of freq.values()) {
-      // For each group of indices with the same difference, add the number of possible pairs
-      goodPairs += count * (count - 1) / 2;
+    // For each group of indices with the same difference, add the number of possible pairs
+    goodPairs += (count * (count - 1)) / 2;
   }
 
   // Calculate the total number of pairs in the array (n choose 2)
-  const totalPairs = n * (n - 1) / 2;
+  const totalPairs = (n * (n - 1)) / 2;
   // Return the number of bad pairs by subtracting good pairs from the total pair count
   return totalPairs - goodPairs;
 }

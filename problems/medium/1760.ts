@@ -45,7 +45,10 @@ function minimumSize(nums: number[], maxOperations: number): number {
     // Calculate the mid-value as the potential penalty
     let mid = (left + right) >> 1;
     // Compute the total operations required with this penalty
-    let operations = nums.reduce((acc, num) => acc + Math.floor((num - 1) / mid), 0);
+    let operations = nums.reduce(
+      (acc, num) => acc + Math.floor((num - 1) / mid),
+      0,
+    );
     // If operations exceed the limit, increase the penalty
     if (operations > maxOperations) left = mid + 1;
     // Otherwise, try a lower penalty

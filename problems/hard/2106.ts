@@ -43,55 +43,59 @@ positioni-1 < positioni for any i > 0 (0-indexed)
 </> Typescript code:
 */
 
-function maxTotalFruits(fruits: number[][], startPos: number, k: number): number {
-    // Get the total number of fruit positions
-    let n = fruits.length;
+function maxTotalFruits(
+  fruits: number[][],
+  startPos: number,
+  k: number,
+): number {
+  // Get the total number of fruit positions
+  let n = fruits.length;
 
-    // Precompute prefix sums for O(1) range sum queries
-    // prefixSum[i] = sum of fruit amounts from index 0 to i-1
-    let prefixSum = Array(n + 1).fill(0);
-    for (let i = 0; i < n; i++) {
-        prefixSum[i + 1] = prefixSum[i] + fruits[i][1];
+  // Precompute prefix sums for O(1) range sum queries
+  // prefixSum[i] = sum of fruit amounts from index 0 to i-1
+  let prefixSum = Array(n + 1).fill(0);
+  for (let i = 0; i < n; i++) {
+    prefixSum[i + 1] = prefixSum[i] + fruits[i][1];
+  }
+
+  // Variable to store the maximum fruits that can be harvested
+  let maxFruits = 0;
+
+  // Left pointer of the sliding window
+  let left = 0;
+
+  // Expand the right pointer of the window
+  for (let right = 0; right < n; right++) {
+    // Shrink the window from the left while the current segment requires more than k steps
+    while (left <= right) {
+      let leftPos = fruits[left][0]; // Leftmost fruit position in current window
+      let rightPos = fruits[right][0]; // Rightmost fruit position in current window
+      let steps = 0;
+
+      // Case 1: Entire window is to the right of startPos
+      if (startPos <= leftPos) {
+        steps = rightPos - startPos; // Go directly to rightmost, but must pass through all
+      }
+      // Case 2: Entire window is to the left of startPos
+      else if (startPos >= rightPos) {
+        steps = startPos - leftPos; // Go directly to leftmost
+      }
+      // Case 3: startPos is inside the window (between leftPos and rightPos)
+      else {
+        let leftDist = startPos - leftPos; // Distance to left end
+        let rightDist = rightPos - startPos; // Distance to right end
+        // Optimal path: go to closer side first, then traverse to the other
+        steps = Math.min(leftDist, rightDist) + rightDist + leftDist;
+      }
+
+      // If current window is reachable within k steps, stop shrinking
+      if (steps <= k) break;
+      // Otherwise, shrink from the left
+      left++;
     }
+    // Update maximum fruits using prefix sum for O(1) range sum
+    maxFruits = Math.max(maxFruits, prefixSum[right + 1] - prefixSum[left]);
+  }
 
-    // Variable to store the maximum fruits that can be harvested
-    let maxFruits = 0;
-
-    // Left pointer of the sliding window
-    let left = 0;
-
-    // Expand the right pointer of the window
-    for (let right = 0; right < n; right++) {
-        // Shrink the window from the left while the current segment requires more than k steps
-        while (left <= right) {
-            let leftPos = fruits[left][0];   // Leftmost fruit position in current window
-            let rightPos = fruits[right][0]; // Rightmost fruit position in current window
-            let steps = 0;
-
-            // Case 1: Entire window is to the right of startPos
-            if (startPos <= leftPos) {
-                steps = rightPos - startPos; // Go directly to rightmost, but must pass through all
-            }
-            // Case 2: Entire window is to the left of startPos
-            else if (startPos >= rightPos) {
-                steps = startPos - leftPos; // Go directly to leftmost
-            }
-            // Case 3: startPos is inside the window (between leftPos and rightPos)
-            else {
-                let leftDist = startPos - leftPos;   // Distance to left end
-                let rightDist = rightPos - startPos; // Distance to right end
-                // Optimal path: go to closer side first, then traverse to the other
-                steps = Math.min(leftDist, rightDist) + rightDist + leftDist;
-            }
-
-            // If current window is reachable within k steps, stop shrinking
-            if (steps <= k) break;
-            // Otherwise, shrink from the left
-            left++;
-        }
-        // Update maximum fruits using prefix sum for O(1) range sum
-        maxFruits = Math.max(maxFruits, prefixSum[right + 1] - prefixSum[left]);
-    }
-
-    return maxFruits;
+  return maxFruits;
 }

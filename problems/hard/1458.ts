@@ -31,35 +31,35 @@ Constraints:
 */
 
 function maxDotProduct(nums1: number[], nums2: number[]): number {
-    const n = nums1.length;
-    const m = nums2.length;
-    // dp[j] stores the max dot product using a prefix of nums1 and nums2[0...j-1]
-    const dp: number[] = new Array(m + 1).fill(-Infinity);
+  const n = nums1.length;
+  const m = nums2.length;
+  // dp[j] stores the max dot product using a prefix of nums1 and nums2[0...j-1]
+  const dp: number[] = new Array(m + 1).fill(-Infinity);
 
-    for (let i = 0; i < n; i++) {
-        // prevRowPrevCol acts as dp[i-1][j-1] in a 2D matrix
-        let prevRowPrevCol = -Infinity;
-        for (let j = 0; j < m; j++) {
-            const currentProduct = nums1[i] * nums2[j];
-            
-            // Store dp[i-1][j] before we overwrite it with dp[i][j]
-            const prevMax = dp[j + 1];
+  for (let i = 0; i < n; i++) {
+    // prevRowPrevCol acts as dp[i-1][j-1] in a 2D matrix
+    let prevRowPrevCol = -Infinity;
+    for (let j = 0; j < m; j++) {
+      const currentProduct = nums1[i] * nums2[j];
 
-            // The new value at dp[j+1] (which is dp[i][j]) is the maximum of:
-            // 1. Just the current product (handles non-empty constraint)
-            // 2. Current product + best result from previous prefixes (if > 0)
-            // 3. The best result without using nums1[i] (dp[i-1][j])
-            // 4. The best result without using nums2[j] (dp[i][j-1])
-            dp[j + 1] = Math.max(
-                currentProduct, 
-                currentProduct + Math.max(0, prevRowPrevCol), 
-                dp[j + 1], 
-                dp[j]
-            );
+      // Store dp[i-1][j] before we overwrite it with dp[i][j]
+      const prevMax = dp[j + 1];
 
-            // Update the diagonal value for the next iteration of j
-            prevRowPrevCol = prevMax;
-        }
+      // The new value at dp[j+1] (which is dp[i][j]) is the maximum of:
+      // 1. Just the current product (handles non-empty constraint)
+      // 2. Current product + best result from previous prefixes (if > 0)
+      // 3. The best result without using nums1[i] (dp[i-1][j])
+      // 4. The best result without using nums2[j] (dp[i][j-1])
+      dp[j + 1] = Math.max(
+        currentProduct,
+        currentProduct + Math.max(0, prevRowPrevCol),
+        dp[j + 1],
+        dp[j],
+      );
+
+      // Update the diagonal value for the next iteration of j
+      prevRowPrevCol = prevMax;
     }
-    return dp[m];
+  }
+  return dp[m];
 }

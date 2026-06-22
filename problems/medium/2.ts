@@ -37,7 +37,7 @@ class ListNode {
 
 function addTwoNumbers(
   l1: ListNode | null,
-  l2: ListNode | null
+  l2: ListNode | null,
 ): ListNode | null {
   let dummyHead = new ListNode(0); // Create a dummy head node for the resulting linked list. This helps in simplifying list operations.
   let curr = dummyHead; // Initialize a current pointer to the dummy head. This will be used to build the result list.

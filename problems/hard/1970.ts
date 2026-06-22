@@ -36,55 +36,62 @@ All the values of cells are unique.
 */
 
 function latestDayToCross(row: number, col: number, cells: number[][]): number {
-    const n = row * col;
-    // parent array for DSU, plus two extra nodes for virtual Top (n) and Bottom (n+1)
-    const parent = new Int32Array(n + 2);
-    for (let i = 0; i < n + 2; i++) parent[i] = i;
+  const n = row * col;
+  // parent array for DSU, plus two extra nodes for virtual Top (n) and Bottom (n+1)
+  const parent = new Int32Array(n + 2);
+  for (let i = 0; i < n + 2; i++) parent[i] = i;
 
-    // Standard Find with path compression for O(alpha(N)) performance
-    function find(i: number): number {
-        while (parent[i] !== i) {
-            parent[i] = parent[parent[i]]; // Path halving
-            i = parent[i];
-        }
-        return i;
+  // Standard Find with path compression for O(alpha(N)) performance
+  function find(i: number): number {
+    while (parent[i] !== i) {
+      parent[i] = parent[parent[i]]; // Path halving
+      i = parent[i];
+    }
+    return i;
+  }
+
+  // Union function to connect two components
+  function union(i: number, j: number): void {
+    const rootI = find(i);
+    const rootJ = find(j);
+    if (rootI !== rootJ) parent[rootI] = rootJ;
+  }
+
+  // track land (1) vs water (0). We start from "all water" and add land back.
+  const grid = new Uint8Array(n);
+  const TOP = n,
+    BOTTOM = n + 1;
+  const directions = [
+    [0, 1],
+    [0, -1],
+    [1, 0],
+    [-1, 0],
+  ];
+
+  // Iterate backwards from the last day cells are filled
+  for (let d = n - 1; d >= 0; d--) {
+    const r = cells[d][0] - 1; // Convert 1-based to 0-based
+    const c = cells[d][1] - 1;
+    const idx = r * col + c;
+    grid[idx] = 1; // Mark as land
+
+    // If cell is in the first row, connect to virtual TOP
+    if (r === 0) union(idx, TOP);
+    // If cell is in the last row, connect to virtual BOTTOM
+    if (r === row - 1) union(idx, BOTTOM);
+
+    // Check 4-directional neighbors and connect if they are also land
+    for (const [dr, dc] of directions) {
+      const nr = r + dr,
+        nc = c + dc;
+      if (nr >= 0 && nr < row && nc >= 0 && nc < col && grid[nr * col + nc]) {
+        union(idx, nr * col + nc);
+      }
     }
 
-    // Union function to connect two components
-    function union(i: number, j: number): void {
-        const rootI = find(i);
-        const rootJ = find(j);
-        if (rootI !== rootJ) parent[rootI] = rootJ;
-    }
+    // Once TOP and BOTTOM are in the same set, a path exists
+    if (find(TOP) === find(BOTTOM)) return d;
+  }
 
-    // track land (1) vs water (0). We start from "all water" and add land back.
-    const grid = new Uint8Array(n);
-    const TOP = n, BOTTOM = n + 1;
-    const directions = [[0, 1], [0, -1], [1, 0], [-1, 0]];
-
-    // Iterate backwards from the last day cells are filled
-    for (let d = n - 1; d >= 0; d--) {
-        const r = cells[d][0] - 1; // Convert 1-based to 0-based
-        const c = cells[d][1] - 1;
-        const idx = r * col + c;
-        grid[idx] = 1; // Mark as land
-
-        // If cell is in the first row, connect to virtual TOP
-        if (r === 0) union(idx, TOP);
-        // If cell is in the last row, connect to virtual BOTTOM
-        if (r === row - 1) union(idx, BOTTOM);
-
-        // Check 4-directional neighbors and connect if they are also land
-        for (const [dr, dc] of directions) {
-            const nr = r + dr, nc = c + dc;
-            if (nr >= 0 && nr < row && nc >= 0 && nc < col && grid[nr * col + nc]) {
-                union(idx, nr * col + nc);
-            }
-        }
-
-        // Once TOP and BOTTOM are in the same set, a path exists
-        if (find(TOP) === find(BOTTOM)) return d;
-    }
-
-    return 0;
+  return 0;
 }

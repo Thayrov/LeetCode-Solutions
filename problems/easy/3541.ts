@@ -33,46 +33,69 @@ s consists of lowercase English letters only.
 */
 
 function maxFreqSum(s: string): number {
-    // Create an integer array of size 26, initialized to all zeros, to store the frequency of each letter from 'a' to 'z'.
-    const freqs = new Array(26).fill(0);
-    
-    // Create a boolean array to quickly check if a character at a given index (0-25) is a vowel.
-    // Indices correspond to 'a' through 'z'. 'a'(0), 'e'(4), 'i'(8), 'o'(14), 'u'(20) are marked as true.
-    const isVowel = [
-        true, false, false, false, true, false, false, false, true, false, 
-        false, false, false, false, true, false, false, false, false, false, 
-        true, false, false, false, false, false
-    ];
+  // Create an integer array of size 26, initialized to all zeros, to store the frequency of each letter from 'a' to 'z'.
+  const freqs = new Array(26).fill(0);
 
-    // Iterate through the input string to populate the frequency array.
-    for (let i = 0; i < s.length; i++) {
-        // Get the ASCII code of the character, subtract 97 (ASCII for 'a') to get a 0-25 index, and increment the count at that index.
-        freqs[s.charCodeAt(i) - 97]++;
+  // Create a boolean array to quickly check if a character at a given index (0-25) is a vowel.
+  // Indices correspond to 'a' through 'z'. 'a'(0), 'e'(4), 'i'(8), 'o'(14), 'u'(20) are marked as true.
+  const isVowel = [
+    true,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ];
+
+  // Iterate through the input string to populate the frequency array.
+  for (let i = 0; i < s.length; i++) {
+    // Get the ASCII code of the character, subtract 97 (ASCII for 'a') to get a 0-25 index, and increment the count at that index.
+    freqs[s.charCodeAt(i) - 97]++;
+  }
+
+  // Initialize a variable to store the maximum frequency found for any vowel.
+  let maxVowelFreq = 0;
+  // Initialize a variable to store the maximum frequency found for any consonant.
+  let maxConsonantFreq = 0;
+
+  // Iterate from 0 to 25, representing each letter of the alphabet.
+  for (let i = 0; i < 26; i++) {
+    // Check if the letter corresponding to the current index 'i' is a vowel using the lookup array.
+    if (isVowel[i]) {
+      // If it's a vowel, check if its frequency is greater than the current max vowel frequency.
+      if (freqs[i] > maxVowelFreq) {
+        // If it is, update the max vowel frequency.
+        maxVowelFreq = freqs[i];
+      }
+    } else {
+      // If it's a consonant, check if its frequency is greater than the current max consonant frequency.
+      if (freqs[i] > maxConsonantFreq) {
+        // If it is, update the max consonant frequency.
+        maxConsonantFreq = freqs[i];
+      }
     }
-    
-    // Initialize a variable to store the maximum frequency found for any vowel.
-    let maxVowelFreq = 0;
-    // Initialize a variable to store the maximum frequency found for any consonant.
-    let maxConsonantFreq = 0;
-    
-    // Iterate from 0 to 25, representing each letter of the alphabet.
-    for (let i = 0; i < 26; i++) {
-        // Check if the letter corresponding to the current index 'i' is a vowel using the lookup array.
-        if (isVowel[i]) {
-            // If it's a vowel, check if its frequency is greater than the current max vowel frequency.
-            if (freqs[i] > maxVowelFreq) {
-                // If it is, update the max vowel frequency.
-                maxVowelFreq = freqs[i];
-            }
-        } else {
-            // If it's a consonant, check if its frequency is greater than the current max consonant frequency.
-            if (freqs[i] > maxConsonantFreq) {
-                // If it is, update the max consonant frequency.
-                maxConsonantFreq = freqs[i];
-            }
-        }
-    }
-    
-    // Return the sum of the maximum vowel frequency and the maximum consonant frequency.
-    return maxVowelFreq + maxConsonantFreq;
+  }
+
+  // Return the sum of the maximum vowel frequency and the maximum consonant frequency.
+  return maxVowelFreq + maxConsonantFreq;
 }

@@ -48,7 +48,7 @@ function maxCandies(
   candies: number[],
   keys: number[][],
   containedBoxes: number[][],
-  initialBoxes: number[]
+  initialBoxes: number[],
 ): number {
   // Arrays to track state - using arrays instead of Sets for better performance
   const hasBox = new Array(status.length).fill(false); // Track which boxes we have access to

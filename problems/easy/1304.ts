@@ -23,29 +23,29 @@ Constraints:
 */
 
 function sumZero(n: number): number[] {
-    // Pre-allocate array with exact size for optimal memory usage
-    const result: number[] = new Array(n);
-    
-    // Use bit shift for faster division by 2 (n >> 1 === Math.floor(n/2))
-    const half = n >> 1;
-    
-    // Create pairs of positive/negative numbers that cancel out
-    for (let i = 0; i < half; i++) {
-        // Generate positive number starting from 1
-        const val = i + 1;
-        
-        // Place positive number at even index using bit shift (i << 1 === i * 2)
-        result[i << 1] = val;
-        
-        // Place negative counterpart at next odd index
-        result[(i << 1) + 1] = -val;
-    }
-    
-    // Check if n is odd using bitwise AND (n & 1 === n % 2)
-    if (n & 1) {
-        // Add 0 at the end to maintain sum of zero without affecting uniqueness
-        result[n - 1] = 0;
-    }
-    
-    return result;
+  // Pre-allocate array with exact size for optimal memory usage
+  const result: number[] = new Array(n);
+
+  // Use bit shift for faster division by 2 (n >> 1 === Math.floor(n/2))
+  const half = n >> 1;
+
+  // Create pairs of positive/negative numbers that cancel out
+  for (let i = 0; i < half; i++) {
+    // Generate positive number starting from 1
+    const val = i + 1;
+
+    // Place positive number at even index using bit shift (i << 1 === i * 2)
+    result[i << 1] = val;
+
+    // Place negative counterpart at next odd index
+    result[(i << 1) + 1] = -val;
+  }
+
+  // Check if n is odd using bitwise AND (n & 1 === n % 2)
+  if (n & 1) {
+    // Add 0 at the end to maintain sum of zero without affecting uniqueness
+    result[n - 1] = 0;
+  }
+
+  return result;
 }

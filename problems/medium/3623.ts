@@ -30,70 +30,71 @@ All points are pairwise distinct.
 */
 
 function countTrapezoids(points: number[][]): number {
-    // We define the modulus as a BigInt because intermediate calculations (squares)
-    // might exceed the safe integer limit of standard Javascript Numbers (2^53).
-    const MOD = 1000000007n;
-    
-    // We need to divide by 2 at the end of the formula. In modular arithmetic,
-    // division by X is multiplication by the modular inverse of X.
-    // The modular inverse of 2 modulo 10^9 + 7 is (10^9 + 8) / 2 = 500000004.
-    const INV_2 = 500000004n;
+  // We define the modulus as a BigInt because intermediate calculations (squares)
+  // might exceed the safe integer limit of standard Javascript Numbers (2^53).
+  const MOD = 1000000007n;
 
-    // OPTIMIZATION 1: Grouping by Y-coordinate.
-    // Instead of using a Map (which has overhead), we sort the points by their Y-coordinate.
-    // This allows us to process horizontal lines contiguously in O(N log N) time.
-    // We don't care about X sorting for the count, just that they exist on the same Y plane.
-    points.sort((a, b) => a[1] - b[1]);
+  // We need to divide by 2 at the end of the formula. In modular arithmetic,
+  // division by X is multiplication by the modular inverse of X.
+  // The modular inverse of 2 modulo 10^9 + 7 is (10^9 + 8) / 2 = 500000004.
+  const INV_2 = 500000004n;
 
-    // Variable to store sum(P_i), where P_i is the number of pairs on line i.
-    let totalPairsSum = 0n;
-    // Variable to store sum(P_i^2).
-    let sumOfSquaredPairs = 0n;
+  // OPTIMIZATION 1: Grouping by Y-coordinate.
+  // Instead of using a Map (which has overhead), we sort the points by their Y-coordinate.
+  // This allows us to process horizontal lines contiguously in O(N log N) time.
+  // We don't care about X sorting for the count, just that they exist on the same Y plane.
+  points.sort((a, b) => a[1] - b[1]);
 
-    let i = 0;
-    const n = points.length;
+  // Variable to store sum(P_i), where P_i is the number of pairs on line i.
+  let totalPairsSum = 0n;
+  // Variable to store sum(P_i^2).
+  let sumOfSquaredPairs = 0n;
 
-    // Iterate through the sorted points to process each horizontal line (group of same Y).
-    while (i < n) {
-        let j = i + 1;
-        
-        // Advance j until we hit a point with a different Y coordinate.
-        // The points from index i to j-1 all lie on the same horizontal line.
-        while (j < n && points[j][1] === points[i][1]) {
-            j++;
-        }
+  let i = 0;
+  const n = points.length;
 
-        // Calculate the number of points on this specific horizontal line.
-        const count = BigInt(j - i);
-        
-        // A trapezoid requires picking 2 points from one line and 2 from another.
-        // We can only form a valid "base" on this line if we have at least 2 points.
-        if (count > 1n) {
-            // Calculate Combinations(count, 2): The number of ways to pick 2 points from this line.
-            // Formula: n * (n - 1) / 2
-            const pairs = (count * (count - 1n) / 2n) % MOD;
+  // Iterate through the sorted points to process each horizontal line (group of same Y).
+  while (i < n) {
+    let j = i + 1;
 
-            // Accumulate simple sum for the formula later.
-            totalPairsSum = (totalPairsSum + pairs) % MOD;
-            
-            // Accumulate the square of the pairs for the formula later.
-            sumOfSquaredPairs = (sumOfSquaredPairs + (pairs * pairs) % MOD) % MOD;
-        }
-
-        // Move the pointer i to j to start processing the next group (next Y coordinate).
-        i = j;
+    // Advance j until we hit a point with a different Y coordinate.
+    // The points from index i to j-1 all lie on the same horizontal line.
+    while (j < n && points[j][1] === points[i][1]) {
+      j++;
     }
 
-    // ALGEBRAIC OPTIMIZATION:
-    // We need the sum of products of pairs from distinct lines: Sum(P_i * P_j) for all i < j.
-    // A naive double loop would be O(M^2) where M is the number of lines (too slow).
-    // We use the identity: (Sum(P_i))^2 = Sum(P_i^2) + 2 * Sum(P_i * P_j).
-    // Therefore: Sum(P_i * P_j) = ((Sum(P_i))^2 - Sum(P_i^2)) / 2.
-    
-    // 1. Calculate (totalPairsSum)^2 - sumOfSquaredPairs
-    // We add MOD before modulo to ensure the result of the subtraction is non-negative.
-    const numerator = (totalPairsSum * totalPairsSum - sumOfSquaredPairs + MOD) % MOD;
-    
-    // 2. Divide by 2 (multiply by modular inverse) and return result as a standard Number.
-    return Number((numerator * INV_2) % MOD);
-};
+    // Calculate the number of points on this specific horizontal line.
+    const count = BigInt(j - i);
+
+    // A trapezoid requires picking 2 points from one line and 2 from another.
+    // We can only form a valid "base" on this line if we have at least 2 points.
+    if (count > 1n) {
+      // Calculate Combinations(count, 2): The number of ways to pick 2 points from this line.
+      // Formula: n * (n - 1) / 2
+      const pairs = ((count * (count - 1n)) / 2n) % MOD;
+
+      // Accumulate simple sum for the formula later.
+      totalPairsSum = (totalPairsSum + pairs) % MOD;
+
+      // Accumulate the square of the pairs for the formula later.
+      sumOfSquaredPairs = (sumOfSquaredPairs + ((pairs * pairs) % MOD)) % MOD;
+    }
+
+    // Move the pointer i to j to start processing the next group (next Y coordinate).
+    i = j;
+  }
+
+  // ALGEBRAIC OPTIMIZATION:
+  // We need the sum of products of pairs from distinct lines: Sum(P_i * P_j) for all i < j.
+  // A naive double loop would be O(M^2) where M is the number of lines (too slow).
+  // We use the identity: (Sum(P_i))^2 = Sum(P_i^2) + 2 * Sum(P_i * P_j).
+  // Therefore: Sum(P_i * P_j) = ((Sum(P_i))^2 - Sum(P_i^2)) / 2.
+
+  // 1. Calculate (totalPairsSum)^2 - sumOfSquaredPairs
+  // We add MOD before modulo to ensure the result of the subtraction is non-negative.
+  const numerator =
+    (totalPairsSum * totalPairsSum - sumOfSquaredPairs + MOD) % MOD;
+
+  // 2. Divide by 2 (multiply by modular inverse) and return result as a standard Number.
+  return Number((numerator * INV_2) % MOD);
+}

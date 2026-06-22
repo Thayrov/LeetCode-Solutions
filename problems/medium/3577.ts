@@ -38,34 +38,34 @@ Constraints:
 */
 
 function countPermutations(complexity: number[]): number {
-    // Define the modulo constant as a BigInt for safe arithmetic
-    const MOD = 1000000007n;
-    const n = complexity.length;
-    
-    // The complexity of the root (computer 0), which starts the sequence
-    const rootComp = complexity[0];
-    
-    // Initialize the factorial result. 
-    // This represents the number of ways to arrange the remaining n-1 computers.
-    let ans = 1n;
+  // Define the modulo constant as a BigInt for safe arithmetic
+  const MOD = 1000000007n;
+  const n = complexity.length;
 
-    // Iterate through all computers starting from index 1
-    for (let i = 1; i < n; i++) {
-        // Optimization/Logic Check:
-        // For computer 'i' to be unlockable, it must strictly have a higher complexity 
-        // than its unlocker. The unlocker chain must originate at 0.
-        // Therefore, if complexity[i] <= complexity[0], no valid chain exists 
-        // that connects 0 to i (as chains must be strictly increasing in complexity).
-        if (complexity[i] <= rootComp) {
-            return 0;
-        }
+  // The complexity of the root (computer 0), which starts the sequence
+  const rootComp = complexity[0];
 
-        // If the check passes, computer 0 can directly unlock computer i.
-        // Since 0 is always first, i is always valid in any position relative to others.
-        // We accumulate the factorial (n-1)! to count all permutations of the remaining nodes.
-        ans = (ans * BigInt(i)) % MOD;
+  // Initialize the factorial result.
+  // This represents the number of ways to arrange the remaining n-1 computers.
+  let ans = 1n;
+
+  // Iterate through all computers starting from index 1
+  for (let i = 1; i < n; i++) {
+    // Optimization/Logic Check:
+    // For computer 'i' to be unlockable, it must strictly have a higher complexity
+    // than its unlocker. The unlocker chain must originate at 0.
+    // Therefore, if complexity[i] <= complexity[0], no valid chain exists
+    // that connects 0 to i (as chains must be strictly increasing in complexity).
+    if (complexity[i] <= rootComp) {
+      return 0;
     }
 
-    // Return the calculated factorial count modulo 10^9 + 7
-    return Number(ans);
-};
+    // If the check passes, computer 0 can directly unlock computer i.
+    // Since 0 is always first, i is always valid in any position relative to others.
+    // We accumulate the factorial (n-1)! to count all permutations of the remaining nodes.
+    ans = (ans * BigInt(i)) % MOD;
+  }
+
+  // Return the calculated factorial count modulo 10^9 + 7
+  return Number(ans);
+}

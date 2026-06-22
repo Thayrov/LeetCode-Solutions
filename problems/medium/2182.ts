@@ -40,7 +40,7 @@ function repeatLimitedString(s: string, repeatLimit: number): string {
   for (const ch of s) {
     freq[ch.charCodeAt(0) - 97]++; // Count frequency of each character
   }
-  let result = ''; // Initialize result string
+  let result = ""; // Initialize result string
   let i = 25; // Start from 'z' (largest character)
   while (i >= 0) {
     if (freq[i] === 0) {

@@ -25,22 +25,22 @@ Constraints:
 */
 
 function largestPerimeter(nums: number[]): number {
-    // Sort array in descending order to prioritize larger values for maximum perimeter
-    nums.sort((a, b) => b - a);
-    
-    // Iterate through array checking consecutive triplets
-    // We only need to check up to length-2 since we access i+1 and i+2
-    for (let i = 0; i < nums.length - 2; i++) {
-        // Check triangle inequality: sum of two smaller sides > largest side
-        // Since array is sorted desc: nums[i] >= nums[i+1] >= nums[i+2]
-        // So we check if nums[i+1] + nums[i+2] > nums[i]
-        if (nums[i + 1] + nums[i + 2] > nums[i]) {
-            // Found valid triangle, return perimeter (sum of all three sides)
-            // This is guaranteed to be the largest possible since we check largest combinations first
-            return nums[i] + nums[i + 1] + nums[i + 2];
-        }
+  // Sort array in descending order to prioritize larger values for maximum perimeter
+  nums.sort((a, b) => b - a);
+
+  // Iterate through array checking consecutive triplets
+  // We only need to check up to length-2 since we access i+1 and i+2
+  for (let i = 0; i < nums.length - 2; i++) {
+    // Check triangle inequality: sum of two smaller sides > largest side
+    // Since array is sorted desc: nums[i] >= nums[i+1] >= nums[i+2]
+    // So we check if nums[i+1] + nums[i+2] > nums[i]
+    if (nums[i + 1] + nums[i + 2] > nums[i]) {
+      // Found valid triangle, return perimeter (sum of all three sides)
+      // This is guaranteed to be the largest possible since we check largest combinations first
+      return nums[i] + nums[i + 1] + nums[i + 2];
     }
-    
-    // No valid triangle found, return 0
-    return 0;
+  }
+
+  // No valid triangle found, return 0
+  return 0;
 }

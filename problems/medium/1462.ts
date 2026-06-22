@@ -40,24 +40,30 @@ ui != vi
 </> Typescript code:
 */
 
-function checkIfPrerequisite(numCourses: number, prerequisites: number[][], queries: number[][]): boolean[] {
+function checkIfPrerequisite(
+  numCourses: number,
+  prerequisites: number[][],
+  queries: number[][],
+): boolean[] {
   // Create a matrix 'r' to track reachability (prerequisite relationships)
-  const r = Array.from({ length: numCourses }, () => Array(numCourses).fill(false));
+  const r = Array.from({ length: numCourses }, () =>
+    Array(numCourses).fill(false),
+  );
 
   // Mark direct prerequisites in the matrix
   for (const [p, q] of prerequisites) {
-      r[p][q] = true;
+    r[p][q] = true;
   }
 
   // Use a Floyd-Warshall-like method to compute indirect prerequisites
   for (let k = 0; k < numCourses; k++) {
-      for (let i = 0; i < numCourses; i++) {
-          if (r[i][k]) {
-              for (let j = 0; j < numCourses; j++) {
-                  r[i][j] = r[i][j] || r[k][j];
-              }
-          }
+    for (let i = 0; i < numCourses; i++) {
+      if (r[i][k]) {
+        for (let j = 0; j < numCourses; j++) {
+          r[i][j] = r[i][j] || r[k][j];
+        }
       }
+    }
   }
 
   // For each query, return whether u is a prerequisite of v

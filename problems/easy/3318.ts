@@ -32,73 +32,73 @@ Constraints:
 */
 
 function findXSum(nums: number[], k: number, x: number): number[] {
-    const n = nums.length;
-    // 'answer' will store the x-sum for each k-long subarray.
-    const answer: number[] = [];
+  const n = nums.length;
+  // 'answer' will store the x-sum for each k-long subarray.
+  const answer: number[] = [];
 
-    // Iterate from the start of the first window (i=0) to the start of the last window (i = n - k).
-    // This loop runs (n - k + 1) times.
-    for (let i = 0; i <= n - k; i++) {
-        // Get the current k-long subarray. .slice() is efficient enough given n <= 50.
-        const subarray = nums.slice(i, i + k);
-        
-        // Use a fixed-size array for frequency counting, which is faster than a Map
-        // since we know nums[i] is constrained to [1, 50].
-        const freq = new Array(51).fill(0);
-        
-        // Populate the frequency count for the current subarray.
-        for (const val of subarray) {
-            freq[val]++;
-        }
+  // Iterate from the start of the first window (i=0) to the start of the last window (i = n - k).
+  // This loop runs (n - k + 1) times.
+  for (let i = 0; i <= n - k; i++) {
+    // Get the current k-long subarray. .slice() is efficient enough given n <= 50.
+    const subarray = nums.slice(i, i + k);
 
-        // Create a list of [value, count] pairs for all elements that
-        // actually exist in the subarray.
-        const entries: [number, number][] = [];
-        for (let val = 1; val <= 50; val++) {
-            if (freq[val] > 0) {
-                entries.push([val, freq[val]]);
-            }
-        }
+    // Use a fixed-size array for frequency counting, which is faster than a Map
+    // since we know nums[i] is constrained to [1, 50].
+    const freq = new Array(51).fill(0);
 
-        // Sort the entries based on the problem's criteria:
-        // 1. Higher frequency (count) comes first (descending).
-        // 2. If frequencies are equal, the bigger value comes first (descending).
-        entries.sort((a, b) => {
-            // a = [valA, countA], b = [valB, countB]
-            if (a[1] !== b[1]) {
-                // Primary sort: by count, descending (b[1] - a[1]).
-                return b[1] - a[1];
-            }
-            // Secondary sort (tie-breaker): by value, descending (b[0] - a[0]).
-            return b[0] - a[0];
-        });
-
-        // Use a Set for fast O(1) lookups of the *values* of the top x elements.
-        const topXValues = new Set<number>();
-        
-        // Determine how many elements to take: either x or fewer if there
-        // are less than x distinct elements.
-        const limit = Math.min(entries.length, x);
-        
-        // Add the *values* of the top x (or fewer) elements to the Set.
-        for (let j = 0; j < limit; j++) {
-            topXValues.add(entries[j][0]); // entries[j][0] is the value
-        }
-
-        // Calculate the final x-sum for this subarray.
-        let currentXSum = 0;
-        // Iterate through the original subarray one more time.
-        for (const val of subarray) {
-            // If the value is one of the top x frequent elements, add it to the sum.
-            if (topXValues.has(val)) {
-                currentXSum += val;
-            }
-        }
-        
-        // Add the calculated x-sum for this window to the final answer array.
-        answer.push(currentXSum);
+    // Populate the frequency count for the current subarray.
+    for (const val of subarray) {
+      freq[val]++;
     }
 
-    // Return the array of all x-sums.
-    return answer;
+    // Create a list of [value, count] pairs for all elements that
+    // actually exist in the subarray.
+    const entries: [number, number][] = [];
+    for (let val = 1; val <= 50; val++) {
+      if (freq[val] > 0) {
+        entries.push([val, freq[val]]);
+      }
+    }
+
+    // Sort the entries based on the problem's criteria:
+    // 1. Higher frequency (count) comes first (descending).
+    // 2. If frequencies are equal, the bigger value comes first (descending).
+    entries.sort((a, b) => {
+      // a = [valA, countA], b = [valB, countB]
+      if (a[1] !== b[1]) {
+        // Primary sort: by count, descending (b[1] - a[1]).
+        return b[1] - a[1];
+      }
+      // Secondary sort (tie-breaker): by value, descending (b[0] - a[0]).
+      return b[0] - a[0];
+    });
+
+    // Use a Set for fast O(1) lookups of the *values* of the top x elements.
+    const topXValues = new Set<number>();
+
+    // Determine how many elements to take: either x or fewer if there
+    // are less than x distinct elements.
+    const limit = Math.min(entries.length, x);
+
+    // Add the *values* of the top x (or fewer) elements to the Set.
+    for (let j = 0; j < limit; j++) {
+      topXValues.add(entries[j][0]); // entries[j][0] is the value
+    }
+
+    // Calculate the final x-sum for this subarray.
+    let currentXSum = 0;
+    // Iterate through the original subarray one more time.
+    for (const val of subarray) {
+      // If the value is one of the top x frequent elements, add it to the sum.
+      if (topXValues.has(val)) {
+        currentXSum += val;
+      }
+    }
+
+    // Add the calculated x-sum for this window to the final answer array.
+    answer.push(currentXSum);
+  }
+
+  // Return the array of all x-sums.
+  return answer;
 }

@@ -53,7 +53,7 @@ function checkValidCuts(n: number, rectangles: number[][]): boolean {
     .sort((a, b) => a - b);
   // Remove duplicate candidates to have unique horizontal boundaries.
   const uniqueHs = candidateHs.filter(
-    (v, i) => i === 0 || v !== candidateHs[i - 1]
+    (v, i) => i === 0 || v !== candidateHs[i - 1],
   );
 
   // Define a helper function to find the first index where the array element is >= target.
@@ -120,7 +120,7 @@ function checkValidCuts(n: number, rectangles: number[][]): boolean {
     .flatMap((r) => [r[0], r[2]])
     .sort((a, b) => a - b);
   const uniqueVs = candidateVs.filter(
-    (v, i) => i === 0 || v !== candidateVs[i - 1]
+    (v, i) => i === 0 || v !== candidateVs[i - 1],
   );
 
   // Filter the vertical candidates to keep only those that do not cut through any rectangle.

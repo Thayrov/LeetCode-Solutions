@@ -36,19 +36,19 @@ Constraints:
  * @returns {number} The final value of original after all possible multiplications.
  */
 function findFinalValue(nums: number[], original: number): number {
-    // 1. Preprocess the input array into a Set for highly performant, near O(1) lookups.
-    // This is the optimization step that ensures subsequent searches are fast.
-    const seen = new Set(nums);
+  // 1. Preprocess the input array into a Set for highly performant, near O(1) lookups.
+  // This is the optimization step that ensures subsequent searches are fast.
+  const seen = new Set(nums);
 
-    // 2. Start a loop that continues as long as the current 'original' value is found in the Set.
-    // The Set.has() method provides the critical O(1) time complexity for the existence check.
-    while (seen.has(original)) {
-        // 3. If the value is found, multiply 'original' by two, as per the problem rules.
-        // This mutation changes the search target for the next iteration.
-        original *= 2;
-    }
-    
-    // 4. Once the loop terminates (meaning 'original' was not found in the Set), 
-    // return the final, multiplied value.
-    return original;
+  // 2. Start a loop that continues as long as the current 'original' value is found in the Set.
+  // The Set.has() method provides the critical O(1) time complexity for the existence check.
+  while (seen.has(original)) {
+    // 3. If the value is found, multiply 'original' by two, as per the problem rules.
+    // This mutation changes the search target for the next iteration.
+    original *= 2;
+  }
+
+  // 4. Once the loop terminates (meaning 'original' was not found in the Set),
+  // return the final, multiplied value.
+  return original;
 }

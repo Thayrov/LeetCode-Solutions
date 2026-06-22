@@ -28,9 +28,9 @@ Follow up: Could you solve it without loops/recursion?
 */
 
 function isPowerOfThree(n: number): boolean {
-    // Check if n is positive (powers of 3 are always positive)
-    // 1162261467 is 3^19, the largest power of 3 that fits in a 32-bit signed integer
-    // If n is a power of 3, then 3^19 must be divisible by n (since 3^19 = 3^k * 3^(19-k))
-    // This works because 3 is prime, so the only divisors of 3^19 are powers of 3
-    return n > 0 && 1162261467 % n === 0;
+  // Check if n is positive (powers of 3 are always positive)
+  // 1162261467 is 3^19, the largest power of 3 that fits in a 32-bit signed integer
+  // If n is a power of 3, then 3^19 must be divisible by n (since 3^19 = 3^k * 3^(19-k))
+  // This works because 3 is prime, so the only divisors of 3^19 are powers of 3
+  return n > 0 && 1162261467 % n === 0;
 }

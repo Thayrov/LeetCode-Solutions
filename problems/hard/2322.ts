@@ -43,97 +43,99 @@ edges represents a valid tree.
 */
 
 function minimumScore(nums: number[], edges: number[][]): number {
-    // Get the total number of nodes in the tree.
-    const n = nums.length;
+  // Get the total number of nodes in the tree.
+  const n = nums.length;
 
-    // Create an adjacency list to represent the undirected graph (tree).
-    const adj: number[][] = Array(n).fill(0).map(() => []);
-    for (const [u, v] of edges) {
-        adj[u].push(v);
-        adj[v].push(u);
+  // Create an adjacency list to represent the undirected graph (tree).
+  const adj: number[][] = Array(n)
+    .fill(0)
+    .map(() => []);
+  for (const [u, v] of edges) {
+    adj[u].push(v);
+    adj[v].push(u);
+  }
+
+  // `xorValues[i]` will store the XOR sum of the entire subtree rooted at node `i`.
+  const xorValues = new Array(n).fill(0);
+  // `startTime[i]` and `endTime[i]` store the entry and exit times of node `i` in the DFS traversal.
+  // This is used for an efficient O(1) ancestor check.
+  const startTime = new Array(n).fill(0);
+  const endTime = new Array(n).fill(0);
+  let timer = 0; // A global timer for the DFS traversal.
+
+  // A DFS function to traverse the tree, compute subtree XOR sums, and record traversal times.
+  function dfs(u: number, p: number): number {
+    // Mark the entry time for the current node `u`.
+    timer++;
+    startTime[u] = timer;
+
+    // Start the XOR sum for the subtree at `u` with its own value.
+    let currentXor = nums[u];
+
+    // Traverse all neighbors of `u`.
+    for (const v of adj[u]) {
+      // If the neighbor `v` is not the parent `p`, it's a child in this traversal.
+      if (v !== p) {
+        // Recursively call DFS on the child and XOR its result into the current subtree's sum.
+        currentXor ^= dfs(v, u);
+      }
     }
 
-    // `xorValues[i]` will store the XOR sum of the entire subtree rooted at node `i`.
-    const xorValues = new Array(n).fill(0);
-    // `startTime[i]` and `endTime[i]` store the entry and exit times of node `i` in the DFS traversal.
-    // This is used for an efficient O(1) ancestor check.
-    const startTime = new Array(n).fill(0);
-    const endTime = new Array(n).fill(0);
-    let timer = 0; // A global timer for the DFS traversal.
+    // Store the final computed XOR sum for the subtree rooted at `u`.
+    xorValues[u] = currentXor;
+    // Mark the exit time for the current node `u`.
+    endTime[u] = timer;
+    // Return the computed XOR sum to the parent call.
+    return currentXor;
+  }
 
-    // A DFS function to traverse the tree, compute subtree XOR sums, and record traversal times.
-    function dfs(u: number, p: number): number {
-        // Mark the entry time for the current node `u`.
-        timer++;
-        startTime[u] = timer;
+  // Start the DFS from node 0 (as an arbitrary root) and get the XOR sum of the entire tree.
+  const totalXor = dfs(0, -1);
 
-        // Start the XOR sum for the subtree at `u` with its own value.
-        let currentXor = nums[u];
+  // Helper function to check if node `u` is an ancestor of node `v` in O(1).
+  function isAncestor(u: number, v: number): boolean {
+    // `u` is an ancestor of `v` if `v`'s traversal happens entirely within `u`'s traversal.
+    return startTime[u] < startTime[v] && endTime[u] >= endTime[v];
+  }
 
-        // Traverse all neighbors of `u`.
-        for (const v of adj[u]) {
-            // If the neighbor `v` is not the parent `p`, it's a child in this traversal.
-            if (v !== p) {
-                // Recursively call DFS on the child and XOR its result into the current subtree's sum.
-                currentXor ^= dfs(v, u);
-            }
-        }
+  // Initialize the minimum score to the largest possible value.
+  let minScore = Infinity;
 
-        // Store the final computed XOR sum for the subtree rooted at `u`.
-        xorValues[u] = currentXor;
-        // Mark the exit time for the current node `u`.
-        endTime[u] = timer;
-        // Return the computed XOR sum to the parent call.
-        return currentXor;
+  // Iterate through all possible pairs of nodes (i, j) to represent the two removed edges.
+  // Removing an edge is equivalent to selecting a node `i` (where i > 0) and cutting the edge to its parent.
+  // We iterate from 1 because node 0 is the root and has no parent in this structure.
+  for (let i = 1; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      // Declare variables for the XOR sums of the three resulting components.
+      let x1: number, x2: number, x3: number;
+
+      // Case 1: The subtree at `i` is an ancestor of the subtree at `j`.
+      // This means removing edge (parent(i), i) and (parent(j), j) creates nested components.
+      if (isAncestor(i, j)) {
+        x1 = xorValues[j]; // Component 1: subtree at j.
+        x2 = xorValues[i] ^ xorValues[j]; // Component 2: subtree at i minus subtree at j.
+        x3 = totalXor ^ xorValues[i]; // Component 3: the rest of the tree.
+      }
+      // Case 2: The subtree at `j` is an ancestor of the subtree at `i`.
+      else if (isAncestor(j, i)) {
+        x1 = xorValues[i]; // Component 1: subtree at i.
+        x2 = xorValues[j] ^ xorValues[i]; // Component 2: subtree at j minus subtree at i.
+        x3 = totalXor ^ xorValues[j]; // Component 3: the rest of the tree.
+      }
+      // Case 3: The subtrees at `i` and `j` are disjoint.
+      else {
+        x1 = xorValues[i]; // Component 1: subtree at i.
+        x2 = xorValues[j]; // Component 2: subtree at j.
+        x3 = totalXor ^ xorValues[i] ^ xorValues[j]; // Component 3: the rest of the tree.
+      }
+
+      // Calculate the score for this pair of removals.
+      const score = Math.max(x1, x2, x3) - Math.min(x1, x2, x3);
+      // Update the overall minimum score found so far.
+      minScore = Math.min(minScore, score);
     }
+  }
 
-    // Start the DFS from node 0 (as an arbitrary root) and get the XOR sum of the entire tree.
-    const totalXor = dfs(0, -1);
-
-    // Helper function to check if node `u` is an ancestor of node `v` in O(1).
-    function isAncestor(u: number, v: number): boolean {
-        // `u` is an ancestor of `v` if `v`'s traversal happens entirely within `u`'s traversal.
-        return startTime[u] < startTime[v] && endTime[u] >= endTime[v];
-    }
-
-    // Initialize the minimum score to the largest possible value.
-    let minScore = Infinity;
-
-    // Iterate through all possible pairs of nodes (i, j) to represent the two removed edges.
-    // Removing an edge is equivalent to selecting a node `i` (where i > 0) and cutting the edge to its parent.
-    // We iterate from 1 because node 0 is the root and has no parent in this structure.
-    for (let i = 1; i < n; i++) {
-        for (let j = i + 1; j < n; j++) {
-            // Declare variables for the XOR sums of the three resulting components.
-            let x1: number, x2: number, x3: number;
-
-            // Case 1: The subtree at `i` is an ancestor of the subtree at `j`.
-            // This means removing edge (parent(i), i) and (parent(j), j) creates nested components.
-            if (isAncestor(i, j)) {
-                x1 = xorValues[j];                               // Component 1: subtree at j.
-                x2 = xorValues[i] ^ xorValues[j];               // Component 2: subtree at i minus subtree at j.
-                x3 = totalXor ^ xorValues[i];                   // Component 3: the rest of the tree.
-            }
-            // Case 2: The subtree at `j` is an ancestor of the subtree at `i`.
-            else if (isAncestor(j, i)) {
-                x1 = xorValues[i];                              // Component 1: subtree at i.
-                x2 = xorValues[j] ^ xorValues[i];               // Component 2: subtree at j minus subtree at i.
-                x3 = totalXor ^ xorValues[j];                   // Component 3: the rest of the tree.
-            }
-            // Case 3: The subtrees at `i` and `j` are disjoint.
-            else {
-                x1 = xorValues[i];                              // Component 1: subtree at i.
-                x2 = xorValues[j];                              // Component 2: subtree at j.
-                x3 = totalXor ^ xorValues[i] ^ xorValues[j];    // Component 3: the rest of the tree.
-            }
-
-            // Calculate the score for this pair of removals.
-            const score = Math.max(x1, x2, x3) - Math.min(x1, x2, x3);
-            // Update the overall minimum score found so far.
-            minScore = Math.min(minScore, score);
-        }
-    }
-
-    // Return the minimum possible score.
-    return minScore;
-};
+  // Return the minimum possible score.
+  return minScore;
+}

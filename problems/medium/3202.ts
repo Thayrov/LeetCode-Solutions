@@ -27,36 +27,36 @@ Constraints:
 */
 
 function maximumLength(nums: number[], k: number): number {
-    // Track the maximum length found across all possible remainders
-    let maxLen = 0;
+  // Track the maximum length found across all possible remainders
+  let maxLen = 0;
 
-    // Try each possible remainder r from 0 to k-1
-    // We want (sub[i] + sub[i+1]) % k == r for all consecutive pairs
-    for (let r = 0; r < k; r++) {
-        // dp[i] = length of longest valid subsequence ending with a number having remainder i
-        const dp = new Array(k).fill(0);
+  // Try each possible remainder r from 0 to k-1
+  // We want (sub[i] + sub[i+1]) % k == r for all consecutive pairs
+  for (let r = 0; r < k; r++) {
+    // dp[i] = length of longest valid subsequence ending with a number having remainder i
+    const dp = new Array(k).fill(0);
 
-        // Process each number in the array
-        for (const num of nums) {
-            // Get the remainder when num is divided by k
-            const mod = num % k;
+    // Process each number in the array
+    for (const num of nums) {
+      // Get the remainder when num is divided by k
+      const mod = num % k;
 
-            // If we want (prev + current) % k == r, and current % k == mod,
-            // then prev % k must equal (r - mod + k) % k
-            const prev = (r - mod + k) % k;
+      // If we want (prev + current) % k == r, and current % k == mod,
+      // then prev % k must equal (r - mod + k) % k
+      const prev = (r - mod + k) % k;
 
-            // Update dp[mod] to be the maximum of:
-            // 1. Its current value (subsequence ending at mod without using this number)
-            // 2. dp[prev] + 1 (extending the best subsequence ending at prev)
-            dp[mod] = Math.max(dp[mod], dp[prev] + 1);
-        }
-
-        // Check all possible ending remainders for this r and update global maximum
-        for (let i = 0; i < k; i++) {
-            maxLen = Math.max(maxLen, dp[i]);
-        }
+      // Update dp[mod] to be the maximum of:
+      // 1. Its current value (subsequence ending at mod without using this number)
+      // 2. dp[prev] + 1 (extending the best subsequence ending at prev)
+      dp[mod] = Math.max(dp[mod], dp[prev] + 1);
     }
 
-    // Return the maximum length found across all possible remainders
-    return maxLen;
+    // Check all possible ending remainders for this r and update global maximum
+    for (let i = 0; i < k; i++) {
+      maxLen = Math.max(maxLen, dp[i]);
+    }
+  }
+
+  // Return the maximum length found across all possible remainders
+  return maxLen;
 }

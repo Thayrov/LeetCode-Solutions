@@ -105,7 +105,10 @@ class MinHeap {
     while (idx > 0) {
       const parentIdx = Math.floor((idx - 1) / 2);
       if (this.heap[parentIdx] <= this.heap[idx]) break;
-      [this.heap[parentIdx], this.heap[idx]] = [this.heap[idx], this.heap[parentIdx]];
+      [this.heap[parentIdx], this.heap[idx]] = [
+        this.heap[idx],
+        this.heap[parentIdx],
+      ];
       idx = parentIdx;
     }
   }
@@ -125,7 +128,10 @@ class MinHeap {
       }
 
       if (smallest === idx) break;
-      [this.heap[idx], this.heap[smallest]] = [this.heap[smallest], this.heap[idx]];
+      [this.heap[idx], this.heap[smallest]] = [
+        this.heap[smallest],
+        this.heap[idx],
+      ];
       idx = smallest;
     }
   }

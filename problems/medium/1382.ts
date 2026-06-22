@@ -1,4 +1,3 @@
-
 /*
 1382. Balance a Binary Search Tree
 
@@ -23,13 +22,13 @@ The number of nodes in the tree is in the range [1, 10^4].
 */
 
 class TreeNode {
-  val: number
-  left: TreeNode | null
-  right: TreeNode | null
+  val: number;
+  left: TreeNode | null;
+  right: TreeNode | null;
   constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
-      this.val = (val===undefined ? 0 : val)
-      this.left = (left===undefined ? null : left)
-      this.right = (right===undefined ? null : right)
+    this.val = val === undefined ? 0 : val;
+    this.left = left === undefined ? null : left;
+    this.right = right === undefined ? null : right;
   }
 }
 

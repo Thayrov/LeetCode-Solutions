@@ -26,19 +26,19 @@ bits[i] is either 0 or 1.
 */
 
 function isOneBitCharacter(bits: number[]): boolean {
-    // Initialize pointer to start of array
-    let i = 0;
-    
-    // Iterate through array until we reach the last element
-    // We stop at length - 1 because the last element is always 0 (given constraint)
-    while (i < bits.length - 1) {
-        // If bits[i] is 0: jump 1 position (0 + 1 = 1) - it's a 1-bit character
-        // If bits[i] is 1: jump 2 positions (1 + 1 = 2) - it's a 2-bit character
-        // This elegantly handles both cases in one expression
-        i += bits[i] + 1;
-    }
-    
-    // If we landed exactly on the last index, the last character is 1-bit (the final 0)
-    // If we jumped over it (i > bits.length - 1), the last 0 was part of a 2-bit character
-    return i === bits.length - 1;
+  // Initialize pointer to start of array
+  let i = 0;
+
+  // Iterate through array until we reach the last element
+  // We stop at length - 1 because the last element is always 0 (given constraint)
+  while (i < bits.length - 1) {
+    // If bits[i] is 0: jump 1 position (0 + 1 = 1) - it's a 1-bit character
+    // If bits[i] is 1: jump 2 positions (1 + 1 = 2) - it's a 2-bit character
+    // This elegantly handles both cases in one expression
+    i += bits[i] + 1;
+  }
+
+  // If we landed exactly on the last index, the last character is 1-bit (the final 0)
+  // If we jumped over it (i > bits.length - 1), the last 0 was part of a 2-bit character
+  return i === bits.length - 1;
 }

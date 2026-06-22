@@ -28,32 +28,32 @@ Constraints:
 */
 
 function hasIncreasingSubarrays(nums: number[], k: number): boolean {
-    // Track the length of the previous strictly increasing sequence
-    let prev = 0;
-    // Track the length of the current strictly increasing sequence (starts at 1 for first element)
-    let curr = 1;
-    
-    // Iterate through the array starting from index 1
-    for (let i = 1; i < nums.length; i++) {
-        // Check if current element continues the strictly increasing sequence
-        if (nums[i] > nums[i - 1]) {
-            // Increment the current increasing sequence length
-            curr++;
-        } else {
-            // Sequence breaks: store current length as previous
-            prev = curr;
-            // Reset current sequence length to 1 (starting new sequence at position i)
-            curr = 1;
-        }
-        
-        // Check two conditions for adjacent increasing subarrays:
-        // 1. Current sequence has k elements AND previous sequence had k elements (adjacent)
-        // 2. Current sequence has 2*k elements (contains two adjacent subarrays of length k)
-        if ((curr >= k && prev >= k) || curr >= 2 * k) {
-            return true;
-        }
+  // Track the length of the previous strictly increasing sequence
+  let prev = 0;
+  // Track the length of the current strictly increasing sequence (starts at 1 for first element)
+  let curr = 1;
+
+  // Iterate through the array starting from index 1
+  for (let i = 1; i < nums.length; i++) {
+    // Check if current element continues the strictly increasing sequence
+    if (nums[i] > nums[i - 1]) {
+      // Increment the current increasing sequence length
+      curr++;
+    } else {
+      // Sequence breaks: store current length as previous
+      prev = curr;
+      // Reset current sequence length to 1 (starting new sequence at position i)
+      curr = 1;
     }
-    
-    // No two adjacent strictly increasing subarrays of length k found
-    return false;
+
+    // Check two conditions for adjacent increasing subarrays:
+    // 1. Current sequence has k elements AND previous sequence had k elements (adjacent)
+    // 2. Current sequence has 2*k elements (contains two adjacent subarrays of length k)
+    if ((curr >= k && prev >= k) || curr >= 2 * k) {
+      return true;
+    }
+  }
+
+  // No two adjacent strictly increasing subarrays of length k found
+  return false;
 }

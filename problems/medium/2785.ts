@@ -25,41 +25,41 @@ s consists only of letters of the English alphabet in uppercase and lowercase.
 */
 
 function sortVowels(s: string): string {
-    // Create a Set containing all possible vowel characters (both lowercase and uppercase) for efficient O(1) lookups.
-    const vowels = new Set(['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']);
-    
-    // Initialize an empty array to store the vowels found in the input string 's'.
-    const extractedVowels: string[] = [];
-    
-    // Iterate through each character of the input string 's'.
-    for (const char of s) {
-        // Check if the current character is a vowel using the Set.
-        if (vowels.has(char)) {
-            // If it is a vowel, add it to our list of extracted vowels.
-            extractedVowels.push(char);
-        }
+  // Create a Set containing all possible vowel characters (both lowercase and uppercase) for efficient O(1) lookups.
+  const vowels = new Set(["a", "e", "i", "o", "u", "A", "E", "I", "O", "U"]);
+
+  // Initialize an empty array to store the vowels found in the input string 's'.
+  const extractedVowels: string[] = [];
+
+  // Iterate through each character of the input string 's'.
+  for (const char of s) {
+    // Check if the current character is a vowel using the Set.
+    if (vowels.has(char)) {
+      // If it is a vowel, add it to our list of extracted vowels.
+      extractedVowels.push(char);
     }
+  }
 
-    // Sort the array of extracted vowels. By default, .sort() sorts strings lexicographically, which corresponds to their ASCII values.
-    extractedVowels.sort();
+  // Sort the array of extracted vowels. By default, .sort() sorts strings lexicographically, which corresponds to their ASCII values.
+  extractedVowels.sort();
 
-    // Convert the original immutable string 's' into a mutable array of characters.
-    const result = s.split('');
-    
-    // Initialize a pointer to track our position in the sorted 'extractedVowels' array.
-    let vowelIndex = 0;
-    
-    // Iterate through the character array 'result' using an index 'i'.
-    for (let i = 0; i < result.length; i++) {
-        // Check if the character at the current position 'i' in the original string was a vowel.
-        if (vowels.has(result[i])) {
-            // If it was a vowel, replace it with the next vowel from our sorted list.
-            result[i] = extractedVowels[vowelIndex];
-            // Increment the vowel pointer to use the next sorted vowel for the next vowel position.
-            vowelIndex++;
-        }
+  // Convert the original immutable string 's' into a mutable array of characters.
+  const result = s.split("");
+
+  // Initialize a pointer to track our position in the sorted 'extractedVowels' array.
+  let vowelIndex = 0;
+
+  // Iterate through the character array 'result' using an index 'i'.
+  for (let i = 0; i < result.length; i++) {
+    // Check if the character at the current position 'i' in the original string was a vowel.
+    if (vowels.has(result[i])) {
+      // If it was a vowel, replace it with the next vowel from our sorted list.
+      result[i] = extractedVowels[vowelIndex];
+      // Increment the vowel pointer to use the next sorted vowel for the next vowel position.
+      vowelIndex++;
     }
+  }
 
-    // Join the characters in the modified array back into a single string and return it.
-    return result.join('');
-};
+  // Join the characters in the modified array back into a single string and return it.
+  return result.join("");
+}

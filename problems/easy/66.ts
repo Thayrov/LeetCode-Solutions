@@ -34,19 +34,19 @@ digits does not contain any leading 0's.
 */
 
 function plusOne(digits: number[]): number[] {
-    // Iterate from the last element (least significant digit) to the first
-    for (let i = digits.length - 1; i >= 0; i--) {
-        // If the current digit is less than 9, we can increment and return immediately
-        if (digits[i] < 9) {
-            digits[i]++; // Increment the digit by 1
-            return digits; // No carry needed further, return the modified array
-        }
-        // If the digit is 9, it becomes 0 and we continue to the next significant digit
-        digits[i] = 0;
+  // Iterate from the last element (least significant digit) to the first
+  for (let i = digits.length - 1; i >= 0; i--) {
+    // If the current digit is less than 9, we can increment and return immediately
+    if (digits[i] < 9) {
+      digits[i]++; // Increment the digit by 1
+      return digits; // No carry needed further, return the modified array
     }
+    // If the digit is 9, it becomes 0 and we continue to the next significant digit
+    digits[i] = 0;
+  }
 
-    // If the loop finishes, it means all digits were 9 (e.g., [9, 9, 9])
-    // We need to add a 1 at the beginning of the array (e.g., [1, 0, 0, 0])
-    digits.unshift(1);
-    return digits;
+  // If the loop finishes, it means all digits were 9 (e.g., [9, 9, 9])
+  // We need to add a 1 at the beginning of the array (e.g., [1, 0, 0, 0])
+  digits.unshift(1);
+  return digits;
 }

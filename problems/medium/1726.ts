@@ -35,7 +35,10 @@ function tupleSameProduct(nums: number[]): number {
   //    count: number of total pairs (i,j) that yield this product,
   //    freq: a map counting how many of these pairs include each index
   // }
-  const productMap = new Map<number, {count: number; freq: Map<number, number>}>();
+  const productMap = new Map<
+    number,
+    { count: number; freq: Map<number, number> }
+  >();
 
   // Will hold the total count of valid 4-tuples
   let total = 0;
@@ -48,7 +51,7 @@ function tupleSameProduct(nums: number[]): number {
 
       // If this product hasn't been seen, initialize its entry
       if (!productMap.has(product)) {
-        productMap.set(product, {count: 0, freq: new Map()});
+        productMap.set(product, { count: 0, freq: new Map() });
       }
 
       // Retrieve the stored data for this product
@@ -57,7 +60,8 @@ function tupleSameProduct(nums: number[]): number {
       // Count how many existing pairs are disjoint from the new pair
       // We take the total count of pairs for this product,
       // then subtract the pairs that include i or j.
-      const validPairs = entry.count - (entry.freq.get(i) || 0) - (entry.freq.get(j) || 0);
+      const validPairs =
+        entry.count - (entry.freq.get(i) || 0) - (entry.freq.get(j) || 0);
 
       // Each disjoint pair combination can form 8 distinct tuples
       // because (a,b,c,d) can vary by swapping each pair
