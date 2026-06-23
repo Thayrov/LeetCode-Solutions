@@ -140,8 +140,7 @@ class FoodRatings {
       if (right < heap.length && this.compare(heap[right], heap[best]) > 0) {
         best = right;
       }
-      if (best === i)
-        break; // Already satisfies heap property
+      if (best === i) break; // Already satisfies heap property
       [heap[i], heap[best]] = [heap[best], heap[i]];
       i = best;
     }
