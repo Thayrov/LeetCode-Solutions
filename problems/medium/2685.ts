@@ -2,11 +2,8 @@
 2685. Count the Number of Complete Components
 
 You are given an integer n. There is an undirected graph with n vertices, numbered from 0 to n - 1. You are given a 2D integer array edges where edges[i] = [ai, bi] denotes that there exists an undirected edge connecting vertices ai and bi.
-
 Return the number of complete connected components of the graph.
-
 A connected component is a subgraph of a graph in which there exists a path between any two vertices, and no vertex of the subgraph shares an edge with a vertex outside of the subgraph.
-
 A connected component is said to be complete if there exists an edge between every pair of its vertices.
 
 Example 1:
@@ -30,60 +27,79 @@ There are no repeated edges.
 </> Typescript code:
 */
 
+// Counts connected components containing every possible edge between their vertices.
 function countCompleteComponents(n: number, edges: number[][]): number {
-  // Create an adjacency list for a graph with n vertices; each vertex gets its own list.
-  const graph: number[][] = Array.from({ length: n }, () => []);
-  // Populate the graph with bidirectional edges.
-  for (const [u, v] of edges) {
-    graph[u].push(v); // Add v as a neighbor of u.
-    graph[v].push(u); // Add u as a neighbor of v.
-  }
-  // Initialize an array to track whether each vertex has been visited.
-  const visited: boolean[] = new Array(n).fill(false);
-  // Initialize counter for complete connected components.
-  let completeCount = 0;
-  // Loop through each vertex to explore its connected component if unvisited.
-  for (let i = 0; i < n; i++) {
-    if (!visited[i]) {
-      // New component found.
-      // Initialize DFS with a stack starting from the current vertex.
-      const stack: number[] = [i];
-      visited[i] = true; // Mark the starting vertex as visited.
-      // Collect all vertices in the current connected component.
-      const component: number[] = [];
-      while (stack.length) {
-        const node = stack.pop()!; // Pop a vertex from the stack.
-        component.push(node); // Add it to the current component.
-        // Visit all unvisited neighbors.
-        for (const neighbor of graph[node]) {
-          if (!visited[neighbor]) {
-            visited[neighbor] = true;
-            stack.push(neighbor);
-          }
-        }
-      }
-      // Create a set from the component array for O(1) lookups.
-      const compSet = new Set(component);
-      // Assume the component is complete unless a counterexample is found.
-      let isComplete = true;
-      const k = component.length; // Number of vertices in this component.
-      // Check every vertex's connectivity within the component.
-      for (const node of component) {
-        let countNeighbors = 0;
-        // Count how many neighbors of 'node' are also in the component.
-        for (const neighbor of graph[node]) {
-          if (compSet.has(neighbor)) countNeighbors++;
-        }
-        // For a complete graph, each vertex must be connected to all other vertices.
-        if (countNeighbors !== k - 1) {
-          isComplete = false; // Mark as incomplete if any vertex fails the check.
-          break;
-        }
-      }
-      // Increment the complete component count if the current component is complete.
-      if (isComplete) completeCount++;
+    // Stores each vertex's parent in the disjoint-set forest.
+    const parent = new Int32Array(n);
+    // Stores the number of vertices in each root's component.
+    const size = new Int32Array(n);
+    // Stores the number of edges in each root's component.
+    const edgeCount = new Int32Array(n);
+
+    // Initializes every vertex as a separate component.
+    for (let i = 0; i < n; i++) {
+        // Makes the vertex its own parent.
+        parent[i] = i;
+        // Gives the singleton component one vertex.
+        size[i] = 1;
     }
-  }
-  // Return the total count of complete components.
-  return completeCount;
+
+    // Finds a vertex's component root using iterative path compression.
+    const find = (x: number): number => {
+        // Continues until the root points to itself.
+        while (x !== parent[x]) {
+            // Connects the vertex to its grandparent to shorten future searches.
+            parent[x] = parent[parent[x]];
+            // Moves upward through the compressed forest.
+            x = parent[x];
+        }
+
+        // Returns the representative root.
+        return x;
+    };
+
+    // Processes every undirected edge.
+    for (const [a, b] of edges) {
+        // Finds the component containing the first endpoint.
+        let rootA = find(a);
+        // Finds the component containing the second endpoint.
+        let rootB = find(b);
+
+        // Merges the components when the endpoints were previously disconnected.
+        if (rootA !== rootB) {
+            // Ensures the smaller component is attached beneath the larger one.
+            if (size[rootA] < size[rootB]) {
+                // Swaps roots so rootA represents the larger component.
+                [rootA, rootB] = [rootB, rootA];
+            }
+
+            // Attaches rootB's component beneath rootA.
+            parent[rootB] = rootA;
+            // Adds rootB's vertex count to rootA's component.
+            size[rootA] += size[rootB];
+            // Transfers rootB's existing edges into rootA's component.
+            edgeCount[rootA] += edgeCount[rootB];
+        }
+
+        // Counts the current edge in the merged component.
+        edgeCount[rootA]++;
+    }
+
+    // Stores the number of complete connected components.
+    let completeComponents = 0;
+
+    // Examines every possible component root.
+    for (let vertex = 0; vertex < n; vertex++) {
+        // Checks that the vertex is a root and has exactly k(k - 1) / 2 edges.
+        if (
+            parent[vertex] === vertex &&
+            edgeCount[vertex] === (size[vertex] * (size[vertex] - 1)) / 2
+        ) {
+            // Counts the component as complete.
+            completeComponents++;
+        }
+    }
+
+    // Returns the total number of complete components.
+    return completeComponents;
 }
