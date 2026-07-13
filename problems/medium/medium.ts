@@ -1289,49 +1289,6 @@ function divideArray(nums: number[], k: number): number[][] {
 }
 
 /*
-1291. Sequential Digits
-
-An integer has sequential digits if and only if each digit in the number is one more than the previous digit.
-
-Return a sorted list of all the integers in the range [low, high] inclusive that have sequential digits.
-
-Example 1:
-Input: low = 100, high = 300
-Output: [123,234]
-
-Example 2:
-Input: low = 1000, high = 13000
-Output: [1234,2345,3456,4567,5678,6789,12345]
-
-Constraints:
-10 <= low <= high <= 10^9
-
-</> Typescript Code:
-*/
-
-function sequentialDigits(low: number, high: number): number[] {
-  // Initialize an array to store all possible sequential digit numbers
-  const allSequentialDigits: number[] = [];
-  // Define a string of all digits in sequence for easy access
-  const startDigits = "123456789";
-
-  // Loop through possible lengths of sequential digits from 2 to 9
-  for (let length = 2; length <= 9; length++) {
-    // Iterate through the `startDigits` string to slice sequences of the current length
-    for (let start = 0; start <= 9 - length; start++) {
-      // Extract a substring of the specified length and convert it to a number
-      const num = parseInt(startDigits.substring(start, start + length));
-      // If the number is within the [low, high] range, add it to the result array
-      if (num >= low && num <= high) {
-        allSequentialDigits.push(num);
-      }
-    }
-  }
-  // Sort and return the array of valid sequential digit numbers
-  return allSequentialDigits.sort((a, b) => a - b);
-}
-
-/*
 1043. Partition Array for Maximum Sum
 
 Given an integer array arr, partition the array into (contiguous) subarrays of length at most k. After partitioning, each subarray has their values changed to become the maximum value of that subarray.
