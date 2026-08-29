@@ -44,47 +44,43 @@ function lexicographicallySmallestArray(
   nums: number[],
   limit: number,
 ): number[] {
-  // n holds the size of the array
+  // Cache the array length for the component scans.
   const n = nums.length;
-  // parent and rank arrays for union-find
-  const parent = new Array(n).fill(0).map((_, i) => i);
-  const rank = new Array(n).fill(0);
-  // find function compresses paths to root
-  const find = (x: number): number => {
-    if (parent[x] !== x) parent[x] = find(parent[x]);
-    return parent[x];
-  };
-  // unite function merges two sets if their roots differ
-  const unite = (x: number, y: number): void => {
-    const rx = find(x),
-      ry = find(y);
-    if (rx !== ry) {
-      // attach smaller rank tree under bigger rank tree
-      if (rank[rx] < rank[ry]) parent[rx] = ry;
-      else {
-        parent[ry] = rx;
-        if (rank[rx] === rank[ry]) rank[rx]++;
-      }
+  // Store original indices in nondecreasing value order.
+  const order = Array.from({ length: n }, (_, index) => index);
+  // Make every connected component contiguous in order.
+  order.sort((left, right) => nums[left] - nums[right]);
+
+  // Preserve the input while building the lexicographically minimal result.
+  const answer = nums.slice();
+  // Track the first value in the current connected component.
+  let start = 0;
+
+  // Process each maximal component of mutually reachable values.
+  while (start < n) {
+    // Begin just after the component's first value.
+    let end = start + 1;
+    // Extend across every adjacent sorted gap allowed by the limit.
+    while (end < n && nums[order[end]] - nums[order[end - 1]] <= limit) {
+      // Advance to the next value in sorted order.
+      ++end;
     }
-  };
-  // arr maps each element to [value, index] and sorts by value
-  const arr = nums.map((v, i) => [v, i]).sort((a, b) => a[0] - b[0]);
-  // union adjacent elements in sorted order if their value difference is within limit
-  for (let i = 0; i < n - 1; i++)
-    if (arr[i + 1][0] - arr[i][0] <= limit) unite(arr[i][1], arr[i + 1][1]);
-  // groups will contain connected indices under the same root
-  const groups = new Map<number, number[]>();
-  for (let i = 0; i < n; i++) {
-    const r = find(i);
-    if (!groups.has(r)) groups.set(r, []);
-    groups.get(r)!.push(i);
+
+    // Copy this component's original positions for independent ordering.
+    const positions = order.slice(start, end);
+    // Put the earliest destination positions first.
+    positions.sort((left, right) => left - right);
+
+    // Pair ascending values with ascending positions for lexical minimality.
+    for (let offset = 0; offset < positions.length; ++offset) {
+      // Assign the component's next-smallest value to its next-smallest index.
+      answer[positions[offset]] = nums[order[start + offset]];
+    }
+
+    // Continue at the first value beyond this component.
+    start = end;
   }
-  // sort indices and place them back with sorted values
-  for (const [r, inds] of groups.entries()) {
-    const vals = inds.map((i) => nums[i]).sort((a, b) => a - b);
-    inds.sort((a, b) => a - b);
-    for (let k = 0; k < inds.length; k++) nums[inds[k]] = vals[k];
-  }
-  // return the updated array
-  return nums;
+
+  // Return the globally smallest array reachable by valid swaps.
+  return answer;
 }
